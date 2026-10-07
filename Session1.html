@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pertemuan 1 — Pendahuluan dan Notasi Asimtotik · Kompleksitas Algoritma</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#0b1526;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+#stage{position:fixed;inset:0;background:radial-gradient(1200px 700px at 70% -10%,#16294d 0%,#0b1526 60%)}
+#deck{position:absolute;left:50%;top:50%;width:1280px;height:720px}
+.slide{position:absolute;inset:0;background:#fff;border-radius:6px;box-shadow:0 24px 80px rgba(0,0,0,.55);padding:36px 52px 54px;opacity:0;pointer-events:none;overflow:hidden;display:flex;flex-direction:column;gap:11px;z-index:1;transition:opacity .38s ease,transform .38s ease}
+.slide.from-right{transition:none;transform:translateX(90px)}
+.slide.from-left{transition:none;transform:translateX(-90px)}
+.slide.exit-left{opacity:0;transform:translateX(-90px);z-index:2}
+.slide.exit-right{opacity:0;transform:translateX(90px);z-index:2}
+.slide.active{opacity:1;pointer-events:auto;z-index:3}
+.sfoot{position:absolute;left:52px;right:52px;bottom:12px;display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;border-top:1px solid #f1f5f9;padding-top:6px}
+.kicker{font-size:11.5px;font-weight:800;letter-spacing:.13em;color:#2563eb}
+h2.st{font-size:25px;color:#0f172a;line-height:1.25}
+.sub{font-size:13.5px;color:#64748b}
+p.b{font-size:13.5px;line-height:1.65;color:#334155}
+.cols{display:grid;gap:20px;flex:1;min-height:0}
+.c2{grid-template-columns:1fr 1fr}.c2l{grid-template-columns:1.05fr .95fr}.c2r{grid-template-columns:.95fr 1.05fr}
+.stack{display:flex;flex-direction:column;gap:9px;min-height:0}
+.card{border:1px solid #e2e8f0;border-radius:10px;padding:10px 13px;background:#fff}
+.card.soft{background:#f8fafc}
+.analogy{background:#fffbeb;border:1px solid #fde68a;border-left:5px solid #d97706;padding:9px 12px;border-radius:8px;font-size:12.5px;line-height:1.6;color:#334155}
+.analogy b{color:#b45309}
+.warn{background:#fef2f2;border:1px solid #fecaca;border-left:5px solid #b91c1c;padding:9px 12px;border-radius:8px;font-size:12.5px;color:#334155;line-height:1.6}
+.note{background:#eff6ff;border:1px solid #bfdbfe;border-left:5px solid #2563eb;padding:9px 12px;border-radius:8px;font-size:12.5px;color:#334155;line-height:1.6}
+table.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tbl th{background:#1e293b;color:#fff;text-align:left;padding:6px 9px;font-size:11.5px}
+.tbl td{border:1px solid #e2e8f0;padding:5px 9px;color:#334155;vertical-align:middle;line-height:1.45}
+pre.pycode{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:11px 13px;font:11.5px/1.5 Consolas,'Courier New',monospace;overflow:auto}
+.tk{color:#93c5fd}.ts{color:#fbbf24}.tc{color:#7dd3fc;font-style:italic}.tn{color:#f9a8d4}
+.mono{font-family:Consolas,monospace}
+.tiny{font-size:11.5px;color:#64748b;line-height:1.55}
+.btn{display:inline-flex;align-items:center;gap:6px;background:#2563eb;color:#fff;border:none;border-radius:8px;padding:7px 13px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn:hover{background:#1d4ed8}
+.btn.ghost{background:#fff;color:#2563eb;border:1.5px solid #bfdbfe}
+.btn.ghost:hover{background:#eff6ff}
+.btn.go{background:#16a34a}.btn.go:hover{background:#15803d}
+.btn.active{background:#0f172a}
+.btn:disabled{opacity:.5;cursor:default}
+.chipbtn{background:#fff;border:1.5px solid #bfdbfe;color:#1d4ed8;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.chipbtn:hover{background:#eff6ff}
+.chipbtn.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.sim{border:1.5px solid #dbeafe;background:linear-gradient(180deg,#f8fbff,#fff);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-height:0}
+.sim .cap{font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#2563eb;text-transform:uppercase}
+.term{background:#0f172a;color:#a7f3d0;border-radius:9px;padding:10px 12px;font:12px/1.7 Consolas,monospace;min-height:90px;white-space:pre-wrap;overflow:auto;flex:1}
+.term .dim{color:#64748b}.term .ok{color:#4ade80}.term b{color:#fbbf24}
+.term.sample{min-height:0;font-size:11px;color:#86efac;flex:none;white-space:pre}
+.cbadge{display:inline-block;background:#0f172a;color:#93c5fd;font:700 11px Consolas,monospace;padding:3px 11px;border-radius:20px;margin-bottom:5px}
+details{border:1px solid #e2e8f0;border-radius:8px;padding:7px 11px;background:#f8fafc;font-size:12.5px;line-height:1.55}
+summary{cursor:pointer;font-weight:700;color:#2563eb}
+kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size:11px;border:1px solid #334155}
+input[type=range]{accent-color:#2563eb;flex:1}
+input.in{border:1.5px solid #cbd5e1;border-radius:7px;padding:6px 9px;font:13px Consolas;width:110px}
+.verdict{border-radius:8px;padding:8px 11px;font-size:12.5px;line-height:1.5}
+.verdict.good{background:#dcfce7;color:#166534}
+.verdict.mid{background:#fef9c3;color:#854d0e}
+.verdict.bad{background:#fee2e2;color:#991b1b}
+.bar{height:12px;border-radius:6px;background:#eef2f7;position:relative;overflow:hidden;min-width:110px}
+.bar i{position:absolute;top:0;bottom:0;left:0;border-radius:6px;transition:width .4s}
+.bar.over i{background:repeating-linear-gradient(45deg,#7c3aed,#7c3aed 5px,#a78bfa 5px,#a78bfa 10px)}
+.ibar{height:16px;border-radius:8px;overflow:hidden;display:flex;background:#eef2f7}
+.ibar i{transition:width .3s}
+/* judul */
+#s1{justify-content:center}
+#s1 .deco{position:absolute;right:60px;top:120px;width:380px}
+#s1 h1{font-size:52px;line-height:1.1;color:#0f172a;margin:10px 0 16px}
+#s1 .lead{font-size:17px;color:#334155;line-height:1.6;max-width:660px}
+.navhint{margin-top:24px;font-size:12.5px;color:#64748b}
+.draw{stroke-dasharray:600;stroke-dashoffset:600;animation:draw 1.5s ease forwards}
+.d2{animation-delay:.25s}.d3{animation-delay:.5s}
+@keyframes draw{to{stroke-dashoffset:0}}
+/* RAM */
+.ram-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.ram-cell{min-width:56px;padding:8px 4px;text-align:center;border:2px solid #cbd5e1;border-radius:9px;background:#f8fafc;cursor:pointer;transition:all .2s}
+.ram-cell:hover{border-color:#60a5fa}
+.ram-cell.on{border-color:#2563eb;background:#dbeafe;transform:translateY(-4px);box-shadow:0 8px 16px rgba(37,99,235,.25)}
+.ram-idx{display:block;font:11px Consolas;color:#64748b}
+.ram-val{display:block;font:700 15px Consolas;color:#0f172a}
+.ram-out{display:flex;justify-content:space-between;font:12px Consolas;color:#334155;background:#f1f5f9;border-radius:7px;padding:7px 10px}
+/* notasi */
+.ntcard{border:1px solid #e2e8f0;border-radius:12px;padding:11px 14px;background:#fff;box-shadow:0 1px 3px rgba(15,23,42,.05)}
+.ntcard .sym{font:800 24px Georgia,serif}
+.ntcard .nm{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin:2px 0 4px}
+.ntcard p{font-size:12.5px;line-height:1.55;color:#334155}
+.ntcard em{color:#64748b;display:block;margin-top:4px;font-size:11.5px;font-style:normal}
+/* linear search */
+.srow{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.scell{width:54px;height:48px;border:2px solid #cbd5e1;border-radius:9px;background:#f8fafc;display:flex;align-items:center;justify-content:center;font:700 14px Consolas;color:#0f172a;transition:all .15s}
+.scell.chk{background:#fef3c7;border-color:#f59e0b;opacity:.85}
+.scell.cur{border-color:#2563eb;background:#dbeafe;transform:translateY(-4px)}
+.scell.found{background:#dcfce7;border-color:#16a34a;opacity:1}
+.sout{display:flex;justify-content:space-between;font:12.5px Consolas;color:#334155;background:#f1f5f9;border-radius:7px;padding:8px 11px;gap:12px;flex-wrap:wrap}
+/* loop grid */
+.lgrid{display:grid;gap:3px}
+.lgrid div{background:#e2e8f0;border-radius:4px;width:22px;height:22px;transition:background .1s}
+.lgrid div.on{background:#2563eb}
+.lgrid.tri div.on{background:#d97706}
+.lc{font:12px Consolas;color:#334155;margin-top:6px}
+/* tebak angka */
+.range{position:relative;height:20px;background:#f1f5f9;border-radius:10px;margin:2px 34px 8px}
+.range .seg{position:absolute;top:0;bottom:0;left:0;width:100%;background:#bfdbfe;border-radius:10px;transition:all .3s}
+.range .rl,.range .rr{position:absolute;top:24px;font:11px Consolas;color:#94a3b8}
+.range .rl{left:-28px}.range .rr{right:-40px}
+/* attention */
+.attn-grid{display:grid;gap:4px;justify-content:center}
+.acell{width:28px;height:28px;background:#7c3aed;border-radius:5px;opacity:0;transform:scale(.2);animation:apop .35s forwards}
+@keyframes apop{to{opacity:1;transform:scale(1)}}
+/* agenda */
+ol.agenda{margin:6px 0 0 22px;font-size:14px;line-height:2.05;color:#334155}
+ol.agenda b{color:#0f172a}
+/* latihan & kunci */
+.qlist{display:flex;flex-direction:column;gap:8px;overflow:auto;flex:1;min-height:0;padding-right:4px}
+.q{display:flex;gap:12px;align-items:flex-start;border:1px solid #e2e8f0;border-radius:10px;padding:9px 12px;background:#f8fafc}
+.q .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#1e293b;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.q p{font-size:12.8px;line-height:1.6;color:#334155}
+.q p code, .ans p code, .q pre{background:#e2e8f0;border-radius:5px;padding:1px 6px;font-family:Consolas,monospace;font-size:12px}
+.q pre{background:#0f172a!important;color:#e2e8f0!important;padding:8px 11px;margin:6px 0 0 0;overflow:auto}
+.ans{display:flex;gap:12px;align-items:flex-start;border:1px solid #bbf7d0;border-radius:10px;padding:9px 12px;background:#f0fdf4}
+.ans .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#16a34a;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.ans p{font-size:12.8px;line-height:1.6;color:#14532d}
+/* link repo */
+.biglink{display:inline-block;background:#0f172a;border:2px solid #334155;border-radius:12px;padding:16px 26px;text-decoration:none;transition:all .2s}
+.biglink:hover{border-color:#2563eb;transform:translateY(-2px)}
+.biglink .ln1{display:block;font:700 12px Arial;color:#94a3b8;letter-spacing:.08em;margin-bottom:5px}
+.biglink .ln2{display:block;font:600 15.5px Consolas,monospace;color:#60a5fa}
+.biglink .ln3{display:block;font-size:11.5px;color:#94a3b8;margin-top:5px}
+/* langkah colab */
+.step{display:flex;gap:12px;align-items:flex-start;border:1px solid #e2e8f0;border-radius:10px;padding:9px 12px;background:#f8fafc}
+.step .sn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#f59e0b;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.step p{font-size:12.8px;line-height:1.6;color:#334155}
+/* HUD */
+#progress{position:fixed;top:0;left:0;height:4px;background:#2563eb;width:0;z-index:50;transition:width .3s}
+#hud{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;z-index:50;pointer-events:none;gap:12px}
+#hud>*{pointer-events:auto}
+#dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:52%}
+#dots button{width:9px;height:9px;border-radius:50%;border:none;background:#334155;cursor:pointer;padding:0}
+#dots button.on{background:#60a5fa;transform:scale(1.4)}
+.navbtn{width:38px;height:38px;border-radius:50%;border:none;background:#1e293b;color:#fff;font-size:19px;cursor:pointer}
+.navbtn:hover{background:#2563eb}
+#hud-left{color:#94a3b8;font-size:11.5px;display:flex;gap:12px;align-items:center;background:rgba(11,21,38,.8);padding:6px 12px;border-radius:20px}
+</style>
+</head>
+<body>
+<div id="stage"><div id="deck">
+
+<!-- ====== 1 · JUDUL ====== -->
+<section class="slide" id="s1">
+  <svg class="deco" viewBox="0 0 420 300" aria-hidden="true">
+    <line x1="30" y1="270" x2="400" y2="270" stroke="#e2e8f0" stroke-width="2"/>
+    <line x1="30" y1="20" x2="30" y2="270" stroke="#e2e8f0" stroke-width="2"/>
+    <path class="draw" d="M30,268 C150,262 240,240 396,40" fill="none" stroke="#dc2626" stroke-width="3.5"/>
+    <path class="draw d2" d="M30,268 C160,235 300,170 396,120" fill="none" stroke="#2563eb" stroke-width="3.5"/>
+    <path class="draw d3" d="M30,268 C160,255 300,240 396,228" fill="none" stroke="#65a30d" stroke-width="3.5"/>
+    <text x="338" y="34" font-size="14" fill="#dc2626" font-weight="bold">n²</text>
+    <text x="352" y="128" font-size="14" fill="#2563eb" font-weight="bold">n</text>
+    <text x="348" y="243" font-size="14" fill="#65a30d" font-weight="bold">log n</text>
+  </svg>
+  <div class="kicker">KOMPLEKSITAS ALGORITMA · PERTEMUAN 1</div>
+  <h1>Pendahuluan dan<br>Notasi Asimtotik</h1>
+  <p class="lead">Pertanyaan yang mau kita jawab hari ini cuma satu: <b>kalau datanya jadi 10 kali lebih banyak, program saya jadi berapa kali lebih lambat?</b><br><br>Materinya agak teori, tapi kita pakai analogi sehari-hari biar gampang kebayang. Beberapa slide ada simulasi yang bisa dicoba langsung — silakan geser-geser, tidak akan rusak.</p>
+  <div class="navhint">Pindah slide: <kbd>←</kbd> <kbd>→</kbd> atau <kbd>spasi</kbd> · layar penuh: <kbd>F</kbd> · titik-titik di bawah juga bisa diklik</div>
+</section>
+
+<!-- ====== 2 · RENCANA ====== -->
+<section class="slide" id="s2">
+  <div class="kicker">RENCANA HARI INI</div>
+  <h2 class="st">Yang akan kita bahas</h2>
+  <div class="cols c2" style="margin-top:4px">
+    <ol class="agenda">
+      <li><b>Kenapa algoritma dinilai dari langkah, bukan detik</b></li>
+      <li><b>Model RAM</b> — alat bantu hitungnya</li>
+      <li><b>Notasi O, Ω, Θ, o</b> dan urutan kecepatannya</li>
+      <li><b>Kasus terbaik, rata-rata, terburuk</b></li>
+      <li><b>Cara hitung kompleksitas kode</b> yang ada loop-nya</li>
+      <li><b>Contoh pakaiannya di dunia AI</b> — biar tahu ini dipakai di mana</li>
+      <li><b>Praktik</b>: membuktikan teori dengan ukur waktu beneran</li>
+      <li><b>Latihan</b> — kerjakan dulu; kunci jawabannya ada di slide belakang</li>
+    </ol>
+    <div class="stack">
+      <div class="note">Urutan di atas ngikutin handout yang sudah saya bagikan, dari bagian 1 sampai 10. Jadi kalau nanti baca ulang handoutnya, nomornya nyambung sama slide hari ini.</div>
+      <div class="card soft"><p class="b">Soal simulasi: beberapa slide ada tombol dan slider. Itu bukan hiasan — coba sambil dengerin, biar kebayang maksudnya. Terutama yang soal salaman dan tebak angka.</p></div>
+      <div class="card soft"><p class="b">Latihan praktiknya dikerjakan pakai <b>Google Colab</b> — tidak perlu install apa-apa, cukup browser dan akun Google. Panduannya ada di slide setelah rangkuman.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 3 · KENAPA BUKAN DETIK ====== -->
+<section class="slide" id="s3">
+  <div class="kicker">BAGIAN 1 · MOTIVASI</div>
+  <h2 class="st">Kenapa tidak diukur pakai detik?</h2>
+  <div class="cols c2" style="margin-top:4px">
+    <div class="stack">
+      <p class="b">Bayangkan dua orang mencari nama yang sama di daftar absen. Satu pakai laptop gaming, satu pakai laptop lama. Kalau diadu pakai stopwatch, laptop gaming pasti menang — padahal <b>cara mencarinya sama persis</b>.</p>
+      <p class="b">Jadi stopwatch itu mengukur laptop-nya, bukan algoritma-nya. Kalau mau adil menilai cara, kita tidak boleh ngukur waktu.</p>
+      <p class="b">Yang kita hitung: <b>jumlah langkah</b>. Pertanyaannya berubah dari "berapa detik?" jadi "kalau datanya ada n banyak, program butuh berapa langkah?"</p>
+      <div class="note">Jumlah langkah untuk n data ini kita tulis <b>T(n)</b>. Tulisan ini akan sering muncul sepanjang semester.</div>
+    </div>
+    <div class="stack">
+      <div class="card" style="border-left:5px solid #b91c1c">
+        <p class="b" style="color:#b91c1c"><b>Stopwatch itu kenapa tidak adil:</b></p>
+        <p class="tiny">tergantung hardware · tergantung bahasa pemrograman · tergantung program lain yang kebetulan jalan · tergantung suhu dan cache. Cocok buat milih laptop, tidak cocok buat milih algoritma.</p>
+      </div>
+      <div class="card" style="border-left:5px solid #16a34a">
+        <p class="b" style="color:#16a34a"><b>Jumlah langkah T(n) kenapa adil:</b></p>
+        <p class="tiny">sama di komputer apa pun, bahasa apa pun, jam berapa pun. Tidak akurat sampai level detik memang — tapi cukup buat jawab pertanyaan utamanya: "makin lambat nggak kalau data membesar?"</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 4 · MODEL RAM ====== -->
+<section class="slide" id="s4">
+  <div class="kicker">BAGIAN 2 · MODEL RAM</div>
+  <h2 class="st">Model RAM: komputer khayalan buat ngitung</h2>
+  <div class="cols c2l" style="margin-top:4px">
+    <div class="stack">
+      <p class="b">Buat bisa ngitung langkah, kita pura-pura komputernya sederhana. Aturannya cuma tiga:</p>
+      <div class="card soft"><p class="b">1. Perintah dikerjakan satu per satu. Tidak ada yang jalan barengan.</p></div>
+      <div class="card soft"><p class="b">2. Operasi dasar — tambah, bandingkan, simpan, ambil data — masing-masing dihitung <b>1 langkah</b>.</p></div>
+      <div class="card soft"><p class="b">3. Ambil data lewat indeks, nomornya berapa pun, harganya sama: <b>1 langkah</b>.</p></div>
+      <div class="analogy"><b>Analogi — lift, bukan tangga.</b> Memori itu kayak lift ke loker bernomor: mau loker nomor 1 atau nomor 99.999, tinggal tekan tombolnya, sama lamanya. Kalau tangga, ke lantai 100 harus lewati lantai 1 sampai 99 dulu. Nah, <b>array itu lift</b>: akses lewat indeks = O(1).</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · memori model RAM</div>
+      <div class="ram-row" id="ramRow"></div>
+      <div class="ram-out"><span id="ramLabel">klik salah satu loker…</span><span id="ramSteps">total langkah: 0</span></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" id="ramPlay">▶ Demo otomatis</button>
+        <button class="btn ghost" id="ramReset">Reset hitungan</button>
+      </div>
+      <p class="tiny">Klik A[0], lalu klik A[7]. Hitungannya sama: 1 langkah. Nggak peduli lockernya paling kiri atau paling kanan. Itu maksudnya akses O(1).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 5 · BUANG YANG RECEH ====== -->
+<section class="slide" id="s5">
+  <div class="kicker">BAGIAN 3 · NOTASI ASIMTOTIK</div>
+  <h2 class="st">Buang yang receh, simpan yang terbesar</h2>
+  <div class="cols c2l" style="margin-top:4px">
+    <div class="stack">
+      <p class="b">Katakanlah program kita butuh <span class="mono">3n² + 10n + 7</span> langkah. Saat n sudah besar, mana yang terasa? Cuma <b>n²</b>. Sisanya diabaikan — <b>termasuk angka 3 di depannya</b>.</p>
+      <div class="analogy"><b>Analogi — beli rumah.</b> Harga rumah Rp1 miliar, fotokopi berkas Rp50 ribu. Pas ngitung total biaya, fotokopi itu tidak terasa. 10n dan 7 itu fotokopinya; n² itu rumahnya.</div>
+      <div class="note">Jadi aturan mainnya cuma dua kalimat: <b>buang konstanta, buang suku kecil, sisain suku terbesar</b>. Cara bicara formalnya namanya notasi asimtotik — itu yang kita pelajari di bagian ini.</div>
+      <p class="b">Di tabel berikut: untuk n kecil memang masih campur aduk. Geser pelan-pelan ke kanan dan lihat sendiri 3n² makan hampir semua porsinya.</p>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · siapa makan waktumu</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="mono" style="font-size:13px">n = <b id="domN">10</b></span>
+        <input type="range" id="domSlide" min="1" max="100" value="10">
+      </div>
+      <div class="ibar"><i id="barA" style="background:#2563eb"></i><i id="barB" style="background:#d97706"></i><i id="barC" style="background:#94a3b8"></i></div>
+      <table class="tbl">
+        <tr><th>Suku</th><th>Nilai</th><th>Porsi</th></tr>
+        <tr><td class="mono" style="color:#2563eb;font-weight:800">3n²</td><td class="mono" id="domA"></td><td class="mono" id="pA"></td></tr>
+        <tr><td class="mono" style="color:#d97706;font-weight:800">10n</td><td class="mono" id="domB"></td><td class="mono" id="pB"></td></tr>
+        <tr><td class="mono" style="color:#94a3b8;font-weight:800">7</td><td class="mono">7</td><td class="mono" id="pC"></td></tr>
+      </table>
+      <div class="tiny" id="domIns"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 6 · EMPAT NOTASI ====== -->
+<section class="slide" id="s6">
+  <div class="kicker">BAGIAN 3 · EMPAT NOTASI</div>
+  <h2 class="st">Empat notasi, empat jenis janji</h2>
+  <div class="cols c2" style="grid-template-rows:1fr 1fr;margin-top:2px">
+    <div class="ntcard"><div class="sym" style="color:#2563eb">O(g)</div><div class="nm" style="color:#2563eb">Big-O · batas atas</div><p>Tidak akan lebih lambat dari g.</p><em>"Paling lama 3 jam." Kalau nyampe 2 jam, janjinya tetap sah — boleh lebih cepat, tidak boleh lebih lama.</em></div>
+    <div class="ntcard"><div class="sym" style="color:#16a34a">Ω(g)</div><div class="nm" style="color:#16a34a">Big-Omega · batas bawah</div><p>Tidak mungkin lebih cepat dari g.</p><em>"Paling cepat 1 jam." Bisa saja ternyata jadi 3 jam — tapi 30 menit itu tidak mungkin.</em></div>
+    <div class="ntcard"><div class="sym" style="color:#7c3aed">Θ(g)</div><div class="nm" style="color:#7c3aed">Big-Theta · batas pas</div><p>Batas atas dan batas bawahnya sama.</p><em>"Sekitar 2 jam." Tidak jauh lebih, tidak jauh kurang. Ini yang paling sering jadi jawaban "berapa kompleksitasnya?"</em></div>
+    <div class="ntcard"><div class="sym" style="color:#b91c1c">o(g)</div><div class="nm" style="color:#b91c1c">o kecil · kalah jauh</div><p>Tumbuh jauh lebih lambat dari g.</p><em>Motor lawan pesawat: makin jauh rutenya, makin ketara bedanya. Ini bukan sekadar "lebih pelan" — jaraknya makin melebar.</em></div>
+  </div>
+  <div class="warn"><b>Yang paling sering salah di kuis:</b> mengira O itu sama dengan "kasus terburuk". Bukan. O itu jenis <b>batas</b> (atas). "Terburuk" itu keadaan <b>datanya</b>. Dua hal beda — dan bisa digabung: "waktu terburuknya O(n²)" itu kalimat yang sah dan sering dipakai.</div>
+</section>
+
+<!-- ====== 7 · PEMBUKTIAN ====== -->
+<section class="slide" id="s7">
+  <div class="kicker">BAGIAN 3 · CONTOH PEMBUKTIAN</div>
+  <h2 class="st">Buktikan: 3n² + 10n + 7 = O(n²)</h2>
+  <div class="cols c2l" style="margin-top:4px">
+    <div class="stack">
+      <p class="b">Triknya: untuk n ≥ 1, suku kecil boleh kita besarkan jadi n². Membesarkan itu boleh — yang penting hasil akhirnya masih di atas fungsi kita.</p>
+      <div class="card soft mono" style="font-size:13px;line-height:1.85">
+        10n ≤ 10n² &nbsp;&nbsp;dan&nbsp;&nbsp; 7 ≤ 7n²<br>
+        3n² + 10n + 7 ≤ 3n² + 10n² + 7n² = <b style="color:#2563eb">20n²</b>
+      </div>
+      <p class="b">Pilih <b>c = 20</b> dan <b>n₀ = 1</b>. Selesai.</p>
+      <div class="note">Artinya: mulai n = 1 ke atas, fungsi kita tidak pernah lebih besar dari 20 × n². Janjinya boleh longgar — 20 itu agak boros — tapi tidak pernah dilanggar setelah n₀. Itu maknanya "batas atas".</div>
+      <p class="tiny">Kalau diminta di ujian, cara ini yang dipakai: besarkan suku-suku kecil, jumlahkan jadi c·n², tulis c dan n₀-nya.</p>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · geser nilai c</div>
+      <svg id="oplot" viewBox="0 0 560 300" style="width:100%;height:auto"></svg>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="mono" style="font-size:13px">c = <b id="cVal">20</b></span>
+        <input type="range" id="cSlider" min="1" max="30" value="20">
+      </div>
+      <div class="verdict" id="cVerdict"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 8 · URUTAN ORDE ====== -->
+<section class="slide" id="s8">
+  <div class="kicker">BAGIAN 3 · URUTAN ORDE</div>
+  <h2 class="st">Dari yang paling santai sampai paling mengerikan</h2>
+  <div class="cols c2l" style="margin-top:4px">
+    <div class="stack">
+      <table class="tbl">
+        <tr><th>Orde</th><th>Contoh dalam hidup</th><th>Kalau n dikali 10</th></tr>
+        <tr><td class="mono"><b>O(1)</b></td><td>ambil barang di loker bernomor</td><td>tetap sama</td></tr>
+        <tr><td class="mono"><b>O(log n)</b></td><td>cari kata di kamus: buka tengah, belah dua terus</td><td>cuma nambah 3 langkah</td></tr>
+        <tr><td class="mono"><b>O(n)</b></td><td>baca buku dari halaman pertama sampai akhir</td><td>10 kali lebih lama</td></tr>
+        <tr><td class="mono"><b>O(n log n)</b></td><td>ngurutin kartu dengan cara pinter</td><td>sedikit di atas 10 kali</td></tr>
+        <tr><td class="mono"><b>O(n²)</b></td><td>semua orang di pesta salaman sama semua orang</td><td>100 kali lebih lama</td></tr>
+        <tr><td class="mono"><b>O(2ⁿ)</b></td><td>bobol gembok dengan nyoba semua kombinasi</td><td>tidak masuk akal</td></tr>
+      </table>
+      <div class="note">Angka yang worth diingat: untuk n = 1 juta, <b>n log n ≈ 20 juta langkah</b> — masih hitungan detik. <b>n² ≈ 1 triliun</b> — hitungan hari. Beda satu "tingkat" doang, hasilnya beda jauh banget.</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Grafik laju pertumbuhan (sumbu tegak dipotong di 120)</div>
+      <svg id="growthSvg" viewBox="0 0 520 190" style="width:100%;height:auto"></svg>
+      <p class="tiny">Garis ungu (2ⁿ) dan merah (n²) cepat ninggalin yang lain. Yang hijau (n log n), biru (n), dan tosca (log n) kelihatan santai di rentang ini. Grafik ini juga ada di handout sebagai Gambar 2.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 9 · EXPLORER ====== -->
+<section class="slide" id="s9">
+  <div class="kicker">BAGIAN 3 · EKSPLORASI</div>
+  <h2 class="st">Coba sendiri: kalau n membesar, apa yang terjadi?</h2>
+  <div class="cols c2l" style="margin-top:4px">
+    <div class="stack">
+      <p class="b">Pilih ukuran data di kanan, terus perhatikan <b>kolom paling kanan</b> — perbandingannya dengan pilihan sebelumnya. Di situ letak terasanya.</p>
+      <div class="analogy"><b>Cara baca barnya:</b> barnya pakai skala log — tiap sepertiga bar itu berarti 10 kali lipat. Bar ungu yang bergaris artinya angkanya sudah tidak kebayang lagi, keluar dari grafik.</div>
+      <div class="note">Coba urutan ini: klik 100.000, lalu 1 juta. n naik 10 kali → n² bengkak 100 kali, log₂ n cuma nambah 3. Sekarang bayangin itu data pelanggan toko online kamu.</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · jelajah laju pertumbuhan</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap" id="growN">
+        <button class="chipbtn" data-n="10">10</button>
+        <button class="chipbtn" data-n="100">100</button>
+        <button class="chipbtn" data-n="1000">1.000</button>
+        <button class="chipbtn" data-n="10000">10.000</button>
+        <button class="chipbtn" data-n="100000">100.000</button>
+        <button class="chipbtn" data-n="1000000">1 juta</button>
+      </div>
+      <table class="tbl" id="growTbl"></table>
+      <div class="tiny" id="growInsight"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 10 · KASUS ====== -->
+<section class="slide" id="s10">
+  <div class="kicker">BAGIAN 4 · KASUS TERBAIK, RATA-RATA, TERBURUK</div>
+  <h2 class="st">Ternyata isi data juga ngaruh, bukan cuma jumlahnya</h2>
+  <div class="cols c2" style="margin-top:4px">
+    <div class="stack">
+      <div class="analogy"><b>Analogi — nyari kunci motor di laci berisi n barang.</b><br>
+      Hoki: kuncinya ada paling atas — sekali raba, ketemu.<br>
+      Sial: paling bawah, atau malah ternyata nggak ada di laci itu — harus raba semuanya.<br>
+      Diulang berkali-kali dengan posisi acak: rata-rata kita ngecek kira-kira separuh laci.</div>
+      <p class="b">Jadi satu program yang sama bisa punya tiga "waktu" tergantung nasib datanya. Caranya baca: pilih salah satu tombol di bawah, program jalan sendiri, kita hitung berapa kotak yang diperiksa.</p>
+      <div class="note">Di praktik, yang paling sering dipakai itu <b>kasus terburuk</b>. Alasannya: dia itu <b>jaminan</b> — "sejelek apa pun datanya, program saya tidak akan lebih lambat dari ini". Rata-rata juga bagus, tapi dia butuh asumsi soal data yang masuk, dan hasilnya cuma sebagus asumsinya.</div>
+    </div>
+    <div><span class="cbadge">linear_search</span>
+<pre class="pycode">def linear_search(A, x):
+    for i in range(len(A)):
+        if A[i] == x:
+            return i      # ketemu
+    return -1             # tidak ada</pre>
+      <table class="tbl" style="margin-top:10px">
+        <tr><th>Kasus</th><th>Situasinya</th><th>Pengecekan</th></tr>
+        <tr><td>Terbaik</td><td>x ada di urutan pertama</td><td class="mono">1 → Θ(1)</td></tr>
+        <tr><td>Terburuk</td><td>x paling akhir, atau tidak ada</td><td class="mono">n → Θ(n)</td></tr>
+        <tr><td>Rata-rata</td><td>x bisa di mana-mana, peluang sama</td><td class="mono">(n+1)/2 → Θ(n)</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 11 · SIM SEARCH ====== -->
+<section class="slide" id="s11">
+  <div class="kicker">BAGIAN 4 · SIMULASI</div>
+  <h2 class="st">Coba sendiri: linear_search dengan n = 14</h2>
+  <div class="sim">
+    <div class="cap">Pilih dulu nasib datanya</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <button class="chipbtn sc" data-sc="first">hoki — x di awal</button>
+      <button class="chipbtn sc" data-sc="mid">x di tengah</button>
+      <button class="chipbtn sc" data-sc="last">sial — x di akhir</button>
+      <button class="chipbtn sc" data-sc="none">x tidak ada di data</button>
+      <button class="chipbtn sc" data-sc="rand">posisi acak</button>
+    </div>
+    <div class="srow" id="srow"></div>
+    <div class="sout"><span id="sCount">pengecekan: 0</span><span id="sVerdict">pilih salah satu tombol di atas…</span></div>
+  </div>
+  <div class="cols c2">
+    <div class="card soft"><p class="b">Perhatiin satu hal: posisi x menentukan berapa kotak diperiksa. Tapi baik rata-rata (sekitar n/2) maupun yang sial (n) sama-sama <b>naiknya linear</b> — dua-duanya Θ(n). Bedanya cuma konstanta, dan konstanta itu dibuang.</p></div>
+    <div class="card soft"><p class="b">Itulah kenapa server production nggak boleh "mengandalkan hoki". Datanya datang dari user — harus dianggap yang terburuk.</p></div>
+  </div>
+</section>
+
+<!-- ====== 12 · RESEP ====== -->
+<section class="slide" id="s12">
+  <div class="kicker">BAGIAN 5 · MENGHITUNG KOMPLEKSITAS KODE</div>
+  <h2 class="st">Resepnya satu kalimat saja</h2>
+  <div class="cols c2" style="margin-top:4px">
+    <div class="stack">
+      <div class="card soft" style="padding:14px 16px"><p class="b" style="font-size:15px">Hitung berapa kali <b>baris paling dalam</b> dijalankan, lalu ambil <b>suku terbesarnya</b>.</p></div>
+      <p class="b">Cuma ada tiga situasi yang perlu dikenal:</p>
+      <div class="card soft"><p class="b"><b>Kode berurutan</b> → waktunya dijumlah, ambil yang terbesar.</p></div>
+      <div class="card soft"><p class="b"><b>Loop di dalam loop</b> → jumlah putarannya dikali.</p></div>
+      <div class="card soft"><p class="b"><b>Variabel loop-nya dikali/dibagi bilangan tetap</b> (×2, ÷3, dst.) → putarannya logaritmik.</p></div>
+      <p class="tiny">Sisanya variations dari tiga ini. Kita langsung praktik ke lima contoh: A sampai E.</p>
+    </div>
+    <div class="stack">
+      <div class="note">Contoh-contoh berikut sengaja pakai analogi orang-orang salaman dan tebak angka. Kelihatannya receh, tapi ini jembatan paling cepet buat ngingetin. Nanti pas lupa "n² itu kayak gimana?", inget aja: salaman massal.</div>
+      <div class="card"><p class="b"><b>Peta lima contoh:</b></p>
+      <table class="tbl" style="margin-top:6px">
+        <tr><th>Contoh</th><th>Bentuk</th><th>Analogi</th></tr>
+        <tr><td>A</td><td class="mono">Θ(n)</td><td>guru ngabsen</td></tr>
+        <tr><td>B</td><td class="mono">Θ(n²)</td><td>salaman massal</td></tr>
+        <tr><td>C</td><td class="mono">Θ(n²)</td><td>salaman sekali per pasangan</td></tr>
+        <tr><td>D</td><td class="mono">Θ(log n)</td><td>tebak angka</td></tr>
+        <tr><td>E</td><td class="mono">Θ(n log n)</td><td>semua orang main tebak angka</td></tr>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 13 · CONTOH A & B ====== -->
+<section class="slide" id="s13">
+  <div class="kicker">BAGIAN 5 · CONTOH A DAN B</div>
+  <h2 class="st">Satu loop = Θ(n). Loop penuh di dalam loop = Θ(n²).</h2>
+  <div class="cols c2" style="margin-top:4px">
+    <div><span class="cbadge">Contoh A · Θ(n)</span>
+<pre class="pycode">s = 0
+for i in range(n):   # n putaran
+    s += A[i]         # 1 langkah</pre>
+      <div class="analogy" style="margin-top:10px"><b>Analogi:</b> guru ngabsen n siswa satu-satu. Siswanya dobel, waktunya dobel. Sesederhana itu.</div>
+    </div>
+    <div><span class="cbadge">Contoh B · Θ(n²)</span>
+<pre class="pycode">for i in range(n):
+    for j in range(n):
+        count += 1   # dijalankan n × n kali</pre>
+      <div class="analogy" style="margin-top:10px"><b>Analogi:</b> tiap siswa salaman sama <b>semua</b> siswa — yang sudah pernah disalami pun disalami lagi. n × n salaman.</div>
+    </div>
+  </div>
+  <div class="note">Uji cepat buat ngecek pemahaman: kalau n digandakan, Contoh A jadi 2 kali lebih lama. Contoh B jadi <b>4 kali</b> lebih lama. Kalau jawabannya "dua-duanya dobel", ulangi baca Contoh B pelan-pelan.</div>
+</section>
+
+<!-- ====== 14 · CONTOH C ====== -->
+<section class="slide" id="s14">
+  <div class="kicker">BAGIAN 5 · CONTOH C</div>
+  <h2 class="st">Loop dalamnya ngeyeleng ikut loop luar — tetap Θ(n²)</h2>
+  <div class="cols c2r" style="margin-top:4px">
+    <div class="stack">
+      <div><span class="cbadge">Contoh C · Θ(n²)</span>
+<pre class="pycode">for i in range(n):
+    for j in range(i):   # j cuma sampai i
+        count += 1
+
+# total = 0+1+2+…+(n−1)
+#       = n(n−1)/2</pre></div>
+      <div class="analogy"><b>Analogi:</b> sekarang tiap pasangan cukup salaman <b>sekali</b>. Siswa ke-1 nyalamin 0 orang, ke-2 nyalamin 1, ke-3 nyalamin 2, dst. Totalnya n(n−1)/2 — setengahnya Contoh B.</div>
+      <div class="note">Yang sering bikin heran: "kok setengah tapi ordanya sama?" Ya, karena yang kita lihat itu <b>laju pertumbuhannya</b>, bukan angkanya. Setengah dari n² itu tetap bentuk n².</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · bandingkan dua loop</div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <span class="mono" style="font-size:13px">n = <b id="nVal">8</b></span>
+        <input type="range" id="nSlide" min="3" max="10" value="8">
+        <button class="btn" id="loopReplay">▶ Putar ulang</button>
+      </div>
+      <div style="display:flex;gap:22px;justify-content:center">
+        <div><div class="lgrid" id="gridFull"></div><div class="lc" id="cFull">0 langkah</div><div class="tiny">Contoh B — loop penuh</div></div>
+        <div><div class="lgrid tri" id="gridTri"></div><div class="lc" id="cTri">0 langkah</div><div class="tiny">Contoh C — j &lt; i</div></div>
+      </div>
+      <div class="tiny" id="loopIns"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 15 · CONTOH D ====== -->
+<section class="slide" id="s15">
+  <div class="kicker">BAGIAN 5 · CONTOH D</div>
+  <h2 class="st">Variabel digandakan terus = Θ(log n)</h2>
+  <div class="cols c2r" style="margin-top:4px">
+    <div class="stack">
+      <div><span class="cbadge">Contoh D · Θ(log n)</span>
+<pre class="pycode">i = 1
+while i &lt; n:
+    i *= 2    # 1, 2, 4, 8, 16, … berhenti saat i ≥ n
+
+# putaran ≈ log₂ n</pre></div>
+      <div class="analogy"><b>Analogi — tebak angka 1 sampai 1.000.</b> Tebak 500, jawabannya "kegedean", tebak 250, dst. Tiap tebakan buang separuh kemungkinan. Totalnya cuma sekitar 10 tebakan. Datanya dikali 1.000 pun cuma nambah sekitar 10 tebakan lagi.</div>
+      <div class="note">Pola "datanya terurut, tiap langkah belah dua" ini bakal muncul terus sepanjang kuliah: binary search, indeks database, sampai struktur pencarian di sistem AI. Makanya worth dibiasain.</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · tebak angka 1–1000</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span class="tiny">angka rahasianya:</span>
+        <input type="number" class="in" id="tgt" min="1" max="1000" value="741">
+        <button class="btn" id="btnGuess">Cari</button>
+        <button class="btn ghost" id="btnRandT">Acak</button>
+      </div>
+      <div class="range"><div class="seg" id="seg"></div><span class="rl">1</span><span class="rr">1000</span></div>
+      <div class="term" id="guessLog" style="min-height:150px">Tulis angka 1–1000, klik "Cari". Biru muda = wilayah yang masih mungkin.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 16 · CONTOH E ====== -->
+<section class="slide" id="s16">
+  <div class="kicker">BAGIAN 5 · CONTOH E</div>
+  <h2 class="st">Gabungan keduanya = Θ(n log n)</h2>
+  <div class="cols c2" style="margin-top:4px">
+    <div><span class="cbadge">Contoh E · Θ(n log n)</span>
+<pre class="pycode">for i in range(n):   # n kali
+    j = 1
+    while j &lt; n:     # log n kali
+        j *= 2
+# total ≈ n · log n</pre></div>
+    <div class="stack">
+      <div class="analogy"><b>Analogi:</b> ada n siswa, dan masing-masing main tebak angka tadi — masing-masing butuh log n tebakan. Totalnya n × log n. Ya segituh doang.</div>
+      <div class="note">Info yang perlu diketahui: Θ(n log n) itu <b>batas bawah</b> untuk algoritma sortir yang pakai perbandingan. Merge sort ada di sini; quicksort rata-ratanya juga. Lebih cepat dari n log n pakai perbandingan itu tidak mungkin — kalau mau lebih cepat harus ganti teknik (contohnya radix sort).</div>
+      <p class="tiny">Jadi waktu orang bilang "sortir yang bagus itu n log n", sekarang kalian tahu itu bukan cuma iklan — itu batas matematikanya.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 17 · AI 1 ====== -->
+<section class="slide" id="s17">
+  <div class="kicker">BAGIAN 6 · KENAPA PENTING DI DUNIA AI (1)</div>
+  <h2 class="st">Attention: tiap kata harus "kenalan" sama semua kata</h2>
+  <div class="cols c2r" style="margin-top:4px">
+    <div class="stack">
+      <div class="analogy"><b>Analogi — arisan.</b> Model bahasa membaca teks dengan cara membandingkan <b>tiap kata</b> dengan <b>semua kata lainnya</b> — kayak tiap anggota arisan harus nyapa semua anggota lain.<br><br>4 orang = 16 sapaan. 8 orang = 64 sapaan. Jumlah orang <b>dobel, kerjaan jadi 4 kali lipat</b>.</div>
+      <p class="b">Makanya memperpanjang "ingatan" AI (context window) itu mahal: biayanya Θ(n²). Konteks naik dari 8.000 ke 128.000 token — itu n naik 16 kali — biayanya jadi <b>256 kali</b>.</p>
+      <div class="note">Riset kayak FlashAttention dan attention hemat (sparse, linear) itu intinya satu: nekan n² ini. Sekarang kalian bisa baca judul-judul risetnya dan ngerti masalah yang mereka selesaikan.</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · matriks attention</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="mono" style="font-size:13px">token = <b id="tokVal">4</b></span>
+        <input type="range" id="tokSlide" min="2" max="12" value="4">
+      </div>
+      <div class="attn-grid" id="attnGrid"></div>
+      <div class="sout" style="font-family:inherit"><span id="attnStat"></span><span id="attnDelta"></span></div>
+      <p class="tiny">Tiap kotak ungu = satu perbandingan kata-lawan-kata. Geser tokennya dan lihat angkanya meledak.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 18 · AI 2 ====== -->
+<section class="slide" id="s18">
+  <div class="kicker">BAGIAN 6 · KENAPA PENTING DI DUNIA AI (2)</div>
+  <h2 class="st">Training itu bangun pabrik, inference itu layani pembeli</h2>
+  <div class="cols c2r" style="margin-top:4px">
+    <div class="stack">
+      <p class="b"><b>Training</b> itu kayak bangun pabrik: sekali keluar biaya besar, tapi cuma sekali. Angka kasarnya: <b>6 × jumlah parameter × jumlah token latih</b>.</p>
+      <p class="b"><b>Inference</b> itu kayak layani pembeli: per pembeli murah, tapi pembelinya jutaan per hari. Hemat sedikit per permintaan, kali jutaan permintaan, hasilnya besar.</p>
+      <div class="note">Riset "scaling laws" yang sekarang ramai (Kaplan 2020, Hoffmann 2022) isinya sebenarnya analisis asimtotik terhadap uang: duit sekian, mestinya beli parameter berapa dan token latih berapa biar optimal.</div>
+      <p class="tiny">Kalkulator di kanan itu hitungan kasar banget — silakan main-main, biar kebayang skalanya.</p>
+    </div>
+    <div class="sim">
+      <div class="cap">Hitung kasar · biaya training ≈ 6 · N · D</div>
+      <div>
+        <div class="tiny">jumlah parameter <b>N</b></div>
+        <div style="display:flex;gap:10px;align-items:center"><input type="range" id="pSlide" min="6" max="11" value="9"><span class="mono tiny" id="pVal" style="min-width:130px;text-align:right"></span></div>
+      </div>
+      <div>
+        <div class="tiny">jumlah token latih <b>D</b></div>
+        <div style="display:flex;gap:10px;align-items:center"><input type="range" id="dSlide" min="9" max="12" value="10"><span class="mono tiny" id="dVal" style="min-width:130px;text-align:right"></span></div>
+      </div>
+      <div class="card soft mono" style="font-size:12.5px;line-height:1.8">
+        FLOP training ≈ 6·N·D = <b id="flops"></b><br>
+        di 1 GPU A100 (≈3,12×10¹⁴ FLOP/dtk) → <b id="trainTime"></b><br>
+        <span id="gpuAlt"></span>
+      </div>
+      <p class="tiny">Asumsinya sederhana (presisi BF16, abaikan efisiensi). Angka aslinya lebih rumit — tapi orde besarnya kayak gini.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 19 · AI 3 ====== -->
+<section class="slide" id="s19">
+  <div class="kicker">BAGIAN 6 · KENAPA PENTING DI DUNIA AI (3)</div>
+  <h2 class="st">Cari dokumen mirip (RAG): ngecek semua vs pakai katalog</h2>
+  <div class="cols c2r" style="margin-top:4px">
+    <div class="stack">
+      <p class="b">Sistem AI yang bisa "baca dokumen" (RAG) kerjanya begini: dari jutaan potongan dokumen, cari yang paling mirip sama pertanyaan user. Carinya ada dua:</p>
+      <div class="analogy"><b>Brute force</b> — Θ(n·d): bandingin pertanyaannya sama <b>semua</b> dokumen satu per satu. Kayak nyari buku di perpus dengan ngecek semua buku dari rak pertama.</div>
+      <div class="analogy"><b>HNSW</b> — mendekati logaritmik: pakai struktur berlapis, kayak <b>katalog dan peta rak</b> — langsung diarahkan ke area yang mungkin. Konsekuensinya: ada kemungkinan kecil kelewat dokumen yang mirip, tapi bukan yang paling mirip.</div>
+      <div class="note">Perhatiin: ini pola yang sama kayak tebak angka. Kalau datanya terstruktur berlapis, kita tidak perlu memeriksa semuanya.</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · 40 "buku", 1 pertanyaan</div>
+      <svg id="ragSvg" viewBox="0 0 420 290" style="width:100%;height:auto;border:1px solid #eef2f7;border-radius:8px;background:#fff"></svg>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <button class="btn" id="ragBrute">Brute force</button>
+        <button class="btn" id="ragHnsw">HNSW (ilustrasi)</button>
+        <button class="btn ghost" id="ragResetB">Reset</button>
+        <span class="mono" style="font-size:12px">hitungan jarak: <b id="ragCount">0</b></span>
+      </div>
+      <div class="verdict mid" id="ragVerdict">pilih metode pencariannya dulu…</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 20 · KONSTANTA + STOPWATCH ====== -->
+<section class="slide" id="s20">
+  <div class="kicker">BAGIAN 7 · PRAKTIK DENGAN STOPWATCH</div>
+  <h2 class="st">Satu catatan, lalu kita ukur beneran</h2>
+  <div class="cols c2l" style="margin-top:4px">
+    <div class="stack">
+      <div class="warn"><b>Catatan:</b> notasi asimtotik itu <b>membuang konstanta</b>. Dunia nyata tidak. GPU datacenter lawan laptop bisa beda ratusan kali konstantanya walau ordanya sama. Presisi angka (FP32/BF16) dan batching juga sangat ngaruh.</div>
+      <p class="b">Jadi urutan kerja yang benar: <b>hitung dulu di kertas, baru buktikan dengan ukur</b>. Dan ini alat bacanya: kalau T(n) = Θ(g(n)), saat n digandakan, waktu naik kira-kira g(2n)/g(n).</p>
+      <table class="tbl">
+        <tr><th>Kompleksitas</th><th>Waktu saat n digandakan</th></tr>
+        <tr><td class="mono">Θ(n)</td><td>≈ 2×</td></tr>
+        <tr><td class="mono">Θ(n log n)</td><td>sedikit di atas 2×</td></tr>
+        <tr><td class="mono">Θ(n²)</td><td>≈ 4×</td></tr>
+        <tr><td class="mono">Θ(n³)</td><td>≈ 8×</td></tr>
+      </table>
+      <p class="tiny">Cara bacanya: lihat <b>rasionya</b>, bukan detiknya — tiap komputer beda. Pakai n yang cukup besar dan ulangi beberapa kali, ambil yang tercepat, biar noise-nya nggak ngecoh.</p>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · prediksi rasio saat n digandakan</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap" id="dbOr">
+        <button class="chipbtn" data-k="n">Θ(n)</button>
+        <button class="chipbtn" data-k="nlogn">Θ(n log n)</button>
+        <button class="chipbtn" data-k="n2">Θ(n²)</button>
+        <button class="chipbtn" data-k="n3">Θ(n³)</button>
+      </div>
+      <table class="tbl" id="dbTbl"></table>
+      <div class="tiny" id="dbNote"></div>
+      <p class="tiny">Tabel ini yang nanti kita cocokkan dengan pengukuran beneran di slide Python (2).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 21 · PYTHON 1 ====== -->
+<section class="slide" id="s21">
+  <div class="kicker" style="color:#16a34a">PRAKTIK PYTHON (1)</div>
+  <h2 class="st">Hitung langkah dulu, jangan nebak-nebak</h2>
+  <div class="cols c2r" style="margin-top:4px">
+    <div><span class="cbadge">hitung_ops.py</span>
+<pre class="pycode">def hitung_ops(n):
+    ops = 0
+    for i in range(n):
+        for j in range(i):
+            ops += 1
+    return ops
+
+for n in (10, 20, 40, 80):
+    # dua angka terakhir harus sama
+    print(n, hitung_ops(n), n * (n - 1) // 2)</pre>
+      <div class="note" style="margin-top:8px">Kolom kedua itu hasil ngitung <b>beneran</b> dari loop. Kolom ketiga itu rumus n(n−1)/2 dari analisis kita. Kalau dua-duanya selalu sama, artinya analisis kita benar. Ini cara paling murah ngecek diri sendiri sebelum pake stopwatch.</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Jalankan versi browsernya</div>
+      <button class="btn go" id="runOps">▶ Jalankan</button>
+      <div class="term" id="outOps">klik "Jalankan"…</div>
+      <div class="term sample">contoh output di Python:
+10 45 45
+20 190 190
+40 780 780
+80 3160 3160</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 22 · PYTHON 2 ====== -->
+<section class="slide" id="s22">
+  <div class="kicker" style="color:#16a34a">PRAKTIK PYTHON (2)</div>
+  <h2 class="st">Ukur waktu, lihat rasionya</h2>
+  <div class="cols c2r" style="margin-top:2px">
+    <div><span class="cbadge">ukur_waktu.py</span>
+<pre class="pycode">import time, random
+
+def jumlah(a):              # Θ(n)
+    s = 0
+    for x in a: s += x
+    return s
+
+def semua_pasangan(a):      # Θ(n²)
+    c = 0
+    for x in a:
+        for y in a: c += 1
+    return c
+
+def ukur(f, n, ulang=3):    # ambil tercepat
+    data = [random.random() for _ in range(n)]
+    best = float("inf")
+    for _ in range(ulang):
+        t = time.perf_counter()
+        f(data)
+        best = min(best, time.perf_counter() - t)
+    return best
+
+for f, ns in ((jumlah, (10**5, 2*10**5, 4*10**5)),
+              (semua_pasangan, (500, 1000, 2000))):
+    prev = None
+    for n in ns:
+        t = ukur(f, n)
+        print(f.__name__, n, f"{t:.4f}s",
+              f"rasio={t/prev:.2f}" if prev else "")
+        prev = t</pre></div>
+    <div class="sim">
+      <div class="cap">Ukur beneran di browser ini</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn go" id="runN">▶ Ukur Θ(n)</button>
+        <button class="btn go" id="runN2">▶ Ukur Θ(n²)</button>
+      </div>
+      <div class="term" id="outTime" style="min-height:130px">klik salah satu tombol…</div>
+      <div class="term sample">contoh output di Python (laptop biasa):
+jumlah 100000 0.0041s
+jumlah 200000 0.0082s rasio=2.00
+jumlah 400000 0.0164s rasio=2.00
+semua_pasangan 500 0.0198s
+semua_pasangan 1000 0.0791s rasio=3.99
+semua_pasangan 2000 0.3157s rasio=3.99</div>
+      <p class="tiny">Yang perlu dilihat: rasionya. jumlah → sekitar 2, semua_pasangan → sekitar 4. Pas sama teori. Angka detiknya boleh beda-beda antar komputer, rasionya tidak.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 23 · PYTHON 3 ====== -->
+<section class="slide" id="s23">
+  <div class="kicker" style="color:#16a34a">PRAKTIK PYTHON (3)</div>
+  <h2 class="st">Beruntung lawan sial — data 1 juta</h2>
+  <div class="cols c2r" style="margin-top:4px">
+    <div><span class="cbadge">beruntung_vs_sial.py</span>
+<pre class="pycode">import timeit
+
+def linear_search(A, x):
+    for i in range(len(A)):
+        if A[i] == x:
+            return i
+    return -1
+
+A = list(range(10**6))
+terbaik  = timeit.timeit(lambda: linear_search(A, 0),
+                         number=100)   # langsung ketemu
+terburuk = timeit.timeit(lambda: linear_search(A, -1),
+                         number=100)   # tidak ada
+print(f"terbaik : {terbaik:.6f}s")   # Θ(1)
+print(f"terburuk: {terburuk:.2f}s")  # Θ(n)</pre>
+      <div class="note" style="margin-top:8px">Kasus terbaik di sini berfungsi sebagai sanity check: harusnya nyaris instan. Kalau tidak, ada yang salah sama kodenya. Kasus terburuk yang jadi patokan garansi.</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Ukur beneran · array 1.000.000 elemen</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn go" id="rsBest">Terbaik (x = A[0])</button>
+        <button class="btn go" id="rsWorst">Terburuk (x = −1)</button>
+        <button class="btn ghost" id="rsRand">Posisi acak</button>
+      </div>
+      <div class="term" id="outSearch" style="min-height:150px">klik salah satu tombol…</div>
+      <p class="tiny">Yang dihitung di sini jumlah <b>pengecekan</b>, bukan milidetiknya. Posisi acak itu rata-ratanya (n+1)/2 ≈ 500.000 pengecekan.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 24 · PYTHON 4 ====== -->
+<section class="slide" id="s24">
+  <div class="kicker" style="color:#16a34a">PRAKTIK PYTHON (4)</div>
+  <h2 class="st">Nebak orde dari grafik log-log</h2>
+  <div class="cols c2r" style="margin-top:2px">
+    <div class="stack">
+      <div><span class="cbadge">tega_pangkat.py</span>
+<pre class="pycode">import numpy as np
+import matplotlib.pyplot as plt
+
+ns = np.array([500, 1000, 2000, 4000])
+ts = np.array([ukur(semua_pasangan, int(n)) for n in ns])
+
+k, c = np.polyfit(np.log(ns), np.log(ts), 1)
+print(f"taksiran pangkat ≈ {k:.2f}")   # mendekati 2
+
+plt.loglog(ns, ts, "o-", label="terukur")
+plt.loglog(ns, np.exp(c) * ns**2, "--", label="n² (acuan)")
+plt.xlabel("n"); plt.ylabel("waktu (s)")
+plt.legend(); plt.show()</pre></div>
+      <div class="note">Idenya: di grafik log-log, fungsi Θ(nᵏ) jadi <b>garis lurus dengan kemiringan k</b>. Jadi kemiringan garis = taksiran pangkatnya. Ini trik yang sering kepake pas nebak kompleksitas kode orang lain.</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · pasang garisnya</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap" id="llChips"></div>
+      <svg id="llSvg" viewBox="0 0 560 290" style="width:100%;height:auto"></svg>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <span class="mono" id="llK" style="font-size:12.5px">klik beberapa ukuran n buat "mengukur"…</span>
+        <button class="btn ghost" id="llReset">Reset</button>
+      </div>
+      <div class="term sample" id="llList" style="min-height:0">pengukuran: —</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 25 · RANGKUMAN ====== -->
+<section class="slide" id="s25">
+  <div class="kicker">RANGKUMAN</div>
+  <h2 class="st">Yang perlu dibawa pulang dari pertemuan ini</h2>
+  <div class="cols c2" style="margin-top:6px">
+    <div class="stack">
+      <div class="card soft"><p class="b">Kita menghitung <b>langkah</b>, bukan detik — biar adil untuk semua komputer.</p></div>
+      <div class="card soft"><p class="b">Memori itu <b>lift</b>, bukan tangga. Akses lewat indeks = O(1).</p></div>
+      <div class="card soft"><p class="b"><b>O</b> = paling lama segini. <b>Ω</b> = paling cepat segini. <b>Θ</b> = pas segini.</p></div>
+      <div class="card soft"><p class="b">Konstanta dan suku kecil <b>dibuang</b>; yang tersisa suku terbesar.</p></div>
+    </div>
+    <div class="stack">
+      <div class="card soft"><p class="b">Kasus <b>terburuk itu jaminan</b>, rata-rata itu asumsi.</p></div>
+      <div class="card soft"><p class="b">Loop dalam loop = <b>n²</b> (salaman massal). Dibelah dua terus = <b>log n</b> (tebak angka).</p></div>
+      <div class="card soft"><p class="b">n digandakan: Θ(n) jadi 2×, Θ(n²) jadi 4×. Ini cara ngecek analisis sendiri.</p></div>
+      <div class="card soft"><p class="b">Di AI: konteks 2× lebih panjang = attention 4× lebih mahal. Training ≈ 6·N·D.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 26 · PANDUAN COLAB ====== -->
+<section class="slide" id="s26">
+  <div class="kicker" style="color:#b45309">PRAKTIK DI RUMAH</div>
+  <h2 class="st">Latihan praktiknya dikerjakan di Google Colab</h2>
+  <div class="cols c2l" style="margin-top:4px">
+    <div class="stack">
+      <div class="step"><div class="sn">1</div><p>Buka <b>colab.research.google.com</b> dari browser, login pakai akun Google.</p></div>
+      <div class="step"><div class="sn">2</div><p>Klik <b>File → New notebook</b> (atau tombol "New Notebook" di pop-up).</p></div>
+      <div class="step"><div class="sn">3</div><p>Klik sel pertama, tempel kodenya, jalankan dengan <b>Shift+Enter</b> atau tombol play di kiri sel.</p></div>
+      <div class="step"><div class="sn">4</div><p>Hasilnya muncul tepat di bawah sel. Gratis, tidak perlu install Python di laptop.</p></div>
+      <div class="note"><b>Simpan notebook-nya</b> (File → Save, otomatis ke Google Drive). Hasil latihan Bagian C nanti dibahas di awal pertemuan depan — catat angka yang kamu dapat.</div>
+    </div>
+    <div class="stack">
+      <p class="b"><b>Sel pertama yang bisa langsung ditempel:</b></p>
+<pre class="pycode">import time, random
+
+def ukur(f, n, ulang=3):
+    data = [random.random() for _ in range(n)]
+    best = float("inf")
+    for _ in range(ulang):
+        t = time.perf_counter()
+        f(data)
+        best = min(best, time.perf_counter() - t)
+    return best
+
+def jumlah(a):            # Θ(n)
+    s = 0
+    for x in a: s += x
+    return s
+
+print(ukur(jumlah, 100000))   # coba ganti n-nya</pre>
+      <p class="tiny">Kalau mau, tambahkan sel baru dengan tombol <b>+ Code</b> — satu sel per soal biar rapi. Kalau Colab bilang "connecting", tunggu sebentar, itu normal.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 27 · LATIHAN A ====== -->
+<section class="slide" id="s27">
+  <div class="kicker">LATIHAN · BAGIAN A</div>
+  <h2 class="st">Soal konsep — kerjakan tanpa komputer</h2>
+  <p class="sub">Tulis jawaban di kertas atau dokumen. Kunci jawabannya ada di slide belakang — jangan dilihat dulu.</p>
+  <div class="qlist">
+    <div class="q"><span class="qn">1</span><p>Kenapa mengukur program dengan detik/stopwatch itu <b>tidak adil</b> untuk membandingkan dua algoritma? Sebutkan minimal dua alasan.</p></div>
+    <div class="q"><span class="qn">2</span><p>Sebutkan <b>tiga aturan model RAM</b>. Lalu jelaskan dengan kalimat sendiri: kenapa array itu "lift" dan linked list itu "tangga"?</p></div>
+    <div class="q"><span class="qn">3</span><p>Jelaskan beda <b>O(g)</b>, <b>Ω(g)</b>, dan <b>Θ(g)</b> seakan menjelaskan ke teman yang tidak ikut kuliah hari ini. Lalu: benar atau salah pernyataan "<i>O(n²) artinya kasus terburuk</i>"? Jelaskan kenapa.</p></div>
+    <div class="q"><span class="qn">4</span><p>Urutkan dari tercepat sampai terlambat: <span class="mono">O(n²), O(1), O(2ⁿ), O(log n), O(n log n), O(n)</span>. Lalu: program A berkompleksitas Θ(n), program B Θ(n²). Kalau n digandakan, masing-masing jadi berapa kali lebih lambat?</p></div>
+    <div class="q"><span class="qn">5</span><p>Kenapa yang dipakai sebagai <b>jaminan</b> performa itu kasus <b>terburuk</b>, bukan rata-rata? Beri satu contoh situasi di mana asumsi rata-rata bisa meleset.</p></div>
+  </div>
+</section>
+
+<!-- ====== 28 · LATIHAN B ====== -->
+<section class="slide" id="s28">
+  <div class="kicker">LATIHAN · BAGIAN B</div>
+  <h2 class="st">Soal analisis kode dan pembuktian</h2>
+  <div class="qlist">
+    <div class="q"><span class="qn">6</span><p>Buktikan secara formal: <b>5n + 20 = O(n)</b>. Tuliskan langkahnya dan tentukan nilai c dan n₀.</p></div>
+    <div class="q"><span class="qn">7</span><p>Tentukan Θ dari empat potongan kode berikut, sertakan alasan singkat:
+<pre>a)  for i in range(n):
+        total += A[i]
+
+b)  for i in range(n):
+        for j in range(n):
+            for k in range(5):
+                hitung += 1
+
+c)  for i in range(n):
+        for j in range(i):
+            hitung += 1
+
+d)  i = 1
+    while i &lt; n:
+        i *= 3</pre></p></div>
+    <div class="q"><span class="qn">8</span><p>Untuk fungsi <span class="mono">linear_search(A, x)</span>: berapa jumlah pengecekan pada kasus <b>terbaik</b>, <b>terburuk</b>, dan <b>rata-rata</b>? Tulis orde Θ masing-masing.</p></div>
+    <div class="q"><span class="qn">9</span><p>Context window sebuah model bahasa naik dari <b>8.000</b> menjadi <b>128.000</b> token. Dengan biaya attention Θ(n²), berapa kali lipat biayanya bertambah?</p></div>
+  </div>
+</section>
+
+<!-- ====== 29 · LATIHAN C ====== -->
+<section class="slide" id="s29">
+  <div class="kicker">LATIHAN · BAGIAN C</div>
+  <h2 class="st">Soal praktik — kerjakan di Google Colab</h2>
+  <p class="sub">Panduan buka Colab ada di slide sebelumnya. Catat hasilnya — kita bahas bersama di awal pertemuan depan.</p>
+  <div class="qlist">
+    <div class="q"><span class="qn">10</span><p>Tempel kode <span class="mono">hitung_ops</span> (slide 21) ke Colab dan jalankan. Tambahkan sendiri n = 160 dan 320. Apakah kolom hasil loop selalu sama dengan rumus n(n−1)/2? Kesimpulannya apa untuk klaim "Contoh C = Θ(n²)"?</p></div>
+    <div class="q"><span class="qn">11</span><p>Pakai kode <span class="mono">ukur_waktu</span> (slide 22). Buat tabel: n, waktu, rasio — untuk <span class="mono">jumlah</span> dan <span class="mono">semua_pasangan</span>. Apakah rasionya mendekati 2 dan 4 seperti prediksi? Kalau meleset jauh, kemungkinan besar kenapa? <i>(petunjuk: ingat catatan soal noise)</i></p></div>
+    <div class="q"><span class="qn">12</span><p>Tulis program kecil yang menghitung banyaknya putaran loop <span class="mono">i *= 2</span> untuk n = 10⁶ dan n = 10⁷. Tulis satu kalimat kesimpulan yang menjelaskan kenapa ini Θ(log n). <i>(petunjuk: bandingkan selisih putarannya dengan selisih ukuran datanya)</i></p></div>
+  </div>
+</section>
+
+<!-- ====== 30 · KUNCI A ====== -->
+<section class="slide" id="s30">
+  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN · BAGIAN A</div>
+  <h2 class="st">Kunci jawaban soal konsep</h2>
+  <div class="qlist">
+    <div class="ans"><span class="qn">1</span><p>Karena waktu tergantung <b>hardware</b> (laptop gaming vs laptop lama), <b>bahasa pemrograman</b>, <b>beban lain</b> yang kebetulan jalan, dan kondisi cache/suhu. Stopwatch mengukur <b>komputernya</b>, bukan <b>cara</b>-nya. (Dua alasan saja sudah cukup.)</p></div>
+    <div class="ans"><span class="qn">2</span><p>(1) Perintah dikerjakan satu per satu, berurutan. (2) Operasi dasar (tambah, bandingkan, simpan, ambil) masing-masing 1 langkah. (3) Akses data lewat indeks, nomor berapa pun, tetap 1 langkah. <b>Lift</b>: tinggal tekan nomor loker — sampai loker 1 atau 99.999 sama lamanya, itulah array (O(1)). <b>Tangga</b>: harus melewati semua lantai sebelumnya — makin jauh makin lama, itulah linked list.</p></div>
+    <div class="ans"><span class="qn">3</span><p><b>O</b> = janji batas atas: "paling lama segini" (boleh lebih cepat). <b>Ω</b> = batas bawah: "paling cepat segini". <b>Θ</b> = batas pas: atas dan bawahnya sama, "ya sekitar segini". Pernyataan itu <b>salah</b>: O itu jenis <b>batas</b>, sedangkan "terburuk" itu jenis <b>situasi data</b>. Keduanya bisa digabung, misalnya "waktu terburuknya O(n²)".</p></div>
+    <div class="ans"><span class="qn">4</span><p><span class="mono">O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²) &lt; O(2ⁿ)</span>. Program A jadi sekitar <b>2 kali</b> lebih lambat; program B jadi sekitar <b>4 kali</b> lebih lambat.</p></div>
+    <div class="ans"><span class="qn">5</span><p>Karena kasus terburuk berlaku untuk <b>semua</b> data yang mungkin masuk — itu jaminan. Rata-rata hanya berlaku kalau asumsi distribusi datanya benar. Contoh meleset: data datang dari user yang iseng atau jahat — misalnya pencarian yang selalu gagal (selalu kasus terburuk), atau input angka terurut untuk quicksort versi naif.</p></div>
+  </div>
+</section>
+
+<!-- ====== 31 · KUNCI B ====== -->
+<section class="slide" id="s31">
+  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN · BAGIAN B</div>
+  <h2 class="st">Kunci jawaban analisis kode</h2>
+  <div class="qlist">
+    <div class="ans"><span class="qn">6</span><p>Untuk n ≥ 1 berlaku <span class="mono">20 ≤ 20n</span>. Maka <span class="mono">5n + 20 ≤ 5n + 20n = 25n</span>. Pilih <b>c = 25</b> dan <b>n₀ = 1</b>. Terbukti.</p></div>
+    <div class="ans"><span class="qn">7</span><p><b>a)</b> Θ(n) — n putaran × 1 langkah per putaran. <b>b)</b> Θ(n²) — n × n × 5; angka 5 itu konstanta, dibuang. <b>c)</b> Θ(n²) — totalnya 0+1+…+(n−1) = n(n−1)/2; setengahnya loop penuh, tapi bentuknya tetap n². <b>d)</b> Θ(log n) — i melompat 1, 3, 9, 27, … ; butuh sekitar log₃ n langkah sampai menyusul n (basisnya boleh beda-beda, ordanya sama).</p></div>
+    <div class="ans"><span class="qn">8</span><p>Terbaik: <b>1</b> pengecekan (x di posisi pertama) → Θ(1). Terburuk: <b>n</b> (x di akhir atau tidak ada) → Θ(n). Rata-rata: <b>(n+1)/2</b> (posisi acak) → Θ(n).</p></div>
+    <div class="ans"><span class="qn">9</span><p>n naik 128.000 ÷ 8.000 = <b>16 kali</b>. Karena Θ(n²), dikuadratkan: 16² = <b>256 kali lipat</b>.</p></div>
+  </div>
+</section>
+
+<!-- ====== 32 · KUNCI C ====== -->
+<section class="slide" id="s32">
+  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN · BAGIAN C</div>
+  <h2 class="st">Kunci jawaban praktik Colab</h2>
+  <div class="qlist">
+    <div class="ans"><span class="qn">10</span><p>Kolom hasil loop dan kolom rumus <b>selalu identik</b> untuk semua n (mis. n=160 → 12.720 = 160·159/2; n=320 → 51.040). Artinya analisis kita tepat: ops = n(n−1)/2 ≈ n²/2 → <b>Θ(n²) terbukti</b>. Ingat: setengah dari n² tetap n².</p></div>
+    <div class="ans"><span class="qn">11</span><p>Rasio <span class="mono">jumlah</span> mendekati <b>2,0</b> dan <span class="mono">semua_pasangan</span> mendekati <b>4,0</b> (di Colab angka detiknya boleh beda, rasionya tidak). Kalau meleset jauh, biasanya karena <b>n terlalu kecil</b> sehingga kena noise, atau komputer sedang sibuk — perbaikannya: naikkan n dan ulangi beberapa kali lalu ambil yang tercepat.</p></div>
+    <div class="ans"><span class="qn">12</span><p>Hasil: n = 10⁶ → sekitar <b>20</b> putaran (log₂ 10⁶ ≈ 19,9); n = 10⁷ → sekitar <b>24</b> putaran (log₂ 10⁷ ≈ 23,3). Kesimpulan: <i>data 10 kali lebih banyak hanya menambah sekitar 3–4 putaran — pertumbuhannya sangat lambat, itulah Θ(log n).</i></p></div>
+  </div>
+  <div class="note" style="flex:none">Kalau jawabanmu beda tipis dari kunci (misal rasio 1,9 atau 4,3) itu normal — itu konstanta dan noise. Yang penting <b>ordanya</b> yang cocok.</div>
+</section>
+
+<!-- ====== 33 · PENUTUP + LINK ====== -->
+<section class="slide" id="s33" style="justify-content:center;align-items:center;text-align:center">
+  <div class="kicker">PERTEMUAN 1 · SELESAI</div>
+  <h2 class="st" style="font-size:32px;margin:10px 0">Hitung dulu teorinya,<br>baru buktikan dengan mengukur.</h2>
+  <p class="sub" style="max-width:700px;margin-top:8px">Kalau masih ada yang bikin bingung, catat pertanyaannya — kita bahas di awal pertemuan depan, sebelum masuk materi baru. Jangan lupa kerjakan latihannya dulu baru cocokkan ke kunci jawaban.</p>
+  <div style="margin:26px 0 10px">
+    <a class="biglink" href="https://github.com/Muhammad-Ikhwan-Fathulloh/Algorithm-Complexity-Course-Bank" target="_blank" rel="noopener">
+      <span class="ln1">REPO MATA KULIAH — KLIK UNTUK BUKA</span>
+      <span class="ln2">github.com/Muhammad-Ikhwan-Fathulloh/Algorithm-Complexity-Course-Bank</span>
+      <span class="ln3">RPS · handout · bank soal · materi pendukung</span>
+    </a>
+  </div>
+  <div style="margin-top:18px;max-width:760px;text-align:left">
+    <p class="tiny"><b>Bacaan kalau mau lanjut sendiri:</b> Cormen dkk. (CLRS) Bab 3 · Jeff Erickson, <i>Algorithms</i> (gratis, bisa didownload) · MIT 6.006 di OpenCourseWare · Rinaldi Munir, <i>Strategi Algoritma</i> (ITB). Untuk bagian AI: Attention Is All You Need (2017) · FlashAttention (2022) · Scaling Laws (2020) · Chinchilla (2022) · HNSW (2016) — nomor arXiv-nya ada di handout bagian 10.</p>
+  </div>
+</section>
+
+</div></div>
+
+<div id="progress"></div>
+<div id="hud">
+  <div id="hud-left"><span id="pageno">1 / 33</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="dots"></div>
+  <div style="display:flex;gap:8px">
+    <button class="navbtn" id="btnFs" title="Layar penuh (F)">⛶</button>
+    <button class="navbtn" id="btnPrev" title="Sebelumnya (←)">‹</button>
+    <button class="navbtn" id="btnNext" title="Berikutnya (→)">›</button>
+  </div>
+</div>
+
+<script>
+/* ================= util ================= */
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const fmtI=(v,d=2)=>Number(v).toLocaleString('id-ID',{maximumFractionDigits:d});
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function hlCode(t){const e=esc(t);return e.replace(/(#[^\n]*)|("[^"\n]*")|\b(def|for|in|range|while|if|elif|else|return|import|from|print|lambda|len|not|and|or|True|False|None|float|int|min|max)\b|\b(\d+(?:\.\d+)?)\b/g,(m,c,s,k,n)=>c?`<span class="tc">${c}</span>`:s?`<span class="ts">${s}</span>`:k?`<span class="tk">${k}</span>`:`<span class="tn">${n}</span>`)}
+ $$('.pycode').forEach(p=>p.innerHTML=hlCode(p.textContent));
+
+/* ================= deck engine (transisi ngikutin arah) ================= */
+const slides=$$('.slide');let cur=0;
+const cleanups=[];const enterMap={};
+function onLeave(f){cleanups.push(f)}
+function go(i){
+  i=Math.max(0,Math.min(slides.length-1,i));
+  if(i===cur)return;
+  const dir=i>cur?1:-1;
+  const oldEl=slides[cur],newEl=slides[i];
+  cleanups.forEach(f=>{try{f()}catch(e){}});
+  oldEl.classList.remove('active');
+  oldEl.classList.add(dir>0?'exit-left':'exit-right');
+  newEl.classList.add(dir>0?'from-right':'from-left');
+  void newEl.offsetWidth;
+  newEl.classList.remove('from-right','from-left');
+  newEl.classList.add('active');
+  setTimeout(()=>oldEl.classList.remove('exit-left','exit-right'),420);
+  cur=i;sync();
+  const en=enterMap[newEl.id];if(en)en();
+}
+function sync(){
+  $('#progress').style.width=((cur+1)/slides.length*100)+'%';
+  $('#pageno').textContent=(cur+1)+' / '+slides.length;
+  $$('#dots button').forEach((d,j)=>d.classList.toggle('on',j===cur));
+}
+const dots=$('#dots');
+slides.forEach((s,j)=>{const b=document.createElement('button');b.title='Slide '+(j+1);b.onclick=()=>go(j);dots.appendChild(b)});
+ $('#btnNext').onclick=()=>go(cur+1);$('#btnPrev').onclick=()=>go(cur-1);
+function toggleFs(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+ $('#btnFs').onclick=toggleFs;
+addEventListener('keydown',e=>{
+  const t=e.target,tag=t&&t.tagName;
+  const inter=tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'||(t&&t.isContentEditable);
+  if(e.key==='ArrowRight'||e.key==='PageDown'||(e.key===' '&&!inter&&tag!=='BUTTON')){e.preventDefault();go(cur+1)}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
+  else if((e.key==='f'||e.key==='F')&&!inter)toggleFs();
+});
+function fit(){const s=Math.min((innerWidth-30)/1280,(innerHeight-80)/720);
+  $('#deck').style.transform=`translate(-50%,-50%) scale(${s})`}
+addEventListener('resize',fit);fit();
+slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot';
+  f.innerHTML=`<span>Kompleksitas Algoritma · Pertemuan 1 — Pendahuluan dan Notasi Asimtotik</span><span>${j+1}</span>`;s.appendChild(f)});
+
+/* ================= s4: RAM ================= */
+(function(){
+  const row=$('#ramRow');if(!row)return;
+  const label=$('#ramLabel'),steps=$('#ramSteps'),playBtn=$('#ramPlay');
+  let n=0,timer=null,auto=false;const cells=[];
+  for(let i=0;i<8;i++){const c=document.createElement('div');c.className='ram-cell';
+    c.innerHTML=`<span class="ram-idx">A[${i}]</span><span class="ram-val">${10+Math.floor(Math.random()*89)}</span>`;
+    c.onclick=()=>hit(i);row.appendChild(c);cells.push(c)}
+  function hit(i){cells.forEach(c=>c.classList.remove('on'));cells[i].classList.add('on');
+    n++;steps.textContent='total langkah: '+n;label.textContent=`ambil A[${i}] → 1 langkah`}
+  function setAuto(v){auto=v;clearInterval(timer);
+    playBtn.textContent=auto?'Hentikan':'▶ Demo otomatis';playBtn.classList.toggle('active',auto);
+    if(auto){hit(Math.floor(Math.random()*8));timer=setInterval(()=>hit(Math.floor(Math.random()*8)),850)}}
+  playBtn.onclick=()=>setAuto(!auto);
+  $('#ramReset').onclick=()=>{n=0;steps.textContent='total langkah: 0'};
+  onLeave(()=>{clearInterval(timer);timer=null;auto=false;
+    playBtn.textContent='▶ Demo otomatis';playBtn.classList.remove('active')});
+  enterMap['s4']=()=>{if(!auto)setAuto(true)};
+})();
+
+/* ================= s5: dominasi suku ================= */
+(function(){
+  const sl=$('#domSlide');if(!sl)return;
+  function render(){
+    const n=+sl.value;$('#domN').textContent=n;
+    const a=3*n*n,b=10*n,t=a+b+7;
+    $('#domA').textContent=fmtI(a,0);$('#domB').textContent=fmtI(b,0);
+    $('#pA').textContent=(a/t*100).toFixed(1)+'%';
+    $('#pB').textContent=(b/t*100).toFixed(1)+'%';
+    $('#pC').textContent=(7/t*100).toFixed(1)+'%';
+    $('#barA').style.width=(a/t*100)+'%';
+    $('#barB').style.width=(b/t*100)+'%';
+    $('#barC').style.width=(7/t*100)+'%';
+    $('#domIns').innerHTML=n>=50
+      ?`Di n = ${n}: suku 3n² sudah makan ${(a/t*100).toFixed(0)}% dari seluruh waktu. Sisanya receh.`
+      :`Masih campur aduk (n = ${n}). Geser terus ke kanan…`;
+  }
+  sl.addEventListener('input',render);render();
+})();
+
+/* ================= s7: plot batas atas ================= */
+(function(){
+  const svg=$('#oplot');if(!svg)return;
+  const f=n=>3*n*n+10*n+7;
+  function draw(c){
+    const W=560,H=300,L=44,R=14,T=16,B=32,yM=600;
+    const X=n=>L+(n-1)/11*(W-L-R),Y=v=>H-B-(v/yM)*(H-T-B);
+    let s='';
+    for(let y=0;y<=600;y+=150){s+=`<line x1="${L}" y1="${Y(y)}" x2="${W-R}" y2="${Y(y)}" stroke="#eef2f7"/><text x="${L-7}" y="${Y(y)+4}" font-size="10" fill="#94a3b8" text-anchor="end">${y}</text>`}
+    for(let n=1;n<=12;n++)s+=`<text x="${X(n)}" y="${H-B+15}" font-size="10" fill="#94a3b8" text-anchor="middle">${n}</text>`;
+    s+=`<line x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}" stroke="#cbd5e1"/><line x1="${L}" y1="${T}" x2="${L}" y2="${H-B}" stroke="#cbd5e1"/>`;
+    let pf='',pg='';
+    for(let n=1;n<=12;n+=.2){pf+=(pf?' L':'M')+X(n).toFixed(1)+' '+Y(Math.min(f(n),yM)).toFixed(1);
+      pg+=(pg?' L':'M')+X(n).toFixed(1)+' '+Y(Math.min(c*n*n,yM)).toFixed(1)}
+    s+=`<path d="${pf}" fill="none" stroke="#2563eb" stroke-width="3"/>`;
+    s+=`<path d="${pg}" fill="none" stroke="#d97706" stroke-width="2.5" stroke-dasharray="7 5"/>`;
+    for(let n=1;n<=12;n++)if(f(n)>c*n*n)s+=`<circle cx="${X(n)}" cy="${Y(f(n))}" r="5" fill="#dc2626"/>`;
+    s+=`<line x1="${L+12}" y1="${T+8}" x2="${L+36}" y2="${T+8}" stroke="#2563eb" stroke-width="3"/><text x="${L+42}" y="${T+12}" font-size="11" fill="#334155">f(n) = 3n²+10n+7</text>`;
+    s+=`<line x1="${L+12}" y1="${T+26}" x2="${L+36}" y2="${T+26}" stroke="#d97706" stroke-width="2.5" stroke-dasharray="6 4"/><text x="${L+42}" y="${T+30}" font-size="11" fill="#334155">c·n²</text>`;
+    svg.innerHTML=s;
+    let n0=null;for(let n=1;n<=12;n++){if(f(n)<=c*n*n){n0=n;break}}
+    const v=$('#cVerdict');
+    if(n0===null){v.className='verdict bad';v.innerHTML=`c = ${c} terlalu pelit — sampai n = 12, fungsinya masih lolos ke atas batas (lihat titik merah).`}
+    else if(n0===1){v.className='verdict good';v.innerHTML=`Sah. Dengan c = ${c}, semua titik sudah tertutup mulai n = 1. Boleh dipakai: n₀ = 1.`}
+    else{v.className='verdict mid';v.innerHTML=`Bisa juga, tapi baru berlaku mulai n₀ = ${n0}. Titik merah itu tempat janjinya dilanggar.`}
+  }
+  const sl=$('#cSlider');
+  sl.addEventListener('input',()=>{$('#cVal').textContent=sl.value;draw(+sl.value)});
+  draw(20);
+})();
+
+/* ================= s8: grafik kurva ================= */
+(function(){
+  const svg=$('#growthSvg');if(!svg)return;
+  const W=520,H=190,L=34,R=88,T=10,B=26,yM=120;
+  const X=n=>L+(n-1)/9*(W-L-R),Y=v=>H-B-(v/yM)*(H-T-B);
+  const cs=[{n:'2ⁿ',f:n=>Math.pow(2,n),c:'#7c3aed',w:2.5},{n:'n²',f:n=>n*n,c:'#dc2626',w:2.5},
+    {n:'n log n',f:n=>n*Math.log2(n),c:'#65a30d',w:2},{n:'n',f:n=>n,c:'#2563eb',w:2},
+    {n:'log n',f:n=>Math.log2(n),c:'#0d9488',w:2},{n:'1',f:()=>1,c:'#94a3b8',w:2}];
+  let s='';
+  [0,60,120].forEach(v=>{s+=`<line x1="${L}" y1="${Y(v)}" x2="${W-R}" y2="${Y(v)}" stroke="#eef2f7"/><text x="${L-5}" y="${Y(v)+3}" font-size="9" fill="#94a3b8" text-anchor="end">${v}</text>`});
+  [1,5,10].forEach(n=>{s+=`<text x="${X(n)}" y="${H-B+13}" font-size="9" fill="#94a3b8" text-anchor="middle">${n}</text>`});
+  s+=`<line x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}" stroke="#cbd5e1"/><line x1="${L}" y1="${T}" x2="${L}" y2="${H-B}" stroke="#cbd5e1"/>`;
+  cs.forEach(c=>{let d='',prev=null;
+    for(let n=1;n<=10;n+=.05){const v=c.f(n);
+      if(v>yM){if(prev){const t=(yM-prev.v)/(v-prev.v),cn=prev.n+t*(n-prev.n);
+        d+=` L${X(cn).toFixed(1)} ${Y(yM).toFixed(1)}`}break}
+      d+=(d?' L':'M')+X(n).toFixed(1)+' '+Y(v).toFixed(1);prev={n,v}}
+    s+=`<path d="${d}" fill="none" stroke="${c.c}" stroke-width="${c.w}"/>`});
+  cs.forEach((c,i)=>{const ly=T+6+i*15;
+    s+=`<line x1="${W-R+10}" y1="${ly}" x2="${W-R+30}" y2="${ly}" stroke="${c.c}" stroke-width="${c.w}"/><text x="${W-R+34}" y="${ly+3}" font-size="9.5" fill="#334155">${c.n}</text>`});
+  svg.innerHTML=s;
+})();
+
+/* ================= s9: explorer ================= */
+(function(){
+  const tbl=$('#growTbl');if(!tbl)return;
+  const L10=Math.log10;
+  const rows=[
+    {n:'O(1)',c:'#94a3b8',f:()=>1,kind:'const'},
+    {n:'O(log n)',c:'#0d9488',f:x=>Math.log2(x),kind:'delta'},
+    {n:'O(n)',c:'#2563eb',f:x=>x,kind:'factor'},
+    {n:'O(n log n)',c:'#65a30d',f:x=>x*Math.log2(x),kind:'factor'},
+    {n:'O(n²)',c:'#dc2626',f:x=>x*x,kind:'factor'},
+    {n:'O(2ⁿ)',c:'#7c3aed',f:null,kind:'exp'}];
+  let prev=null;
+  function sci(v){const e=Math.floor(L10(v));return fmtI(v/Math.pow(10,e),1)+' × 10<sup>'+e+'</sup>'}
+  function fmtVal(r,x){
+    if(r.kind==='exp'){const e=x*L10(2);return e<12?fmtI(Math.pow(2,x),0):'≈ 10<sup>'+fmtI(e,0)+'</sup>'}
+    const v=r.f(x);return v>=1e12?sci(v):v>=100?fmtI(v,0):fmtI(v,2)}
+  function logv(r,x){return r.kind==='exp'?x*L10(2):L10(Math.max(r.f(x),1))}
+  function render(x){
+    let h='<tr><th>Fungsi</th><th>besaran (log)</th><th>nilai saat n='+fmtI(x,0)+'</th><th>vs pilihan sblmnya</th></tr>';
+    rows.forEach(r=>{
+      const over=logv(r,x)>13,pct=Math.max(3,Math.min(100,logv(r,x)/13*100));
+      let d='';
+      if(prev&&x>prev){
+        if(r.kind==='const')d='× 1';
+        else if(r.kind==='delta')d='+'+fmtI(r.f(x)-r.f(prev),2);
+        else if(r.kind==='exp'){const dd=x-prev;d=dd>0?'× 2<sup>'+dd+'</sup>':'—'}
+        else d='× '+fmtI(r.f(x)/r.f(prev),1)}
+      h+=`<tr><td class="mono" style="color:${r.c};font-weight:800">${r.n}</td><td><div class="bar${over?' over':''}"><i style="width:${pct}%;background:${r.c}"></i></div></td><td class="mono">${fmtVal(r,x)}</td><td class="mono">${d||'—'}</td></tr>`});
+    tbl.innerHTML=h;
+    const ins=$('#growInsight');
+    if(prev&&x/prev>1){const rr=x/prev;
+      ins.innerHTML=`n naik ${fmtI(rr,0)}×: n² bengkak ${fmtI(rr*rr,0)}×, log₂ n cuma nambah ${fmtI(Math.log2(rr),1)}, 2ⁿ keluar dari grafik.`}
+    else ins.innerHTML='Klik ukuran data yang lain, lalu lihat lagi kolom paling kanan.';
+    prev=x}
+  const bs=$$('#growN button');
+  bs.forEach(b=>b.onclick=()=>{bs.forEach(x=>x.classList.toggle('active',x===b));render(+b.dataset.n)});
+  render(100);bs.forEach(b=>b.classList.toggle('active',+b.dataset.n===100));
+})();
+
+/* ================= s11: linear search ================= */
+(function(){
+  const rowS=$('#srow');if(!rowS)return;
+  const cnt=$('#sCount'),ver=$('#sVerdict');
+  const N=14;let vals=[],timers=[];
+  function genVals(){const s=new Set();while(s.size<N)s.add(1+Math.floor(Math.random()*99));return[...s]}
+  function run(sc){timers.forEach(clearTimeout);timers=[];
+    vals=genVals();rowS.innerHTML='';
+    const cells=vals.map(v=>{const d=document.createElement('div');d.className='scell';d.textContent=v;rowS.appendChild(d);return d});
+    let idx;let target;
+    if(sc==='none'){target='(tidak ada di data)'}
+    else{idx=sc==='first'?0:sc==='mid'?(N>>1):sc==='last'?N-1:Math.floor(Math.random()*N);target=vals[idx]}
+    ver.textContent='mencari x = '+target+' …';cnt.textContent='pengecekan: 0';
+    const tgtVal=(sc==='none')?-1:vals[idx];let k=0;
+    function step(){cells.forEach(c=>c.classList.remove('cur'));
+      if(k>=N){ver.innerHTML=`Tidak ketemu: ${N} pengecekan, seluruh kotak diperiksa. Ini kasus terburuk, Θ(n).`;return}
+      cells[k].classList.add('cur','chk');cnt.textContent='pengecekan: '+(k+1);
+      if(vals[k]===tgtVal){cells[k].classList.remove('cur');cells[k].classList.add('found');
+        let msg;
+        if(sc==='first')msg=`Hoki: ketemu di kotak pertama, 1 pengecekan. Kasus terbaik, Θ(1).`;
+        else if(sc==='mid')msg=`Ketemu di tengah: ${k+1} pengecekan ≈ (n+1)/2. Rata-rata, tetap Θ(n).`;
+        else if(sc==='last')msg=`Sial banget: ketemu di kotak terakhir, ${k+1} pengecekan. Kasus terburuk, Θ(n).`;
+        else msg=`Posisi acak: ${k+1} pengecekan. Diulang berkali-kali, rata-ratanya mendekati (n+1)/2 → Θ(n).`;
+        ver.innerHTML=msg;return}
+      k++;timers.push(setTimeout(step,170))}
+    timers.push(setTimeout(step,320))}
+  $$('.sc').forEach(b=>b.onclick=()=>run(b.dataset.sc));
+  onLeave(()=>timers.forEach(clearTimeout));
+})();
+
+/* ================= s14: loop bersarang ================= */
+(function(){
+  const gf=$('#gridFull');if(!gf)return;
+  const gt=$('#gridTri');let timer=null;
+  function play(){clearInterval(timer);
+    const n=+$('#nSlide').value;$('#nVal').textContent=n;
+    gf.style.gridTemplateColumns=`repeat(${n},22px)`;gt.style.gridTemplateColumns=`repeat(${n},22px)`;
+    gf.innerHTML='';gt.innerHTML='';
+    const cf=[],ct=[],order=[];
+    for(let i=0;i<n*n;i++){const a=document.createElement('div');gf.appendChild(a);cf.push(a);
+      const b=document.createElement('div');gt.appendChild(b);ct.push(b);
+      const r=Math.floor(i/n),c=i%n;if(c<r)order.push(i)}
+    $('#cFull').textContent='0 langkah';$('#cTri').textContent='0 langkah';
+    let s=0;
+    timer=setInterval(()=>{let any=false;
+      if(s<n*n){cf[s].classList.add('on');$('#cFull').textContent=(s+1)+' langkah';any=true}
+      if(s<order.length){ct[order[s]].classList.add('on');$('#cTri').textContent=(s+1)+' langkah';any=true}
+      s++;
+      if(!any){clearInterval(timer);timer=null;
+        $('#cFull').innerHTML=`<b>${n*n}</b> langkah (n×n)`;
+        $('#cTri').innerHTML=`<b>${n*(n-1)/2}</b> langkah (n(n−1)/2)`;
+        $('#loopIns').innerHTML=`n = ${n}: Contoh C cuma ${fmtI(n*n/(n*(n-1)/2),1)}× dari Contoh B. Tapi bentuk pertumbuhannya sama — dua-duanya Θ(n²).`}}
+    ,n>8?26:45)}
+  $('#nSlide').addEventListener('input',play);
+  $('#loopReplay').onclick=play;
+  onLeave(()=>clearInterval(timer));
+  enterMap['s14']=play;play();
+})();
+
+/* ================= s15: tebak angka ================= */
+(function(){
+  const log=$('#guessLog');if(!log)return;let timers=[];
+  function line(h,c){const d=document.createElement('div');if(c)d.className=c;d.innerHTML=h;log.appendChild(d);log.scrollTop=log.scrollHeight}
+  function stop(){timers.forEach(clearTimeout);timers=[]}
+  function run(){stop();log.innerHTML='';
+    const t=Math.min(1000,Math.max(1,Math.round(+$('#tgt').value||1)));$('#tgt').value=t;
+    line(`mencari angka <b>${t}</b> di 1–1000, tiap langkah belah dua…`,'dim');
+    let lo=1,hi=1000,k=0;const seg=$('#seg');
+    function step(){
+      if(lo>hi)return;
+      const mid=(lo+hi)>>1;k++;
+      seg.style.left=((lo-1)/10)+'%';seg.style.width=((hi-lo+1)/10)+'%';
+      if(mid===t){line(`tebakan ${k}: <b>${mid}</b> → ketemu!`,'ok');
+        line(`Cukup <b>${k} tebakan</b>. log₂ 1000 ≈ 10. Kalau dicek satu-satu dari 1, bisa sampai ${t} kali.`,'dim');return}
+      if(mid<t){line(`tebakan ${k}: ${mid} → terlalu kecil`);lo=mid+1}
+      else{line(`tebakan ${k}: ${mid} → terlalu besar`);hi=mid-1}
+      timers.push(setTimeout(step,420))}
+    timers.push(setTimeout(step,350))}
+  $('#btnGuess').onclick=run;
+  $('#btnRandT').onclick=()=>{$('#tgt').value=1+Math.floor(Math.random()*1000);run()};
+  $('#tgt').addEventListener('keydown',e=>{if(e.key==='Enter')run()});
+  onLeave(stop);
+})();
+
+/* ================= s17: attention ================= */
+(function(){
+  const grid=$('#attnGrid');if(!grid)return;let last=4;
+  function render(t){const prev=last;last=t;
+    grid.style.gridTemplateColumns=`repeat(${t},28px)`;grid.innerHTML='';
+    for(let i=0;i<t*t;i++){const c=document.createElement('div');c.className='acell';
+      c.style.animationDelay=(i*7)+'ms';grid.appendChild(c)}
+    $('#tokVal').textContent=t;
+    $('#attnStat').innerHTML=`n = <b>${t}</b> token → <b>${t*t}</b> perbandingan kata`;
+    $('#attnDelta').innerHTML=(prev!==t)?`${prev}→${t} token: ${prev*prev} → ${t*t} perbandingan (${fmtI(t*t/(prev*prev),2)}×)`:''}
+  $('#tokSlide').addEventListener('input',e=>render(+e.target.value));
+  enterMap['s17']=()=>render(+$('#tokSlide').value||4);
+  render(4);
+})();
+
+/* ================= s18: kalkulator training ================= */
+(function(){
+  const pS=$('#pSlide');if(!pS)return;
+  const dS=$('#dSlide');
+  const names=['','ribu','juta','miliar','triliun'];
+  function powName(e){const g=Math.floor(e/3),m=Math.pow(10,e%3);return fmtI(m,0)+' '+names[g]}
+  function sci(f){const e=Math.floor(Math.log10(f));return fmtI(f/Math.pow(10,e),1)+'×10<sup>'+e+'</sup>'}
+  function humanTime(s){
+    if(s<60)return fmtI(s,1)+' detik';
+    if(s<3600)return fmtI(s/60,1)+' menit';
+    if(s<86400)return fmtI(s/3600,1)+' jam';
+    if(s<86400*365)return fmtI(s/86400,1)+' hari';
+    return fmtI(s/31536000,1)+' tahun'}
+  function render(){
+    const p=+pS.value,d=+dS.value;
+    $('#pVal').textContent='10^'+p+' ≈ '+powName(p);
+    $('#dVal').textContent='10^'+d+' ≈ '+powName(d);
+    const F=6*Math.pow(10,p)*Math.pow(10,d);
+    $('#flops').innerHTML=sci(F)+' FLOP';
+    const sec=F/3.12e14;
+    $('#trainTime').textContent=humanTime(sec)+' (1 GPU)';
+    const g=Math.ceil(F/(3.12e14*86400));
+    $('#gpuAlt').textContent=g<=1?'kurang dari 1 hari dengan 1 GPU':fmtI(g,0)+' GPU sekaligus biar selesai dalam 1 hari';
+  }
+  pS.addEventListener('input',render);dS.addEventListener('input',render);render();
+})();
+
+/* ================= s19: RAG ================= */
+(function(){
+  const svg=$('#ragSvg');if(!svg)return;
+  let seed=7;const rnd=()=>((seed=(seed*9301+49297)%233280)/233280);
+  const W=420,H=290,pts=[];
+  const q={x:60+rnd()*300,y:50+rnd()*190};
+  for(let i=0;i<40;i++)pts.push({x:14+rnd()*(W-28),y:14+rnd()*(H-28)});
+  const dd=p=>Math.hypot(p.x-q.x,p.y-q.y);
+  const sorted=pts.map((p,i)=>({p,i,dist:dd(p)})).sort((a,b)=>a.dist-b.dist);
+  const best=sorted[0];
+  let timers=[];
+  let s=`<circle cx="${q.x}" cy="${q.y}" r="9" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>`;
+  s+=`<text x="${q.x}" y="${q.y-15}" font-size="10" fill="#b45309" text-anchor="middle" font-weight="700">pertanyaan</text>`;
+  pts.forEach((p,i)=>{s+=`<circle id="rp${i}" cx="${p.x}" cy="${p.y}" r="5" fill="#cbd5e1"/>`});
+  s+=`<line id="ragLine" x1="${q.x}" y1="${q.y}" x2="${q.x}" y2="${q.y}" stroke="#16a34a" stroke-width="2" stroke-dasharray="4 3" opacity="0"/>`;
+  s+=`<circle cx="${best.p.x}" cy="${best.p.y}" r="8" fill="none" stroke="#16a34a" stroke-width="2.5" opacity="0" id="ragBestRing"/>`;
+  svg.innerHTML=s;
+  const get=i=>document.getElementById('rp'+i);
+  function reset(){timers.forEach(clearTimeout);timers=[];
+    pts.forEach((_,i)=>{const e=get(i);e.setAttribute('fill','#cbd5e1');e.setAttribute('r','5')});
+    document.getElementById('ragBestRing').setAttribute('opacity','0');
+    document.getElementById('ragLine').setAttribute('opacity','0');
+    $('#ragCount').textContent='0';
+    $('#ragVerdict').className='verdict mid';
+    $('#ragVerdict').textContent='pilih metode pencariannya dulu…'}
+  function finish(){const b=get(best.i);b.setAttribute('fill','#16a34a');
+    const L=document.getElementById('ragLine');
+    L.setAttribute('x2',best.p.x);L.setAttribute('y2',best.p.y);L.setAttribute('opacity','1');
+    document.getElementById('ragBestRing').setAttribute('opacity','1')}
+  function brute(){reset();let k=0;
+    const step=()=>{if(k>=pts.length){finish();
+        $('#ragVerdict').className='verdict bad';
+        $('#ragVerdict').innerHTML=`Brute force: <b>${pts.length}</b> hitungan jarak — semua "buku" dicek satu per satu. Θ(n·d).`;return}
+      get(k).setAttribute('fill','#fbbf24');$('#ragCount').textContent=(k+1);k++;
+      timers.push(setTimeout(step,55))};
+    timers.push(setTimeout(step,250))}
+  function hnsw(){reset();
+    const path=[sorted[30],sorted[18],sorted[9],sorted[3],sorted[0]];
+    let k=0;
+    const step=()=>{if(k>=path.length){finish();
+        $('#ragVerdict').className='verdict good';
+        $('#ragVerdict').innerHTML=`HNSW (versi disederhanakan): cuma <b>${path.length}</b> hitungan jarak — "katalognya" nganter hampir sampai. Yang asli lebih pinter lagi: mendekati logaritmik.`;return}
+      const seg=path[k];get(seg.i).setAttribute('fill','#7c3aed');
+      const L=document.getElementById('ragLine');
+      L.setAttribute('x2',seg.p.x);L.setAttribute('y2',seg.p.y);L.setAttribute('opacity','1');
+      $('#ragCount').textContent=(k+1);k++;
+      timers.push(setTimeout(step,420))};
+    timers.push(setTimeout(step,250))}
+  $('#ragBrute').onclick=brute;$('#ragHnsw').onclick=hnsw;$('#ragResetB').onclick=reset;
+  onLeave(()=>timers.forEach(clearTimeout));
+})();
+
+/* ================= s20: doubling lab ================= */
+(function(){
+  const tbl=$('#dbTbl');if(!tbl)return;
+  const G={n:{f:x=>x,l:'Θ(n)'},nlogn:{f:x=>x*Math.log2(x),l:'Θ(n log n)'},
+           n2:{f:x=>x*x,l:'Θ(n²)'},n3:{f:x=>x*x*x,l:'Θ(n³)'}};
+  const btns=$$('#dbOr button');
+  function render(key){btns.forEach(b=>b.classList.toggle('active',b.dataset.k===key));
+    const g=G[key].f;let prev=null;
+    let h='<tr><th>n</th><th>waktu (diasumsikan 1 dtk saat n=1.000)</th><th>rasio</th></tr>';
+    [1000,2000,4000,8000].forEach(n=>{const t=g(n)/g(1000);const r=prev?t/prev:null;
+      h+=`<tr><td class="mono">${fmtI(n,0)}</td><td class="mono">${t<1?fmtI(t*1000,0)+' ms':fmtI(t,2)+' dtk'}</td><td class="mono">${r?'× '+fmtI(r,2):'—'}</td></tr>`;prev=t});
+    tbl.innerHTML=h;
+    const exp={n:'tepat 2,00×',nlogn:'sekitar 2,2× — makin besar n makin mendekati 2',
+               n2:'tepat 4,00×',n3:'tepat 8,00×'}[key];
+    $('#dbNote').innerHTML=`Prediksinya: gandakan n → waktu ${G[key].l} jadi ${exp}.`}
+  btns.forEach(b=>b.onclick=()=>render(b.dataset.k));render('n2');
+})();
+
+/* ================= s21: hitung ops ================= */
+(function(){
+  const btn=$('#runOps');if(!btn)return;
+  const term=$('#outOps');
+  function line(h,c){const d=document.createElement('div');if(c)d.className=c;d.innerHTML=h;term.appendChild(d);term.scrollTop=term.scrollHeight}
+  btn.onclick=()=>{term.innerHTML='';line('menjalankan hitung_ops …','dim');
+    setTimeout(()=>{
+      [10,20,40,80].forEach(n=>{let o=0;for(let i=0;i<n;i++)for(let j=0;j<i;j++)o++;
+        const f=n*(n-1)/2;
+        line(`n=${String(n).padStart(3,' ')}  ops=${String(o).padEnd(5,' ')} rumus=${String(f).padEnd(5,' ')} ${o===f?'✓':'✗'}`)});
+      line('ops selalu = n(n−1)/2 → setengahnya n², tetap Θ(n²)','ok')},250)};
+})();
+
+/* ================= s22: ukur waktu ================= */
+(function(){
+  const tN=$('#runN');if(!tN)return;
+  const tN2=$('#runN2'),term=$('#outTime');
+  function line(h,c){const d=document.createElement('div');if(c)d.className=c;d.innerHTML=h;term.appendChild(d);term.scrollTop=term.scrollHeight}
+  const tick=()=>new Promise(r=>setTimeout(r,25));
+  async function bench(kind){const isN=kind==='n';const btn=isN?tN:tN2;btn.disabled=true;
+    term.innerHTML='';line((isN?'mengukur Θ(n)':'mengukur Θ(n²)')+' di browser ini…','dim');
+    const ns=isN?[10e6,20e6,40e6]:[2000,4000,8000];let prev=null;
+    for(const n of ns){await tick();let best=Infinity;
+      for(let r=0;r<2;r++){const t0=performance.now();
+        if(isN){let s=0;for(let i=0;i<n;i++)s+=i;if(s===-1)line('')}
+        else{let c=0;for(let i=0;i<n;i++)for(let j=0;j<n;j++)c++;if(c===-1)line('')}
+        best=Math.min(best,performance.now()-t0)}
+      const r=prev?best/prev:null;
+      line(`n=${fmtI(n,0)}  waktu=${best<1000?fmtI(best,2)+' ms':fmtI(best/1000,3)+' s'}${r?'  rasio='+fmtI(r,2):''}`);
+      prev=best}
+    line(isN?'rasio ≈ 2 — sama kayak prediksi Θ(n)':'rasio ≈ 4 — sama kayak prediksi Θ(n²)','ok');
+    btn.disabled=false}
+  tN.onclick=()=>bench('n');tN2.onclick=()=>bench('n2');
+})();
+
+/* ================= s23: best vs worst ================= */
+(function(){
+  const term=$('#outSearch');if(!term)return;let A=null;
+  function line(h,c){const d=document.createElement('div');if(c)d.className=c;d.innerHTML=h;term.appendChild(d);term.scrollTop=term.scrollHeight}
+  function search(x){for(let i=0;i<A.length;i++)if(A[i]===x)return i;return -1}
+  async function run(kind){term.innerHTML='';
+    line('menyiapkan array 1.000.000 elemen…','dim');
+    await new Promise(r=>setTimeout(r,40));
+    if(!A){A=new Array(1e6);for(let i=0;i<1e6;i++)A[i]=i}
+    let x,checks,label;
+    if(kind==='best'){x=0;checks=1;label='terbaik (x = A[0])'}
+    else if(kind==='worst'){x=-1;checks=1e6;label='terburuk (x = −1, tidak ada)'}
+    else{const p=Math.floor(Math.random()*1e6);x=A[p];checks=p+1;label=`acak (posisi ke-${fmtI(p,0)})`}
+    let dur;
+    if(kind==='best'){const reps=2000;const t0=performance.now();
+      for(let r=0;r<reps;r++)search(0);dur=(performance.now()-t0)/reps}
+    else{const t0=performance.now();search(x);dur=performance.now()-t0}
+    line(`kasus ${label}`,'dim');
+    line(`pengecekan : <b>${fmtI(checks,0)}</b>`);
+    line(`waktu/panggilan: ${dur<1?fmtI(dur*1000,1)+' µs':fmtI(dur,3)+' ms'}`);
+    if(kind==='best')line('1 pengecekan, nyaris instan → Θ(1)','ok');
+    else if(kind==='worst')line('1 juta pengecekan → Θ(n). Ini garansi batas bawahnya: sejelek apa pun data, paling parah segini.','ok');
+    else line('posisi acak: rata-ratanya (n+1)/2 ≈ 500.000 pengecekan → Θ(n)','ok')}
+  $('#rsBest').onclick=()=>run('best');
+  $('#rsWorst').onclick=()=>run('worst');
+  $('#rsRand').onclick=()=>run('rand');
+})();
+
+/* ================= s24: lab log-log ================= */
+(function(){
+  const svg=$('#llSvg');if(!svg)return;
+  const NS=[500,1000,2000,4000,8000];
+  const data=new Map();
+  const chips=$('#llChips');
+  NS.forEach(n=>{const b=document.createElement('button');b.className='chipbtn';
+    b.textContent='n = '+fmtI(n,0);
+    b.onclick=()=>{data.set(n,meas(n));render()};chips.appendChild(b)});
+  function meas(n){const t=4e-5*n*n;return t*(1+(Math.random()*0.16-0.08))}
+  const sup=['⁰','¹','²','³','⁴'];
+  const W=560,H=290,L=52,R=14,T=12,B=32,X0=2.55,X1=4.08,Y0=0.7,Y1=3.75;
+  const X=x=>L+(x-X0)/(X1-X0)*(W-L-R),Y=y=>H-B-(y-Y0)/(Y1-Y0)*(H-T-B);
+  function fitK(){const m=[...data.entries()];if(m.length<2)return null;
+    const xs=m.map(([n])=>Math.log10(n)),ys=m.map(([,t])=>Math.log10(t));
+    const mx=xs.reduce((a,b)=>a+b)/m.length,my=ys.reduce((a,b)=>a+b)/m.length;
+    let nu=0,de=0;xs.forEach((x,i)=>{nu+=(x-mx)*(ys[i]-my);de+=(x-mx)**2});
+    return {k:nu/de,mx,my}}
+  function render(){
+    let s='';
+    for(let y=1;y<=3;y++)s+=`<line x1="${L}" y1="${Y(y)}" x2="${W-R}" y2="${Y(y)}" stroke="#eef2f7"/><text x="${L-6}" y="${Y(y)+4}" font-size="10" fill="#94a3b8" text-anchor="end">10${sup[y]}</text>`;
+    for(let x=3;x<=4;x++)s+=`<text x="${X(x)}" y="${H-B+14}" font-size="10" fill="#94a3b8" text-anchor="middle">10${sup[x]}</text>`;
+    s+=`<text x="${(L+W-R)/2}" y="${H-5}" font-size="11" fill="#334155" text-anchor="middle">n (skala log)</text>`;
+    const cy=(T+H-B)/2;
+    s+=`<text x="14" y="${cy}" font-size="11" fill="#334155" text-anchor="middle" transform="rotate(-90,14,${cy})">waktu dalam ms (log)</text>`;
+    s+=`<line x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}" stroke="#cbd5e1"/><line x1="${L}" y1="${T}" x2="${L}" y2="${H-B}" stroke="#cbd5e1"/>`;
+    const m=[...data.entries()].sort((a,b)=>a[0]-b[0]);
+    if(m.length){const [n0,t0]=m[0];const x0=Math.log10(n0),y0=Math.log10(t0);
+      s+=`<line x1="${X(X0)}" y1="${Y(y0+2*(X0-x0))}" x2="${X(X1)}" y2="${Y(y0+2*(X1-x0))}" stroke="#16a34a" stroke-width="1.8" stroke-dasharray="6 4"/>`;
+      s+=`<text x="${W-R-4}" y="${Y(y0+2*(X1-x0))-6}" font-size="10" fill="#16a34a" text-anchor="end">acuan k=2</text>`}
+    const f=fitK();
+    if(f){const y1=f.my+f.k*(X0-f.mx),y2=f.my+f.k*(X1-f.mx);
+      s+=`<line x1="${X(X0)}" y1="${Y(y1)}" x2="${X(X1)}" y2="${Y(y2)}" stroke="#2563eb" stroke-width="2.5"/>`}
+    m.forEach(([n,t])=>{s+=`<circle cx="${X(Math.log10(n))}" cy="${Y(Math.log10(t))}" r="6" fill="#fff" stroke="#2563eb" stroke-width="2.5"/>`});
+    svg.innerHTML=s;
+    $('#llList').textContent='pengukuran: '+(m.length?m.map(([n,t])=>`n=${fmtI(n,0)} → ${t<100?fmtI(t,1):fmtI(t,0)} ms`).join(' · '):'—');
+    const k=$('#llK');
+    if(f){const kk=f.k;
+      k.innerHTML=`kemiringan k ≈ <b>${fmtI(kk,2)}</b> → ${kk>1.75&&kk<2.25?'cocok sama Θ(n²)':'tambah titik lagi biar presisi'}`}
+    else k.textContent='butuh minimal 2 titik buat memasang garis…'}
+  $('#llReset').onclick=()=>{data.clear();render()};
+  render();
+})();
+
+/* ================= start ================= */
+slides[0].classList.add('active');sync();
+</script>
+</body>
+</html>
