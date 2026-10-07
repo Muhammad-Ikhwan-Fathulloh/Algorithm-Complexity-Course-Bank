@@ -200,16 +200,3 @@ Pilih satu persoalan nyata, misalnya optimasi rute, penjadwalan, pencarian teks,
 1. Rancang minimal dua strategi algoritma berbeda (mis. brute force vs DP, backtracking vs CSP solver, eksak vs aproksimasi).
 2. Analisis kompleksitas masing-masing secara teoritis.
 3. Lakukan benchmarking empiris dan bandingkan dengan prediksi teoritis.
-
----
-
-## Catatan Desain dan Poin Debat
-
-Memasukkan topik AI ke mata kuliah kompleksitas memang bisa diperdebatkan. Berikut pertimbangannya:
-
-- **Argumen mendukung:** Banyak topik AI klasik adalah persoalan kompleksitas (search O(b^d), inferensi logika, CSP, SAT), dan biaya komputasi model modern kini menjadi isu utama. Mahasiswa melihat relevansi teori langsung pada praktik.
-- **Argumen menentang:** Kuliah ini bisa menjadi "AI dangkal" dan menggeser kedalaman teori (bukti kebenaran greedy, reduksi NP). Topik seperti Transformer juga cepat berubah, sehingga sumber riset perlu diperbarui tiap semester.
-- **Opsi kompromi:** Jadikan bagian **[Modern]** sebagai studi kasus 20-30% per pertemuan, bukan topik utama, sehingga inti ITB/MIT/CLRS tetap utuh. Jika program studi memiliki mata kuliah AI terpisah, bagian P3, P9, P12 dan P14 bisa dikurangi.
-- **Tautan:** Halaman kuliah (terutama CS161, CS336, CS188, dan 6.5940) sering berganti URL per semester, jadi sebaiknya diperiksa ulang sebelum dipublikasikan ke mahasiswa.
-
-Silabus ini dapat disesuaikan dengan jumlah SKS, bahasa praktikum (C/C++/Python/Java), dan kedalaman teori kompleksitas.
