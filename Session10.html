@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pertemuan 10 - Dynamic Programming I · Kompleksitas Algoritma</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#0b1526;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+#stage{position:fixed;inset:0;background:radial-gradient(1200px 700px at 70% -10%,#16294d 0%,#0b1526 60%)}
+#deck{position:absolute;left:50%;top:50%;width:1280px;height:720px}
+.slide{position:absolute;inset:0;background:#fff;border-radius:8px;box-shadow:0 24px 80px rgba(0,0,0,.55);padding:44px 60px 60px;opacity:0;pointer-events:none;overflow:hidden;display:flex;flex-direction:column;gap:18px;z-index:1;transition:opacity .38s ease,transform .38s ease}
+.slide.from-right{transition:none;transform:translateX(90px)}.slide.from-left{transition:none;transform:translateX(-90px)}
+.slide.exit-left{opacity:0;transform:translateX(-90px);z-index:2}.slide.exit-right{opacity:0;transform:translateX(90px);z-index:2}
+.slide.active{opacity:1;pointer-events:auto;z-index:3}
+.sfoot{position:absolute;left:60px;right:60px;bottom:14px;display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;border-top:1px solid #f1f5f9;padding-top:6px}
+.kicker{font-size:13px;font-weight:800;letter-spacing:.14em;color:#2563eb;text-transform:uppercase}
+h2.st{font-size:32px;color:#0f172a;line-height:1.25}
+p.b{font-size:17px;line-height:1.65;color:#334155}
+.cols{display:grid;gap:20px;flex:1;min-height:0}
+.c2{grid-template-columns:1fr 1fr}.c2l{grid-template-columns:1.1fr .9fr}.c2r{grid-template-columns:.9fr 1.1fr}
+.stack{display:flex;flex-direction:column;gap:9px;min-height:0}
+.card{border:1px solid #e2e8f0;border-radius:10px;padding:10px 13px;background:#fff}.card.soft{background:#f8fafc}
+.analogy{background:#fffbeb;border:2px solid #fde68a;border-left:6px solid #d97706;padding:14px 18px;border-radius:10px;font-size:17px;line-height:1.7;color:#334155}.analogy b{color:#b45309}
+.warn{background:#fef2f2;border:2px solid #fecaca;border-left:6px solid #b91c1c;padding:14px 18px;border-radius:10px;font-size:17px;color:#334155;line-height:1.7}
+.note{background:#eff6ff;border:1px solid #bfdbfe;border-left:5px solid #2563eb;padding:9px 12px;border-radius:8px;font-size:12.5px;color:#334155;line-height:1.6}
+table.tbl{width:100%;border-collapse:collapse;font-size:16px}
+.tbl th{background:#1e293b;color:#fff;text-align:left;padding:10px 14px;font-size:14px}
+.tbl td{border:1px solid #e2e8f0;padding:9px 14px;color:#334155;vertical-align:middle;line-height:1.45}
+pre.pycode{background:#0f172a;color:#e2e8f0;border-radius:12px;padding:18px 22px;font:15px/1.7 Consolas,'Courier New',monospace;overflow:auto}
+.tk{color:#93c5fd}.ts{color:#fbbf24}.tc{color:#7dd3fc;font-style:italic}.tn{color:#f9a8d4}
+.mono{font-family:Consolas,monospace}.tiny{font-size:14px;color:#64748b;line-height:1.55}
+.btn{display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn:hover{background:#1d4ed8}.btn.go{background:#16a34a}.btn.go:hover{background:#15803d}
+.btn.ghost{background:#fff;color:#2563eb;border:1.5px solid #bfdbfe}.btn.ghost:hover{background:#eff6ff}
+.chipbtn{background:#fff;border:2px solid #bfdbfe;color:#1d4ed8;border-radius:20px;padding:7px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.chipbtn:hover{background:#eff6ff}.chipbtn.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.sim{border:1.5px solid #dbeafe;background:linear-gradient(180deg,#f8fbff,#fff);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-height:0}
+.sim .cap{font-size:12px;font-weight:800;letter-spacing:.1em;color:#2563eb;text-transform:uppercase}
+.term{background:#0f172a;color:#a7f3d0;border-radius:10px;padding:14px 16px;font:14px/1.8 Consolas,monospace;min-height:80px;white-space:pre-wrap;overflow:auto;flex:1}
+.term b{color:#fbbf24}.term .ok{color:#4ade80}
+.cbadge{display:inline-block;background:#0f172a;color:#93c5fd;font:700 11px Consolas,monospace;padding:3px 11px;border-radius:20px;margin-bottom:5px}
+ol.agenda{margin:6px 0 0 22px;font-size:14px;line-height:2.05;color:#334155}ol.agenda b{color:#0f172a}
+.qlist{display:flex;flex-direction:column;gap:8px;overflow:auto;flex:1;min-height:0}
+.q{display:flex;gap:12px;align-items:flex-start;border:1px solid #e2e8f0;border-radius:10px;padding:9px 12px;background:#f8fafc}
+.q .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#1e293b;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.q p{font-size:16px;line-height:1.65;color:#334155}
+.ans{display:flex;gap:12px;align-items:flex-start;border:1px solid #bbf7d0;border-radius:10px;padding:9px 12px;background:#f0fdf4}
+.ans .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#16a34a;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.ans p{font-size:16px;line-height:1.65;color:#14532d}
+.biglink{display:inline-block;background:#0f172a;border:2px solid #334155;border-radius:12px;padding:16px 26px;text-decoration:none;transition:all .2s}
+.biglink:hover{border-color:#2563eb}.biglink .ln1{display:block;font:700 12px Arial;color:#94a3b8;letter-spacing:.08em;margin-bottom:5px}
+.biglink .ln2{display:block;font:600 15.5px Consolas,monospace;color:#60a5fa}
+.biglink .ln3{display:block;font-size:11.5px;color:#94a3b8;margin-top:5px}
+.dpcell{min-width:34px;height:34px;border:1.5px solid #cbd5e1;background:#f8fafc;display:flex;align-items:center;justify-content:center;font:700 12px Consolas;color:#334155;transition:all .3s}
+.dpcell.active{background:#dbeafe;border-color:#2563eb;color:#1e40af;transform:scale(1.1)}
+.dpcell.done{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.verdict{border-radius:8px;padding:8px 11px;font-size:12.5px;line-height:1.5}
+.verdict.good{background:#dcfce7;color:#166534}.verdict.mid{background:#fef9c3;color:#854d0e}
+#progress{position:fixed;top:0;left:0;height:5px;background:#2563eb;width:0;z-index:50;transition:width .3s}
+#hud{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;z-index:50;pointer-events:none;gap:12px}
+#hud>*{pointer-events:auto}#dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:52%}
+#dots button{width:9px;height:9px;border-radius:50%;border:none;background:#334155;cursor:pointer;padding:0}
+#dots button.on{background:#60a5fa;transform:scale(1.4)}
+.navbtn{width:38px;height:38px;border-radius:50%;border:none;background:#1e293b;color:#fff;font-size:19px;cursor:pointer}
+.navbtn:hover{background:#2563eb}
+#hud-left{color:#94a3b8;font-size:13px;display:flex;gap:12px;align-items:center;background:rgba(11,21,38,.8);padding:6px 12px;border-radius:20px}
+kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size:11px;border:1px solid #334155}
+input[type=range]{accent-color:#2563eb;flex:1}
+/* 5W1H box */
+.w5h1{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.wcard{border-radius:10px;padding:9px 12px;border:1.5px solid}
+.wcard .wlabel{font:800 12px Arial;letter-spacing:.1em;text-transform:uppercase}
+.wcard p{font-size:15px;line-height:1.6;color:#334155;flex:1}
+.wcard.what{border-color:#bfdbfe;background:#eff6ff}.wcard.what .wlabel{color:#1d4ed8}
+.wcard.why{border-color:#bbf7d0;background:#f0fdf4}.wcard.why .wlabel{color:#15803d}
+.wcard.who{border-color:#fde68a;background:#fffbeb}.wcard.who .wlabel{color:#b45309}
+.wcard.when{border-color:#e9d5ff;background:#faf5ff}.wcard.when .wlabel{color:#7c3aed}
+.wcard.where{border-color:#fecaca;background:#fef2f2}.wcard.where .wlabel{color:#b91c1c}
+.wcard.how{border-color:#cbd5e1;background:#f8fafc}.wcard.how .wlabel{color:#334155}
+#s1{justify-content:center}#s1 h1{font-size:48px;line-height:1.1;color:#0f172a;margin:10px 0 16px}
+#s1 .lead{font-size:16px;color:#334155;line-height:1.65;max-width:680px}
+.navhint{margin-top:18px;font-size:12.5px;color:#64748b}
+</style>
+</head>
+<body>
+<div id="stage"><div id="deck">
+
+<!-- 1. JUDUL -->
+<section class="slide" id="s1">
+  <div class="kicker">KOMPLEKSITAS ALGORITMA · PERTEMUAN 10</div>
+  <h1>Dynamic Programming I</h1>
+  <p class="lead">Kalau rekursi naif menghitung hal yang sama berulang kali, DP menyimpan hasilnya. Dua prinsip: <b>overlapping subproblems</b> dan <b>optimal substructure</b>. Hasilnya? Eksponensial jadi polinomial.</p>
+  <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · <a href="index.html" style="color:#2563eb;font-size:12px">← Daftar Materi</a></div>
+</section>
+
+<!-- 2. DUA PRINSIP DP -->
+<section class="slide" id="s2">
+  <div class="kicker">PRINSIP DASAR</div>
+  <h2 class="st">Dua syarat DP berlaku</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <div class="card" style="border-left:4px solid #2563eb">
+        <p class="b"><b>1. Overlapping Subproblems</b></p>
+        <p class="tiny">Rekursi naif memecah masalah menjadi submasalah - tapi submasalah yang sama dihitung berulang kali. DP menyimpan hasil setiap submasalah (memoize) sehingga hanya dihitung sekali.</p>
+      </div>
+      <div class="card" style="border-left:4px solid #7c3aed">
+        <p class="b"><b>2. Optimal Substructure</b></p>
+        <p class="tiny">Solusi optimal masalah bisa dibangun dari solusi optimal submasalahnya. Kalau submasalah harus diselesaikan secara independen, DP tidak berlaku (lihat Activity Selection - Greedy lebih tepat).</p>
+      </div>
+      <div class="analogy"><b>Analogi - tangga dengan biaya.</b> Untuk naik ke anak tangga ke-n dengan biaya minimum: kamu datang dari tangga n-1 atau n-2. Keputusan optimal di tangga ke-n bergantung pada keputusan optimal di bawahnya. Inilah optimal substructure.</div>
+    </div>
+    <div class="stack">
+      <div class="card soft">
+        <p class="b"><b>Fibonacci: dari O(2ⁿ) ke O(n)</b></p>
+        <table class="tbl" style="margin-top:6px">
+          <tr><th>Cara</th><th>Kompleksitas</th></tr>
+          <tr><td>Rekursi naif</td><td class="mono" style="color:#dc2626">O(2ⁿ)</td></tr>
+          <tr><td>Memoization (top-down)</td><td class="mono" style="color:#16a34a">O(n)</td></tr>
+          <tr><td>Tabulation (bottom-up)</td><td class="mono" style="color:#16a34a">O(n), O(1) ruang</td></tr>
+        </table>
+      </div>
+<pre class="pycode">from functools import lru_cache
+@lru_cache(None)
+def fib(n):                    # top-down
+    if n <= 1: return n
+    return fib(n-1) + fib(n-2)
+
+def fib_tab(n):                # bottom-up
+    a, b = 0, 1
+    for _ in range(n): a, b = b, a+b
+    return a</pre>
+    </div>
+  </div>
+</section>
+
+<!-- 3. 0/1 KNAPSACK -->
+<section class="slide" id="s3">
+  <div class="kicker">BAGIAN 1 · 0/1 KNAPSACK</div>
+  <h2 class="st">Knapsack 0/1 - Θ(n·W) pseudo-polinomial</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <p class="b">n item, tiap punya berat wᵢ dan nilai vᵢ. Kapasitas tas W. Maksimalkan nilai, tiap item diambil atau tidak (0 atau 1).</p>
+      <div class="card soft" style="font-size:12.5px;line-height:1.7">
+        <b>Rekurens DP:</b><br>
+        dp[i][w] = max nilai pakai item 1..i dengan berat ≤ w<br>
+        dp[i][w] = dp[i-1][w] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(tidak ambil item i)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max dengan dp[i-1][w-wᵢ]+vᵢ &nbsp;(ambil, kalau wᵢ≤w)
+      </div>
+<pre class="pycode">def knapsack(weights, values, W):
+    n = len(weights)
+    dp = [[0]*(W+1) for _ in range(n+1)]
+    for i in range(1, n+1):
+        for w in range(W+1):
+            dp[i][w] = dp[i-1][w]   # tidak ambil
+            if weights[i-1] <= w:
+                dp[i][w] = max(dp[i][w],
+                    dp[i-1][w-weights[i-1]] + values[i-1])
+    return dp[n][W]  # O(n*W)</pre>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · Knapsack simulator</div>
+      <div style="font-size:12px;color:#334155;margin-bottom:4px">Item: berat=[2,3,4,5], nilai=[3,4,5,6], W=8</div>
+      <button class="btn go" id="btnKnap">▶ Isi tabel DP</button>
+      <div id="knapGrid" style="overflow:auto;min-height:80px"></div>
+      <div class="verdict mid" id="knapVerdict">Klik untuk melihat tabel DP diisi baris per baris.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. COIN CHANGE -->
+<section class="slide" id="s4">
+  <div class="kicker">BAGIAN 2 · COIN CHANGE</div>
+  <h2 class="st">Coin Change - minimum koin untuk jumlah target</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b">Diberikan koin-koin dengan denominasi coins[] dan target amount, cari jumlah minimum koin yang diperlukan.</p>
+<pre class="pycode">def coin_change(coins, amount):
+    dp = [float('inf')] * (amount + 1)
+    dp[0] = 0               # base case
+    for a in range(1, amount + 1):
+        for c in coins:
+            if c <= a:
+                dp[a] = min(dp[a], dp[a-c] + 1)
+    return dp[amount] if dp[amount] != float('inf') else -1
+# T(amount, |coins|): O(amount × |coins|)</pre>
+      <div class="note">Greedy tidak selalu benar di sini! Koin [1,3,4], target=6: greedy ambil 4 → perlu 3 koin (4+1+1). DP temukan: 3+3 = <b>2 koin</b>. Greedy gagal karena tidak ada optimal substructure untuk greedy.</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · Coin Change</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span class="tiny">Koin: [1,3,4] &nbsp; Target:</span>
+        <input type="number" id="coinTarget" value="6" min="1" max="20" style="border:1.5px solid #cbd5e1;border-radius:7px;padding:5px 8px;font:13px Consolas;width:70px">
+        <button class="btn go" id="btnCoin">Hitung</button>
+      </div>
+      <div id="coinDp" style="font:12px Consolas;background:#f8fafc;border-radius:8px;padding:8px;min-height:60px;overflow-x:auto"></div>
+      <div class="verdict" id="coinVerdict">Masukkan target dan klik Hitung.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. TOP-DOWN vs BOTTOM-UP -->
+<section class="slide" id="s5">
+  <div class="kicker">BAGIAN 3 · STRATEGI DP</div>
+  <h2 class="st">Top-down vs Bottom-up: dua cara implementasi DP</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <div class="card" style="border-left:4px solid #2563eb">
+        <p class="b"><b>Top-down (Memoization)</b></p>
+        <p class="tiny">Tulis rekursi naif, tambahkan cache. Hanya hitung submasalah yang benar-benar dibutuhkan ("lazy"). Mudah dikode, tapi ada overhead rekursi (stack calls).</p>
+<pre class="pycode">from functools import lru_cache
+@lru_cache(None)
+def dp(i, w):
+    if i == 0: return 0
+    skip = dp(i-1, w)
+    if weights[i-1] > w: return skip
+    return max(skip, dp(i-1,w-weights[i-1])+values[i-1])</pre>
+      </div>
+      <div class="card" style="border-left:4px solid #16a34a">
+        <p class="b"><b>Bottom-up (Tabulation)</b></p>
+        <p class="tiny">Isi tabel dari submasalah terkecil ke terbesar. Tidak ada rekursi → tidak ada stack overflow. Bisa dioptimasi ruang (misalnya 1D array untuk Knapsack).</p>
+<pre class="pycode">def dp_tab(weights, values, W):
+    dp = [0] * (W + 1)
+    for i in range(len(weights)):
+        for w in range(W, weights[i]-1, -1):
+            dp[w] = max(dp[w], dp[w-weights[i]]+values[i])
+    return dp[W]  # O(n*W) waktu, O(W) ruang</pre>
+      </div>
+    </div>
+    <div class="stack">
+      <table class="tbl">
+        <tr><th>Aspek</th><th>Top-down</th><th>Bottom-up</th></tr>
+        <tr><td>Kemudahan kode</td><td>✓ Mudah</td><td>Perlu dipikir urutan</td></tr>
+        <tr><td>Submasalah yg dihitung</td><td>Hanya yg perlu</td><td>Semua</td></tr>
+        <tr><td>Overhead rekursi</td><td>Ada (stack calls)</td><td>✓ Tidak ada</td></tr>
+        <tr><td>Optimasi ruang</td><td>Sulit</td><td>✓ Mudah (1D array)</td></tr>
+        <tr><td>Stack overflow?</td><td>Bisa (n besar)</td><td>✓ Tidak</td></tr>
+      </table>
+      <div class="analogy"><b>Analogi:</b> top-down = cari di kamus mulai dari halaman depan, melompat ke referensi. Bottom-up = baca kamus dari awal sampai akhir, catat semua. Yang pertama lebih natural; yang kedua lebih efisien kalau semua entry dibutuhkan.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. LATIHAN -->
+<section class="slide" id="s6">
+  <div class="kicker">LATIHAN</div>
+  <h2 class="st">Soal Dynamic Programming I</h2>
+  <div class="qlist">
+    <div class="q"><span class="qn">1</span><p>Jelaskan dua syarat DP dengan kata-kata sendiri, lalu berikan satu contoh masalah yang memenuhi keduanya dan satu yang hanya memenuhi salah satu.</p></div>
+    <div class="q"><span class="qn">2</span><p>Hitung Fibonacci(10) menggunakan tabel bottom-up. Berapa operasi yang dilakukan? Bandingkan dengan rekursi naif yang membutuhkan berapa pemanggilan?</p></div>
+    <div class="q"><span class="qn">3</span><p>Diberikan item: berat=[1,2,3], nilai=[6,10,12], W=5. Isi tabel DP knapsack 4×6 secara manual (baris=item 0-3, kolom=kapasitas 0-5). Apa nilai maksimumnya?</p></div>
+    <div class="q"><span class="qn">4</span><p>Knapsack 0/1 punya kompleksitas O(n·W). Mengapa ini disebut "pseudo-polinomial" bukan "polinomial"? (Petunjuk: pikirkan berapa bit yang dibutuhkan untuk merepresentasikan W.)</p></div>
+    <div class="q"><span class="qn">5</span><p>Di Colab: implementasikan Coin Change dengan koin [1,5,10,25] (dolar AS). Cari minimum koin untuk amount=41 dan amount=63. Cocokkan dengan solusi greedy dan lihat apakah greedy benar atau tidak.</p></div>
+  </div>
+</section>
+
+<!-- 7. KUNCI -->
+<section class="slide" id="s7">
+  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
+  <h2 class="st">Kunci Dynamic Programming I</h2>
+  <div class="qlist">
+    <div class="ans"><span class="qn">1</span><p><b>Overlapping subproblems:</b> submasalah yang sama muncul lebih dari sekali dalam rekursi. <b>Optimal substructure:</b> solusi optimal bisa dibangun dari solusi optimal submasalahnya. Contoh keduanya: knapsack, fibonacci. Hanya substructure tapi tidak overlapping: activity selection (greedy lebih tepat).</p></div>
+    <div class="ans"><span class="qn">2</span><p>Bottom-up Fibonacci: n-1 operasi = <b>9 operasi</b> untuk Fib(10). Rekursi naif: T(n) = T(n-1)+T(n-2)+1, tumbuh eksponensial ≈ 2^10 ≈ <b>1024 pemanggilan</b>. DP 100× lebih efisien di sini, makin jauh makin besar selisihnya.</p></div>
+    <div class="ans"><span class="qn">3</span><p>Tabel DP: dp[3][5] = <b>22</b>. Ambil item 1 (b=1,v=6) + item 3 (b=3,v=12) = berat 4, nilai 18? Cek lagi: item dengan nilai terbesar adalah [2,3] nilai [10,12] berat total 5 = nilai 22. Benar: ambil item 2 dan 3.</p></div>
+    <div class="ans"><span class="qn">4</span><p>Pseudo-polinomial karena O(n·W) - di mana W angkanya, bukan jumlah bit. Representasi W butuh log₂W bit, jadi W = 2^(log₂W) → kompleksitas sebenarnya O(n · 2^(jumlah bit W)) = <b>eksponensial</b> dalam ukuran input. Berbeda dari "polinomial terhadap panjang input".</p></div>
+    <div class="ans"><span class="qn">5</span><p>Koin AS [1,5,10,25]: greedy benar di sini karena denominasinya dipilih dengan baik. amount=41 → 25+10+5+1 = <b>4 koin</b> (greedy ✓). amount=63 → 25+25+10+3×1 = <b>7 koin</b> (greedy ✓). Greedy gagal untuk sistem koin acak seperti [1,3,4].</p></div>
+  </div>
+</section>
+
+<!-- 8. PENUTUP -->
+<section class="slide" id="s8" style="justify-content:center;align-items:center;text-align:center">
+  <div class="kicker">PERTEMUAN 10 · SELESAI</div>
+  <h2 class="st" style="font-size:30px;margin:10px 0">Simpan, jangan hitung ulang.<br>Itulah inti DP.</h2>
+  <p style="font-size:13.5px;color:#64748b;max-width:680px;margin:10px auto 0">Pertemuan depan: DP II - LCS, Edit Distance, Matrix Chain, Bellman-Ford, Floyd-Warshall, dan DP pada urutan di AI (Viterbi).</p>
+  <div style="margin:24px 0 10px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+    <a class="biglink" href="index.html"><span class="ln1">← KEMBALI KE DAFTAR MATERI</span><span class="ln2">index.html</span><span class="ln3">Semua pertemuan</span></a>
+    <a class="biglink" href="P10_DP1.ipynb" target="_blank"><span class="ln1">BUKA NOTEBOOK</span><span class="ln2">P10_DP1.ipynb</span><span class="ln3">Fibonacci, 0/1 Knapsack, Coin Change</span></a>
+  </div>
+</section>
+
+</div></div>
+<div id="progress"></div>
+<div id="hud">
+  <div id="hud-left"><span id="pageno">1 / 8</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="dots"></div>
+  <div style="display:flex;gap:8px">
+    <button class="navbtn" id="btnFs">⛶</button>
+    <button class="navbtn" id="btnPrev">‹</button>
+    <button class="navbtn" id="btnNext">›</button>
+  </div>
+</div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function hlCode(t){const e=esc(t);return e.replace(/(#[^\n]*)|("[^"]*")|\b(def|for|in|range|while|if|elif|else|return|import|from|print|lambda|len|not|and|or|True|False|None|float|int|min|max|pass|append)\b|\b(\d+(?:\.\d+)?)\b/g,(m,c,s,k,n)=>c?`<span class="tc">${c}</span>`:s?`<span class="ts">${s}</span>`:k?`<span class="tk">${k}</span>`:`<span class="tn">${n}</span>`)}
+$$('.pycode').forEach(p=>p.innerHTML=hlCode(p.textContent));
+const slides=$$('.slide');let cur=0;
+function go(i){i=Math.max(0,Math.min(slides.length-1,i));if(i===cur)return;
+  const dir=i>cur?1:-1,o=slides[cur],n=slides[i];
+  o.classList.remove('active');o.classList.add(dir>0?'exit-left':'exit-right');
+  n.classList.add(dir>0?'from-right':'from-left');void n.offsetWidth;
+  n.classList.remove('from-right','from-left');n.classList.add('active');
+  setTimeout(()=>o.classList.remove('exit-left','exit-right'),420);cur=i;sync();}
+function sync(){$('#progress').style.width=((cur+1)/slides.length*100)+'%';$('#pageno').textContent=(cur+1)+' / '+slides.length;$$('#dots button').forEach((d,j)=>d.classList.toggle('on',j===cur))}
+const dots=$('#dots');slides.forEach((s,j)=>{const b=document.createElement('button');b.title='Slide '+(j+1);b.onclick=()=>go(j);dots.appendChild(b)});
+$('#btnNext').onclick=()=>go(cur+1);$('#btnPrev').onclick=()=>go(cur-1);
+function toggleFs(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+$('#btnFs').onclick=toggleFs;
+addEventListener('keydown',e=>{const t=e.target,tag=t&&t.tagName,inter=tag==='INPUT'||tag==='TEXTAREA';
+  if(e.key==='ArrowRight'||(e.key===' '&&!inter&&tag!=='BUTTON')){e.preventDefault();go(cur+1)}
+  else if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
+  else if((e.key==='f'||e.key==='F')&&!inter)toggleFs();});
+function fit(){const s=Math.min((innerWidth-30)/1280,(innerHeight-80)/720);$('#deck').style.transform=`translate(-50%,-50%) scale(${s})`}
+addEventListener('resize',fit);fit();
+slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot';f.innerHTML=`<span>Kompleksitas Algoritma · Pertemuan 10 - Dynamic Programming I</span><span>${j+1}</span>`;s.appendChild(f)});
+/* Knapsack */
+(function(){
+  const grid=$('#knapGrid'),v=$('#knapVerdict');if(!grid)return;
+  const W=[2,3,4,5],V=[3,4,5,6],cap=8;
+  let timers=[];
+  $('#btnKnap').onclick=()=>{timers.forEach(clearTimeout);timers=[];grid.innerHTML='';v.className='verdict mid';v.textContent='Mengisi tabel…';
+    const dp=Array.from({length:W.length+1},()=>new Array(cap+1).fill(0));
+    const steps=[];
+    for(let i=1;i<=W.length;i++)for(let w=0;w<=cap;w++){dp[i][w]=dp[i-1][w];if(W[i-1]<=w)dp[i][w]=Math.max(dp[i][w],dp[i-1][w-W[i-1]]+V[i-1]);steps.push({i,w,val:dp[i][w]})}
+    const table=document.createElement('table');table.style.cssText='border-collapse:collapse;font-size:11px';
+    const cells=[];
+    const hdr=document.createElement('tr');hdr.innerHTML='<th style="background:#1e293b;color:#fff;padding:3px 6px">item\\W</th>'+[...Array(cap+1).keys()].map(w=>`<th style="background:#1e293b;color:#fff;padding:3px 6px">${w}</th>`).join('');table.appendChild(hdr);
+    for(let i=0;i<=W.length;i++){const tr=document.createElement('tr');cells.push([]);
+      const lbl=i===0?'-':` w${i}=${W[i-1]},v${i}=${V[i-1]}`;
+      tr.innerHTML=`<td style="background:#f8fafc;padding:3px 6px;font-weight:700;font-family:Consolas;font-size:10px">${lbl}</td>`;
+      for(let w=0;w<=cap;w++){const td=document.createElement('td');td.style.cssText='border:1px solid #e2e8f0;padding:3px 7px;text-align:center;font-family:Consolas;font-size:12px;transition:all .3s';td.textContent=i===0?0:'?';tr.appendChild(td);cells[i].push(td)}
+      table.appendChild(tr)}
+    grid.appendChild(table);
+    let si=0;
+    function tick(){if(si>=steps.length){v.className='verdict good';v.innerHTML=`Selesai! Nilai maksimum = <b>${dp[W.length][cap]}</b> (kapasitas ${cap}, ${W.length} item).`;return}
+      const s=steps[si];cells[s.i][s.w].textContent=s.val;cells[s.i][s.w].style.background=s.val>0?'#dbeafe':'#f1f5f9';cells[s.i][s.w].style.color=s.val>0?'#1e40af':'#94a3b8';si++;timers.push(setTimeout(tick,40))}
+    timers.push(setTimeout(tick,300))};
+})();
+/* Coin Change */
+(function(){
+  const coins=[1,3,4];
+  $('#btnCoin').onclick=()=>{const amt=Math.min(20,Math.max(1,+$('#coinTarget').value));
+    const dp=new Array(amt+1).fill(Infinity);dp[0]=0;
+    for(let a=1;a<=amt;a++)coins.forEach(c=>{if(c<=a&&dp[a-c]+1<dp[a])dp[a]=dp[a-c]+1});
+    let html='dp: ';for(let a=0;a<=amt;a++){const v=dp[a]===Infinity?'∞':dp[a];const hl=a===amt?' style="background:#dbeafe;border-radius:4px;padding:1px 4px"':'';html+=`<span${hl}>[${a}]=${v} </span>`}
+    $('#coinDp').innerHTML=html;
+    const r=$('#coinVerdict');if(dp[amt]===Infinity){r.className='verdict bad';r.innerHTML=`Tidak bisa dibuat dari koin [${coins}].`}
+    else{r.className='verdict good';r.innerHTML=`Minimum <b>${dp[amt]} koin</b> untuk jumlah ${amt} dari [${coins}].`}};
+})();
+</script>
+</body>
+</html>

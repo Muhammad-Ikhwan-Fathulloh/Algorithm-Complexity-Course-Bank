@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pertemuan 9 - Greedy II (Graf) dan A* · Kompleksitas Algoritma</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#0b1526;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+#stage{position:fixed;inset:0;background:radial-gradient(1200px 700px at 70% -10%,#16294d 0%,#0b1526 60%)}
+#deck{position:absolute;left:50%;top:50%;width:1280px;height:720px}
+.slide{position:absolute;inset:0;background:#fff;border-radius:8px;box-shadow:0 24px 80px rgba(0,0,0,.55);padding:44px 60px 60px;opacity:0;pointer-events:none;overflow:hidden;display:flex;flex-direction:column;gap:18px;z-index:1;transition:opacity .38s ease,transform .38s ease}
+.slide.from-right{transition:none;transform:translateX(90px)}.slide.from-left{transition:none;transform:translateX(-90px)}
+.slide.exit-left{opacity:0;transform:translateX(-90px);z-index:2}.slide.exit-right{opacity:0;transform:translateX(90px);z-index:2}
+.slide.active{opacity:1;pointer-events:auto;z-index:3}
+.sfoot{position:absolute;left:60px;right:60px;bottom:14px;display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;border-top:1px solid #f1f5f9;padding-top:6px}
+.kicker{font-size:13px;font-weight:800;letter-spacing:.14em;color:#2563eb;text-transform:uppercase}
+h2.st{font-size:32px;color:#0f172a;line-height:1.25}
+p.b{font-size:17px;line-height:1.65;color:#334155}
+.cols{display:grid;gap:20px;flex:1;min-height:0}
+.c2{grid-template-columns:1fr 1fr}.c2l{grid-template-columns:1.1fr .9fr}.c2r{grid-template-columns:.9fr 1.1fr}
+.stack{display:flex;flex-direction:column;gap:9px;min-height:0}
+.card{border:1px solid #e2e8f0;border-radius:10px;padding:10px 13px;background:#fff}
+.card.soft{background:#f8fafc}
+.analogy{background:#fffbeb;border:2px solid #fde68a;border-left:6px solid #d97706;padding:14px 18px;border-radius:10px;font-size:17px;line-height:1.7;color:#334155}
+.analogy b{color:#b45309}
+.warn{background:#fef2f2;border:2px solid #fecaca;border-left:6px solid #b91c1c;padding:14px 18px;border-radius:10px;font-size:17px;color:#334155;line-height:1.7}
+.note{background:#eff6ff;border:1px solid #bfdbfe;border-left:5px solid #2563eb;padding:9px 12px;border-radius:8px;font-size:12.5px;color:#334155;line-height:1.6}
+table.tbl{width:100%;border-collapse:collapse;font-size:16px}
+.tbl th{background:#1e293b;color:#fff;text-align:left;padding:10px 14px;font-size:14px}
+.tbl td{border:1px solid #e2e8f0;padding:9px 14px;color:#334155;vertical-align:middle;line-height:1.45}
+pre.pycode{background:#0f172a;color:#e2e8f0;border-radius:12px;padding:18px 22px;font:15px/1.7 Consolas,'Courier New',monospace;overflow:auto}
+.tk{color:#93c5fd}.ts{color:#fbbf24}.tc{color:#7dd3fc;font-style:italic}.tn{color:#f9a8d4}
+.mono{font-family:Consolas,monospace}.tiny{font-size:14px;color:#64748b;line-height:1.55}
+.btn{display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn:hover{background:#1d4ed8}.btn.go{background:#16a34a}.btn.go:hover{background:#15803d}
+.btn.ghost{background:#fff;color:#2563eb;border:1.5px solid #bfdbfe}.btn.ghost:hover{background:#eff6ff}
+.chipbtn{background:#fff;border:2px solid #bfdbfe;color:#1d4ed8;border-radius:20px;padding:7px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.chipbtn:hover{background:#eff6ff}.chipbtn.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.sim{border:1.5px solid #dbeafe;background:linear-gradient(180deg,#f8fbff,#fff);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-height:0}
+.sim .cap{font-size:12px;font-weight:800;letter-spacing:.1em;color:#2563eb;text-transform:uppercase}
+.term{background:#0f172a;color:#a7f3d0;border-radius:10px;padding:14px 16px;font:14px/1.8 Consolas,monospace;min-height:80px;white-space:pre-wrap;overflow:auto;flex:1}
+ol.agenda{margin:6px 0 0 22px;font-size:14px;line-height:2.05;color:#334155}
+ol.agenda b{color:#0f172a}
+.qlist{display:flex;flex-direction:column;gap:8px;overflow:auto;flex:1;min-height:0}
+.q{display:flex;gap:12px;align-items:flex-start;border:1px solid #e2e8f0;border-radius:10px;padding:9px 12px;background:#f8fafc}
+.q .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#1e293b;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.q p{font-size:16px;line-height:1.65;color:#334155}
+.ans{display:flex;gap:12px;align-items:flex-start;border:1px solid #bbf7d0;border-radius:10px;padding:9px 12px;background:#f0fdf4}
+.ans .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#16a34a;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.ans p{font-size:16px;line-height:1.65;color:#14532d}
+.biglink{display:inline-block;background:#0f172a;border:2px solid #334155;border-radius:12px;padding:16px 26px;text-decoration:none;transition:all .2s}
+.biglink:hover{border-color:#2563eb}.biglink .ln1{display:block;font:700 12px Arial;color:#94a3b8;letter-spacing:.08em;margin-bottom:5px}
+.biglink .ln2{display:block;font:600 15.5px Consolas,monospace;color:#60a5fa}
+.biglink .ln3{display:block;font-size:11.5px;color:#94a3b8;margin-top:5px}
+#progress{position:fixed;top:0;left:0;height:5px;background:#2563eb;width:0;z-index:50;transition:width .3s}
+#hud{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;z-index:50;pointer-events:none;gap:12px}
+#hud>*{pointer-events:auto}#dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:52%}
+#dots button{width:9px;height:9px;border-radius:50%;border:none;background:#334155;cursor:pointer;padding:0}
+#dots button.on{background:#60a5fa;transform:scale(1.4)}
+.navbtn{width:38px;height:38px;border-radius:50%;border:none;background:#1e293b;color:#fff;font-size:19px;cursor:pointer}
+.navbtn:hover{background:#2563eb}
+#hud-left{color:#94a3b8;font-size:13px;display:flex;gap:12px;align-items:center;background:rgba(11,21,38,.8);padding:6px 12px;border-radius:20px}
+kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size:11px;border:1px solid #334155}
+canvas{border:1.5px solid #cbd5e1;border-radius:8px;cursor:pointer}
+.navhint{margin-top:18px;font-size:12.5px;color:#64748b}
+</style>
+</head>
+<body>
+<div id="stage"><div id="deck">
+
+<!-- 1. JUDUL -->
+<section class="slide" id="s1">
+  <div class="kicker">KOMPLEKSITAS ALGORITMA · PERTEMUAN 9</div>
+  <h1 style="font-size:44px;line-height:1.1;color:#0f172a;margin:10px 0 16px">Greedy II (Graf) dan A*</h1>
+  <p class="b" style="max-width:680px">Greedy di graf: <b>Kruskal</b> dan <b>Prim</b> untuk MST, <b>Dijkstra</b> untuk shortest path, <b>Huffman</b> untuk encoding optimal. Dan <b>A*</b> - Dijkstra dengan heuristik untuk lebih cepat menemukan jalur.</p>
+  <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · <a href="index.html" style="color:#2563eb;font-size:12px">← Daftar Materi</a></div>
+</section>
+
+<!-- 5W1H -->
+<section class="slide" id="s5w1h">
+  <div class="kicker">KERANGKA TEORI · 5W1H - Greedy II (Graf) dan A*</div>
+  <h2 class="st">Kenapa materi ini ada, untuk siapa, dan bagaimana memakainya?</h2>
+  <div class="w5h1" style="margin-top:6px">
+    <div class="wcard what"><div class="wlabel">What - Apa?</div><p>Greedy di graf: Kruskal dan Prim mencari Minimum Spanning Tree (MST). Dijkstra mencari jalur terpendek single-source berbobot positif. Huffman Coding membangun kode prefix-free optimal untuk kompresi data. A* menggabungkan Dijkstra dengan heuristik untuk menemukan jalur ke goal lebih cepat.</p></div>
+    <div class="wcard why"><div class="wlabel">Why - Mengapa?</div><p>Infrastruktur jaringan (internet, jalan raya, pipa gas) semua butuh MST dan shortest path. Huffman langsung dipakai di gzip dan PNG yang kita pakai setiap hari. A* adalah backbone GPS navigation dan robot pathfinding. Memahami O(E log V) vs O(V²) menentukan apakah sistem bisa real-time.</p></div>
+    <div class="wcard who"><div class="wlabel">Who - Siapa?</div><p>Network engineer (MST untuk desain jaringan minimum-cost), game developer (A* untuk NPC pathfinding di Unity/Unreal), developer GPS/maps (Dijkstra/A* untuk routing), data compression engineer (Huffman untuk codec), dan siapapun yang membangun sistem yang butuh jalur optimal di graf berbobot positif.</p></div>
+    <div class="wcard when"><div class="wlabel">When - Kapan?</div><p>Kruskal: graf sparse, gunakan union-find O(E log E). Prim: graf dense, gunakan min-heap O(E log V). Dijkstra: shortest path, bobot non-negatif, satu sumber. A*: shortest path ke satu goal spesifik dengan heuristik tersedia. Huffman: kompresi data statis di mana frekuensi simbol diketahui sebelumnya.</p></div>
+    <div class="wcard where"><div class="wlabel">Where - Di mana?</div><p>Kruskal/Prim di: desain kabel jaringan, dendogram clustering (single-linkage). Dijkstra di: OSPF routing protocol, database query planning. A* di: game engine Unity NavMesh, robot motion planning, puzzle AI solver. Huffman di: gzip, DEFLATE, PNG lossless, JPEG DC coefficients. Semua tersedia di library NetworkX Python.</p></div>
+    <div class="wcard how"><div class="wlabel">How - Bagaimana?</div><p>Kruskal: sort semua edge by weight, pakai Union-Find untuk skip cycle, O(E log E). Prim: grow MST dari satu node, min-heap untuk selalu ambil edge terkecil ke node belum dikunjungi, O(E log V). Dijkstra: priority queue dengan dist[v], relax edges. A*: f(n) = g(n) + h(n), heuristik h harus admissible - tidak pernah overestimate jarak ke goal.</p></div>
+  </div>
+</section>
+
+<!-- 2. MST: KRUSKAL & PRIM -->
+<section class="slide" id="s2">
+  <div class="kicker">BAGIAN 1 · MINIMUM SPANNING TREE</div>
+  <h2 class="st">Kruskal vs Prim - Dua cara greedy untuk MST</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <div class="card" style="border-left:4px solid #2563eb">
+        <p class="b"><b>Kruskal:</b> Sort semua edge by weight, tambahkan edge terkecil yang tidak membentuk cycle (union-find). O(E log E).</p>
+<pre class="pycode" style="font-size:10.5px">def kruskal(n, edges):
+    edges.sort(key=lambda e: e[2])
+    parent = list(range(n))
+    def find(x):
+        if parent[x]!=x: parent[x]=find(parent[x])
+        return parent[x]
+    def union(a,b):
+        parent[find(a)] = find(b)
+    mst = []
+    for u, v, w in edges:
+        if find(u) != find(v):
+            union(u, v); mst.append((u,v,w))
+    return mst</pre>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card" style="border-left:4px solid #7c3aed">
+        <p class="b"><b>Prim:</b> Tumbuh dari satu node, selalu tambahkan edge terkecil ke node baru. Priority queue. O(E log V).</p>
+      </div>
+      <table class="tbl">
+        <tr><th>Aspek</th><th>Kruskal</th><th>Prim</th></tr>
+        <tr><td>Pendekatan</td><td>Global (sort edge)</td><td>Lokal (tumbuh)</td></tr>
+        <tr><td>Kompleksitas</td><td>O(E log E)</td><td>O(E log V)</td></tr>
+        <tr><td>Cocok untuk</td><td>Graf sparse</td><td>Graf dense</td></tr>
+        <tr><td>Struktur data</td><td>Union-Find</td><td>Priority Queue</td></tr>
+      </table>
+      <div class="analogy"><b>Kruskal:</b> Pilih jalan termurah dari semua jalan yang ada, asal tidak membentuk loop. <b>Prim:</b> Dari kota yang sudah terjangkau, ekspansi ke kota terdekat berikutnya.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. DIJKSTRA -->
+<section class="slide" id="s3">
+  <div class="kicker">BAGIAN 2 · DIJKSTRA</div>
+  <h2 class="st">Dijkstra - Shortest path dengan priority queue</h2>
+  <div class="cols c2l">
+    <div class="stack">
+<pre class="pycode">import heapq
+def dijkstra(graph, src):
+    # graph[u] = [(v, weight), ...]
+    dist = {v: float('inf') for v in graph}
+    dist[src] = 0
+    pq = [(0, src)]   # (distance, node)
+    while pq:
+        d, u = heapq.heappop(pq)
+        if d > dist[u]: continue  # sudah lebih baik
+        for v, w in graph[u]:
+            if dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+                heapq.heappush(pq, (dist[v], v))
+    return dist
+# O(E log V) dengan binary heap</pre>
+      <div class="warn"><b>Syarat:</b> Semua bobot edge harus ≥ 0. Untuk edge negatif, gunakan Bellman-Ford. Dijkstra dengan edge negatif bisa memberikan hasil salah!</div>
+    </div>
+    <div class="stack">
+      <div class="note"><b>Mengapa greedy benar?</b> Ketika node u di-extract dari priority queue, dist[u] sudah final - tidak ada jalur lebih pendek yang mungkin (semua edge non-negatif). Ini adalah invariant greedy Dijkstra.</div>
+      <table class="tbl">
+        <tr><th>Algoritma</th><th>Kompleksitas</th><th>Edge negatif?</th></tr>
+        <tr><td>Dijkstra</td><td>O(E log V)</td><td>✗ Tidak</td></tr>
+        <tr><td>Bellman-Ford</td><td>O(VE)</td><td>✓ Ya</td></tr>
+        <tr><td>Floyd-Warshall</td><td>O(V³)</td><td>✓ (no neg cycle)</td></tr>
+        <tr><td>A*</td><td>O(E log V) + h</td><td>✗ Tidak</td></tr>
+      </table>
+      <div class="analogy"><b>Analogi:</b> Peta GPS Dijkstra: dari kota asal, selalu kunjungi kota yang <i>sudah diketahui paling dekat</i> lebih dulu. Expand semua arah sama rata. A* akan menambah "intuisi arah" ke tujuan.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. HUFFMAN -->
+<section class="slide" id="s4">
+  <div class="kicker">BAGIAN 3 · HUFFMAN CODING</div>
+  <h2 class="st">Huffman - Prefix-free encoding optimal</h2>
+  <div class="cols c2">
+    <div class="stack">
+<pre class="pycode">import heapq
+def huffman(freq):
+    # freq = {'a':5, 'b':9, 'c':12, ...}
+    heap = [[f, [ch, ""]]
+            for ch, f in freq.items()]
+    heapq.heapify(heap)
+    while len(heap) > 1:
+        lo = heapq.heappop(heap)  # dua terkecil
+        hi = heapq.heappop(heap)
+        for p in lo[1:]: p[1] = '0' + p[1]
+        for p in hi[1:]: p[1] = '1' + p[1]
+        heapq.heappush(heap, [lo[0]+hi[0]]
+                             + lo[1:] + hi[1:])
+    return sorted(heap[0][1:], key=lambda x:x[1])
+# O(n log n)</pre>
+    </div>
+    <div class="stack">
+      <div class="note"><b>Huffman optimal:</b> Menghasilkan prefix-free code dengan total panjang bit minimum. Karakter sering = kode pendek, karakter jarang = kode panjang. Digunakan di DEFLATE (zip, gzip, PNG).</div>
+      <table class="tbl">
+        <tr><th>Karakter</th><th>Frekuensi</th><th>Kode Huffman</th><th>Fixed (3-bit)</th></tr>
+        <tr><td>a</td><td>45%</td><td class="mono">0</td><td class="mono">000</td></tr>
+        <tr><td>b</td><td>13%</td><td class="mono">101</td><td class="mono">001</td></tr>
+        <tr><td>c</td><td>12%</td><td class="mono">100</td><td class="mono">010</td></tr>
+        <tr><td>d</td><td>16%</td><td class="mono">111</td><td class="mono">011</td></tr>
+        <tr><td>e</td><td>9%</td><td class="mono">1101</td><td class="mono">100</td></tr>
+        <tr><td>f</td><td>5%</td><td class="mono">1100</td><td class="mono">101</td></tr>
+      </table>
+      <p class="tiny">Huffman: 2.24 bit/karakter rata-rata vs 3 bit fixed → penghematan 25%!</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5. A* SEARCH -->
+<section class="slide" id="s5">
+  <div class="kicker">BAGIAN 4 · A* SEARCH</div>
+  <h2 class="st">A* - Dijkstra dengan heuristik</h2>
+  <div class="cols c2l">
+    <div class="stack">
+<pre class="pycode">import heapq
+def astar(graph, start, goal, h):
+    # h(n) = heuristic: estimasi jarak n ke goal
+    open_set = [(h(start), 0, start, [])]
+    visited = set()
+    while open_set:
+        f, g, u, path = heapq.heappop(open_set)
+        if u in visited: continue
+        visited.add(u); path = path + [u]
+        if u == goal: return path, g
+        for v, w in graph[u]:
+            if v not in visited:
+                new_g = g + w
+                heapq.heappush(open_set,
+                    (new_g + h(v), new_g, v, path))
+    return None, float('inf')
+# h(n) = Manhattan distance untuk grid</pre>
+      <div class="note"><b>f(n) = g(n) + h(n):</b> g(n) = biaya aktual dari start ke n. h(n) = estimasi biaya dari n ke goal. A* mengeksplorasi node dengan f terkecil dulu.</div>
+    </div>
+    <div class="stack">
+      <div class="card" style="border-left:4px solid #2563eb">
+        <p class="b"><b>Admissible heuristic:</b> h(n) ≤ true cost ke goal. Menjamin A* menemukan jalur optimal. Manhattan distance admissible untuk grid (tidak ada diagonal).</p>
+      </div>
+      <div class="card" style="border-left:4px solid #16a34a">
+        <p class="b"><b>Consistent heuristic:</b> h(n) ≤ w(n,n') + h(n'). Lebih kuat dari admissible - menjamin setiap node hanya dikunjungi sekali.</p>
+      </div>
+      <div class="analogy"><b>A* vs Dijkstra:</b> Dijkstra = mencari kunci di seluruh rumah secara sistematis. A* = mencari kunci tapi tahu kira-kira di mana ("biasanya di meja"), jadi cek meja dulu. Lebih cepat dengan pengetahuan ekstra.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. A* VISUALIZER -->
+<section class="slide" id="s6">
+  <div class="kicker">INTERAKTIF · A* vs DIJKSTRA</div>
+  <h2 class="st">Grid pathfinding: A* vs Dijkstra</h2>
+  <div class="cols c2">
+    <div class="sim" style="flex:1">
+      <div class="cap">A* Pathfinding (klik grid = toggle dinding)</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn go" id="btnRunAstar">▶ A*</button>
+        <button class="btn" id="btnRunDijk">▶ Dijkstra</button>
+        <button class="btn ghost" id="btnClearPath">Bersihkan</button>
+        <button class="btn ghost" id="btnResetGrid">Reset Grid</button>
+      </div>
+      <canvas id="gridCanvas" width="320" height="220"></canvas>
+      <div class="term" id="pathLog" style="min-height:50px"></div>
+    </div>
+    <div class="stack">
+      <div class="note"><b>Legenda warna:</b><br>
+        <span style="color:#16a34a">■ Hijau</span> = jalur optimal<br>
+        <span style="color:#2563eb">■ Biru</span> = dikunjungi A*<br>
+        <span style="color:#7c3aed">■ Ungu</span> = dikunjungi Dijkstra<br>
+        <span style="color:#1e293b">■ Hitam</span> = dinding<br>
+        <span style="color:#f59e0b">■ Kuning</span> = Start/Goal
+      </div>
+      <div class="card soft">
+        <p class="b"><b>Klik sel</b> untuk toggle dinding. A* pakai Manhattan distance sebagai heuristik. Bandingkan berapa sel yang dikunjungi masing-masing algoritma.</p>
+      </div>
+      <div class="analogy"><b>Mengapa A* lebih cepat?</b> Heuristik "menarik" pencarian ke arah tujuan. Dijkstra tidak tahu di mana tujuan, sehingga menyebar ke semua arah sama rata.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. LATIHAN -->
+<section class="slide" id="s7">
+  <div class="kicker">LATIHAN</div>
+  <h2 class="st">Soal Greedy II (Graf) dan A*</h2>
+  <div class="qlist">
+    <div class="q"><span class="qn">1</span><p>Apa perbedaan mendasar antara Kruskal dan Prim dalam membangun MST? Kapan Kruskal lebih efisien dari Prim, dan kapan sebaliknya?</p></div>
+    <div class="q"><span class="qn">2</span><p>Dijkstra gagal untuk graf dengan edge negatif. Berikan contoh konkret (graf 3 node dengan edge negatif) yang membuat Dijkstra memberikan jarak yang salah.</p></div>
+    <div class="q"><span class="qn">3</span><p>Diberikan frekuensi karakter: A=45, B=13, C=12, D=16, E=9, F=5. Bangun pohon Huffman secara manual dan hitung rata-rata panjang kode dalam bit per karakter.</p></div>
+    <div class="q"><span class="qn">4</span><p>Jelaskan perbedaan "admissible" dan "consistent" heuristic di A*. Berikan contoh heuristik yang admissible tapi tidak consistent.</p></div>
+    <div class="q"><span class="qn">5</span><p>A* dengan h(n)=0 untuk semua n setara dengan algoritma apa? A* dengan h(n) = true distance ke goal setara dengan apa? Apa yang terjadi jika h(n) > true distance (tidak admissible)?</p></div>
+  </div>
+</section>
+
+<!-- 8. KUNCI -->
+<section class="slide" id="s8">
+  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
+  <h2 class="st">Kunci Greedy II dan A*</h2>
+  <div class="qlist">
+    <div class="ans"><span class="qn">1</span><p>Kruskal: proses edge global (sort by weight, union-find), cocok graf sparse (E≈V). Prim: tumbuh dari satu node (priority queue), cocok graf dense (E≈V²). Kruskal O(E log E), Prim O(E log V) dengan heap - hampir sama untuk sparse, Prim lebih baik untuk dense.</p></div>
+    <div class="ans"><span class="qn">2</span><p>Graf: A→B (w=1), A→C (w=10), B→C (w=-100). Dijkstra dari A: dist[C]=10 (via A→C). Tapi jalur A→B→C = 1+(-100)=-99 lebih pendek. Dijkstra tidak revisit C setelah menemukan dist=10.</p></div>
+    <div class="ans"><span class="qn">3</span><p>Merge terkecil berulang: (E+F=14), (14+B=27), (C+D=28)... Rata-rata = (45×1 + 13×3 + 12×3 + 16×3 + 9×4 + 5×4)/100 = (45+39+36+48+36+20)/100 = 224/100 = <b>2.24 bit/karakter</b>.</p></div>
+    <div class="ans"><span class="qn">4</span><p>Admissible: h(n) ≤ true cost - tidak pernah overestimate. Consistent: h(n) ≤ c(n,n') + h(n') - segitiga. Contoh: h yang overestimates untuk beberapa node tapi underestimates rata-rata - admissible lokal tapi bisa inconsistent. Consistent → admissible, tapi admissible belum tentu consistent.</p></div>
+    <div class="ans"><span class="qn">5</span><p>h=0: A* = <b>Dijkstra</b> (tidak ada panduan, eksplorasi seragam). h = true distance: A* langsung ke tujuan tanpa eksplorasi ekstra (optimal tapi butuh oracle). h > true distance (tidak admissible): A* mungkin <b>tidak optimal</b> - bisa melewatkan jalur terpendek karena terlalu yakin dengan estimasinya.</p></div>
+  </div>
+</section>
+
+<!-- 9. PENUTUP -->
+<section class="slide" id="s9" style="justify-content:center;align-items:center;text-align:center">
+  <div class="kicker">PERTEMUAN 9 · SELESAI</div>
+  <h2 class="st" style="font-size:30px;margin:10px 0">Greedy di graf: MST, shortest path,<br>dan A* yang punya "intuisi".</h2>
+  <p style="font-size:13.5px;color:#64748b;max-width:680px;margin:10px auto 0">Pertemuan depan: Dynamic Programming I - Fibonacci, 0/1 Knapsack, Coin Change, memoization vs tabulation.</p>
+  <div style="margin:24px 0 10px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+    <a class="biglink" href="index.html"><span class="ln1">← KEMBALI KE DAFTAR MATERI</span><span class="ln2">index.html</span><span class="ln3">Semua pertemuan</span></a>
+    <a class="biglink" href="P09_Greedy2_AStar.ipynb" target="_blank"><span class="ln1">BUKA NOTEBOOK</span><span class="ln2">P09_Greedy2_AStar.ipynb</span><span class="ln3">Kruskal, Prim, Dijkstra, Huffman, A*</span></a>
+  </div>
+</section>
+
+</div></div>
+<div id="progress"></div>
+<div id="hud">
+  <div id="hud-left"><span id="pageno">1 / 9</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="dots"></div>
+  <div style="display:flex;gap:8px">
+    <button class="navbtn" id="btnFs">⛶</button>
+    <button class="navbtn" id="btnPrev">‹</button>
+    <button class="navbtn" id="btnNext">›</button>
+  </div>
+</div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function hlCode(t){const e=esc(t);return e.replace(/(#[^\n]*)|("[^"]*")|\b(def|for|in|range|while|if|elif|else|return|import|from|print|lambda|len|not|and|or|True|False|None|float|int|min|max|pass|append|sorted|heapq|heappush|heappop|heapify|set|list)\b|\b(\d+(?:\.\d+)?)\b/g,(m,c,s,k,n)=>c?`<span class="tc">${c}</span>`:s?`<span class="ts">${s}</span>`:k?`<span class="tk">${k}</span>`:`<span class="tn">${n}</span>`)}
+$$('.pycode').forEach(p=>p.innerHTML=hlCode(p.textContent));
+const slides=$$('.slide');let cur=0;
+function go(i){i=Math.max(0,Math.min(slides.length-1,i));if(i===cur)return;
+  const dir=i>cur?1:-1,oldEl=slides[cur],newEl=slides[i];
+  oldEl.classList.remove('active');oldEl.classList.add(dir>0?'exit-left':'exit-right');
+  newEl.classList.add(dir>0?'from-right':'from-left');void newEl.offsetWidth;
+  newEl.classList.remove('from-right','from-left');newEl.classList.add('active');
+  setTimeout(()=>oldEl.classList.remove('exit-left','exit-right'),420);cur=i;sync();}
+function sync(){$('#progress').style.width=((cur+1)/slides.length*100)+'%';$('#pageno').textContent=(cur+1)+' / '+slides.length;$$('#dots button').forEach((d,j)=>d.classList.toggle('on',j===cur))}
+const dots=$('#dots');slides.forEach((s,j)=>{const b=document.createElement('button');b.title='Slide '+(j+1);b.onclick=()=>go(j);dots.appendChild(b)});
+$('#btnNext').onclick=()=>go(cur+1);$('#btnPrev').onclick=()=>go(cur-1);
+function toggleFs(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+$('#btnFs').onclick=toggleFs;
+addEventListener('keydown',e=>{const t=e.target,tag=t&&t.tagName,inter=tag==='INPUT'||tag==='TEXTAREA';
+  if(e.key==='ArrowRight'||(e.key===' '&&!inter&&tag!=='BUTTON')){e.preventDefault();go(cur+1)}
+  else if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
+  else if((e.key==='f'||e.key==='F')&&!inter)toggleFs();});
+function fit(){const s=Math.min((innerWidth-30)/1280,(innerHeight-80)/720);$('#deck').style.transform=`translate(-50%,-50%) scale(${s})`}
+addEventListener('resize',fit);fit();
+slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot';f.innerHTML=`<span>Kompleksitas Algoritma · Pertemuan 9 - Greedy II dan A*</span><span>${j+1}</span>`;s.appendChild(f)});
+go(0);
+
+/* A* / Dijkstra Grid */
+(function(){
+  const canvas=$('#gridCanvas'),log=$('#pathLog');if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const COLS=16,ROWS=11,CW=canvas.width/COLS,CH=canvas.height/ROWS;
+  let walls=new Set(),mode='astar';
+  const START={r:5,c:0},GOAL={r:5,c:15};
+  function key(r,c){return r+','+c}
+  function drawGrid(visited,path){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+      const k=key(r,c);
+      if(walls.has(k))ctx.fillStyle='#1e293b';
+      else if(r===START.r&&c===START.c)ctx.fillStyle='#f59e0b';
+      else if(r===GOAL.r&&c===GOAL.c)ctx.fillStyle='#f59e0b';
+      else if(path&&path.has(k))ctx.fillStyle='#16a34a';
+      else if(visited&&visited.has(k))ctx.fillStyle=mode==='astar'?'#bfdbfe':'#ede9fe';
+      else ctx.fillStyle='#f8fafc';
+      ctx.fillRect(c*CW+1,r*CH+1,CW-2,CH-2);
+      ctx.strokeStyle='#e2e8f0';ctx.strokeRect(c*CW+1,r*CH+1,CW-2,CH-2);
+    }
+  }
+  canvas.onclick=e=>{const rect=canvas.getBoundingClientRect(),x=e.clientX-rect.left,y=e.clientY-rect.top;const c=Math.floor(x/CW),r=Math.floor(y/CH);const k=key(r,c);if((r===START.r&&c===START.c)||(r===GOAL.r&&c===GOAL.c))return;walls.has(k)?walls.delete(k):walls.add(k);drawGrid(null,null)};
+  function heuristic(r,c){return Math.abs(r-GOAL.r)+Math.abs(c-GOAL.c)}
+  function runSearch(useH){
+    mode=useH?'astar':'dijkstra';
+    const dist={};dist[key(START.r,START.c)]=0;
+    const prev={};const visited=new Set();
+    const pq=[[useH?heuristic(START.r,START.c):0,0,START.r,START.c]];
+    let nodesVisited=0;
+    while(pq.length){
+      pq.sort((a,b)=>a[0]-b[0]);
+      const [_f,g,r,c]=pq.shift();const k=key(r,c);
+      if(visited.has(k))continue;visited.add(k);nodesVisited++;
+      if(r===GOAL.r&&c===GOAL.c)break;
+      for(const[dr,dc]of[[-1,0],[1,0],[0,-1],[0,1]]){
+        const nr=r+dr,nc=c+dc;if(nr<0||nr>=ROWS||nc<0||nc>=COLS)continue;
+        const nk=key(nr,nc);if(walls.has(nk)||visited.has(nk))continue;
+        const ng=g+1;if(dist[nk]===undefined||ng<dist[nk]){dist[nk]=ng;prev[nk]=k;const f=ng+(useH?heuristic(nr,nc):0);pq.push([f,ng,nr,nc]);}
+      }
+    }
+    const pathSet=new Set();let cur=key(GOAL.r,GOAL.c);let pathLen=0;
+    while(cur&&prev[cur]){pathSet.add(cur);cur=prev[cur];pathLen++}
+    pathSet.add(key(START.r,START.c));
+    drawGrid(visited,pathSet.size>1?pathSet:null);
+    const found=pathSet.size>1;
+    log.textContent=`${useH?'A*':'Dijkstra'}: ${found?'Jalur ditemukan, panjang='+pathLen:'Tidak ada jalur'}\nNode dikunjungi: ${nodesVisited}/${ROWS*COLS-walls.size}`;
+  }
+  $('#btnRunAstar').onclick=()=>runSearch(true);
+  $('#btnRunDijk').onclick=()=>runSearch(false);
+  $('#btnClearPath').onclick=()=>drawGrid(null,null);
+  $('#btnResetGrid').onclick=()=>{walls.clear();drawGrid(null,null);log.textContent=''};
+  drawGrid(null,null);
+})();
+</script>
+</body>
+</html>

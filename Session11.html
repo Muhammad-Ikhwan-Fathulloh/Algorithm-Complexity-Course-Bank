@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pertemuan 11 - Dynamic Programming II · Kompleksitas Algoritma</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;overflow:hidden;background:#0b1526;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+#stage{position:fixed;inset:0;background:radial-gradient(1200px 700px at 70% -10%,#16294d 0%,#0b1526 60%)}
+#deck{position:absolute;left:50%;top:50%;width:1280px;height:720px}
+.slide{position:absolute;inset:0;background:#fff;border-radius:8px;box-shadow:0 24px 80px rgba(0,0,0,.55);padding:44px 60px 60px;opacity:0;pointer-events:none;overflow:hidden;display:flex;flex-direction:column;gap:18px;z-index:1;transition:opacity .38s ease,transform .38s ease}
+.slide.from-right{transition:none;transform:translateX(90px)}.slide.from-left{transition:none;transform:translateX(-90px)}
+.slide.exit-left{opacity:0;transform:translateX(-90px);z-index:2}.slide.exit-right{opacity:0;transform:translateX(90px);z-index:2}
+.slide.active{opacity:1;pointer-events:auto;z-index:3}
+.sfoot{position:absolute;left:60px;right:60px;bottom:14px;display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;border-top:1px solid #f1f5f9;padding-top:6px}
+.kicker{font-size:13px;font-weight:800;letter-spacing:.14em;color:#2563eb;text-transform:uppercase}
+h2.st{font-size:32px;color:#0f172a;line-height:1.25}
+p.b{font-size:17px;line-height:1.65;color:#334155}
+.cols{display:grid;gap:20px;flex:1;min-height:0}
+.c2{grid-template-columns:1fr 1fr}.c2l{grid-template-columns:1.1fr .9fr}.c2r{grid-template-columns:.9fr 1.1fr}
+.stack{display:flex;flex-direction:column;gap:9px;min-height:0}
+.card{border:1px solid #e2e8f0;border-radius:10px;padding:10px 13px;background:#fff}.card.soft{background:#f8fafc}
+.analogy{background:#fffbeb;border:2px solid #fde68a;border-left:6px solid #d97706;padding:14px 18px;border-radius:10px;font-size:17px;line-height:1.7;color:#334155}.analogy b{color:#b45309}
+.warn{background:#fef2f2;border:2px solid #fecaca;border-left:6px solid #b91c1c;padding:14px 18px;border-radius:10px;font-size:17px;color:#334155;line-height:1.7}
+.note{background:#eff6ff;border:1px solid #bfdbfe;border-left:5px solid #2563eb;padding:9px 12px;border-radius:8px;font-size:12.5px;color:#334155;line-height:1.6}
+table.tbl{width:100%;border-collapse:collapse;font-size:16px}
+.tbl th{background:#1e293b;color:#fff;text-align:left;padding:10px 14px;font-size:14px}
+.tbl td{border:1px solid #e2e8f0;padding:9px 14px;color:#334155;vertical-align:middle;line-height:1.45}
+pre.pycode{background:#0f172a;color:#e2e8f0;border-radius:12px;padding:18px 22px;font:15px/1.7 Consolas,'Courier New',monospace;overflow:auto}
+.tk{color:#93c5fd}.ts{color:#fbbf24}.tc{color:#7dd3fc;font-style:italic}.tn{color:#f9a8d4}
+.mono{font-family:Consolas,monospace}.tiny{font-size:14px;color:#64748b;line-height:1.55}
+.btn{display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn:hover{background:#1d4ed8}.btn.go{background:#16a34a}.btn.go:hover{background:#15803d}
+.btn.ghost{background:#fff;color:#2563eb;border:1.5px solid #bfdbfe}.btn.ghost:hover{background:#eff6ff}
+.sim{border:1.5px solid #dbeafe;background:linear-gradient(180deg,#f8fbff,#fff);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-height:0}
+.sim .cap{font-size:12px;font-weight:800;letter-spacing:.1em;color:#2563eb;text-transform:uppercase}
+.qlist{display:flex;flex-direction:column;gap:8px;overflow:auto;flex:1;min-height:0}
+.q{display:flex;gap:12px;align-items:flex-start;border:1px solid #e2e8f0;border-radius:10px;padding:9px 12px;background:#f8fafc}
+.q .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#1e293b;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.q p{font-size:16px;line-height:1.65;color:#334155}
+.ans{display:flex;gap:12px;align-items:flex-start;border:1px solid #bbf7d0;border-radius:10px;padding:9px 12px;background:#f0fdf4}
+.ans .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#16a34a;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.ans p{font-size:16px;line-height:1.65;color:#14532d}
+.biglink{display:inline-block;background:#0f172a;border:2px solid #334155;border-radius:12px;padding:16px 26px;text-decoration:none;transition:all .2s}
+.biglink:hover{border-color:#2563eb}.biglink .ln1{display:block;font:700 12px Arial;color:#94a3b8;letter-spacing:.08em;margin-bottom:5px}
+.biglink .ln2{display:block;font:600 15.5px Consolas,monospace;color:#60a5fa}
+.biglink .ln3{display:block;font-size:11.5px;color:#94a3b8;margin-top:5px}
+.verdict{border-radius:8px;padding:8px 11px;font-size:12.5px;line-height:1.5}
+.verdict.good{background:#dcfce7;color:#166534}.verdict.mid{background:#fef9c3;color:#854d0e}.verdict.bad{background:#fee2e2;color:#991b1b}
+.edcell{min-width:32px;height:32px;border:1px solid #cbd5e1;display:flex;align-items:center;justify-content:center;font:700 12px Consolas;color:#334155;transition:background .3s}
+.edcell.path{background:#dbeafe;color:#1e40af}
+#progress{position:fixed;top:0;left:0;height:5px;background:#2563eb;width:0;z-index:50;transition:width .3s}
+#hud{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;z-index:50;pointer-events:none;gap:12px}
+#hud>*{pointer-events:auto}#dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:52%}
+#dots button{width:9px;height:9px;border-radius:50%;border:none;background:#334155;cursor:pointer;padding:0}#dots button.on{background:#60a5fa;transform:scale(1.4)}
+.navbtn{width:38px;height:38px;border-radius:50%;border:none;background:#1e293b;color:#fff;font-size:19px;cursor:pointer}.navbtn:hover{background:#2563eb}
+#hud-left{color:#94a3b8;font-size:13px;display:flex;gap:12px;align-items:center;background:rgba(11,21,38,.8);padding:6px 12px;border-radius:20px}
+kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size:11px;border:1px solid #334155}
+/* 5W1H box */
+.w5h1{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.wcard{border-radius:10px;padding:9px 12px;border:1.5px solid}
+.wcard .wlabel{font:800 12px Arial;letter-spacing:.1em;text-transform:uppercase}
+.wcard p{font-size:15px;line-height:1.6;color:#334155;flex:1}
+.wcard.what{border-color:#bfdbfe;background:#eff6ff}.wcard.what .wlabel{color:#1d4ed8}
+.wcard.why{border-color:#bbf7d0;background:#f0fdf4}.wcard.why .wlabel{color:#15803d}
+.wcard.who{border-color:#fde68a;background:#fffbeb}.wcard.who .wlabel{color:#b45309}
+.wcard.when{border-color:#e9d5ff;background:#faf5ff}.wcard.when .wlabel{color:#7c3aed}
+.wcard.where{border-color:#fecaca;background:#fef2f2}.wcard.where .wlabel{color:#b91c1c}
+.wcard.how{border-color:#cbd5e1;background:#f8fafc}.wcard.how .wlabel{color:#334155}
+#s1{justify-content:center}#s1 h1{font-size:48px;line-height:1.1;color:#0f172a;margin:10px 0 16px}
+#s1 .lead{font-size:16px;color:#334155;line-height:1.65;max-width:680px}
+.navhint{margin-top:18px;font-size:12.5px;color:#64748b}
+</style>
+</head>
+<body>
+<div id="stage"><div id="deck">
+
+<!-- 1. JUDUL -->
+<section class="slide" id="s1">
+  <div class="kicker">KOMPLEKSITAS ALGORITMA · PERTEMUAN 11</div>
+  <h1>Dynamic Programming II</h1>
+  <p class="lead">LCS, Edit Distance, Matrix Chain, Bellman-Ford, Floyd-Warshall - dan bagaimana DP pada urutan jadi fondasi NLP dan bioinformatika modern.</p>
+  <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · <a href="index.html" style="color:#2563eb;font-size:12px">← Daftar Materi</a></div>
+</section>
+
+<!-- 2. LCS -->
+<section class="slide" id="s2">
+  <div class="kicker">BAGIAN 1 · LCS</div>
+  <h2 class="st">Longest Common Subsequence - O(mn)</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <p class="b">LCS("ABCBDAB", "BDCAB") = 4 ("BCAB" atau "BDAB"). Beda dengan substring: subsequence tidak harus berurutan bersebelahan.</p>
+      <div class="card soft" style="font-size:12.5px;line-height:1.7">
+        <b>Rekurens:</b><br>
+        Jika X[i]=Y[j]: lcs[i][j] = lcs[i-1][j-1] + 1<br>
+        Selain itu: lcs[i][j] = max(lcs[i-1][j], lcs[i][j-1])
+      </div>
+<pre class="pycode">def lcs(X, Y):
+    m, n = len(X), len(Y)
+    dp = [[0]*(n+1) for _ in range(m+1)]
+    for i in range(1, m+1):
+        for j in range(1, n+1):
+            if X[i-1] == Y[j-1]:
+                dp[i][j] = dp[i-1][j-1] + 1
+            else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+    return dp[m][n]  # O(mn) waktu, O(mn) ruang</pre>
+      <div class="note">LCS adalah fondasi dari <code>git diff</code>, <code>diff</code> Unix, dan tools perbandingan teks. Panjang LCS bisa jadi ukuran kemiripan dua string.</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · Edit Distance (terkait LCS)</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <input id="edA" value="kitten" style="border:1.5px solid #cbd5e1;border-radius:7px;padding:5px 8px;font:13px Consolas;width:110px">
+        <input id="edB" value="sitting" style="border:1.5px solid #cbd5e1;border-radius:7px;padding:5px 8px;font:13px Consolas;width:110px">
+        <button class="btn go" id="btnED">Hitung</button>
+      </div>
+      <div id="edGrid" style="overflow:auto;min-height:80px"></div>
+      <div class="verdict" id="edVerdict">Masukkan dua kata lalu klik Hitung.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. EDIT DISTANCE -->
+<section class="slide" id="s3">
+  <div class="kicker">BAGIAN 2 · EDIT DISTANCE</div>
+  <h2 class="st">Levenshtein Distance - O(mn)</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b">Jumlah minimum operasi (insert, delete, replace) untuk mengubah string A ke string B. Digunakan di spell checker, DNA alignment, autocorrect.</p>
+      <div class="card soft" style="font-size:12.5px;line-height:1.7">
+        <b>Rekurens:</b><br>
+        Jika A[i]=B[j]: dp[i][j] = dp[i-1][j-1] (gratis)<br>
+        Selain itu: dp[i][j] = 1 + min(<br>
+        &nbsp;&nbsp;dp[i-1][j],&nbsp;&nbsp;&nbsp;&nbsp;← delete dari A<br>
+        &nbsp;&nbsp;dp[i][j-1],&nbsp;&nbsp;&nbsp;&nbsp;← insert ke A<br>
+        &nbsp;&nbsp;dp[i-1][j-1])&nbsp;&nbsp;← replace
+      </div>
+      <div class="analogy"><b>Analogi - penyunting naskah.</b> Berapa kali harus coret, tambah, atau ganti kata untuk ubah draft A jadi draft B? Edit Distance itu versi formalnya - dan tabelnya mirip persis dengan meja kerja penyunting yang memeriksa tiap bagian secara sistematis.</div>
+    </div>
+    <div class="stack">
+      <table class="tbl">
+        <tr><th>Operasi</th><th>Biaya</th><th>Aplikasi</th></tr>
+        <tr><td>Insert</td><td>1</td><td>Autocorrect</td></tr>
+        <tr><td>Delete</td><td>1</td><td>Spell checker</td></tr>
+        <tr><td>Replace</td><td>1</td><td>DNA alignment</td></tr>
+      </table>
+      <div class="note">Edit distance dengan bobot berbeda per operasi dinamakan <b>Weighted Edit Distance</b>. Di NLP, misalnya typo "teh" → "the" (transpose) dimodelkan berbeda. Algoritma Damerau–Levenshtein menambahkan operasi transpose.</div>
+      <div class="card soft">
+        <p class="b"><b>Hubungan LCS ↔ Edit Distance:</b></p>
+        <p class="tiny">edit_dist(A,B) = m + n − 2·LCS(A,B) - untuk operasi insert/delete saja. Jadi kedua masalah ini terhubung erat.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. BELLMAN-FORD & FLOYD-WARSHALL -->
+<section class="slide" id="s4">
+  <div class="kicker">BAGIAN 3 · DP PADA GRAF</div>
+  <h2 class="st">Bellman-Ford O(VE) dan Floyd-Warshall O(V³)</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <div class="card" style="border-left:4px solid #2563eb">
+        <p class="b"><b>Bellman-Ford</b> - Single source, boleh ada edge negatif</p>
+<pre class="pycode">def bellman_ford(graph, src):
+    dist = {v: float('inf') for v in graph}
+    dist[src] = 0
+    for _ in range(len(graph) - 1):  # V-1 iterasi
+        for u, v, w in graph.edges:
+            if dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+    # cek negative cycle
+    for u, v, w in graph.edges:
+        if dist[u] + w < dist[v]:
+            raise ValueError("Negative cycle!")
+    return dist  # O(VE)</pre>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card" style="border-left:4px solid #7c3aed">
+        <p class="b"><b>Floyd-Warshall</b> - All-pairs shortest path</p>
+<pre class="pycode">def floyd_warshall(W):  # W = matriks bobot
+    n = len(W)
+    dist = [row[:] for row in W]
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if dist[i][k] + dist[k][j] < dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+    return dist  # O(V³) waktu, O(V²) ruang</pre>
+      </div>
+      <table class="tbl" style="margin-top:4px">
+        <tr><th>Algoritma</th><th>Waktu</th><th>Negatif?</th><th>Semua pasang?</th></tr>
+        <tr><td>Dijkstra</td><td>O(E log V)</td><td>✗</td><td>✗</td></tr>
+        <tr><td>Bellman-Ford</td><td>O(VE)</td><td>✓</td><td>✗</td></tr>
+        <tr><td>Floyd-Warshall</td><td>O(V³)</td><td>✓</td><td>✓</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 5. MODERN: VITERBI -->
+<section class="slide" id="s5">
+  <div class="kicker">BAGIAN 4 · [MODERN] DP PADA URUTAN</div>
+  <h2 class="st">Viterbi - DP paling berpengaruh di NLP</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b">Viterbi algorithm mencari urutan state paling mungkin dalam Hidden Markov Model (HMM). Digunakan di speech recognition, POS tagging, dan bioinformatics.</p>
+      <div class="card soft" style="font-size:12.5px;line-height:1.7">
+        <b>HMM:</b> state tersembunyi (misalnya POS tag), observasi (kata), probabilitas transisi dan emisi.<br><br>
+        <b>Masalah decoding:</b> diberikan urutan kata, cari urutan POS tag yang paling mungkin.<br><br>
+        <b>Naive:</b> O(K^T) - K state, T panjang urutan<br>
+        <b>Viterbi DP:</b> O(K²·T) - karena optimal substructure
+      </div>
+      <div class="note">Kalau ada T=100 kata dan K=10 POS tag: naive = 10^100 kombinasi. Viterbi = 100×100 = 10.000 langkah. Ini perbedaan yang tidak masuk akal vs sangat efisien - dan DP yang memungkinkan ini.</div>
+    </div>
+    <div class="stack">
+<pre class="pycode">def viterbi(obs, states, start_p, trans_p, emit_p):
+    V = [{}]
+    for st in states:
+        V[0][st] = start_p[st] * emit_p[st][obs[0]]
+    for t in range(1, len(obs)):
+        V.append({})
+        for st in states:
+            V[t][st] = max(
+                V[t-1][prev] * trans_p[prev][st] * emit_p[st][obs[t]]
+                for prev in states)
+    # O(K² × T) vs naive O(K^T)
+    return max(V[-1], key=V[-1].get)</pre>
+      <div class="analogy"><b>Analogi - DP tangga lagi.</b> Tiap langkah, simpan probabilitas tertinggi untuk sampai ke state ini. Langkah berikutnya tinggal ambil simpanan dari langkah sebelumnya - tidak perlu menghitung semua jalur dari awal.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. LATIHAN -->
+<section class="slide" id="s6">
+  <div class="kicker">LATIHAN</div>
+  <h2 class="st">Soal Dynamic Programming II</h2>
+  <div class="qlist">
+    <div class="q"><span class="qn">1</span><p>Hitung LCS("AGGTAB", "GXTXAYB") secara manual atau dengan kode. Berapa panjangnya dan apa salah satu subsequence-nya?</p></div>
+    <div class="q"><span class="qn">2</span><p>Hitunglah Edit Distance antara "sunday" dan "saturday". Gambarkan bagian tabel DP untuk meyakinkan jawabanmu.</p></div>
+    <div class="q"><span class="qn">3</span><p>Mengapa Floyd-Warshall bisa mendeteksi negative cycle? Apa yang terjadi pada dp[i][i] jika ada negative cycle yang melewati node i?</p></div>
+    <div class="q"><span class="qn">4</span><p>Algoritma Viterbi untuk HMM dengan K state dan T observasi: buktikan kompleksitasnya O(K²·T). Apa yang disimpan di setiap sel tabel?</p></div>
+    <div class="q"><span class="qn">5</span><p>Di Colab: implementasikan Edit Distance dan gunakan untuk membandingkan dua urutan DNA pendek (misal "GCATGCU" vs "GATTACA"). Berapa edit distance-nya? Apa interpretasi biologisnya?</p></div>
+  </div>
+</section>
+
+<!-- 7. KUNCI -->
+<section class="slide" id="s7">
+  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
+  <h2 class="st">Kunci Dynamic Programming II</h2>
+  <div class="qlist">
+    <div class="ans"><span class="qn">1</span><p>LCS("AGGTAB","GXTXAYB") = <b>4</b>. Salah satu LCS-nya: "GTAB". Tabel DP 7×8, nilai di pojok kanan bawah = 4.</p></div>
+    <div class="ans"><span class="qn">2</span><p>Edit Distance("sunday","saturday") = <b>3</b>. Operasi: insert 'a' setelah 's', insert 't' setelah 'a', replace 'n'→'r'. Atau: delete 'n', insert 'tur' → tergantung path. Nilai dp[6][8] = 3.</p></div>
+    <div class="ans"><span class="qn">3</span><p>Floyd-Warshall: jika ada negative cycle melalui node i, maka dp[i][i] akan menjadi <b>negatif</b> (karena perjalanan kembali ke i bisa berbiaya negatif). Cek: setelah algoritma selesai, lihat apakah ada dp[i][i] &lt; 0.</p></div>
+    <div class="ans"><span class="qn">4</span><p>Di setiap waktu t dan state k, simpan probabilitas terbaik DP[t][k]. Untuk hitung DP[t][k] perlu melihat semua K state sebelumnya → K operasi per sel. Total sel = K×T → <b>O(K²·T)</b>.</p></div>
+    <div class="ans"><span class="qn">5</span><p>Edit Distance("GCATGCU","GATTACA") = <b>4</b> (3 substitusi + 1 insert/delete tergantung alignment). Interpretasi: makin kecil edit distance, makin mirip dua urutan DNA secara evolusioner - bisa dipakai untuk inferensi filogenetik.</p></div>
+  </div>
+</section>
+
+<!-- 8. PENUTUP -->
+<section class="slide" id="s8" style="justify-content:center;align-items:center;text-align:center">
+  <div class="kicker">PERTEMUAN 11 · SELESAI</div>
+  <h2 class="st" style="font-size:30px;margin:10px 0">DP pada urutan menjadi<br>fondasi NLP dan bioinformatika.</h2>
+  <p style="font-size:13.5px;color:#64748b;max-width:680px;margin:10px auto 0">Pertemuan depan: Backtracking dan CSP - menjelajah ruang solusi secara cerdas dengan pruning.</p>
+  <div style="margin:24px 0 10px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+    <a class="biglink" href="index.html"><span class="ln1">← KEMBALI KE DAFTAR MATERI</span><span class="ln2">index.html</span><span class="ln3">Semua pertemuan</span></a>
+    <a class="biglink" href="P11_DP2.ipynb" target="_blank"><span class="ln1">BUKA NOTEBOOK</span><span class="ln2">P11_DP2.ipynb</span><span class="ln3">LCS, Edit Distance, Matrix Chain, Bellman-Ford, Viterbi</span></a>
+  </div>
+</section>
+
+</div></div>
+<div id="progress"></div>
+<div id="hud">
+  <div id="hud-left"><span id="pageno">1 / 8</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="dots"></div>
+  <div style="display:flex;gap:8px">
+    <button class="navbtn" id="btnFs">⛶</button>
+    <button class="navbtn" id="btnPrev">‹</button>
+    <button class="navbtn" id="btnNext">›</button>
+  </div>
+</div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function hlCode(t){const e=esc(t);return e.replace(/(#[^\n]*)|("[^"]*")|\b(def|for|in|range|while|if|elif|else|return|import|from|print|lambda|len|not|and|or|True|False|None|float|int|min|max|pass|append)\b|\b(\d+(?:\.\d+)?)\b/g,(m,c,s,k,n)=>c?`<span class="tc">${c}</span>`:s?`<span class="ts">${s}</span>`:k?`<span class="tk">${k}</span>`:`<span class="tn">${n}</span>`)}
+$$('.pycode').forEach(p=>p.innerHTML=hlCode(p.textContent));
+const slides=$$('.slide');let cur=0;
+function go(i){i=Math.max(0,Math.min(slides.length-1,i));if(i===cur)return;
+  const dir=i>cur?1:-1,o=slides[cur],n=slides[i];
+  o.classList.remove('active');o.classList.add(dir>0?'exit-left':'exit-right');
+  n.classList.add(dir>0?'from-right':'from-left');void n.offsetWidth;
+  n.classList.remove('from-right','from-left');n.classList.add('active');
+  setTimeout(()=>o.classList.remove('exit-left','exit-right'),420);cur=i;sync();}
+function sync(){$('#progress').style.width=((cur+1)/slides.length*100)+'%';$('#pageno').textContent=(cur+1)+' / '+slides.length;$$('#dots button').forEach((d,j)=>d.classList.toggle('on',j===cur))}
+const dots=$('#dots');slides.forEach((s,j)=>{const b=document.createElement('button');b.title='Slide '+(j+1);b.onclick=()=>go(j);dots.appendChild(b)});
+$('#btnNext').onclick=()=>go(cur+1);$('#btnPrev').onclick=()=>go(cur-1);
+function toggleFs(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+$('#btnFs').onclick=toggleFs;
+addEventListener('keydown',e=>{const t=e.target,tag=t&&t.tagName,inter=tag==='INPUT'||tag==='TEXTAREA';
+  if(e.key==='ArrowRight'||(e.key===' '&&!inter&&tag!=='BUTTON')){e.preventDefault();go(cur+1)}
+  else if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
+  else if((e.key==='f'||e.key==='F')&&!inter)toggleFs();});
+function fit(){const s=Math.min((innerWidth-30)/1280,(innerHeight-80)/720);$('#deck').style.transform=`translate(-50%,-50%) scale(${s})`}
+addEventListener('resize',fit);fit();
+slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot';f.innerHTML=`<span>Kompleksitas Algoritma · Pertemuan 11 - Dynamic Programming II</span><span>${j+1}</span>`;s.appendChild(f)});
+/* Edit Distance */
+(function(){
+  $('#btnED').onclick=()=>{
+    const A=$('#edA').value.trim().slice(0,12),B=$('#edB').value.trim().slice(0,12);
+    if(!A||!B)return;
+    const m=A.length,n=B.length;
+    const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0));
+    for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){
+      if(A[i-1]===B[j-1])dp[i][j]=dp[i-1][j-1];
+      else dp[i][j]=1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1])}
+    let html='<table style="border-collapse:collapse;font-size:11px"><tr><td style="padding:2px 5px;background:#1e293b;color:#fff"></td><td style="padding:2px 5px;background:#1e293b;color:#fff">ε</td>';
+    B.split('').forEach(c=>html+=`<td style="padding:2px 5px;background:#1e293b;color:#fff;font-family:Consolas">${c}</td>`);
+    html+='</tr>';
+    const rlbl=['ε',...A.split('')];
+    dp.forEach((row,i)=>{html+=`<tr><td style="padding:2px 5px;background:#1e293b;color:#fff;font-family:Consolas">${rlbl[i]}</td>`;
+      row.forEach((v,j)=>{const hl=(i===m&&j===n)?'background:#dbeafe;color:#1e40af;font-weight:800':'';html+=`<td style="border:1px solid #e2e8f0;padding:2px 7px;text-align:center;font-family:Consolas;${hl}">${v}</td>`});
+      html+='</tr>'});
+    html+='</table>';
+    $('#edGrid').innerHTML=html;
+    const r=$('#edVerdict');r.className='verdict good';r.innerHTML=`Edit Distance("<b>${A}</b>","<b>${B}</b>") = <b>${dp[m][n]}</b>`;};
+})();
+</script>
+</body>
+</html>

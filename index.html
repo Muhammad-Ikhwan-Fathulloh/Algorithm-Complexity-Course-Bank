@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kompleksitas Algoritma - Bank Materi</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:radial-gradient(1400px 900px at 60% -5%,#16294d 0%,#0b1526 60%);font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#e2e8f0}
+header{padding:48px 60px 32px;max-width:1100px;margin:0 auto}
+header .kicker{font-size:11.5px;font-weight:800;letter-spacing:.13em;color:#60a5fa;margin-bottom:10px}
+header h1{font-size:48px;color:#f1f5f9;line-height:1.15;margin-bottom:12px}
+header p{font-size:17px;color:#94a3b8;line-height:1.65;max-width:700px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:18px;padding:0 60px 60px;max-width:1100px;margin:0 auto}
+.card{background:#111e36;border:1px solid #1e3a5f;border-radius:14px;padding:22px 24px;text-decoration:none;transition:all .22s;display:flex;flex-direction:column;gap:10px}
+.card:hover{background:#162850;border-color:#2563eb;transform:translateY(-3px);box-shadow:0 12px 32px rgba(37,99,235,.2)}
+.card.uts{border-left:4px solid #f59e0b}
+.card.uas{border-left:4px solid #dc2626}
+.badge{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:#1e3a5f;color:#60a5fa;border-radius:20px;padding:3px 10px}
+.badge.green{background:#14532d;color:#4ade80}
+.badge.yellow{background:#451a03;color:#fbbf24}
+.badge.red{background:#450a0a;color:#f87171}
+.card h2{font-size:18px;color:#f1f5f9;line-height:1.3}
+.card p{font-size:15px;color:#64748b;line-height:1.6}
+.card .links{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap}
+.lnk{display:inline-flex;align-items:center;gap:5px;font-size:14px;font-weight:600;padding:5px 11px;border-radius:8px;text-decoration:none;border:1.5px solid transparent;transition:all .18s}
+.lnk.slides{background:#2563eb;color:#fff}
+.lnk.slides:hover{background:#1d4ed8}
+.lnk.nb{background:#fff0;color:#60a5fa;border-color:#1e3a5f}
+.lnk.nb:hover{background:#162850;border-color:#2563eb}
+footer{padding:24px 60px;text-align:center;font-size:11.5px;color:#334155;border-top:1px solid #1e293b}
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">KOMPLEKSITAS ALGORITMA · 16 PERTEMUAN</div>
+  <h1>Bank Materi Interaktif</h1>
+  <p>Slide presentasi untuk setiap pertemuan, plus tautan langsung ke notebook Jupyter/Colab. Klik "Slide" untuk membuka presentasi interaktif di browser; klik "Notebook" untuk membuka file .ipynb.</p>
+</header>
+
+<div class="grid">
+
+  <div class="card">
+    <span class="badge green">Pertemuan 1</span>
+    <h2>Pendahuluan dan Notasi Asimtotik</h2>
+    <p>Model RAM, Big-O/Omega/Theta, kasus terbaik-rata-rata-terburuk, menghitung kompleksitas kode.</p>
+    <div class="links">
+      <a class="lnk slides" href="Session1.html">▶ Slide</a>
+      <a class="lnk nb" href="P01_Asimtotik.ipynb">📓 Notebook</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="badge green">Pertemuan 2</span>
+    <h2>Rekursi dan Persamaan Rekurens</h2>
+    <p>Recursion tree, substitusi, Master Theorem (3 kasus), Akra-Bazzi, verifikasi numerik.</p>
+    <div class="links">
+      <a class="lnk slides" href="Session2.html">▶ Slide</a>
+      <a class="lnk nb" href="P02_Rekurens.ipynb">📓 Notebook</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="badge green">Pertemuan 3</span>
+    <h2>Brute Force dan Pencarian Ruang Keadaan</h2>
+    <p>Exhaustive search, TSP brute force O(n!), BFS/DFS, iterative deepening, kompleksitas O(bᵈ).</p>
+    <div class="links">
+      <a class="lnk slides" href="Session3.html">▶ Slide</a>
+      <a class="lnk nb" href="P03_BruteForce_Search.ipynb">📓 Notebook</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="badge green">Pertemuan 4</span>
+    <h2>Divide and Conquer I</h2>
+    <p>Merge Sort, Quick Sort, Binary Search, Quickselect - divide, conquer, combine.</p>
+    <div class="links">
+      <a class="lnk slides" href="Session4.html">▶ Slide</a>
+      <a class="lnk nb" href="P04_DivideConquer1.ipynb">📓 Notebook</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="badge green">Pertemuan 5</span>
+    <h2>Divide and Conquer II</h2>
+    <p>Closest Pair, Karatsuba, Strassen, FFT. [Modern] AlphaTensor dan AlphaDev.</p>
+    <div class="links">
+      <a class="lnk slides" href="Session5.html">▶ Slide</a>
+      <a class="lnk nb" href="P05_DivideConquer2.ipynb">📓 Notebook</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="badge green">Pertemuan 6</span>
+    <h2>Struktur Data Efisien</h2>
+    <p>Heap, Hash Table, BST, analisis amortisasi, Bloom filter, Count-Min Sketch.</p>
+    <div class="links">
+      <a class="lnk slides" href="Session6.html">▶ Slide</a>
+      <a class="lnk nb" href="P06_DataStructures.ipynb">📓 Notebook</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="badge green">Pertemuan 7</span>
+    <h2>Greedy Algorithms I</h2>
+    <p>Activity Selection, Fractional Knapsack, penjadwalan, exchange argument. [Modern] Greedy decoding.</p>
+    <div class="links">
+      <a class="lnk slides" href="Session7.html">▶ Slide</a>
+      <a class="lnk nb" href="P07_Greedy1.ipynb">📓 Notebook</a>
+    </div>
+  </div>
+
+  <div class="card uts">
+    <span class="badge yellow">Pertemuan 8</span>
+    <h2>UTS - Ujian Tengah Semester</h2>
+    <p>Cakupan Pertemuan 1–7. Analisis kompleksitas, rekurens, strategi algoritma.</p>
+    <div class="links">
+      <span style="font-size:12px;color:#64748b;padding:5px 0">Tidak ada slide/notebook</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="badge green">Pertemuan 9</span>
+    <h2>Greedy II (Graf) dan A*</h2>
+    <p>Kruskal, Prim, Dijkstra, Huffman Coding. [Modern] A* dan heuristik admissible/consistent.</p>
+    <div class="links">
+      <a class="lnk slides" href="Session9.html">▶ Slide</a>
+      <a class="lnk nb" href="P09_Greedy2_AStar.ipynb">📓 Notebook</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="badge green">Pertemuan 10</span>
+    <h2>Dynamic Programming I</h2>
+    <p>Overlapping subproblems, optimal substructure, memoization vs tabulation, 0/1 Knapsack.</p>
+    <div class="links">
+      <a class="lnk slides" href="Session10.html">▶ Slide</a>
+      <a class="lnk nb" href="P10_DP1.ipynb">📓 Notebook</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="badge green">Pertemuan 11</span>
+    <h2>Dynamic Programming II</h2>
+    <p>LCS, Edit Distance, Matrix Chain, Bellman-Ford, Floyd-Warshall. [Modern] Viterbi, sequence alignment.</p>
+    <div class="links">
+      <a class="lnk slides" href="Session11.html">▶ Slide</a>
+      <a class="lnk nb" href="P11_DP2.ipynb">📓 Notebook</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="badge green">Pertemuan 12</span>
+    <h2>Backtracking dan CSP</h2>
+    <p>State space tree, pruning, N-Queens, Sudoku. [Modern] Forward checking, AC-3, MRV/LCV.</p>
+    <div class="links">
+      <a class="lnk slides" href="Session12.html">▶ Slide</a>
+      <a class="lnk nb" href="P12_Backtracking_CSP.ipynb">📓 Notebook</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="badge green">Pertemuan 13</span>
+    <h2>Branch and Bound</h2>
+    <p>Branch and Bound untuk TSP dan 0/1 Knapsack, bounding function, vs backtracking.</p>
+    <div class="links">
+      <a class="lnk slides" href="Session13.html">▶ Slide</a>
+      <a class="lnk nb" href="P13_BranchBound.ipynb">📓 Notebook</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="badge green">Pertemuan 14</span>
+    <h2>Teori Kompleksitas, SAT, dan Inferensi</h2>
+    <p>P, NP, NP-Complete, reduksi Cook-Levin. [Modern] DPLL/CDCL SAT solver, forward chaining, Rete.</p>
+    <div class="links">
+      <a class="lnk slides" href="Session14.html">▶ Slide</a>
+      <a class="lnk nb" href="P14_NP_SAT_Inferensi.ipynb">📓 Notebook</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="badge green">Pertemuan 15</span>
+    <h2>Aproksimasi, Randomized, dan Skala Besar</h2>
+    <p>Vertex Cover aproksimasi, Randomized QuickSort. [Modern] LSH, HNSW, FlashAttention, Transformers.</p>
+    <div class="links">
+      <a class="lnk slides" href="Session15.html">▶ Slide</a>
+      <a class="lnk nb" href="P15_Aproksimasi_Skala_Besar.ipynb">📓 Notebook</a>
+    </div>
+  </div>
+
+  <div class="card uas">
+    <span class="badge red">Pertemuan 16</span>
+    <h2>UAS - Ujian Akhir Semester</h2>
+    <p>Cakupan Pertemuan 9–15 (dapat komprehensif). Perancangan algoritma, analisis P/NP, kompleksitas AI.</p>
+    <div class="links">
+      <span style="font-size:12px;color:#64748b;padding:5px 0">Tidak ada slide/notebook</span>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Kompleksitas Algoritma · Repo: <a href="https://github.com/Muhammad-Ikhwan-Fathulloh/Algorithm-Complexity-Course-Bank" style="color:#60a5fa" target="_blank">github.com/Muhammad-Ikhwan-Fathulloh/Algorithm-Complexity-Course-Bank</a>
+</footer>
+</body>
+</html>

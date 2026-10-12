@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pertemuan 12 - Backtracking dan CSP · Kompleksitas Algoritma</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;overflow:hidden;background:#0b1526;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+#stage{position:fixed;inset:0;background:radial-gradient(1200px 700px at 70% -10%,#16294d 0%,#0b1526 60%)}
+#deck{position:absolute;left:50%;top:50%;width:1280px;height:720px}
+.slide{position:absolute;inset:0;background:#fff;border-radius:8px;box-shadow:0 24px 80px rgba(0,0,0,.55);padding:44px 60px 60px;opacity:0;pointer-events:none;overflow:hidden;display:flex;flex-direction:column;gap:18px;z-index:1;transition:opacity .38s ease,transform .38s ease}
+.slide.from-right{transition:none;transform:translateX(90px)}.slide.from-left{transition:none;transform:translateX(-90px)}
+.slide.exit-left{opacity:0;transform:translateX(-90px);z-index:2}.slide.exit-right{opacity:0;transform:translateX(90px);z-index:2}
+.slide.active{opacity:1;pointer-events:auto;z-index:3}
+.sfoot{position:absolute;left:60px;right:60px;bottom:14px;display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;border-top:1px solid #f1f5f9;padding-top:6px}
+.kicker{font-size:13px;font-weight:800;letter-spacing:.14em;color:#2563eb;text-transform:uppercase}
+h2.st{font-size:32px;color:#0f172a;line-height:1.25}
+p.b{font-size:17px;line-height:1.65;color:#334155}
+.cols{display:grid;gap:20px;flex:1;min-height:0}
+.c2{grid-template-columns:1fr 1fr}.c2l{grid-template-columns:1.1fr .9fr}
+.stack{display:flex;flex-direction:column;gap:9px;min-height:0}
+.card{border:1px solid #e2e8f0;border-radius:10px;padding:10px 13px;background:#fff}.card.soft{background:#f8fafc}
+.analogy{background:#fffbeb;border:2px solid #fde68a;border-left:6px solid #d97706;padding:14px 18px;border-radius:10px;font-size:17px;line-height:1.7;color:#334155}.analogy b{color:#b45309}
+.warn{background:#fef2f2;border:2px solid #fecaca;border-left:6px solid #b91c1c;padding:14px 18px;border-radius:10px;font-size:17px;color:#334155;line-height:1.7}
+.note{background:#eff6ff;border:1px solid #bfdbfe;border-left:5px solid #2563eb;padding:9px 12px;border-radius:8px;font-size:12.5px;color:#334155;line-height:1.6}
+table.tbl{width:100%;border-collapse:collapse;font-size:16px}
+.tbl th{background:#1e293b;color:#fff;text-align:left;padding:10px 14px;font-size:14px}
+.tbl td{border:1px solid #e2e8f0;padding:9px 14px;color:#334155;vertical-align:middle;line-height:1.45}
+pre.pycode{background:#0f172a;color:#e2e8f0;border-radius:12px;padding:18px 22px;font:15px/1.7 Consolas,'Courier New',monospace;overflow:auto}
+.tk{color:#93c5fd}.ts{color:#fbbf24}.tc{color:#7dd3fc;font-style:italic}.tn{color:#f9a8d4}
+.mono{font-family:Consolas,monospace}.tiny{font-size:14px;color:#64748b;line-height:1.55}
+.btn{display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn:hover{background:#1d4ed8}.btn.go{background:#16a34a}.btn.go:hover{background:#15803d}
+.btn.ghost{background:#fff;color:#2563eb;border:1.5px solid #bfdbfe}.btn.ghost:hover{background:#eff6ff}
+.sim{border:1.5px solid #dbeafe;background:linear-gradient(180deg,#f8fbff,#fff);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-height:0}
+.sim .cap{font-size:12px;font-weight:800;letter-spacing:.1em;color:#2563eb;text-transform:uppercase}
+.term{background:#0f172a;color:#a7f3d0;border-radius:10px;padding:14px 16px;font:14px/1.8 Consolas,monospace;min-height:80px;white-space:pre-wrap;overflow:auto;flex:1}
+.term b{color:#fbbf24}.term .ok{color:#4ade80}
+.qlist{display:flex;flex-direction:column;gap:8px;overflow:auto;flex:1;min-height:0}
+.q{display:flex;gap:12px;align-items:flex-start;border:1px solid #e2e8f0;border-radius:10px;padding:9px 12px;background:#f8fafc}
+.q .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#1e293b;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.q p{font-size:16px;line-height:1.65;color:#334155}
+.ans{display:flex;gap:12px;align-items:flex-start;border:1px solid #bbf7d0;border-radius:10px;padding:9px 12px;background:#f0fdf4}
+.ans .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#16a34a;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.ans p{font-size:16px;line-height:1.65;color:#14532d}
+.biglink{display:inline-block;background:#0f172a;border:2px solid #334155;border-radius:12px;padding:16px 26px;text-decoration:none;transition:all .2s}
+.biglink:hover{border-color:#2563eb}.biglink .ln1{display:block;font:700 12px Arial;color:#94a3b8;letter-spacing:.08em;margin-bottom:5px}
+.biglink .ln2{display:block;font:600 15.5px Consolas,monospace;color:#60a5fa}
+.biglink .ln3{display:block;font-size:11.5px;color:#94a3b8;margin-top:5px}
+.verdict{border-radius:8px;padding:8px 11px;font-size:12.5px;line-height:1.5}
+.verdict.good{background:#dcfce7;color:#166534}.verdict.mid{background:#fef9c3;color:#854d0e}
+.qcell{width:44px;height:44px;border:2px solid #cbd5e1;border-radius:6px;display:flex;align-items:center;justify-content:center;font:700 18px serif;color:#0f172a;background:#f8fafc;transition:all .2s}
+.qcell.q-placed{background:#dbeafe;border-color:#2563eb;color:#2563eb}
+.qcell.q-attack{background:#fee2e2;border-color:#fca5a5;color:#dc2626}
+#progress{position:fixed;top:0;left:0;height:5px;background:#2563eb;width:0;z-index:50;transition:width .3s}
+#hud{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;z-index:50;pointer-events:none;gap:12px}
+#hud>*{pointer-events:auto}#dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:52%}
+#dots button{width:9px;height:9px;border-radius:50%;border:none;background:#334155;cursor:pointer;padding:0}#dots button.on{background:#60a5fa;transform:scale(1.4)}
+.navbtn{width:38px;height:38px;border-radius:50%;border:none;background:#1e293b;color:#fff;font-size:19px;cursor:pointer}.navbtn:hover{background:#2563eb}
+#hud-left{color:#94a3b8;font-size:13px;display:flex;gap:12px;align-items:center;background:rgba(11,21,38,.8);padding:6px 12px;border-radius:20px}
+kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size:11px;border:1px solid #334155}
+/* 5W1H box */
+.w5h1{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.wcard{border-radius:10px;padding:9px 12px;border:1.5px solid}
+.wcard .wlabel{font:800 12px Arial;letter-spacing:.1em;text-transform:uppercase}
+.wcard p{font-size:15px;line-height:1.6;color:#334155;flex:1}
+.wcard.what{border-color:#bfdbfe;background:#eff6ff}.wcard.what .wlabel{color:#1d4ed8}
+.wcard.why{border-color:#bbf7d0;background:#f0fdf4}.wcard.why .wlabel{color:#15803d}
+.wcard.who{border-color:#fde68a;background:#fffbeb}.wcard.who .wlabel{color:#b45309}
+.wcard.when{border-color:#e9d5ff;background:#faf5ff}.wcard.when .wlabel{color:#7c3aed}
+.wcard.where{border-color:#fecaca;background:#fef2f2}.wcard.where .wlabel{color:#b91c1c}
+.wcard.how{border-color:#cbd5e1;background:#f8fafc}.wcard.how .wlabel{color:#334155}
+#s1{justify-content:center}#s1 h1{font-size:48px;line-height:1.1;color:#0f172a;margin:10px 0 16px}
+#s1 .lead{font-size:16px;color:#334155;line-height:1.65;max-width:680px}
+.navhint{margin-top:18px;font-size:12.5px;color:#64748b}
+</style>
+</head>
+<body>
+<div id="stage"><div id="deck">
+
+<!-- 1. JUDUL -->
+<section class="slide" id="s1">
+  <div class="kicker">KOMPLEKSITAS ALGORITMA · PERTEMUAN 12</div>
+  <h1>Backtracking dan<br>Constraint Satisfaction</h1>
+  <p class="lead">Menjelajah semua solusi yang mungkin, tapi tidak membabi buta. <b>Pruning</b> membuang cabang yang sudah pasti gagal - dan perbedaannya dengan brute force bisa jutaan kali lebih cepat.</p>
+  <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · <a href="index.html" style="color:#2563eb;font-size:12px">← Daftar Materi</a></div>
+</section>
+
+<!-- 2. FRAMEWORK BACKTRACKING -->
+<section class="slide" id="s2">
+  <div class="kicker">BAGIAN 1 · PRINSIP BACKTRACKING</div>
+  <h2 class="st">Backtracking = DFS dengan pruning</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b">Bangun solusi langkah demi langkah. Kalau langkah saat ini sudah melanggar constraint (tidak bisa menuju solusi valid), <b>batalkan dan coba pilihan berikutnya</b>.</p>
+<pre class="pycode">def backtrack(state, candidates):
+    if is_solution(state):
+        solutions.append(state[:])
+        return
+    for choice in candidates:
+        if is_valid(state, choice):   # ← pruning
+            state.append(choice)
+            backtrack(state, next_candidates(state))
+            state.pop()               # ← undo</pre>
+      <div class="analogy"><b>Analogi - isi TTS (teka-teki silang).</b> Mulai dari kotak pertama, coba huruf A. Lanjut ke kotak berikutnya, coba A lagi. Kalau di suatu titik tidak ada kata yang cocok → hapus kotak terakhir, coba huruf B. Terus mundur sampai ketemu atau semua kemungkinan habis.</div>
+    </div>
+    <div class="stack">
+      <div class="card soft">
+        <p class="b"><b>Kompleksitas backtracking:</b></p>
+        <p class="tiny">Tanpa pruning: O(k^n) di mana k = pilihan per langkah, n = kedalaman. Dengan pruning yang efektif: bisa jauh lebih kecil - tapi sulit dianalisis secara eksak. Worst case tetap eksponensial.</p>
+      </div>
+      <table class="tbl">
+        <tr><th>Masalah</th><th>Tanpa pruning</th><th>Dengan pruning (khas)</th></tr>
+        <tr><td>N-Queens (n=8)</td><td>8^8 = 16 juta</td><td>~2.000 node</td></tr>
+        <tr><td>Sudoku</td><td>9^81</td><td>~10.000 node</td></tr>
+        <tr><td>TSP (n=10)</td><td>10!</td><td>Jauh lebih sedikit</td></tr>
+      </table>
+      <div class="note">Pruning itu senjata utama backtracking. Semakin awal kita deteksi constraint violation, semakin banyak cabang yang bisa dipotong.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. N-QUEENS -->
+<section class="slide" id="s3">
+  <div class="kicker">BAGIAN 2 · N-QUEENS</div>
+  <h2 class="st">N-Queens - Tempatkan n ratu tanpa saling serang</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <p class="b">Tempatkan n ratu di papan n×n sehingga tidak ada dua ratu yang serang (baris, kolom, diagonal).</p>
+<pre class="pycode">def solve_nqueens(n):
+    solutions = []
+    def bt(row, cols, diag1, diag2):
+        if row == n:
+            solutions.append(cols[:])
+            return
+        for col in range(n):
+            if col in set(cols): continue
+            if (row-col) in diag1: continue
+            if (row+col) in diag2: continue
+            cols.append(col)
+            bt(row+1, cols,
+               diag1|{row-col}, diag2|{row+col})
+            cols.pop()
+    bt(0, [], set(), set())
+    return solutions</pre>
+      <div class="note">Pruning tiga kondisi: kolom sudah terpakai, diagonal utama (/), diagonal sekunder (\). Ketiga cek ini O(1) pakai set → pruning sangat efektif.</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · N-Queens 4×4</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn go" id="btnQS">▶ Cari semua solusi 4×4</button>
+        <button class="btn ghost" id="btnQSReset">Reset</button>
+      </div>
+      <div id="queensBoard" style="display:flex;gap:4px;flex-wrap:wrap;justify-content:center;min-height:60px"></div>
+      <div class="term" id="queensLog" style="min-height:80px">Klik "Cari semua solusi" …</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. CSP -->
+<section class="slide" id="s4">
+  <div class="kicker">BAGIAN 3 · CSP</div>
+  <h2 class="st">Constraint Satisfaction Problem - formalisme yang kuat</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b">CSP mendefinisikan masalah sebagai triplet (X, D, C): variabel, domain, constraint. Backtracking + inferensi constraint = cara standar menyelesaikan CSP.</p>
+      <div class="card soft">
+        <table class="tbl">
+          <tr><th>Komponen</th><th>Contoh: pewarnaan peta</th></tr>
+          <tr><td><b>Variabel X</b></td><td>Provinsi: A, B, C, D</td></tr>
+          <tr><td><b>Domain D</b></td><td>Warna: {merah, hijau, biru}</td></tr>
+          <tr><td><b>Constraint C</b></td><td>Provinsi tetangga ≠ warna sama</td></tr>
+        </table>
+      </div>
+      <div class="note">Penjadwalan kuliah = CSP: variabel = mata kuliah, domain = slot waktu, constraint = tidak boleh bentrok. Google OR-Tools CP-SAT solver menyelesaikan CSP skala besar dengan teknik ini.</div>
+    </div>
+    <div class="stack">
+      <div class="card" style="border-left:4px solid #2563eb">
+        <p class="b"><b>Forward Checking</b></p>
+        <p class="tiny">Setelah assign variabel X=v, hapus v dari domain semua variabel tetangga. Kalau domain tetangga kosong → backtrack segera. Mencegah konflik sebelum terjadi.</p>
+      </div>
+      <div class="card" style="border-left:4px solid #7c3aed">
+        <p class="b"><b>AC-3 Arc Consistency</b></p>
+        <p class="tiny">Propagasi constraint lebih kuat: pastikan untuk setiap nilai di domain X, ada nilai di domain Y yang konsisten. O(ED³) di mana E = arc, D = ukuran domain. Jauh lebih agresif memangkas domain.</p>
+      </div>
+      <div class="card" style="border-left:4px solid #16a34a">
+        <p class="b"><b>Heuristik pemilihan variabel & nilai</b></p>
+        <p class="tiny"><b>MRV</b> (Minimum Remaining Values): pilih variabel dengan domain terkecil dulu - yang paling "terdesak". <b>LCV</b> (Least Constraining Value): pilih nilai yang paling sedikit membatasi variabel lain.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. LATIHAN -->
+<section class="slide" id="s5">
+  <div class="kicker">LATIHAN</div>
+  <h2 class="st">Soal Backtracking dan CSP</h2>
+  <div class="qlist">
+    <div class="q"><span class="qn">1</span><p>Jelaskan perbedaan antara backtracking dan brute force exhaustive search. Apa yang membuat backtracking lebih efisien? Berikan contoh konkret kapan pruning membuang cabang besar.</p></div>
+    <div class="q"><span class="qn">2</span><p>Untuk N-Queens n=4: gambarkan state-space tree sampai menemukan solusi pertama. Berapa node yang dikunjungi vs total permutasi yang mungkin (4! = 24)?</p></div>
+    <div class="q"><span class="qn">3</span><p>Modelkan Sudoku 4×4 sebagai CSP: definisikan X (variabel), D (domain), dan C (constraint). Berapa jumlah variabel, ukuran domain, dan constraint-nya?</p></div>
+    <div class="q"><span class="qn">4</span><p>Jelaskan perbedaan Forward Checking dan AC-3. Mana yang lebih kuat? Apa trade-off-nya dalam hal biaya komputasi per langkah vs jumlah backtrack?</p></div>
+    <div class="q"><span class="qn">5</span><p>Di Colab: implementasikan solver Sudoku 9×9 dengan backtracking + forward checking. Ukur berapa "calls" yang dibutuhkan. Bandingkan dengan dan tanpa MRV heuristic.</p></div>
+  </div>
+</section>
+
+<!-- 6. KUNCI -->
+<section class="slide" id="s6">
+  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
+  <h2 class="st">Kunci Backtracking dan CSP</h2>
+  <div class="qlist">
+    <div class="ans"><span class="qn">1</span><p>Brute force menghasilkan dan menguji semua kandidat. Backtracking membangun kandidat secara inkremental dan membuang (prune) kandidat parsial yang sudah pasti gagal. Contoh: N-Queens, setelah menaruh ratu di (1,1) dan (2,3), baris 3 kolom 1,3,2,4 semuanya diserang - seluruh cabang baris 3 langsung dibuang tanpa menjelajah.</p></div>
+    <div class="ans"><span class="qn">2</span><p>Solusi pertama 4-Queens: (1,3,0,2) atau (2,0,3,1). Dengan pruning kolom dan diagonal, biasanya ditemukan setelah ~8-12 node dikunjungi dari total 4! = 24 permutasi murni. Pruning membuang ~50-60% node.</p></div>
+    <div class="ans"><span class="qn">3</span><p>Sudoku 4×4: <b>X</b> = 16 sel (yang kosong). <b>D</b> = {1,2,3,4} untuk tiap sel. <b>C</b>: setiap baris (4), kolom (4), kotak 2×2 (4) harus berisi nilai berbeda = 12 constraint alldiff. Total variabel ≤ 16, domain size = 4.</p></div>
+    <div class="ans"><span class="qn">4</span><p><b>Forward Checking</b>: propagasi 1 langkah ke depan, O(D) per assign. <b>AC-3</b>: propagasi penuh ke semua arc, O(ED³) sekali jalan. AC-3 lebih kuat (lebih banyak pruning), tapi lebih mahal per langkah. Trade-off: AC-3 sering worth it karena mengurangi backtrack jauh lebih banyak.</p></div>
+    <div class="ans"><span class="qn">5</span><p>Sudoku tanpa MRV: ribuan calls. Dengan MRV: ratusan calls (pilih sel yang paling sedikit kemungkinannya → paling cepat fail → prune lebih agresif). Empiris: MRV sering 10-100× lebih cepat untuk Sudoku.</p></div>
+  </div>
+</section>
+
+<!-- 7. PENUTUP -->
+<section class="slide" id="s7" style="justify-content:center;align-items:center;text-align:center">
+  <div class="kicker">PERTEMUAN 12 · SELESAI</div>
+  <h2 class="st" style="font-size:30px;margin:10px 0">Prune early, prune often.<br>Itulah seni backtracking.</h2>
+  <p style="font-size:13.5px;color:#64748b;max-width:680px;margin:10px auto 0">Pertemuan depan: Branch and Bound - backtracking dengan bounding function untuk optimasi kombinatorial.</p>
+  <div style="margin:24px 0 10px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+    <a class="biglink" href="index.html"><span class="ln1">← KEMBALI KE DAFTAR MATERI</span><span class="ln2">index.html</span><span class="ln3">Semua pertemuan</span></a>
+    <a class="biglink" href="P12_Backtracking_CSP.ipynb" target="_blank"><span class="ln1">BUKA NOTEBOOK</span><span class="ln2">P12_Backtracking_CSP.ipynb</span><span class="ln3">N-Queens, Sudoku, CSP, Forward Checking, AC-3</span></a>
+  </div>
+</section>
+
+</div></div>
+<div id="progress"></div>
+<div id="hud">
+  <div id="hud-left"><span id="pageno">1 / 7</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="dots"></div>
+  <div style="display:flex;gap:8px">
+    <button class="navbtn" id="btnFs">⛶</button>
+    <button class="navbtn" id="btnPrev">‹</button>
+    <button class="navbtn" id="btnNext">›</button>
+  </div>
+</div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function hlCode(t){const e=esc(t);return e.replace(/(#[^\n]*)|("[^"]*")|\b(def|for|in|range|while|if|elif|else|return|import|from|print|lambda|len|not|and|or|True|False|None|float|int|min|max|pass|append)\b|\b(\d+(?:\.\d+)?)\b/g,(m,c,s,k,n)=>c?`<span class="tc">${c}</span>`:s?`<span class="ts">${s}</span>`:k?`<span class="tk">${k}</span>`:`<span class="tn">${n}</span>`)}
+$$('.pycode').forEach(p=>p.innerHTML=hlCode(p.textContent));
+const slides=$$('.slide');let cur=0;
+function go(i){i=Math.max(0,Math.min(slides.length-1,i));if(i===cur)return;
+  const dir=i>cur?1:-1,o=slides[cur],n=slides[i];
+  o.classList.remove('active');o.classList.add(dir>0?'exit-left':'exit-right');
+  n.classList.add(dir>0?'from-right':'from-left');void n.offsetWidth;
+  n.classList.remove('from-right','from-left');n.classList.add('active');
+  setTimeout(()=>o.classList.remove('exit-left','exit-right'),420);cur=i;sync();}
+function sync(){$('#progress').style.width=((cur+1)/slides.length*100)+'%';$('#pageno').textContent=(cur+1)+' / '+slides.length;$$('#dots button').forEach((d,j)=>d.classList.toggle('on',j===cur))}
+const dots=$('#dots');slides.forEach((s,j)=>{const b=document.createElement('button');b.title='Slide '+(j+1);b.onclick=()=>go(j);dots.appendChild(b)});
+$('#btnNext').onclick=()=>go(cur+1);$('#btnPrev').onclick=()=>go(cur-1);
+function toggleFs(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+$('#btnFs').onclick=toggleFs;
+addEventListener('keydown',e=>{const t=e.target,tag=t&&t.tagName,inter=tag==='INPUT'||tag==='TEXTAREA';
+  if(e.key==='ArrowRight'||(e.key===' '&&!inter&&tag!=='BUTTON')){e.preventDefault();go(cur+1)}
+  else if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
+  else if((e.key==='f'||e.key==='F')&&!inter)toggleFs();});
+function fit(){const s=Math.min((innerWidth-30)/1280,(innerHeight-80)/720);$('#deck').style.transform=`translate(-50%,-50%) scale(${s})`}
+addEventListener('resize',fit);fit();
+slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot';f.innerHTML=`<span>Kompleksitas Algoritma · Pertemuan 12 - Backtracking dan CSP</span><span>${j+1}</span>`;s.appendChild(f)});
+/* N-Queens 4x4 */
+(function(){
+  const board=$('#queensBoard'),log=$('#queensLog');if(!board)return;let timers=[];
+  function allSolutions(n){const sols=[];function bt(r,cols,d1,d2){if(r===n){sols.push([...cols]);return}
+    for(let c=0;c<n;c++){if(cols.includes(c)||d1.has(r-c)||d2.has(r+c))continue;cols.push(c);bt(r+1,cols,new Set([...d1,r-c]),new Set([...d2,r+c]));cols.pop()}}bt(0,[],new Set(),new Set());return sols}
+  $('#btnQS').onclick=()=>{timers.forEach(clearTimeout);timers=[];board.innerHTML='';log.innerHTML='';
+    const n=4,sols=allSolutions(n);let si=0;
+    function showNext(){if(si>=sols.length){log.innerHTML+=(log.innerHTML?'\n':'')+`✓ Selesai. Total ${sols.length} solusi ditemukan untuk n=${n}.`;return}
+      board.innerHTML='';const s=sols[si];
+      for(let r=0;r<n;r++){for(let c=0;c<n;c++){const d=document.createElement('div');d.className='qcell'+(s[r]===c?' q-placed':'');d.textContent=s[r]===c?'♛':'';d.style.background=(r+c)%2===0?'#f1f5f9':'#e2e8f0';board.appendChild(d)}}
+      const line=document.createElement('div');line.style.cssText='width:100%;text-align:center;font:12px Consolas;color:#334155;margin-top:2px';line.textContent=`Solusi ${si+1}: kolom ${s.join(',')}`;board.appendChild(line);
+      log.innerHTML+=(log.innerHTML?'\n':'')+`Solusi ${si+1}: [${s}]`;si++;timers.push(setTimeout(showNext,900));}
+    showNext()};
+  $('#btnQSReset').onclick=()=>{timers.forEach(clearTimeout);board.innerHTML='';log.innerHTML='Reset.'};
+})();
+</script>
+</body>
+</html>

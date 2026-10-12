@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pertemuan 15 - Aproksimasi, Randomized, dan Skala Besar · Kompleksitas Algoritma</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;overflow:hidden;background:#0b1526;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+#stage{position:fixed;inset:0;background:radial-gradient(1200px 700px at 70% -10%,#16294d 0%,#0b1526 60%)}
+#deck{position:absolute;left:50%;top:50%;width:1280px;height:720px}
+.slide{position:absolute;inset:0;background:#fff;border-radius:8px;box-shadow:0 24px 80px rgba(0,0,0,.55);padding:44px 60px 60px;opacity:0;pointer-events:none;overflow:hidden;display:flex;flex-direction:column;gap:18px;z-index:1;transition:opacity .38s ease,transform .38s ease}
+.slide.from-right{transition:none;transform:translateX(90px)}.slide.from-left{transition:none;transform:translateX(-90px)}
+.slide.exit-left{opacity:0;transform:translateX(-90px);z-index:2}.slide.exit-right{opacity:0;transform:translateX(90px);z-index:2}
+.slide.active{opacity:1;pointer-events:auto;z-index:3}
+.sfoot{position:absolute;left:60px;right:60px;bottom:14px;display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;border-top:1px solid #f1f5f9;padding-top:6px}
+.kicker{font-size:13px;font-weight:800;letter-spacing:.14em;color:#2563eb;text-transform:uppercase}
+h2.st{font-size:32px;color:#0f172a;line-height:1.25}
+p.b{font-size:17px;line-height:1.65;color:#334155}
+.cols{display:grid;gap:20px;flex:1;min-height:0}
+.c2{grid-template-columns:1fr 1fr}.c2l{grid-template-columns:1.1fr .9fr}
+.stack{display:flex;flex-direction:column;gap:9px;min-height:0}
+.card{border:1px solid #e2e8f0;border-radius:10px;padding:10px 13px;background:#fff}.card.soft{background:#f8fafc}
+.analogy{background:#fffbeb;border:2px solid #fde68a;border-left:6px solid #d97706;padding:14px 18px;border-radius:10px;font-size:17px;line-height:1.7;color:#334155}.analogy b{color:#b45309}
+.warn{background:#fef2f2;border:2px solid #fecaca;border-left:6px solid #b91c1c;padding:14px 18px;border-radius:10px;font-size:17px;color:#334155;line-height:1.7}
+.note{background:#eff6ff;border:1px solid #bfdbfe;border-left:5px solid #2563eb;padding:9px 12px;border-radius:8px;font-size:12.5px;color:#334155;line-height:1.6}
+table.tbl{width:100%;border-collapse:collapse;font-size:16px}
+.tbl th{background:#1e293b;color:#fff;text-align:left;padding:10px 14px;font-size:14px}
+.tbl td{border:1px solid #e2e8f0;padding:9px 14px;color:#334155;vertical-align:middle;line-height:1.45}
+pre.pycode{background:#0f172a;color:#e2e8f0;border-radius:12px;padding:18px 22px;font:15px/1.7 Consolas,'Courier New',monospace;overflow:auto}
+.tk{color:#93c5fd}.ts{color:#fbbf24}.tc{color:#7dd3fc;font-style:italic}.tn{color:#f9a8d4}
+.mono{font-family:Consolas,monospace}.tiny{font-size:14px;color:#64748b;line-height:1.55}
+.btn{display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn:hover{background:#1d4ed8}.btn.go{background:#16a34a}.btn.go:hover{background:#15803d}
+.btn.ghost{background:#fff;color:#2563eb;border:1.5px solid #bfdbfe}.btn.ghost:hover{background:#eff6ff}
+.chipbtn{background:#fff;border:2px solid #bfdbfe;color:#1d4ed8;border-radius:20px;padding:7px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.chipbtn:hover{background:#eff6ff}.chipbtn.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.sim{border:1.5px solid #dbeafe;background:linear-gradient(180deg,#f8fbff,#fff);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-height:0}
+.sim .cap{font-size:12px;font-weight:800;letter-spacing:.1em;color:#2563eb;text-transform:uppercase}
+.term{background:#0f172a;color:#a7f3d0;border-radius:10px;padding:14px 16px;font:14px/1.8 Consolas,monospace;min-height:70px;white-space:pre-wrap;overflow:auto;flex:1}
+.term b{color:#fbbf24}.term .ok{color:#4ade80}
+.qlist{display:flex;flex-direction:column;gap:8px;overflow:auto;flex:1;min-height:0}
+.q{display:flex;gap:12px;align-items:flex-start;border:1px solid #e2e8f0;border-radius:10px;padding:9px 12px;background:#f8fafc}
+.q .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#1e293b;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.q p{font-size:16px;line-height:1.65;color:#334155}
+.ans{display:flex;gap:12px;align-items:flex-start;border:1px solid #bbf7d0;border-radius:10px;padding:9px 12px;background:#f0fdf4}
+.ans .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#16a34a;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.ans p{font-size:16px;line-height:1.65;color:#14532d}
+.biglink{display:inline-block;background:#0f172a;border:2px solid #334155;border-radius:12px;padding:16px 26px;text-decoration:none;transition:all .2s}
+.biglink:hover{border-color:#2563eb}.biglink .ln1{display:block;font:700 12px Arial;color:#94a3b8;letter-spacing:.08em;margin-bottom:5px}
+.biglink .ln2{display:block;font:600 15.5px Consolas,monospace;color:#60a5fa}
+.biglink .ln3{display:block;font-size:11.5px;color:#94a3b8;margin-top:5px}
+.verdict{border-radius:8px;padding:8px 11px;font-size:12.5px;line-height:1.5}
+.verdict.good{background:#dcfce7;color:#166534}.verdict.mid{background:#fef9c3;color:#854d0e}
+.ibar{height:16px;border-radius:8px;overflow:hidden;display:flex;background:#eef2f7}
+.ibar i{transition:width .3s}
+#progress{position:fixed;top:0;left:0;height:5px;background:#2563eb;width:0;z-index:50;transition:width .3s}
+#hud{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;z-index:50;pointer-events:none;gap:12px}
+#hud>*{pointer-events:auto}#dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:52%}
+#dots button{width:9px;height:9px;border-radius:50%;border:none;background:#334155;cursor:pointer;padding:0}#dots button.on{background:#60a5fa;transform:scale(1.4)}
+.navbtn{width:38px;height:38px;border-radius:50%;border:none;background:#1e293b;color:#fff;font-size:19px;cursor:pointer}.navbtn:hover{background:#2563eb}
+#hud-left{color:#94a3b8;font-size:13px;display:flex;gap:12px;align-items:center;background:rgba(11,21,38,.8);padding:6px 12px;border-radius:20px}
+kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size:11px;border:1px solid #334155}
+input[type=range]{accent-color:#2563eb;flex:1}
+.acell{width:24px;height:24px;background:#7c3aed;border-radius:4px;opacity:0;transform:scale(.2);animation:apop .3s forwards}
+@keyframes apop{to{opacity:1;transform:scale(1)}}
+.attn-grid{display:grid;gap:3px;justify-content:center}
+/* 5W1H box */
+.w5h1{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.wcard{border-radius:10px;padding:9px 12px;border:1.5px solid}
+.wcard .wlabel{font:800 12px Arial;letter-spacing:.1em;text-transform:uppercase}
+.wcard p{font-size:15px;line-height:1.6;color:#334155;flex:1}
+.wcard.what{border-color:#bfdbfe;background:#eff6ff}.wcard.what .wlabel{color:#1d4ed8}
+.wcard.why{border-color:#bbf7d0;background:#f0fdf4}.wcard.why .wlabel{color:#15803d}
+.wcard.who{border-color:#fde68a;background:#fffbeb}.wcard.who .wlabel{color:#b45309}
+.wcard.when{border-color:#e9d5ff;background:#faf5ff}.wcard.when .wlabel{color:#7c3aed}
+.wcard.where{border-color:#fecaca;background:#fef2f2}.wcard.where .wlabel{color:#b91c1c}
+.wcard.how{border-color:#cbd5e1;background:#f8fafc}.wcard.how .wlabel{color:#334155}
+#s1{justify-content:center}#s1 h1{font-size:44px;line-height:1.1;color:#0f172a;margin:10px 0 16px}
+#s1 .lead{font-size:15.5px;color:#334155;line-height:1.65;max-width:680px}
+.navhint{margin-top:18px;font-size:12.5px;color:#64748b}
+</style>
+</head>
+<body>
+<div id="stage"><div id="deck">
+
+<!-- 1. JUDUL -->
+<section class="slide" id="s1">
+  <div class="kicker">KOMPLEKSITAS ALGORITMA · PERTEMUAN 15</div>
+  <h1>Aproksimasi, Randomized,<br>dan Algoritma Skala Besar</h1>
+  <p class="lead">Kalau masalahnya NP-Hard, kita tidak bisa dapat solusi optimal dalam waktu polinomial. Tapi kita bisa dapat solusi yang <b>cukup dekat ke optimal</b> - cepat dan dengan jaminan matematis.</p>
+  <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · <a href="index.html" style="color:#2563eb;font-size:12px">← Daftar Materi</a></div>
+</section>
+
+<!-- 2. APROKSIMASI -->
+<section class="slide" id="s2">
+  <div class="kicker">BAGIAN 1 · ALGORITMA APROKSIMASI</div>
+  <h2 class="st">ρ-approximation - solusi yang pasti tidak jauh dari optimal</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b">Algoritma A adalah ρ-approximation jika untuk semua input, solusinya tidak lebih dari ρ kali solusi optimal:</p>
+      <div class="card soft mono" style="font-size:13px;line-height:1.8">
+        Untuk minimasi: C(A) ≤ ρ · C(OPT)<br>
+        Untuk maksimasi: C(A) ≥ (1/ρ) · C(OPT)<br>
+        ρ = 1 berarti optimal; ρ = 2 berarti paling buruk 2× optimal
+      </div>
+      <div class="card" style="border-left:4px solid #2563eb">
+        <p class="b"><b>Vertex Cover 2-aproksimasi:</b></p>
+<pre class="pycode">def approx_vertex_cover(graph):
+    cover = set()
+    edges = set(graph.edges())
+    while edges:
+        # ambil edge sembarang
+        u, v = edges.pop()
+        cover.add(u); cover.add(v)
+        # hapus semua edge yang menyentuh u atau v
+        edges = {e for e in edges
+                 if u not in e and v not in e}
+    return cover  # |cover| ≤ 2 × OPT</pre>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="note"><b>Mengapa ≤ 2×?</b> Setiap edge yang dipilih algoritma adalah anggota matching M. Vertex Cover minimum harus menutup tiap edge di M → butuh ≥ |M| vertex. Algoritma pakai 2|M| vertex → rasio ≤ 2.</div>
+      <table class="tbl">
+        <tr><th>Masalah (NP-Hard)</th><th>Rasio aproksimasi terbaik</th></tr>
+        <tr><td>Vertex Cover</td><td>2 (greedy matching)</td></tr>
+        <tr><td>TSP metrik</td><td>1.5 (Christofides)</td></tr>
+        <tr><td>Set Cover</td><td>O(log n)</td></tr>
+        <tr><td>Max-3-SAT</td><td>7/8 (randomized)</td></tr>
+        <tr><td>TSP umum</td><td>Tidak ada (kecuali P=NP)</td></tr>
+      </table>
+      <div class="analogy"><b>Analogi - pembelian massal.</b> Tidak tahu harga optimal, tapi dengan greedy matching kita bisa jamin tidak lebih boros dari 2× harga terbaik yang mungkin. Jaminan ini berlaku untuk <i>semua</i> input - bukan rata-rata.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. RANDOMIZED -->
+<section class="slide" id="s3">
+  <div class="kicker">BAGIAN 2 · ALGORITMA RANDOMIZED</div>
+  <h2 class="st">Las Vegas vs Monte Carlo - dua filosofi randomized</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <div class="card" style="border-left:4px solid #2563eb">
+        <p class="b"><b>Las Vegas</b> - Selalu benar, waktu random</p>
+        <p class="tiny">Hasil selalu benar, tapi waktu eksekusi bervariasi secara random. Contoh: Randomized QuickSort - pivot dipilih acak → expected O(n log n) untuk semua input, bukan hanya rata-rata.</p>
+<pre class="pycode">import random
+def rand_quicksort(A):
+    if len(A) <= 1: return A
+    pivot = random.choice(A)  # pilih acak!
+    left  = [x for x in A if x < pivot]
+    mid   = [x for x in A if x == pivot]
+    right = [x for x in A if x > pivot]
+    return rand_quicksort(left) + mid + rand_quicksort(right)
+# Expected O(n log n) untuk SEMUA input</pre>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card" style="border-left:4px solid #16a34a">
+        <p class="b"><b>Monte Carlo</b> - Selalu cepat, mungkin salah</p>
+        <p class="tiny">Selalu selesai dalam waktu tertentu, tapi ada kemungkinan kecil hasilnya salah. Contoh: Miller-Rabin primality test - mungkin salah dengan probabilitas ≤ 2^(-k) untuk k iterasi. Dipakai di kriptografi RSA.</p>
+      </div>
+      <table class="tbl">
+        <tr><th>Aspek</th><th>Las Vegas</th><th>Monte Carlo</th></tr>
+        <tr><td>Kebenaran</td><td>Selalu benar</td><td>Probabilistik</td></tr>
+        <tr><td>Waktu</td><td>Expected bound</td><td>Deterministik</td></tr>
+        <tr><td>Contoh</td><td>Rand. QuickSort</td><td>Miller-Rabin</td></tr>
+        <tr><td>Diulang berkali?</td><td>Bisa mempercepat</td><td>Menurunkan error</td></tr>
+      </table>
+      <div class="note">Randomized QuickSort: pivot acak membuat adversary tidak bisa buat input kasus terburuk. Expected depth rekursi = O(log n) untuk semua input, tidak hanya data acak.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. LSH & ANN -->
+<section class="slide" id="s4">
+  <div class="kicker">BAGIAN 3 · [MODERN] PENCARIAN VEKTOR SKALA BESAR</div>
+  <h2 class="st">LSH dan HNSW - approximate nearest neighbor di AI</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b">Sistem RAG, rekomendasi, dan semantic search perlu mencari vektor paling mirip dari miliaran vektor. Exact search = O(n·d) - mustahil. Perlu aproksimasi:</p>
+      <div class="card" style="border-left:4px solid #2563eb">
+        <p class="b"><b>LSH (Locality-Sensitive Hashing)</b></p>
+        <p class="tiny">Vektor yang mirip di-hash ke bucket yang sama dengan probabilitas tinggi. Cari hanya dalam bucket → sublinear time. Trade-off: recall tidak 100% - beberapa tetangga dekat mungkin terlewat.</p>
+      </div>
+      <div class="card" style="border-left:4px solid #7c3aed">
+        <p class="b"><b>HNSW (Hierarchical Navigable Small World)</b></p>
+        <p class="tiny">Graf berlapis: layer atas = koneksi jauh, layer bawah = koneksi dekat. Navigasi dari layer atas ke bawah. Kompleksitas: O(log n) per query. Dipakai di FAISS (Facebook), Pinecone, Weaviate.</p>
+      </div>
+    </div>
+    <div class="stack">
+      <table class="tbl">
+        <tr><th>Metode</th><th>Kompleksitas query</th><th>Recall</th></tr>
+        <tr><td>Exact (brute force)</td><td>O(n·d)</td><td>100%</td></tr>
+        <tr><td>LSH</td><td>O(n^ρ·d)</td><td>~90-95%</td></tr>
+        <tr><td>HNSW</td><td>O(log n)</td><td>~95-99%</td></tr>
+        <tr><td>IVF (FAISS)</td><td>O(√n·d)</td><td>~90-98%</td></tr>
+      </table>
+      <div class="analogy"><b>Analogi HNSW - peta bertingkat.</b> Layer 0 = jalan setapak (detil). Layer 1 = jalan raya. Layer 2 = jalan tol. Navigasi: masuk dari tol (kasar), turun ke jalan raya, lalu setapak. Jauh lebih cepat dari jalan setapak dari awal.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. ATTENTION & FLASHATTENTION -->
+<section class="slide" id="s5">
+  <div class="kicker">BAGIAN 4 · [MODERN] COMPLEXITY OF TRANSFORMERS</div>
+  <h2 class="st">Self-Attention O(n²) dan cara mengatasinya</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <p class="b">Self-attention: tiap token harus "kenalan" dengan semua token lain → O(n²) untuk n token. Ini bottleneck untuk context window panjang.</p>
+      <div class="card soft" style="font-size:12.5px;line-height:1.7">
+        <b>Standard attention:</b> O(n²d) waktu, O(n²) memori<br>
+        n=2.000: 4 juta entry → OK<br>
+        n=32.000: 1 miliar entry → berat<br>
+        n=128.000: 16 miliar entry → sangat berat
+      </div>
+      <div class="card" style="border-left:4px solid #2563eb">
+        <p class="b"><b>FlashAttention (2022)</b></p>
+        <p class="tiny">Tetap O(n²d) secara waktu, tapi O(n) memori dengan IO-aware tiling. Membaca/tulis HBM lebih sedikit → 2-4× lebih cepat di GPU. Hasilnya identik dengan standard attention - bukan aproksimasi!</p>
+      </div>
+      <div class="card" style="border-left:4px solid #7c3aed">
+        <p class="b"><b>Sparse/Linear Attention</b></p>
+        <p class="tiny">Kurangi kompleksitas ke O(n log n) atau O(n) dengan hanya menghitung sebagian pasangan. Trade-off: akurasi turun sedikit. Contoh: Longformer (sliding window), BigBird (random + global).</p>
+      </div>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba · Biaya attention vs panjang konteks</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="mono" style="font-size:13px">n token = <b id="attnN">8</b></span>
+        <input type="range" id="attnSlide" min="2" max="16" value="8">
+      </div>
+      <div class="attn-grid" id="attnGrid"></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#334155;background:#f1f5f9;border-radius:7px;padding:7px 10px">
+        <span id="attnStat"></span><span id="attnDelta"></span>
+      </div>
+      <p class="tiny">Tiap kotak ungu = 1 pasang token yang dibandingkan. Geser slider dan lihat n² membengkak.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6. RANGKUMAN SELURUH MATERI -->
+<section class="slide" id="s6">
+  <div class="kicker">RANGKUMAN · SELURUH MATERI</div>
+  <h2 class="st">Peta strategi algoritma - dari mana ke mana</h2>
+  <table class="tbl">
+    <tr><th>Strategi</th><th>Kapan dipakai</th><th>Kompleksitas khas</th><th>Contoh</th></tr>
+    <tr><td>Brute Force</td><td>n kecil, baseline, verifikasi</td><td>O(n!), O(2ⁿ)</td><td>TSP kecil, semua subset</td></tr>
+    <tr><td>Divide &amp; Conquer</td><td>Submasalah independen, rekursif</td><td>O(n log n)</td><td>Merge Sort, FFT, Strassen</td></tr>
+    <tr><td>Greedy</td><td>Optimal substructure + greedy choice</td><td>O(n log n)</td><td>Activity Selection, Dijkstra, Huffman</td></tr>
+    <tr><td>Dynamic Programming</td><td>Overlapping subproblems + OPT subst.</td><td>O(n²)–O(n³)</td><td>Knapsack, LCS, Floyd-Warshall</td></tr>
+    <tr><td>Backtracking</td><td>Feasibility / all solutions</td><td>Exp. tapi pruning efektif</td><td>N-Queens, Sudoku, CSP</td></tr>
+    <tr><td>Branch &amp; Bound</td><td>Optimasi kombinatorial</td><td>Exp. + bounding</td><td>TSP, ILP</td></tr>
+    <tr><td>Aproksimasi</td><td>NP-Hard, solusi mendekati optimal</td><td>O(n log n)–O(n²)</td><td>Vertex Cover, TSP metrik</td></tr>
+    <tr><td>Randomized</td><td>Adversarial input, expected performance</td><td>Expected O(n log n)</td><td>Rand. QuickSort, LSH</td></tr>
+  </table>
+</section>
+
+<!-- 7. LATIHAN -->
+<section class="slide" id="s7">
+  <div class="kicker">LATIHAN · PERTEMUAN 15</div>
+  <h2 class="st">Soal Aproksimasi, Randomized, Skala Besar</h2>
+  <div class="qlist">
+    <div class="q"><span class="qn">1</span><p>Algoritma 2-aproksimasi Vertex Cover mengambil kedua endpoint edge. Buktikan bahwa hasilnya selalu ≤ 2× optimal. (Petunjuk: setiap edge yang dipilih harus dicakup oleh setidaknya 1 vertex optimal.)</p></div>
+    <div class="q"><span class="qn">2</span><p>Mengapa Randomized QuickSort memiliki expected O(n log n) untuk <i>semua</i> input, bukan hanya rata-rata input acak? Jelaskan perbedaan "average case" vs "expected case".</p></div>
+    <div class="q"><span class="qn">3</span><p>Context window model bahasa naik dari 4K ke 128K token. Berapa kali lipat biaya standard attention naik? Bagaimana FlashAttention membantu, dan apa batasnya?</p></div>
+    <div class="q"><span class="qn">4</span><p>Jelaskan trade-off antara exact search dan HNSW untuk pencarian vektor. Kapan kamu memilih exact search meski lebih lambat?</p></div>
+    <div class="q"><span class="qn">5</span><p>Di Colab: implementasikan Randomized QuickSort dan benchmark vs pivot-elemen-terakhir untuk input terurut (n=10.000). Hitung rasio waktu dan tunjukkan bahwa random pivot mencegah kasus terburuk.</p></div>
+  </div>
+</section>
+
+<!-- 8. KUNCI -->
+<section class="slide" id="s8">
+  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
+  <h2 class="st">Kunci Aproksimasi, Randomized, Skala Besar</h2>
+  <div class="qlist">
+    <div class="ans"><span class="qn">1</span><p>Setiap edge (u,v) yang dipilih algoritma masuk ke matching M. OPT harus menutup setiap edge di M → OPT ≥ |M|. Algoritma menambahkan 2 vertex per edge → hasilnya = 2|M| ≤ 2·OPT. Rasio ≤ 2. ✓</p></div>
+    <div class="ans"><span class="qn">2</span><p><b>Average case</b>: rata-rata atas semua input (asumsi distribusi tertentu). <b>Expected case</b>: rata-rata atas pilihan random algoritma, untuk <i>satu</i> input tetap. Randomized QS: expected O(n log n) untuk setiap input tetap karena probabilitas pivot bagus tinggi terlepas dari isi data.</p></div>
+    <div class="ans"><span class="qn">3</span><p>128K/4K = 32× lebih panjang. Biaya attention: (32)² = <b>1024× lebih mahal</b>. FlashAttention mempertahankan kompleksitas O(n²) tapi mengurangi akses memori GPU (IO-aware) → 2-4× lebih cepat dalam wall-clock. Batasnya: tetap O(n²) secara teori - untuk n sangat panjang butuh sparse/linear attention.</p></div>
+    <div class="ans"><span class="qn">4</span><p>HNSW: O(log n) query, recall ~95-99%. Exact: O(n·d), recall 100%. Pilih exact saat: (1) n kecil (&lt;10.000), (2) recall 100% kritis (keamanan, hukum), (3) d kecil. Pilih HNSW saat: skala jutaan-miliaran vektor, latensi real-time penting.</p></div>
+    <div class="ans"><span class="qn">5</span><p>Input terurut + pivot terakhir → O(n²). Random pivot → expected O(n log n). Rasio waktu pada n=10.000: naif ≈ 100 juta operasi, random ≈ 130 ribu operasi → ~750× lebih cepat. Rasio empiris biasanya 100-1000× untuk input terurut.</p></div>
+  </div>
+</section>
+
+<!-- 9. PENUTUP -->
+<section class="slide" id="s9" style="justify-content:center;align-items:center;text-align:center">
+  <div class="kicker">PERTEMUAN 15 · SELESAI · MATERI SELESAI</div>
+  <h2 class="st" style="font-size:30px;margin:10px 0">Dari notasi asimtotik hingga Transformer -<br>semua terhubung lewat satu pertanyaan.</h2>
+  <p style="font-size:14px;color:#334155;max-width:700px;margin:10px auto 0"><b>Kalau datanya jadi 10 kali lebih banyak, program saya jadi berapa kali lebih lambat?</b><br><br>Sekarang kamu punya alat untuk menjawab pertanyaan itu - di whiteboard, di kode, dan di riset.</p>
+  <div style="margin:20px 0 10px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+    <a class="biglink" href="index.html"><span class="ln1">← KEMBALI KE DAFTAR MATERI</span><span class="ln2">index.html</span><span class="ln3">Semua 15 pertemuan materi</span></a>
+    <a class="biglink" href="P15_Aproksimasi_Skala_Besar.ipynb" target="_blank"><span class="ln1">BUKA NOTEBOOK</span><span class="ln2">P15_Aproksimasi_Skala_Besar.ipynb</span><span class="ln3">Aproksimasi, LSH, HNSW, Attention, FlashAttention</span></a>
+    <a class="biglink" href="https://github.com/Muhammad-Ikhwan-Fathulloh/Algorithm-Complexity-Course-Bank" target="_blank"><span class="ln1">REPO MATA KULIAH</span><span class="ln2">github.com/Muhammad-Ikhwan-Fathulloh/...</span><span class="ln3">RPS, handout, bank soal, semua materi</span></a>
+  </div>
+</section>
+
+</div></div>
+<div id="progress"></div>
+<div id="hud">
+  <div id="hud-left"><span id="pageno">1 / 9</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="dots"></div>
+  <div style="display:flex;gap:8px">
+    <button class="navbtn" id="btnFs">⛶</button>
+    <button class="navbtn" id="btnPrev">‹</button>
+    <button class="navbtn" id="btnNext">›</button>
+  </div>
+</div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function hlCode(t){const e=esc(t);return e.replace(/(#[^\n]*)|("[^"]*")|\b(def|for|in|range|while|if|elif|else|return|import|from|print|lambda|len|not|and|or|True|False|None|float|int|min|max|pass|append|choice|set)\b|\b(\d+(?:\.\d+)?)\b/g,(m,c,s,k,n)=>c?`<span class="tc">${c}</span>`:s?`<span class="ts">${s}</span>`:k?`<span class="tk">${k}</span>`:`<span class="tn">${n}</span>`)}
+$$('.pycode').forEach(p=>p.innerHTML=hlCode(p.textContent));
+const slides=$$('.slide');let cur=0;
+function go(i){i=Math.max(0,Math.min(slides.length-1,i));if(i===cur)return;
+  const dir=i>cur?1:-1,o=slides[cur],n=slides[i];
+  o.classList.remove('active');o.classList.add(dir>0?'exit-left':'exit-right');
+  n.classList.add(dir>0?'from-right':'from-left');void n.offsetWidth;
+  n.classList.remove('from-right','from-left');n.classList.add('active');
+  setTimeout(()=>o.classList.remove('exit-left','exit-right'),420);cur=i;sync();}
+function sync(){$('#progress').style.width=((cur+1)/slides.length*100)+'%';$('#pageno').textContent=(cur+1)+' / '+slides.length;$$('#dots button').forEach((d,j)=>d.classList.toggle('on',j===cur))}
+const dots=$('#dots');slides.forEach((s,j)=>{const b=document.createElement('button');b.title='Slide '+(j+1);b.onclick=()=>go(j);dots.appendChild(b)});
+$('#btnNext').onclick=()=>go(cur+1);$('#btnPrev').onclick=()=>go(cur-1);
+function toggleFs(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+$('#btnFs').onclick=toggleFs;
+addEventListener('keydown',e=>{const t=e.target,tag=t&&t.tagName,inter=tag==='INPUT'||tag==='TEXTAREA';
+  if(e.key==='ArrowRight'||(e.key===' '&&!inter&&tag!=='BUTTON')){e.preventDefault();go(cur+1)}
+  else if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
+  else if((e.key==='f'||e.key==='F')&&!inter)toggleFs();});
+function fit(){const s=Math.min((innerWidth-30)/1280,(innerHeight-80)/720);$('#deck').style.transform=`translate(-50%,-50%) scale(${s})`}
+addEventListener('resize',fit);fit();
+slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot';f.innerHTML=`<span>Kompleksitas Algoritma · Pertemuan 15 - Aproksimasi, Randomized, dan Skala Besar</span><span>${j+1}</span>`;s.appendChild(f)});
+/* Attention matrix */
+(function(){
+  const grid=$('#attnGrid'),sl=$('#attnSlide');if(!grid)return;let last=8;
+  function render(t){const prev=last;last=t;
+    grid.style.gridTemplateColumns=`repeat(${t},24px)`;grid.innerHTML='';
+    for(let i=0;i<t*t;i++){const c=document.createElement('div');c.className='acell';c.style.animationDelay=(i*5)+'ms';grid.appendChild(c)}
+    $('#attnN').textContent=t;
+    $('#attnStat').innerHTML=`n=${t} token → <b>${t*t}</b> perbandingan`;
+    $('#attnDelta').innerHTML=prev!==t?`${prev}→${t}: ${prev*prev}→${t*t} = <b>${(t*t/(prev*prev)).toFixed(1)}×</b>`:''}
+  sl.addEventListener('input',e=>render(+e.target.value));
+  render(8);
+})();
+</script>
+</body>
+</html>

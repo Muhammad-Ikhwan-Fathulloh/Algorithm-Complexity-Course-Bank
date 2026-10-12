@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pertemuan 4 - Divide and Conquer I · Kompleksitas Algoritma</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#0b1526;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+#stage{position:fixed;inset:0;background:radial-gradient(1200px 700px at 70% -10%,#16294d 0%,#0b1526 60%)}
+#deck{position:absolute;left:50%;top:50%;width:1280px;height:720px}
+.slide{position:absolute;inset:0;background:#fff;border-radius:8px;box-shadow:0 24px 80px rgba(0,0,0,.55);padding:44px 60px 60px;opacity:0;pointer-events:none;overflow:hidden;display:flex;flex-direction:column;gap:18px;z-index:1;transition:opacity .38s ease,transform .38s ease}
+.slide.from-right{transition:none;transform:translateX(90px)}.slide.from-left{transition:none;transform:translateX(-90px)}
+.slide.exit-left{opacity:0;transform:translateX(-90px);z-index:2}.slide.exit-right{opacity:0;transform:translateX(90px);z-index:2}
+.slide.active{opacity:1;pointer-events:auto;z-index:3}
+.sfoot{position:absolute;left:60px;right:60px;bottom:14px;display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;border-top:1px solid #f1f5f9;padding-top:6px}
+.kicker{font-size:13px;font-weight:800;letter-spacing:.14em;color:#2563eb;text-transform:uppercase}
+h2.st{font-size:32px;color:#0f172a;line-height:1.25}
+p.b{font-size:17px;line-height:1.65;color:#334155}
+.cols{display:grid;gap:20px;flex:1;min-height:0}
+.c2{grid-template-columns:1fr 1fr}.c2l{grid-template-columns:1.1fr .9fr}.c2r{grid-template-columns:.9fr 1.1fr}
+.stack{display:flex;flex-direction:column;gap:9px;min-height:0}
+.card{border:1px solid #e2e8f0;border-radius:10px;padding:10px 13px;background:#fff}
+.card.soft{background:#f8fafc}
+.analogy{background:#fffbeb;border:2px solid #fde68a;border-left:6px solid #d97706;padding:14px 18px;border-radius:10px;font-size:17px;line-height:1.7;color:#334155}
+.analogy b{color:#b45309}
+.warn{background:#fef2f2;border:2px solid #fecaca;border-left:6px solid #b91c1c;padding:14px 18px;border-radius:10px;font-size:17px;color:#334155;line-height:1.7}
+.note{background:#eff6ff;border:1px solid #bfdbfe;border-left:5px solid #2563eb;padding:9px 12px;border-radius:8px;font-size:12.5px;color:#334155;line-height:1.6}
+table.tbl{width:100%;border-collapse:collapse;font-size:16px}
+.tbl th{background:#1e293b;color:#fff;text-align:left;padding:10px 14px;font-size:14px}
+.tbl td{border:1px solid #e2e8f0;padding:9px 14px;color:#334155;vertical-align:middle;line-height:1.45}
+pre.pycode{background:#0f172a;color:#e2e8f0;border-radius:12px;padding:18px 22px;font:15px/1.7 Consolas,'Courier New',monospace;overflow:auto}
+.tk{color:#93c5fd}.ts{color:#fbbf24}.tc{color:#7dd3fc;font-style:italic}.tn{color:#f9a8d4}
+.mono{font-family:Consolas,monospace}.tiny{font-size:14px;color:#64748b;line-height:1.55}
+.btn{display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn:hover{background:#1d4ed8}.btn.go{background:#16a34a}.btn.go:hover{background:#15803d}
+.btn.ghost{background:#fff;color:#2563eb;border:1.5px solid #bfdbfe}.btn.ghost:hover{background:#eff6ff}
+.chipbtn{background:#fff;border:2px solid #bfdbfe;color:#1d4ed8;border-radius:20px;padding:7px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.chipbtn:hover{background:#eff6ff}.chipbtn.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.sim{border:1.5px solid #dbeafe;background:linear-gradient(180deg,#f8fbff,#fff);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-height:0}
+.sim .cap{font-size:12px;font-weight:800;letter-spacing:.1em;color:#2563eb;text-transform:uppercase}
+.term{background:#0f172a;color:#a7f3d0;border-radius:10px;padding:14px 16px;font:14px/1.8 Consolas,monospace;min-height:80px;white-space:pre-wrap;overflow:auto;flex:1}
+.cbadge{display:inline-block;background:#0f172a;color:#93c5fd;font:700 11px Consolas,monospace;padding:3px 11px;border-radius:20px;margin-bottom:5px}
+ol.agenda{margin:6px 0 0 22px;font-size:14px;line-height:2.05;color:#334155}
+ol.agenda b{color:#0f172a}
+.qlist{display:flex;flex-direction:column;gap:8px;overflow:auto;flex:1;min-height:0}
+.q{display:flex;gap:12px;align-items:flex-start;border:1px solid #e2e8f0;border-radius:10px;padding:9px 12px;background:#f8fafc}
+.q .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#1e293b;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.q p{font-size:16px;line-height:1.65;color:#334155}
+.ans{display:flex;gap:12px;align-items:flex-start;border:1px solid #bbf7d0;border-radius:10px;padding:9px 12px;background:#f0fdf4}
+.ans .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#16a34a;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.ans p{font-size:16px;line-height:1.65;color:#14532d}
+.biglink{display:inline-block;background:#0f172a;border:2px solid #334155;border-radius:12px;padding:16px 26px;text-decoration:none;transition:all .2s}
+.biglink:hover{border-color:#2563eb}.biglink .ln1{display:block;font:700 12px Arial;color:#94a3b8;letter-spacing:.08em;margin-bottom:5px}
+.biglink .ln2{display:block;font:600 15.5px Consolas,monospace;color:#60a5fa}
+.biglink .ln3{display:block;font-size:11.5px;color:#94a3b8;margin-top:5px}
+#progress{position:fixed;top:0;left:0;height:5px;background:#2563eb;width:0;z-index:50;transition:width .3s}
+#hud{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;z-index:50;pointer-events:none;gap:12px}
+#hud>*{pointer-events:auto}#dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:52%}
+#dots button{width:9px;height:9px;border-radius:50%;border:none;background:#334155;cursor:pointer;padding:0}
+#dots button.on{background:#60a5fa;transform:scale(1.4)}
+.navbtn{width:38px;height:38px;border-radius:50%;border:none;background:#1e293b;color:#fff;font-size:19px;cursor:pointer}
+.navbtn:hover{background:#2563eb}
+#hud-left{color:#94a3b8;font-size:13px;display:flex;gap:12px;align-items:center;background:rgba(11,21,38,.8);padding:6px 12px;border-radius:20px}
+kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size:11px;border:1px solid #334155}
+input[type=range]{accent-color:#2563eb;flex:1}
+.srow{display:flex;gap:5px;flex-wrap:wrap;justify-content:center}
+.scell{min-width:38px;height:38px;border:2px solid #cbd5e1;border-radius:8px;background:#f8fafc;display:flex;align-items:center;justify-content:center;font:700 13px Consolas;color:#0f172a;transition:all .15s}
+.scell.pivot{border-color:#7c3aed;background:#ede9fe;color:#4c1d95}
+.scell.done{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.scell.comparing{border-color:#f59e0b;background:#fef9c3}
+.scell.left{border-color:#2563eb;background:#dbeafe}
+.scell.right{border-color:#dc2626;background:#fee2e2}
+.verdict{border-radius:8px;padding:8px 11px;font-size:12.5px;line-height:1.5}
+.verdict.good{background:#dcfce7;color:#166534}.verdict.mid{background:#fef9c3;color:#854d0e}
+/* 5W1H box */
+.w5h1{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.wcard{border-radius:10px;padding:9px 12px;border:1.5px solid}
+.wcard .wlabel{font:800 12px Arial;letter-spacing:.1em;text-transform:uppercase}
+.wcard p{font-size:15px;line-height:1.6;color:#334155;flex:1}
+.wcard.what{border-color:#bfdbfe;background:#eff6ff}.wcard.what .wlabel{color:#1d4ed8}
+.wcard.why{border-color:#bbf7d0;background:#f0fdf4}.wcard.why .wlabel{color:#15803d}
+.wcard.who{border-color:#fde68a;background:#fffbeb}.wcard.who .wlabel{color:#b45309}
+.wcard.when{border-color:#e9d5ff;background:#faf5ff}.wcard.when .wlabel{color:#7c3aed}
+.wcard.where{border-color:#fecaca;background:#fef2f2}.wcard.where .wlabel{color:#b91c1c}
+.wcard.how{border-color:#cbd5e1;background:#f8fafc}.wcard.how .wlabel{color:#334155}
+#s1{justify-content:center}#s1 h1{font-size:48px;line-height:1.1;color:#0f172a;margin:10px 0 16px}
+#s1 .lead{font-size:16px;color:#334155;line-height:1.65;max-width:640px}
+.navhint{margin-top:18px;font-size:12.5px;color:#64748b}
+</style>
+</head>
+<body>
+<div id="stage"><div id="deck">
+
+<!-- 1. JUDUL -->
+<section class="slide" id="s1">
+  <div class="kicker">KOMPLEKSITAS ALGORITMA · PERTEMUAN 4</div>
+  <h1>Divide and Conquer I</h1>
+  <p class="lead">Pisahkan masalah jadi bagian lebih kecil, selesaikan masing-masing, gabungkan hasilnya. Strategi ini menghasilkan algoritma <b>Θ(n log n)</b> untuk masalah yang naifnya butuh Θ(n²).</p>
+  <p class="b" style="margin-top:6px">Pertemuan ini: <b>Merge Sort</b>, <b>Quick Sort</b>, <b>Binary Search</b>, <b>Quickselect</b> - empat algoritma yang wajib dikenal setiap programmer.</p>
+  <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · <a href="index.html" style="color:#2563eb;font-size:12px">← Daftar Materi</a></div>
+</section>
+
+<!-- 5W1H -->
+<section class="slide" id="s5w1h">
+  <div class="kicker">KERANGKA TEORI · 5W1H - Divide and Conquer I</div>
+  <h2 class="st">Kenapa materi ini ada, untuk siapa, dan bagaimana memakainya?</h2>
+  <div class="w5h1" style="margin-top:6px">
+    <div class="wcard what"><div class="wlabel">What - Apa?</div><p>D&C = pecah masalah ukuran n menjadi a submasalah ukuran n/b, selesaikan rekursif, gabungkan hasilnya. Merge Sort, Quick Sort, Binary Search, Quickselect adalah empat algoritma D&C paling penting - semuanya dipakai setiap hari di industri tanpa kita sadari.</p></div>
+    <div class="wcard why"><div class="wlabel">Why - Mengapa?</div><p>Sorting naif O(n²) tidak cukup untuk n = 10 juta. D&C membawa sorting ke Θ(n log n) - batas teoritis comparison-based sorting. Binary Search membawa pencarian dari O(n) ke O(log n). Ini perbedaan antara detik dan jam untuk data skala industri nyata.</p></div>
+    <div class="wcard who"><div class="wlabel">Who - Siapa?</div><p>Semua programmer - Python list.sort() pakai Timsort (turunan Merge Sort). Database index pakai B-tree (D&C). Interview teknikal hampir selalu tanya cara kerja sorting. Tidak ada jalan keluar dari materi ini untuk siapapun yang menulis kode profesional.</p></div>
+    <div class="wcard when"><div class="wlabel">When - Kapan?</div><p>Merge Sort: butuh sort stabil atau garansi O(n log n) worst case. Quick Sort: butuh in-place dan data acak. Binary Search: data terurut dan butuh cari cepat - dari dictionary lookup hingga git bisect. Quickselect: cari median atau percentile ke-k tanpa sort penuh, rata-rata Θ(n) vs Θ(n log n) sort-then-pick.</p></div>
+    <div class="wcard where"><div class="wlabel">Where - Di mana?</div><p>Merge Sort di: Python sorted(), Java Arrays.sort(Object[]), external sort file besar. Quick Sort di: C++ std::sort, database internal. Binary Search di: database index lookup, git bisect, numpy searchsorted. Quickselect di: NumPy percentile, statistik deskriptif, data science pipeline harian.</p></div>
+    <div class="wcard how"><div class="wlabel">How - Bagaimana?</div><p>Tiga langkah: (1) Divide - belah input (tengah untuk Merge Sort, pivot untuk Quick Sort). (2) Conquer - rekursif ke submasalah, base case saat n=1. (3) Combine - Merge Sort: gabungkan dua sorted array O(n). Quick Sort: tidak perlu combine karena partisi sudah in-place. Analisis kompleksitas via Master Theorem.</p></div>
+  </div>
+</section>
+
+<!-- 2. PRINSIP D&C -->
+<section class="slide" id="s2">
+  <div class="kicker">PRINSIP DIVIDE AND CONQUER</div>
+  <h2 class="st">Tiga langkah: Divide → Conquer → Combine</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <div class="card" style="border-left:4px solid #2563eb">
+        <p class="b"><b>1. Divide</b> - Pecah masalah ukuran n menjadi a submasalah ukuran n/b.</p>
+      </div>
+      <div class="card" style="border-left:4px solid #7c3aed">
+        <p class="b"><b>2. Conquer</b> - Selesaikan tiap submasalah secara rekursif. Kalau sudah cukup kecil, selesaikan langsung.</p>
+      </div>
+      <div class="card" style="border-left:4px solid #16a34a">
+        <p class="b"><b>3. Combine</b> - Gabungkan hasil submasalah menjadi solusi masalah asal.</p>
+      </div>
+      <div class="note">Rekurensnya: T(n) = a·T(n/b) + f(n). Selesaikan dengan Master Theorem dari pertemuan kemarin.</div>
+    </div>
+    <div class="stack">
+      <div class="analogy"><b>Analogi - ngebagi tugas sensus.</b> Sensus 1 juta penduduk: bagi ke 2 tim, masing-masing sensus 500 ribu. Tiap tim bagi lagi ke 2 tim kecil. Terus sampai tiap tim cuma sensus 1 orang (base case). Gabungkan hasilnya naik ke atas. Inilah Merge Sort.</div>
+      <table class="tbl">
+        <tr><th>Algoritma</th><th>Divide</th><th>Conquer</th><th>Combine</th><th>Θ</th></tr>
+        <tr><td>Merge Sort</td><td>Belah 2</td><td>Rekursif</td><td>Merge O(n)</td><td>n log n</td></tr>
+        <tr><td>Quick Sort</td><td>Partition</td><td>Rekursif</td><td>Gratis O(1)</td><td>n log n*</td></tr>
+        <tr><td>Binary Search</td><td>Cek tengah</td><td>1 subsoal</td><td>Gratis O(1)</td><td>log n</td></tr>
+        <tr><td>Quickselect</td><td>Partition</td><td>1 subsoal</td><td>Gratis O(1)</td><td>n*</td></tr>
+      </table>
+      <p class="tiny">* = kasus rata-rata. Kasus terburuk Quick Sort dan Quickselect bisa O(n²) kalau pivot-nya selalu buruk.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3. MERGE SORT -->
+<section class="slide" id="s3">
+  <div class="kicker">BAGIAN 1 · MERGE SORT</div>
+  <h2 class="st">Merge Sort - Θ(n log n) terjamin</h2>
+  <div class="cols c2l">
+    <div class="stack">
+<pre class="pycode">def merge_sort(A):
+    if len(A) <= 1: return A
+    mid = len(A) // 2
+    L = merge_sort(A[:mid])   # T(n/2)
+    R = merge_sort(A[mid:])   # T(n/2)
+    return merge(L, R)        # O(n)
+
+def merge(L, R):              # O(n)
+    out, i, j = [], 0, 0
+    while i < len(L) and j < len(R):
+        if L[i] <= R[j]:
+            out.append(L[i]); i += 1
+        else:
+            out.append(R[j]); j += 1
+    return out + L[i:] + R[j:]
+# Rekurens: T(n)=2T(n/2)+n → Θ(n log n)</pre>
+      <div class="note">Merge Sort: <b>selalu</b> Θ(n log n) - kasus terbaik, rata-rata, terburuk sama semua. Tradeoff: butuh memori O(n) ekstra untuk merge. In-place merge sort ada tapi praktiknya lebih lambat.</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Simulasi Merge Sort</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn go" id="btnMergeRun">▶ Jalankan</button>
+        <button class="btn ghost" id="btnMergeReset">Reset</button>
+      </div>
+      <div class="srow" id="mergeArr"></div>
+      <div class="term" id="mergeLog" style="min-height:130px">Klik "Jalankan" untuk melihat langkah merge sort…</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. QUICK SORT -->
+<section class="slide" id="s4">
+  <div class="kicker">BAGIAN 2 · QUICK SORT</div>
+  <h2 class="st">Quick Sort - Θ(n log n) rata-rata, O(n²) terburuk</h2>
+  <div class="cols c2l">
+    <div class="stack">
+<pre class="pycode">def quicksort(A, lo=0, hi=None):
+    if hi is None: hi = len(A) - 1
+    if lo >= hi: return
+    p = partition(A, lo, hi)   # O(n)
+    quicksort(A, lo, p - 1)
+    quicksort(A, p + 1, hi)
+
+def partition(A, lo, hi):
+    pivot = A[hi]   # pivot = elemen terakhir
+    i = lo - 1
+    for j in range(lo, hi):
+        if A[j] <= pivot:
+            i += 1
+            A[i], A[j] = A[j], A[i]
+    A[i+1], A[hi] = A[hi], A[i+1]
+    return i + 1</pre>
+      <div class="warn"><b>Kasus terburuk Quick Sort:</b> array sudah terurut + pivot selalu elemen terakhir → partisi jadi 0 dan n-1 → T(n)=T(n-1)+n = O(n²). Solusinya: pivot acak (randomized quicksort).</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · Quick Sort langkah demi langkah</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn go" id="btnQsRun">▶ Jalankan</button>
+        <button class="btn ghost" id="btnQsReset">Reset</button>
+        <button class="btn ghost" id="btnQsWorst">Kasus Terburuk</button>
+      </div>
+      <div class="srow" id="qsArr"></div>
+      <div class="term" id="qsLog" style="min-height:120px">Klik "Jalankan" untuk melihat Quick Sort…</div>
+      <p class="tiny"><span style="color:#7c3aed">■</span> pivot &nbsp; <span style="color:#2563eb">■</span> ≤ pivot &nbsp; <span style="color:#dc2626">■</span> &gt; pivot &nbsp; <span style="color:#16a34a">■</span> terpasang</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5. BINARY SEARCH -->
+<section class="slide" id="s5">
+  <div class="kicker">BAGIAN 3 · BINARY SEARCH</div>
+  <h2 class="st">Binary Search - Θ(log n) dengan syarat: data terurut</h2>
+  <div class="cols c2">
+    <div class="stack">
+<pre class="pycode">def binary_search(A, x):
+    lo, hi = 0, len(A) - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if A[mid] == x:
+            return mid        # ketemu
+        elif A[mid] < x:
+            lo = mid + 1      # buang separuh kiri
+        else:
+            hi = mid - 1      # buang separuh kanan
+    return -1                 # tidak ada</pre>
+      <div class="analogy"><b>Analogi - buka kamus.</b> Cari kata "kucing": buka tengah, "meja" - terlalu jauh ke belakang. Buka kiri, "hutan" - masih kurang. Terus biseksi. log₂(100.000) ≈ 17 langkah cukup untuk mencari di kamus 100 ribu kata.</div>
+    </div>
+    <div class="stack">
+      <table class="tbl">
+        <tr><th>n</th><th>Binary Search</th><th>Linear Search</th></tr>
+        <tr><td>100</td><td>7 langkah</td><td>50 langkah (avg)</td></tr>
+        <tr><td>1.000</td><td>10 langkah</td><td>500</td></tr>
+        <tr><td>1 juta</td><td>20 langkah</td><td>500.000</td></tr>
+        <tr><td>1 miliar</td><td>30 langkah</td><td>500 juta</td></tr>
+      </table>
+      <div class="note"><b>Syarat penting:</b> array harus sudah <b>terurut</b>. Kalau datanya dinamis (sering insert/delete), lebih baik pakai BST atau sorted container yang maintain urutan otomatis.</div>
+      <div class="card soft">
+        <p class="b"><b>Rekurens:</b> T(n) = T(n/2) + 1. Master Theorem kasus 2 (a=1, b=2, d=0, log_b a=0=d) → <b>Θ(log n)</b>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. QUICKSELECT -->
+<section class="slide" id="s6">
+  <div class="kicker">BAGIAN 4 · QUICKSELECT</div>
+  <h2 class="st">Quickselect - Cari elemen ke-k tanpa sort penuh</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b">Cari elemen ke-k terkecil (median, percentile). Tidak perlu sort semua elemen - hanya kejar satu partisi:</p>
+<pre class="pycode">def quickselect(A, k, lo=0, hi=None):
+    if hi is None: hi = len(A) - 1
+    if lo == hi: return A[lo]
+    p = partition(A, lo, hi)   # O(n)
+    if p == k:   return A[p]
+    elif p > k:  return quickselect(A, k, lo, p-1)
+    else:        return quickselect(A, k, p+1, hi)
+# Rekurens: T(n) = T(n/2) + n → Θ(n) rata-rata</pre>
+      <div class="note">Rata-rata pivot membelah array ke dua bagian sama besar, sehingga T(n) = T(n/2) + n → Θ(n). Ini <i>lebih cepat</i> dari sort + ambil elemen ke-k yang butuh Θ(n log n).</div>
+    </div>
+    <div class="stack">
+      <div class="analogy"><b>Analogi - cari nilai median ujian.</b> Daripada urutkan semua nilai baru ambil yang tengah (O(n log n)), Quickselect langsung mengarah ke nilai ke-(n/2) dengan O(n) rata-rata. Bedanya makin terasa saat n besar.</div>
+      <div class="card soft">
+        <p class="b"><b>Perbandingan:</b></p>
+        <table class="tbl">
+          <tr><th>Cara</th><th>Kompleksitas</th></tr>
+          <tr><td>Sort + ambil ke-k</td><td>Θ(n log n)</td></tr>
+          <tr><td>Quickselect (avg)</td><td>Θ(n)</td></tr>
+          <tr><td>Quickselect (worst)</td><td>Θ(n²)</td></tr>
+          <tr><td>Median of medians</td><td>Θ(n) worst case</td></tr>
+        </table>
+      </div>
+      <div class="warn"><b>Python:</b> <span class="mono">heapq.nsmallest(k, A)</span> untuk k kecil, atau gunakan introselect di library numpy. Quickselect murni cukup untuk n ≤ 10⁶.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. MERGE vs QUICK -->
+<section class="slide" id="s7">
+  <div class="kicker">PERBANDINGAN</div>
+  <h2 class="st">Merge Sort vs Quick Sort - mana yang lebih baik?</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <table class="tbl">
+        <tr><th>Aspek</th><th>Merge Sort</th><th>Quick Sort</th></tr>
+        <tr><td>Waktu worst</td><td class="mono" style="color:#16a34a">Θ(n log n)</td><td class="mono" style="color:#dc2626">Θ(n²)</td></tr>
+        <tr><td>Waktu avg</td><td class="mono">Θ(n log n)</td><td class="mono">Θ(n log n)</td></tr>
+        <tr><td>Memori ekstra</td><td class="mono" style="color:#dc2626">O(n)</td><td class="mono" style="color:#16a34a">O(log n)*</td></tr>
+        <tr><td>Stabil?</td><td>✓ Ya</td><td>✗ Tidak</td></tr>
+        <tr><td>Cache friendly?</td><td>✗ Tidak</td><td>✓ Ya</td></tr>
+        <tr><td>Praktik di C++/Python</td><td>Jarang langsung</td><td>Timsort (hybrid)</td></tr>
+      </table>
+      <p class="tiny">* Quick Sort butuh O(log n) stack untuk rekursi; versi iteratif lebih hemat.</p>
+    </div>
+    <div class="stack">
+      <div class="note">Python <code>list.sort()</code> dan <code>sorted()</code> pakai <b>Timsort</b> - hybrid antara Merge Sort dan Insertion Sort. Stabil, Θ(n log n) worst case, dan sangat cepat untuk data yang sudah hampir terurut.</div>
+      <div class="analogy"><b>Aturan praktis:</b> Kalau butuh <b>stabilitas</b> atau data <b>linked list</b> → Merge Sort. Kalau butuh <b>in-place</b> dan data <b>acak</b> → Quick Sort dengan random pivot. Untuk production → pakai library (Timsort, introsort).</div>
+      <div class="sim">
+        <div class="cap">Perbandingan jumlah perbandingan (simulasi sederhana)</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="chipbtn" data-type="random" id="cmpRand">Data acak</button>
+          <button class="chipbtn" data-type="sorted" id="cmpSorted">Data terurut</button>
+          <button class="chipbtn" data-type="reverse" id="cmpRev">Data terbalik</button>
+        </div>
+        <div id="cmpOut" style="font:12.5px Consolas;color:#334155;background:#f8fafc;border-radius:8px;padding:10px;min-height:80px"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. LATIHAN -->
+<section class="slide" id="s8">
+  <div class="kicker">LATIHAN</div>
+  <h2 class="st">Soal Divide and Conquer I</h2>
+  <div class="qlist">
+    <div class="q"><span class="qn">1</span><p>Tuliskan rekurens untuk Merge Sort dan selesaikan dengan Master Theorem. Tunjukkan a, b, d, log_b(a), dan kasus mana yang berlaku.</p></div>
+    <div class="q"><span class="qn">2</span><p>Kapan Quick Sort degenerasi ke O(n²)? Berikan contoh konkret input dan strategi pivot yang menyebabkannya. Bagaimana cara menghindarinya?</p></div>
+    <div class="q"><span class="qn">3</span><p>Binary Search hanya bisa dipakai kalau array <b>terurut</b>. Kalau kita perlu sering insert elemen baru dan juga sering cari, struktur data mana yang lebih cocok? Bandingkan biaya-nya.</p></div>
+    <div class="q"><span class="qn">4</span><p>Jelaskan mengapa Quickselect rata-rata Θ(n), padahal Quicksort Θ(n log n) - keduanya pakai langkah <code>partition</code> yang sama. Apa perbedaan mendasarnya?</p></div>
+    <div class="q"><span class="qn">5</span><p>Di Colab: benchmark Merge Sort vs Python <code>sorted()</code> untuk n = 10⁴, 10⁵, 10⁶ dengan data acak. Hitung rasionya saat n digandakan. Cocok dengan Θ(n log n)?</p></div>
+  </div>
+</section>
+
+<!-- 9. KUNCI -->
+<section class="slide" id="s9">
+  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
+  <h2 class="st">Kunci Divide and Conquer I</h2>
+  <div class="qlist">
+    <div class="ans"><span class="qn">1</span><p>T(n) = 2T(n/2) + n. a=2, b=2, d=1, log₂2=1=d → <b>Kasus 2 → Θ(n log n)</b>. Biaya tiap level sama, ada log₂n level.</p></div>
+    <div class="ans"><span class="qn">2</span><p>Degenerasi jika pivot selalu ekstrem (terkecil/terbesar), misalnya array sudah terurut naik + pivot=elemen terakhir: partisi selalu 0 dan n-1, T(n)=T(n-1)+n=O(n²). Solusi: <b>random pivot</b> atau median-of-three (pivot = median dari elemen pertama, tengah, terakhir).</p></div>
+    <div class="ans"><span class="qn">3</span><p>Array biasa: insert O(n), search O(log n). <b>BST seimbang (AVL/Red-Black)</b> atau Python <code>sortedcontainers.SortedList</code>: insert O(log n), search O(log n). Untuk frekuensi insert tinggi, BST atau skip list jauh lebih baik.</p></div>
+    <div class="ans"><span class="qn">4</span><p>Quicksort merekursif <b>dua</b> subarray (kiri dan kanan pivot) → T(n)=2T(n/2)+n → Θ(n log n). Quickselect hanya rekursif ke <b>satu</b> sisi (sisi yang mengandung elemen ke-k) → T(n)=T(n/2)+n → Kasus 3 Master Theorem → Θ(n).</p></div>
+    <div class="ans"><span class="qn">5</span><p>Rasio waktu saat n×10 harus mendekati ×10·log(10n)/log(n) ≈ ×10–12 untuk Θ(n log n). Python <code>sorted()</code> (Timsort) lebih cepat dari Merge Sort murni karena optimasi C - tapi orde tetap sama, rasio mendekati 10×.</p></div>
+  </div>
+</section>
+
+<!-- 10. PENUTUP -->
+<section class="slide" id="s10" style="justify-content:center;align-items:center;text-align:center">
+  <div class="kicker">PERTEMUAN 4 · SELESAI</div>
+  <h2 class="st" style="font-size:30px;margin:10px 0">Belah dua, selesaikan,<br>gabungkan - sederhana tapi kuat.</h2>
+  <p style="font-size:13.5px;color:#64748b;max-width:680px;margin:10px auto 0">Pertemuan depan: D&amp;C II - Closest Pair, Karatsuba, Strassen, FFT, dan penemuan algoritma baru dengan AI (AlphaTensor).</p>
+  <div style="margin:24px 0 10px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+    <a class="biglink" href="index.html"><span class="ln1">← KEMBALI KE DAFTAR MATERI</span><span class="ln2">index.html</span><span class="ln3">Semua pertemuan</span></a>
+    <a class="biglink" href="P04_DivideConquer1.ipynb" target="_blank"><span class="ln1">BUKA NOTEBOOK</span><span class="ln2">P04_DivideConquer1.ipynb</span><span class="ln3">Merge Sort, Quick Sort, Binary Search, Quickselect</span></a>
+  </div>
+</section>
+
+</div></div>
+<div id="progress"></div>
+<div id="hud">
+  <div id="hud-left"><span id="pageno">1 / 10</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="dots"></div>
+  <div style="display:flex;gap:8px">
+    <button class="navbtn" id="btnFs">⛶</button>
+    <button class="navbtn" id="btnPrev">‹</button>
+    <button class="navbtn" id="btnNext">›</button>
+  </div>
+</div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function hlCode(t){const e=esc(t);return e.replace(/(#[^\n]*)|("[^"]*")|\b(def|for|in|range|while|if|elif|else|return|import|from|print|lambda|len|not|and|or|True|False|None|float|int|min|max|pass|append)\b|\b(\d+(?:\.\d+)?)\b/g,(m,c,s,k,n)=>c?`<span class="tc">${c}</span>`:s?`<span class="ts">${s}</span>`:k?`<span class="tk">${k}</span>`:`<span class="tn">${n}</span>`)}
+$$('.pycode').forEach(p=>p.innerHTML=hlCode(p.textContent));
+const slides=$$('.slide');let cur=0;
+function go(i){i=Math.max(0,Math.min(slides.length-1,i));if(i===cur)return;
+  const dir=i>cur?1:-1,oldEl=slides[cur],newEl=slides[i];
+  oldEl.classList.remove('active');oldEl.classList.add(dir>0?'exit-left':'exit-right');
+  newEl.classList.add(dir>0?'from-right':'from-left');void newEl.offsetWidth;
+  newEl.classList.remove('from-right','from-left');newEl.classList.add('active');
+  setTimeout(()=>oldEl.classList.remove('exit-left','exit-right'),420);cur=i;sync();}
+function sync(){$('#progress').style.width=((cur+1)/slides.length*100)+'%';$('#pageno').textContent=(cur+1)+' / '+slides.length;$$('#dots button').forEach((d,j)=>d.classList.toggle('on',j===cur))}
+const dots=$('#dots');slides.forEach((s,j)=>{const b=document.createElement('button');b.title='Slide '+(j+1);b.onclick=()=>go(j);dots.appendChild(b)});
+$('#btnNext').onclick=()=>go(cur+1);$('#btnPrev').onclick=()=>go(cur-1);
+function toggleFs(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+$('#btnFs').onclick=toggleFs;
+addEventListener('keydown',e=>{const t=e.target,tag=t&&t.tagName,inter=tag==='INPUT'||tag==='TEXTAREA';
+  if(e.key==='ArrowRight'||(e.key===' '&&!inter&&tag!=='BUTTON')){e.preventDefault();go(cur+1)}
+  else if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
+  else if((e.key==='f'||e.key==='F')&&!inter)toggleFs();});
+function fit(){const s=Math.min((innerWidth-30)/1280,(innerHeight-80)/720);$('#deck').style.transform=`translate(-50%,-50%) scale(${s})`}
+addEventListener('resize',fit);fit();
+slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot';f.innerHTML=`<span>Kompleksitas Algoritma · Pertemuan 4 - Divide and Conquer I</span><span>${j+1}</span>`;s.appendChild(f)});
+
+/* Merge Sort simulasi */
+(function(){
+  const arrEl=$('#mergeArr'),logEl=$('#mergeLog');if(!arrEl)return;
+  let data=[],steps=[],timers=[];
+  function reset(){data=[38,27,43,3,9,82,10,17];steps=[];timers.forEach(clearTimeout);timers=[];renderArr(data,[]);logEl.innerHTML='Klik "Jalankan" untuk melihat langkah merge sort…'}
+  function renderArr(arr,highlights){arrEl.innerHTML='';arr.forEach((v,i)=>{const d=document.createElement('div');d.className='scell'+(highlights.includes(i)?' pivot':'');d.textContent=v;arrEl.appendChild(d)})}
+  function addLog(msg,cls){const d=document.createElement('div');if(cls)d.style.color=cls;d.textContent=msg;logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight}
+  function mergeSort(arr,depth){if(arr.length<=1){steps.push({arr:[...data],msg:`Base case: [${arr}]`,depth});return arr}
+    const mid=arr.length>>1,L=mergeSort(arr.slice(0,mid),depth+1),R=mergeSort(arr.slice(mid),depth+1);
+    const merged=[],li=[0],ri=[0];
+    while(li[0]<L.length&&ri[0]<R.length){if(L[li[0]]<=R[ri[0]])merged.push(L[li[0]++]);else merged.push(R[ri[0]++])}
+    merged.push(...L.slice(li[0]),...R.slice(ri[0]));steps.push({arr:merged,msg:`Merge [${L}] + [${R}] → [${merged}]`,depth});return merged}
+  function run(){timers.forEach(clearTimeout);timers=[];steps=[];data=[38,27,43,3,9,82,10,17];logEl.innerHTML='';mergeSort([...data],0);let i=0;
+    function tick(){if(i>=steps.length)return;addLog('  '.repeat(steps[i].depth)+steps[i].msg);i++;timers.push(setTimeout(tick,400))}
+    tick()}
+  $('#btnMergeRun').onclick=run;$('#btnMergeReset').onclick=reset;reset();
+})();
+
+/* Quick Sort simulasi */
+(function(){
+  const arrEl=$('#qsArr'),logEl=$('#qsLog');if(!arrEl)return;
+  let data=[],timers=[];
+  function mkData(type){if(type==='worst')return[8,7,6,5,4,3,2,1];return[5,3,8,1,9,2,7,4]}
+  function renderArr(arr,pivot,lt,gt){arrEl.innerHTML='';arr.forEach((v,i)=>{const d=document.createElement('div');d.className='scell'+(i===pivot?' pivot':lt.includes(i)?' left':gt.includes(i)?' right':'');d.textContent=v;arrEl.appendChild(d)})}
+  function addLog(msg,cls){const d=document.createElement('div');if(cls)d.style.color=cls;d.textContent=msg;logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight}
+  let steps=[],si=0;
+  function buildSteps(arr,lo,hi,allArr){if(lo>=hi)return;
+    const pivotVal=allArr[hi];const lt=[],gt=[];
+    for(let j=lo;j<hi;j++){if(allArr[j]<=pivotVal)lt.push(j);else gt.push(j)}
+    steps.push({arr:[...allArr],pivot:hi,lt,gt,msg:`pivot=${pivotVal} @ [${lo}..${hi}]`});
+    let i2=lo;lt.forEach(j=>{[allArr[i2],allArr[j]]=[allArr[j],allArr[i2]];i2++});[allArr[i2],allArr[hi]]=[allArr[hi],allArr[i2]];
+    const p=i2;steps.push({arr:[...allArr],pivot:p,lt:[],gt:[],msg:`→ partisi selesai, pivot di ${p}`});
+    buildSteps(arr,lo,p-1,allArr);buildSteps(arr,p+1,hi,allArr)}
+  function run(type){timers.forEach(clearTimeout);timers=[];steps=[];si=0;data=mkData(type);logEl.innerHTML='';buildSteps([],0,data.length-1,data);let i=0;
+    function tick(){if(i>=steps.length)return;const s=steps[i];renderArr(s.arr,s.pivot,s.lt,s.gt);addLog(s.msg);i++;timers.push(setTimeout(tick,500))}
+    tick()}
+  $('#btnQsRun').onclick=()=>run('random');$('#btnQsWorst').onclick=()=>run('worst');
+  $('#btnQsReset').onclick=()=>{timers.forEach(clearTimeout);data=mkData('random');renderArr(data,-1,[],[]);logEl.innerHTML='Reset.'}
+  renderArr(mkData('random'),-1,[],[]);
+})();
+
+/* Perbandingan Merge vs Quick */
+(function(){
+  const out=$('#cmpOut');if(!out)return;
+  function cntMerge(arr){let cnt=0;function ms(a){if(a.length<=1)return a;const m=a.length>>1,L=ms(a.slice(0,m)),R=ms(a.slice(m)),res=[];let i=0,j=0;while(i<L.length&&j<R.length){cnt++;if(L[i]<=R[j])res.push(L[i++]);else res.push(R[j++])}return res.concat(L.slice(i),R.slice(j))}ms(arr);return cnt}
+  function cntQuick(arr){let cnt=0;function qs(a,lo,hi){if(lo>=hi)return;const pv=a[hi];let i=lo-1;for(let j=lo;j<hi;j++){cnt++;if(a[j]<=pv){i++;[a[i],a[j]]=[a[j],a[i]]}}[a[i+1],a[hi]]=[a[hi],a[i+1]];const p=i+1;qs(a,lo,p-1);qs(a,p+1,hi)}qs(arr,0,arr.length-1);return cnt}
+  function render(type){const n=20;let arr;
+    if(type==='sorted')arr=[...Array(n).keys()].map(i=>i+1);
+    else if(type==='reverse')arr=[...Array(n).keys()].map(i=>n-i);
+    else arr=[...Array(n).keys()].map(()=>Math.floor(Math.random()*n)+1);
+    const cm=cntMerge([...arr]),cq=cntQuick([...arr]);
+    out.innerHTML=`n = ${n}  (${type})\nMerge Sort:  ${cm} perbandingan\nQuick Sort:  ${cq} perbandingan  ${cq>cm?'⚠ lebih banyak':'✓ lebih sedikit'}\nn log₂n ≈   ${Math.round(n*Math.log2(n))}`}
+  $$('[data-type]').forEach(b=>b.onclick=()=>{$$('[data-type]').forEach(x=>x.classList.remove('active'));b.classList.add('active');render(b.dataset.type)});
+  render('random');$$('[data-type="random"]').forEach(b=>b.classList.add('active'));
+})();
+</script>
+</body>
+</html>

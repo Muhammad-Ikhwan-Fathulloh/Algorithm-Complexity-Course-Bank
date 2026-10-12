@@ -3,52 +3,52 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pertemuan 1 — Pendahuluan dan Notasi Asimtotik · Kompleksitas Algoritma</title>
+<title>Pertemuan 1 - Pendahuluan dan Notasi Asimtotik · Kompleksitas Algoritma</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden;background:#0b1526;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
 #stage{position:fixed;inset:0;background:radial-gradient(1200px 700px at 70% -10%,#16294d 0%,#0b1526 60%)}
 #deck{position:absolute;left:50%;top:50%;width:1280px;height:720px}
-.slide{position:absolute;inset:0;background:#fff;border-radius:6px;box-shadow:0 24px 80px rgba(0,0,0,.55);padding:36px 52px 54px;opacity:0;pointer-events:none;overflow:hidden;display:flex;flex-direction:column;gap:11px;z-index:1;transition:opacity .38s ease,transform .38s ease}
+.slide{position:absolute;inset:0;background:#fff;border-radius:6px;box-shadow:0 24px 80px rgba(0,0,0,.55);padding:44px 60px 60px;opacity:0;pointer-events:none;overflow:hidden;display:flex;flex-direction:column;gap:18px;z-index:1;transition:opacity .38s ease,transform .38s ease}
 .slide.from-right{transition:none;transform:translateX(90px)}
 .slide.from-left{transition:none;transform:translateX(-90px)}
 .slide.exit-left{opacity:0;transform:translateX(-90px);z-index:2}
 .slide.exit-right{opacity:0;transform:translateX(90px);z-index:2}
 .slide.active{opacity:1;pointer-events:auto;z-index:3}
-.sfoot{position:absolute;left:52px;right:52px;bottom:12px;display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;border-top:1px solid #f1f5f9;padding-top:6px}
-.kicker{font-size:11.5px;font-weight:800;letter-spacing:.13em;color:#2563eb}
-h2.st{font-size:25px;color:#0f172a;line-height:1.25}
-.sub{font-size:13.5px;color:#64748b}
-p.b{font-size:13.5px;line-height:1.65;color:#334155}
+.sfoot{position:absolute;left:60px;right:60px;bottom:14px;display:flex;justify-content:space-between;font-size:13px;color:#94a3b8;border-top:1px solid #f1f5f9;padding-top:6px}
+.kicker{font-size:13px;font-weight:800;letter-spacing:.14em;color:#2563eb;text-transform:uppercase}
+h2.st{font-size:32px;color:#0f172a;line-height:1.2}
+.sub{font-size:16px;color:#64748b}
+p.b{font-size:17px;line-height:1.7;color:#334155}
 .cols{display:grid;gap:20px;flex:1;min-height:0}
 .c2{grid-template-columns:1fr 1fr}.c2l{grid-template-columns:1.05fr .95fr}.c2r{grid-template-columns:.95fr 1.05fr}
 .stack{display:flex;flex-direction:column;gap:9px;min-height:0}
 .card{border:1px solid #e2e8f0;border-radius:10px;padding:10px 13px;background:#fff}
 .card.soft{background:#f8fafc}
-.analogy{background:#fffbeb;border:1px solid #fde68a;border-left:5px solid #d97706;padding:9px 12px;border-radius:8px;font-size:12.5px;line-height:1.6;color:#334155}
+.analogy{background:#fffbeb;border:2px solid #fde68a;border-left:6px solid #d97706;padding:14px 18px;border-radius:10px;font-size:17px;line-height:1.7;color:#334155}
 .analogy b{color:#b45309}
-.warn{background:#fef2f2;border:1px solid #fecaca;border-left:5px solid #b91c1c;padding:9px 12px;border-radius:8px;font-size:12.5px;color:#334155;line-height:1.6}
+.warn{background:#fef2f2;border:2px solid #fecaca;border-left:6px solid #b91c1c;padding:14px 18px;border-radius:10px;font-size:17px;color:#334155;line-height:1.7}
 .note{background:#eff6ff;border:1px solid #bfdbfe;border-left:5px solid #2563eb;padding:9px 12px;border-radius:8px;font-size:12.5px;color:#334155;line-height:1.6}
-table.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
-.tbl th{background:#1e293b;color:#fff;text-align:left;padding:6px 9px;font-size:11.5px}
-.tbl td{border:1px solid #e2e8f0;padding:5px 9px;color:#334155;vertical-align:middle;line-height:1.45}
-pre.pycode{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:11px 13px;font:11.5px/1.5 Consolas,'Courier New',monospace;overflow:auto}
+table.tbl{width:100%;border-collapse:collapse;font-size:16px}
+.tbl th{background:#1e293b;color:#fff;text-align:left;padding:10px 14px;font-size:14px}
+.tbl td{border:1px solid #e2e8f0;padding:9px 14px;color:#334155;vertical-align:middle;line-height:1.5}
+pre.pycode{background:#0f172a;color:#e2e8f0;border-radius:12px;padding:18px 22px;font:15px/1.7 Consolas,'Courier New',monospace;overflow:auto}
 .tk{color:#93c5fd}.ts{color:#fbbf24}.tc{color:#7dd3fc;font-style:italic}.tn{color:#f9a8d4}
 .mono{font-family:Consolas,monospace}
-.tiny{font-size:11.5px;color:#64748b;line-height:1.55}
-.btn{display:inline-flex;align-items:center;gap:6px;background:#2563eb;color:#fff;border:none;border-radius:8px;padding:7px 13px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit}
+.tiny{font-size:14px;color:#64748b;line-height:1.55}
+.btn{display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
 .btn:hover{background:#1d4ed8}
 .btn.ghost{background:#fff;color:#2563eb;border:1.5px solid #bfdbfe}
 .btn.ghost:hover{background:#eff6ff}
 .btn.go{background:#16a34a}.btn.go:hover{background:#15803d}
 .btn.active{background:#0f172a}
 .btn:disabled{opacity:.5;cursor:default}
-.chipbtn{background:#fff;border:1.5px solid #bfdbfe;color:#1d4ed8;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.chipbtn{background:#fff;border:2px solid #bfdbfe;color:#1d4ed8;border-radius:20px;padding:7px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
 .chipbtn:hover{background:#eff6ff}
 .chipbtn.active{background:#2563eb;color:#fff;border-color:#2563eb}
 .sim{border:1.5px solid #dbeafe;background:linear-gradient(180deg,#f8fbff,#fff);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-height:0}
 .sim .cap{font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#2563eb;text-transform:uppercase}
-.term{background:#0f172a;color:#a7f3d0;border-radius:9px;padding:10px 12px;font:12px/1.7 Consolas,monospace;min-height:90px;white-space:pre-wrap;overflow:auto;flex:1}
+.term{background:#0f172a;color:#a7f3d0;border-radius:10px;padding:14px 16px;font:14px/1.8 Consolas,monospace;min-height:90px;white-space:pre-wrap;overflow:auto;flex:1}
 .term .dim{color:#64748b}.term .ok{color:#4ade80}.term b{color:#fbbf24}
 .term.sample{min-height:0;font-size:11px;color:#86efac;flex:none;white-space:pre}
 .cbadge{display:inline-block;background:#0f172a;color:#93c5fd;font:700 11px Consolas,monospace;padding:3px 11px;border-radius:20px;margin-bottom:5px}
@@ -85,9 +85,9 @@ input.in{border:1.5px solid #cbd5e1;border-radius:7px;padding:6px 9px;font:13px 
 .ram-out{display:flex;justify-content:space-between;font:12px Consolas;color:#334155;background:#f1f5f9;border-radius:7px;padding:7px 10px}
 /* notasi */
 .ntcard{border:1px solid #e2e8f0;border-radius:12px;padding:11px 14px;background:#fff;box-shadow:0 1px 3px rgba(15,23,42,.05)}
-.ntcard .sym{font:800 24px Georgia,serif}
+.ntcard .sym{font:800 28px Georgia,serif}
 .ntcard .nm{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin:2px 0 4px}
-.ntcard p{font-size:12.5px;line-height:1.55;color:#334155}
+.ntcard p{font-size:15px;line-height:1.6;color:#334155}
 .ntcard em{color:#64748b;display:block;margin-top:4px;font-size:11.5px;font-style:normal}
 /* linear search */
 .srow{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
@@ -112,18 +112,18 @@ input.in{border:1.5px solid #cbd5e1;border-radius:7px;padding:6px 9px;font:13px 
 .acell{width:28px;height:28px;background:#7c3aed;border-radius:5px;opacity:0;transform:scale(.2);animation:apop .35s forwards}
 @keyframes apop{to{opacity:1;transform:scale(1)}}
 /* agenda */
-ol.agenda{margin:6px 0 0 22px;font-size:14px;line-height:2.05;color:#334155}
+ol.agenda{margin:6px 0 0 22px;font-size:17px;line-height:2.1;color:#334155}
 ol.agenda b{color:#0f172a}
 /* latihan & kunci */
 .qlist{display:flex;flex-direction:column;gap:8px;overflow:auto;flex:1;min-height:0;padding-right:4px}
 .q{display:flex;gap:12px;align-items:flex-start;border:1px solid #e2e8f0;border-radius:10px;padding:9px 12px;background:#f8fafc}
 .q .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#1e293b;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
-.q p{font-size:12.8px;line-height:1.6;color:#334155}
+.q p{font-size:16px;line-height:1.65;color:#334155}
 .q p code, .ans p code, .q pre{background:#e2e8f0;border-radius:5px;padding:1px 6px;font-family:Consolas,monospace;font-size:12px}
 .q pre{background:#0f172a!important;color:#e2e8f0!important;padding:8px 11px;margin:6px 0 0 0;overflow:auto}
 .ans{display:flex;gap:12px;align-items:flex-start;border:1px solid #bbf7d0;border-radius:10px;padding:9px 12px;background:#f0fdf4}
 .ans .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#16a34a;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
-.ans p{font-size:12.8px;line-height:1.6;color:#14532d}
+.ans p{font-size:16px;line-height:1.65;color:#14532d}
 /* link repo */
 .biglink{display:inline-block;background:#0f172a;border:2px solid #334155;border-radius:12px;padding:16px 26px;text-decoration:none;transition:all .2s}
 .biglink:hover{border-color:#2563eb;transform:translateY(-2px)}
@@ -133,9 +133,9 @@ ol.agenda b{color:#0f172a}
 /* langkah colab */
 .step{display:flex;gap:12px;align-items:flex-start;border:1px solid #e2e8f0;border-radius:10px;padding:9px 12px;background:#f8fafc}
 .step .sn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#f59e0b;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
-.step p{font-size:12.8px;line-height:1.6;color:#334155}
+.step p{font-size:16px;line-height:1.65;color:#334155}
 /* HUD */
-#progress{position:fixed;top:0;left:0;height:4px;background:#2563eb;width:0;z-index:50;transition:width .3s}
+#progress{position:fixed;top:0;left:0;height:5px;background:#2563eb;width:0;z-index:50;transition:width .3s}
 #hud{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;z-index:50;pointer-events:none;gap:12px}
 #hud>*{pointer-events:auto}
 #dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:52%}
@@ -143,7 +143,7 @@ ol.agenda b{color:#0f172a}
 #dots button.on{background:#60a5fa;transform:scale(1.4)}
 .navbtn{width:38px;height:38px;border-radius:50%;border:none;background:#1e293b;color:#fff;font-size:19px;cursor:pointer}
 .navbtn:hover{background:#2563eb}
-#hud-left{color:#94a3b8;font-size:11.5px;display:flex;gap:12px;align-items:center;background:rgba(11,21,38,.8);padding:6px 12px;border-radius:20px}
+#hud-left{color:#94a3b8;font-size:13px;display:flex;gap:12px;align-items:center;background:rgba(11,21,38,.8);padding:6px 12px;border-radius:20px}
 </style>
 </head>
 <body>
@@ -163,7 +163,7 @@ ol.agenda b{color:#0f172a}
   </svg>
   <div class="kicker">KOMPLEKSITAS ALGORITMA · PERTEMUAN 1</div>
   <h1>Pendahuluan dan<br>Notasi Asimtotik</h1>
-  <p class="lead">Pertanyaan yang mau kita jawab hari ini cuma satu: <b>kalau datanya jadi 10 kali lebih banyak, program saya jadi berapa kali lebih lambat?</b><br><br>Materinya agak teori, tapi kita pakai analogi sehari-hari biar gampang kebayang. Beberapa slide ada simulasi yang bisa dicoba langsung — silakan geser-geser, tidak akan rusak.</p>
+  <p class="lead">Pertanyaan yang mau kita jawab hari ini cuma satu: <b>kalau datanya jadi 10 kali lebih banyak, program saya jadi berapa kali lebih lambat?</b><br><br>Materinya agak teori, tapi kita pakai analogi sehari-hari biar gampang kebayang. Beberapa slide ada simulasi yang bisa dicoba langsung - silakan geser-geser, tidak akan rusak.</p>
   <div class="navhint">Pindah slide: <kbd>←</kbd> <kbd>→</kbd> atau <kbd>spasi</kbd> · layar penuh: <kbd>F</kbd> · titik-titik di bawah juga bisa diklik</div>
 </section>
 
@@ -174,18 +174,18 @@ ol.agenda b{color:#0f172a}
   <div class="cols c2" style="margin-top:4px">
     <ol class="agenda">
       <li><b>Kenapa algoritma dinilai dari langkah, bukan detik</b></li>
-      <li><b>Model RAM</b> — alat bantu hitungnya</li>
+      <li><b>Model RAM</b> - alat bantu hitungnya</li>
       <li><b>Notasi O, Ω, Θ, o</b> dan urutan kecepatannya</li>
       <li><b>Kasus terbaik, rata-rata, terburuk</b></li>
       <li><b>Cara hitung kompleksitas kode</b> yang ada loop-nya</li>
-      <li><b>Contoh pakaiannya di dunia AI</b> — biar tahu ini dipakai di mana</li>
+      <li><b>Contoh pakaiannya di dunia AI</b> - biar tahu ini dipakai di mana</li>
       <li><b>Praktik</b>: membuktikan teori dengan ukur waktu beneran</li>
-      <li><b>Latihan</b> — kerjakan dulu; kunci jawabannya ada di slide belakang</li>
+      <li><b>Latihan</b> - kerjakan dulu; kunci jawabannya ada di slide belakang</li>
     </ol>
     <div class="stack">
       <div class="note">Urutan di atas ngikutin handout yang sudah saya bagikan, dari bagian 1 sampai 10. Jadi kalau nanti baca ulang handoutnya, nomornya nyambung sama slide hari ini.</div>
-      <div class="card soft"><p class="b">Soal simulasi: beberapa slide ada tombol dan slider. Itu bukan hiasan — coba sambil dengerin, biar kebayang maksudnya. Terutama yang soal salaman dan tebak angka.</p></div>
-      <div class="card soft"><p class="b">Latihan praktiknya dikerjakan pakai <b>Google Colab</b> — tidak perlu install apa-apa, cukup browser dan akun Google. Panduannya ada di slide setelah rangkuman.</p></div>
+      <div class="card soft"><p class="b">Soal simulasi: beberapa slide ada tombol dan slider. Itu bukan hiasan - coba sambil dengerin, biar kebayang maksudnya. Terutama yang soal salaman dan tebak angka.</p></div>
+      <div class="card soft"><p class="b">Latihan praktiknya dikerjakan pakai <b>Google Colab</b> - tidak perlu install apa-apa, cukup browser dan akun Google. Panduannya ada di slide setelah rangkuman.</p></div>
     </div>
   </div>
 </section>
@@ -196,7 +196,7 @@ ol.agenda b{color:#0f172a}
   <h2 class="st">Kenapa tidak diukur pakai detik?</h2>
   <div class="cols c2" style="margin-top:4px">
     <div class="stack">
-      <p class="b">Bayangkan dua orang mencari nama yang sama di daftar absen. Satu pakai laptop gaming, satu pakai laptop lama. Kalau diadu pakai stopwatch, laptop gaming pasti menang — padahal <b>cara mencarinya sama persis</b>.</p>
+      <p class="b">Bayangkan dua orang mencari nama yang sama di daftar absen. Satu pakai laptop gaming, satu pakai laptop lama. Kalau diadu pakai stopwatch, laptop gaming pasti menang - padahal <b>cara mencarinya sama persis</b>.</p>
       <p class="b">Jadi stopwatch itu mengukur laptop-nya, bukan algoritma-nya. Kalau mau adil menilai cara, kita tidak boleh ngukur waktu.</p>
       <p class="b">Yang kita hitung: <b>jumlah langkah</b>. Pertanyaannya berubah dari "berapa detik?" jadi "kalau datanya ada n banyak, program butuh berapa langkah?"</p>
       <div class="note">Jumlah langkah untuk n data ini kita tulis <b>T(n)</b>. Tulisan ini akan sering muncul sepanjang semester.</div>
@@ -208,7 +208,7 @@ ol.agenda b{color:#0f172a}
       </div>
       <div class="card" style="border-left:5px solid #16a34a">
         <p class="b" style="color:#16a34a"><b>Jumlah langkah T(n) kenapa adil:</b></p>
-        <p class="tiny">sama di komputer apa pun, bahasa apa pun, jam berapa pun. Tidak akurat sampai level detik memang — tapi cukup buat jawab pertanyaan utamanya: "makin lambat nggak kalau data membesar?"</p>
+        <p class="tiny">sama di komputer apa pun, bahasa apa pun, jam berapa pun. Tidak akurat sampai level detik memang - tapi cukup buat jawab pertanyaan utamanya: "makin lambat nggak kalau data membesar?"</p>
       </div>
     </div>
   </div>
@@ -222,9 +222,9 @@ ol.agenda b{color:#0f172a}
     <div class="stack">
       <p class="b">Buat bisa ngitung langkah, kita pura-pura komputernya sederhana. Aturannya cuma tiga:</p>
       <div class="card soft"><p class="b">1. Perintah dikerjakan satu per satu. Tidak ada yang jalan barengan.</p></div>
-      <div class="card soft"><p class="b">2. Operasi dasar — tambah, bandingkan, simpan, ambil data — masing-masing dihitung <b>1 langkah</b>.</p></div>
+      <div class="card soft"><p class="b">2. Operasi dasar - tambah, bandingkan, simpan, ambil data - masing-masing dihitung <b>1 langkah</b>.</p></div>
       <div class="card soft"><p class="b">3. Ambil data lewat indeks, nomornya berapa pun, harganya sama: <b>1 langkah</b>.</p></div>
-      <div class="analogy"><b>Analogi — lift, bukan tangga.</b> Memori itu kayak lift ke loker bernomor: mau loker nomor 1 atau nomor 99.999, tinggal tekan tombolnya, sama lamanya. Kalau tangga, ke lantai 100 harus lewati lantai 1 sampai 99 dulu. Nah, <b>array itu lift</b>: akses lewat indeks = O(1).</div>
+      <div class="analogy"><b>Analogi - lift, bukan tangga.</b> Memori itu kayak lift ke loker bernomor: mau loker nomor 1 atau nomor 99.999, tinggal tekan tombolnya, sama lamanya. Kalau tangga, ke lantai 100 harus lewati lantai 1 sampai 99 dulu. Nah, <b>array itu lift</b>: akses lewat indeks = O(1).</div>
     </div>
     <div class="sim">
       <div class="cap">Coba sendiri · memori model RAM</div>
@@ -245,9 +245,9 @@ ol.agenda b{color:#0f172a}
   <h2 class="st">Buang yang receh, simpan yang terbesar</h2>
   <div class="cols c2l" style="margin-top:4px">
     <div class="stack">
-      <p class="b">Katakanlah program kita butuh <span class="mono">3n² + 10n + 7</span> langkah. Saat n sudah besar, mana yang terasa? Cuma <b>n²</b>. Sisanya diabaikan — <b>termasuk angka 3 di depannya</b>.</p>
-      <div class="analogy"><b>Analogi — beli rumah.</b> Harga rumah Rp1 miliar, fotokopi berkas Rp50 ribu. Pas ngitung total biaya, fotokopi itu tidak terasa. 10n dan 7 itu fotokopinya; n² itu rumahnya.</div>
-      <div class="note">Jadi aturan mainnya cuma dua kalimat: <b>buang konstanta, buang suku kecil, sisain suku terbesar</b>. Cara bicara formalnya namanya notasi asimtotik — itu yang kita pelajari di bagian ini.</div>
+      <p class="b">Katakanlah program kita butuh <span class="mono">3n² + 10n + 7</span> langkah. Saat n sudah besar, mana yang terasa? Cuma <b>n²</b>. Sisanya diabaikan - <b>termasuk angka 3 di depannya</b>.</p>
+      <div class="analogy"><b>Analogi - beli rumah.</b> Harga rumah Rp1 miliar, fotokopi berkas Rp50 ribu. Pas ngitung total biaya, fotokopi itu tidak terasa. 10n dan 7 itu fotokopinya; n² itu rumahnya.</div>
+      <div class="note">Jadi aturan mainnya cuma dua kalimat: <b>buang konstanta, buang suku kecil, sisain suku terbesar</b>. Cara bicara formalnya namanya notasi asimtotik - itu yang kita pelajari di bagian ini.</div>
       <p class="b">Di tabel berikut: untuk n kecil memang masih campur aduk. Geser pelan-pelan ke kanan dan lihat sendiri 3n² makan hampir semua porsinya.</p>
     </div>
     <div class="sim">
@@ -273,12 +273,12 @@ ol.agenda b{color:#0f172a}
   <div class="kicker">BAGIAN 3 · EMPAT NOTASI</div>
   <h2 class="st">Empat notasi, empat jenis janji</h2>
   <div class="cols c2" style="grid-template-rows:1fr 1fr;margin-top:2px">
-    <div class="ntcard"><div class="sym" style="color:#2563eb">O(g)</div><div class="nm" style="color:#2563eb">Big-O · batas atas</div><p>Tidak akan lebih lambat dari g.</p><em>"Paling lama 3 jam." Kalau nyampe 2 jam, janjinya tetap sah — boleh lebih cepat, tidak boleh lebih lama.</em></div>
-    <div class="ntcard"><div class="sym" style="color:#16a34a">Ω(g)</div><div class="nm" style="color:#16a34a">Big-Omega · batas bawah</div><p>Tidak mungkin lebih cepat dari g.</p><em>"Paling cepat 1 jam." Bisa saja ternyata jadi 3 jam — tapi 30 menit itu tidak mungkin.</em></div>
+    <div class="ntcard"><div class="sym" style="color:#2563eb">O(g)</div><div class="nm" style="color:#2563eb">Big-O · batas atas</div><p>Tidak akan lebih lambat dari g.</p><em>"Paling lama 3 jam." Kalau nyampe 2 jam, janjinya tetap sah - boleh lebih cepat, tidak boleh lebih lama.</em></div>
+    <div class="ntcard"><div class="sym" style="color:#16a34a">Ω(g)</div><div class="nm" style="color:#16a34a">Big-Omega · batas bawah</div><p>Tidak mungkin lebih cepat dari g.</p><em>"Paling cepat 1 jam." Bisa saja ternyata jadi 3 jam - tapi 30 menit itu tidak mungkin.</em></div>
     <div class="ntcard"><div class="sym" style="color:#7c3aed">Θ(g)</div><div class="nm" style="color:#7c3aed">Big-Theta · batas pas</div><p>Batas atas dan batas bawahnya sama.</p><em>"Sekitar 2 jam." Tidak jauh lebih, tidak jauh kurang. Ini yang paling sering jadi jawaban "berapa kompleksitasnya?"</em></div>
-    <div class="ntcard"><div class="sym" style="color:#b91c1c">o(g)</div><div class="nm" style="color:#b91c1c">o kecil · kalah jauh</div><p>Tumbuh jauh lebih lambat dari g.</p><em>Motor lawan pesawat: makin jauh rutenya, makin ketara bedanya. Ini bukan sekadar "lebih pelan" — jaraknya makin melebar.</em></div>
+    <div class="ntcard"><div class="sym" style="color:#b91c1c">o(g)</div><div class="nm" style="color:#b91c1c">o kecil · kalah jauh</div><p>Tumbuh jauh lebih lambat dari g.</p><em>Motor lawan pesawat: makin jauh rutenya, makin ketara bedanya. Ini bukan sekadar "lebih pelan" - jaraknya makin melebar.</em></div>
   </div>
-  <div class="warn"><b>Yang paling sering salah di kuis:</b> mengira O itu sama dengan "kasus terburuk". Bukan. O itu jenis <b>batas</b> (atas). "Terburuk" itu keadaan <b>datanya</b>. Dua hal beda — dan bisa digabung: "waktu terburuknya O(n²)" itu kalimat yang sah dan sering dipakai.</div>
+  <div class="warn"><b>Yang paling sering salah di kuis:</b> mengira O itu sama dengan "kasus terburuk". Bukan. O itu jenis <b>batas</b> (atas). "Terburuk" itu keadaan <b>datanya</b>. Dua hal beda - dan bisa digabung: "waktu terburuknya O(n²)" itu kalimat yang sah dan sering dipakai.</div>
 </section>
 
 <!-- ====== 7 · PEMBUKTIAN ====== -->
@@ -287,13 +287,13 @@ ol.agenda b{color:#0f172a}
   <h2 class="st">Buktikan: 3n² + 10n + 7 = O(n²)</h2>
   <div class="cols c2l" style="margin-top:4px">
     <div class="stack">
-      <p class="b">Triknya: untuk n ≥ 1, suku kecil boleh kita besarkan jadi n². Membesarkan itu boleh — yang penting hasil akhirnya masih di atas fungsi kita.</p>
+      <p class="b">Triknya: untuk n ≥ 1, suku kecil boleh kita besarkan jadi n². Membesarkan itu boleh - yang penting hasil akhirnya masih di atas fungsi kita.</p>
       <div class="card soft mono" style="font-size:13px;line-height:1.85">
         10n ≤ 10n² &nbsp;&nbsp;dan&nbsp;&nbsp; 7 ≤ 7n²<br>
         3n² + 10n + 7 ≤ 3n² + 10n² + 7n² = <b style="color:#2563eb">20n²</b>
       </div>
       <p class="b">Pilih <b>c = 20</b> dan <b>n₀ = 1</b>. Selesai.</p>
-      <div class="note">Artinya: mulai n = 1 ke atas, fungsi kita tidak pernah lebih besar dari 20 × n². Janjinya boleh longgar — 20 itu agak boros — tapi tidak pernah dilanggar setelah n₀. Itu maknanya "batas atas".</div>
+      <div class="note">Artinya: mulai n = 1 ke atas, fungsi kita tidak pernah lebih besar dari 20 × n². Janjinya boleh longgar - 20 itu agak boros - tapi tidak pernah dilanggar setelah n₀. Itu maknanya "batas atas".</div>
       <p class="tiny">Kalau diminta di ujian, cara ini yang dipakai: besarkan suku-suku kecil, jumlahkan jadi c·n², tulis c dan n₀-nya.</p>
     </div>
     <div class="sim">
@@ -323,7 +323,7 @@ ol.agenda b{color:#0f172a}
         <tr><td class="mono"><b>O(n²)</b></td><td>semua orang di pesta salaman sama semua orang</td><td>100 kali lebih lama</td></tr>
         <tr><td class="mono"><b>O(2ⁿ)</b></td><td>bobol gembok dengan nyoba semua kombinasi</td><td>tidak masuk akal</td></tr>
       </table>
-      <div class="note">Angka yang worth diingat: untuk n = 1 juta, <b>n log n ≈ 20 juta langkah</b> — masih hitungan detik. <b>n² ≈ 1 triliun</b> — hitungan hari. Beda satu "tingkat" doang, hasilnya beda jauh banget.</div>
+      <div class="note">Angka yang worth diingat: untuk n = 1 juta, <b>n log n ≈ 20 juta langkah</b> - masih hitungan detik. <b>n² ≈ 1 triliun</b> - hitungan hari. Beda satu "tingkat" doang, hasilnya beda jauh banget.</div>
     </div>
     <div class="sim">
       <div class="cap">Grafik laju pertumbuhan (sumbu tegak dipotong di 120)</div>
@@ -339,8 +339,8 @@ ol.agenda b{color:#0f172a}
   <h2 class="st">Coba sendiri: kalau n membesar, apa yang terjadi?</h2>
   <div class="cols c2l" style="margin-top:4px">
     <div class="stack">
-      <p class="b">Pilih ukuran data di kanan, terus perhatikan <b>kolom paling kanan</b> — perbandingannya dengan pilihan sebelumnya. Di situ letak terasanya.</p>
-      <div class="analogy"><b>Cara baca barnya:</b> barnya pakai skala log — tiap sepertiga bar itu berarti 10 kali lipat. Bar ungu yang bergaris artinya angkanya sudah tidak kebayang lagi, keluar dari grafik.</div>
+      <p class="b">Pilih ukuran data di kanan, terus perhatikan <b>kolom paling kanan</b> - perbandingannya dengan pilihan sebelumnya. Di situ letak terasanya.</p>
+      <div class="analogy"><b>Cara baca barnya:</b> barnya pakai skala log - tiap sepertiga bar itu berarti 10 kali lipat. Bar ungu yang bergaris artinya angkanya sudah tidak kebayang lagi, keluar dari grafik.</div>
       <div class="note">Coba urutan ini: klik 100.000, lalu 1 juta. n naik 10 kali → n² bengkak 100 kali, log₂ n cuma nambah 3. Sekarang bayangin itu data pelanggan toko online kamu.</div>
     </div>
     <div class="sim">
@@ -365,12 +365,12 @@ ol.agenda b{color:#0f172a}
   <h2 class="st">Ternyata isi data juga ngaruh, bukan cuma jumlahnya</h2>
   <div class="cols c2" style="margin-top:4px">
     <div class="stack">
-      <div class="analogy"><b>Analogi — nyari kunci motor di laci berisi n barang.</b><br>
-      Hoki: kuncinya ada paling atas — sekali raba, ketemu.<br>
-      Sial: paling bawah, atau malah ternyata nggak ada di laci itu — harus raba semuanya.<br>
+      <div class="analogy"><b>Analogi - nyari kunci motor di laci berisi n barang.</b><br>
+      Hoki: kuncinya ada paling atas - sekali raba, ketemu.<br>
+      Sial: paling bawah, atau malah ternyata nggak ada di laci itu - harus raba semuanya.<br>
       Diulang berkali-kali dengan posisi acak: rata-rata kita ngecek kira-kira separuh laci.</div>
       <p class="b">Jadi satu program yang sama bisa punya tiga "waktu" tergantung nasib datanya. Caranya baca: pilih salah satu tombol di bawah, program jalan sendiri, kita hitung berapa kotak yang diperiksa.</p>
-      <div class="note">Di praktik, yang paling sering dipakai itu <b>kasus terburuk</b>. Alasannya: dia itu <b>jaminan</b> — "sejelek apa pun datanya, program saya tidak akan lebih lambat dari ini". Rata-rata juga bagus, tapi dia butuh asumsi soal data yang masuk, dan hasilnya cuma sebagus asumsinya.</div>
+      <div class="note">Di praktik, yang paling sering dipakai itu <b>kasus terburuk</b>. Alasannya: dia itu <b>jaminan</b> - "sejelek apa pun datanya, program saya tidak akan lebih lambat dari ini". Rata-rata juga bagus, tapi dia butuh asumsi soal data yang masuk, dan hasilnya cuma sebagus asumsinya.</div>
     </div>
     <div><span class="cbadge">linear_search</span>
 <pre class="pycode">def linear_search(A, x):
@@ -395,9 +395,9 @@ ol.agenda b{color:#0f172a}
   <div class="sim">
     <div class="cap">Pilih dulu nasib datanya</div>
     <div style="display:flex;gap:6px;flex-wrap:wrap">
-      <button class="chipbtn sc" data-sc="first">hoki — x di awal</button>
+      <button class="chipbtn sc" data-sc="first">hoki - x di awal</button>
       <button class="chipbtn sc" data-sc="mid">x di tengah</button>
-      <button class="chipbtn sc" data-sc="last">sial — x di akhir</button>
+      <button class="chipbtn sc" data-sc="last">sial - x di akhir</button>
       <button class="chipbtn sc" data-sc="none">x tidak ada di data</button>
       <button class="chipbtn sc" data-sc="rand">posisi acak</button>
     </div>
@@ -405,8 +405,8 @@ ol.agenda b{color:#0f172a}
     <div class="sout"><span id="sCount">pengecekan: 0</span><span id="sVerdict">pilih salah satu tombol di atas…</span></div>
   </div>
   <div class="cols c2">
-    <div class="card soft"><p class="b">Perhatiin satu hal: posisi x menentukan berapa kotak diperiksa. Tapi baik rata-rata (sekitar n/2) maupun yang sial (n) sama-sama <b>naiknya linear</b> — dua-duanya Θ(n). Bedanya cuma konstanta, dan konstanta itu dibuang.</p></div>
-    <div class="card soft"><p class="b">Itulah kenapa server production nggak boleh "mengandalkan hoki". Datanya datang dari user — harus dianggap yang terburuk.</p></div>
+    <div class="card soft"><p class="b">Perhatiin satu hal: posisi x menentukan berapa kotak diperiksa. Tapi baik rata-rata (sekitar n/2) maupun yang sial (n) sama-sama <b>naiknya linear</b> - dua-duanya Θ(n). Bedanya cuma konstanta, dan konstanta itu dibuang.</p></div>
+    <div class="card soft"><p class="b">Itulah kenapa server production nggak boleh "mengandalkan hoki". Datanya datang dari user - harus dianggap yang terburuk.</p></div>
   </div>
 </section>
 
@@ -453,7 +453,7 @@ for i in range(n):   # n putaran
 <pre class="pycode">for i in range(n):
     for j in range(n):
         count += 1   # dijalankan n × n kali</pre>
-      <div class="analogy" style="margin-top:10px"><b>Analogi:</b> tiap siswa salaman sama <b>semua</b> siswa — yang sudah pernah disalami pun disalami lagi. n × n salaman.</div>
+      <div class="analogy" style="margin-top:10px"><b>Analogi:</b> tiap siswa salaman sama <b>semua</b> siswa - yang sudah pernah disalami pun disalami lagi. n × n salaman.</div>
     </div>
   </div>
   <div class="note">Uji cepat buat ngecek pemahaman: kalau n digandakan, Contoh A jadi 2 kali lebih lama. Contoh B jadi <b>4 kali</b> lebih lama. Kalau jawabannya "dua-duanya dobel", ulangi baca Contoh B pelan-pelan.</div>
@@ -462,7 +462,7 @@ for i in range(n):   # n putaran
 <!-- ====== 14 · CONTOH C ====== -->
 <section class="slide" id="s14">
   <div class="kicker">BAGIAN 5 · CONTOH C</div>
-  <h2 class="st">Loop dalamnya ngeyeleng ikut loop luar — tetap Θ(n²)</h2>
+  <h2 class="st">Loop dalamnya ngeyeleng ikut loop luar - tetap Θ(n²)</h2>
   <div class="cols c2r" style="margin-top:4px">
     <div class="stack">
       <div><span class="cbadge">Contoh C · Θ(n²)</span>
@@ -472,7 +472,7 @@ for i in range(n):   # n putaran
 
 # total = 0+1+2+…+(n−1)
 #       = n(n−1)/2</pre></div>
-      <div class="analogy"><b>Analogi:</b> sekarang tiap pasangan cukup salaman <b>sekali</b>. Siswa ke-1 nyalamin 0 orang, ke-2 nyalamin 1, ke-3 nyalamin 2, dst. Totalnya n(n−1)/2 — setengahnya Contoh B.</div>
+      <div class="analogy"><b>Analogi:</b> sekarang tiap pasangan cukup salaman <b>sekali</b>. Siswa ke-1 nyalamin 0 orang, ke-2 nyalamin 1, ke-3 nyalamin 2, dst. Totalnya n(n−1)/2 - setengahnya Contoh B.</div>
       <div class="note">Yang sering bikin heran: "kok setengah tapi ordanya sama?" Ya, karena yang kita lihat itu <b>laju pertumbuhannya</b>, bukan angkanya. Setengah dari n² itu tetap bentuk n².</div>
     </div>
     <div class="sim">
@@ -483,8 +483,8 @@ for i in range(n):   # n putaran
         <button class="btn" id="loopReplay">▶ Putar ulang</button>
       </div>
       <div style="display:flex;gap:22px;justify-content:center">
-        <div><div class="lgrid" id="gridFull"></div><div class="lc" id="cFull">0 langkah</div><div class="tiny">Contoh B — loop penuh</div></div>
-        <div><div class="lgrid tri" id="gridTri"></div><div class="lc" id="cTri">0 langkah</div><div class="tiny">Contoh C — j &lt; i</div></div>
+        <div><div class="lgrid" id="gridFull"></div><div class="lc" id="cFull">0 langkah</div><div class="tiny">Contoh B - loop penuh</div></div>
+        <div><div class="lgrid tri" id="gridTri"></div><div class="lc" id="cTri">0 langkah</div><div class="tiny">Contoh C - j &lt; i</div></div>
       </div>
       <div class="tiny" id="loopIns"></div>
     </div>
@@ -503,7 +503,7 @@ while i &lt; n:
     i *= 2    # 1, 2, 4, 8, 16, … berhenti saat i ≥ n
 
 # putaran ≈ log₂ n</pre></div>
-      <div class="analogy"><b>Analogi — tebak angka 1 sampai 1.000.</b> Tebak 500, jawabannya "kegedean", tebak 250, dst. Tiap tebakan buang separuh kemungkinan. Totalnya cuma sekitar 10 tebakan. Datanya dikali 1.000 pun cuma nambah sekitar 10 tebakan lagi.</div>
+      <div class="analogy"><b>Analogi - tebak angka 1 sampai 1.000.</b> Tebak 500, jawabannya "kegedean", tebak 250, dst. Tiap tebakan buang separuh kemungkinan. Totalnya cuma sekitar 10 tebakan. Datanya dikali 1.000 pun cuma nambah sekitar 10 tebakan lagi.</div>
       <div class="note">Pola "datanya terurut, tiap langkah belah dua" ini bakal muncul terus sepanjang kuliah: binary search, indeks database, sampai struktur pencarian di sistem AI. Makanya worth dibiasain.</div>
     </div>
     <div class="sim">
@@ -532,9 +532,9 @@ while i &lt; n:
         j *= 2
 # total ≈ n · log n</pre></div>
     <div class="stack">
-      <div class="analogy"><b>Analogi:</b> ada n siswa, dan masing-masing main tebak angka tadi — masing-masing butuh log n tebakan. Totalnya n × log n. Ya segituh doang.</div>
-      <div class="note">Info yang perlu diketahui: Θ(n log n) itu <b>batas bawah</b> untuk algoritma sortir yang pakai perbandingan. Merge sort ada di sini; quicksort rata-ratanya juga. Lebih cepat dari n log n pakai perbandingan itu tidak mungkin — kalau mau lebih cepat harus ganti teknik (contohnya radix sort).</div>
-      <p class="tiny">Jadi waktu orang bilang "sortir yang bagus itu n log n", sekarang kalian tahu itu bukan cuma iklan — itu batas matematikanya.</p>
+      <div class="analogy"><b>Analogi:</b> ada n siswa, dan masing-masing main tebak angka tadi - masing-masing butuh log n tebakan. Totalnya n × log n. Ya segituh doang.</div>
+      <div class="note">Info yang perlu diketahui: Θ(n log n) itu <b>batas bawah</b> untuk algoritma sortir yang pakai perbandingan. Merge sort ada di sini; quicksort rata-ratanya juga. Lebih cepat dari n log n pakai perbandingan itu tidak mungkin - kalau mau lebih cepat harus ganti teknik (contohnya radix sort).</div>
+      <p class="tiny">Jadi waktu orang bilang "sortir yang bagus itu n log n", sekarang kalian tahu itu bukan cuma iklan - itu batas matematikanya.</p>
     </div>
   </div>
 </section>
@@ -545,8 +545,8 @@ while i &lt; n:
   <h2 class="st">Attention: tiap kata harus "kenalan" sama semua kata</h2>
   <div class="cols c2r" style="margin-top:4px">
     <div class="stack">
-      <div class="analogy"><b>Analogi — arisan.</b> Model bahasa membaca teks dengan cara membandingkan <b>tiap kata</b> dengan <b>semua kata lainnya</b> — kayak tiap anggota arisan harus nyapa semua anggota lain.<br><br>4 orang = 16 sapaan. 8 orang = 64 sapaan. Jumlah orang <b>dobel, kerjaan jadi 4 kali lipat</b>.</div>
-      <p class="b">Makanya memperpanjang "ingatan" AI (context window) itu mahal: biayanya Θ(n²). Konteks naik dari 8.000 ke 128.000 token — itu n naik 16 kali — biayanya jadi <b>256 kali</b>.</p>
+      <div class="analogy"><b>Analogi - arisan.</b> Model bahasa membaca teks dengan cara membandingkan <b>tiap kata</b> dengan <b>semua kata lainnya</b> - kayak tiap anggota arisan harus nyapa semua anggota lain.<br><br>4 orang = 16 sapaan. 8 orang = 64 sapaan. Jumlah orang <b>dobel, kerjaan jadi 4 kali lipat</b>.</div>
+      <p class="b">Makanya memperpanjang "ingatan" AI (context window) itu mahal: biayanya Θ(n²). Konteks naik dari 8.000 ke 128.000 token - itu n naik 16 kali - biayanya jadi <b>256 kali</b>.</p>
       <div class="note">Riset kayak FlashAttention dan attention hemat (sparse, linear) itu intinya satu: nekan n² ini. Sekarang kalian bisa baca judul-judul risetnya dan ngerti masalah yang mereka selesaikan.</div>
     </div>
     <div class="sim">
@@ -571,7 +571,7 @@ while i &lt; n:
       <p class="b"><b>Training</b> itu kayak bangun pabrik: sekali keluar biaya besar, tapi cuma sekali. Angka kasarnya: <b>6 × jumlah parameter × jumlah token latih</b>.</p>
       <p class="b"><b>Inference</b> itu kayak layani pembeli: per pembeli murah, tapi pembelinya jutaan per hari. Hemat sedikit per permintaan, kali jutaan permintaan, hasilnya besar.</p>
       <div class="note">Riset "scaling laws" yang sekarang ramai (Kaplan 2020, Hoffmann 2022) isinya sebenarnya analisis asimtotik terhadap uang: duit sekian, mestinya beli parameter berapa dan token latih berapa biar optimal.</div>
-      <p class="tiny">Kalkulator di kanan itu hitungan kasar banget — silakan main-main, biar kebayang skalanya.</p>
+      <p class="tiny">Kalkulator di kanan itu hitungan kasar banget - silakan main-main, biar kebayang skalanya.</p>
     </div>
     <div class="sim">
       <div class="cap">Hitung kasar · biaya training ≈ 6 · N · D</div>
@@ -588,7 +588,7 @@ while i &lt; n:
         di 1 GPU A100 (≈3,12×10¹⁴ FLOP/dtk) → <b id="trainTime"></b><br>
         <span id="gpuAlt"></span>
       </div>
-      <p class="tiny">Asumsinya sederhana (presisi BF16, abaikan efisiensi). Angka aslinya lebih rumit — tapi orde besarnya kayak gini.</p>
+      <p class="tiny">Asumsinya sederhana (presisi BF16, abaikan efisiensi). Angka aslinya lebih rumit - tapi orde besarnya kayak gini.</p>
     </div>
   </div>
 </section>
@@ -600,8 +600,8 @@ while i &lt; n:
   <div class="cols c2r" style="margin-top:4px">
     <div class="stack">
       <p class="b">Sistem AI yang bisa "baca dokumen" (RAG) kerjanya begini: dari jutaan potongan dokumen, cari yang paling mirip sama pertanyaan user. Carinya ada dua:</p>
-      <div class="analogy"><b>Brute force</b> — Θ(n·d): bandingin pertanyaannya sama <b>semua</b> dokumen satu per satu. Kayak nyari buku di perpus dengan ngecek semua buku dari rak pertama.</div>
-      <div class="analogy"><b>HNSW</b> — mendekati logaritmik: pakai struktur berlapis, kayak <b>katalog dan peta rak</b> — langsung diarahkan ke area yang mungkin. Konsekuensinya: ada kemungkinan kecil kelewat dokumen yang mirip, tapi bukan yang paling mirip.</div>
+      <div class="analogy"><b>Brute force</b> - Θ(n·d): bandingin pertanyaannya sama <b>semua</b> dokumen satu per satu. Kayak nyari buku di perpus dengan ngecek semua buku dari rak pertama.</div>
+      <div class="analogy"><b>HNSW</b> - mendekati logaritmik: pakai struktur berlapis, kayak <b>katalog dan peta rak</b> - langsung diarahkan ke area yang mungkin. Konsekuensinya: ada kemungkinan kecil kelewat dokumen yang mirip, tapi bukan yang paling mirip.</div>
       <div class="note">Perhatiin: ini pola yang sama kayak tebak angka. Kalau datanya terstruktur berlapis, kita tidak perlu memeriksa semuanya.</div>
     </div>
     <div class="sim">
@@ -633,7 +633,7 @@ while i &lt; n:
         <tr><td class="mono">Θ(n²)</td><td>≈ 4×</td></tr>
         <tr><td class="mono">Θ(n³)</td><td>≈ 8×</td></tr>
       </table>
-      <p class="tiny">Cara bacanya: lihat <b>rasionya</b>, bukan detiknya — tiap komputer beda. Pakai n yang cukup besar dan ulangi beberapa kali, ambil yang tercepat, biar noise-nya nggak ngecoh.</p>
+      <p class="tiny">Cara bacanya: lihat <b>rasionya</b>, bukan detiknya - tiap komputer beda. Pakai n yang cukup besar dan ulangi beberapa kali, ambil yang tercepat, biar noise-nya nggak ngecoh.</p>
     </div>
     <div class="sim">
       <div class="cap">Coba sendiri · prediksi rasio saat n digandakan</div>
@@ -739,7 +739,7 @@ semua_pasangan 2000 0.3157s rasio=3.99</div>
 <!-- ====== 23 · PYTHON 3 ====== -->
 <section class="slide" id="s23">
   <div class="kicker" style="color:#16a34a">PRAKTIK PYTHON (3)</div>
-  <h2 class="st">Beruntung lawan sial — data 1 juta</h2>
+  <h2 class="st">Beruntung lawan sial - data 1 juta</h2>
   <div class="cols c2r" style="margin-top:4px">
     <div><span class="cbadge">beruntung_vs_sial.py</span>
 <pre class="pycode">import timeit
@@ -802,7 +802,7 @@ plt.legend(); plt.show()</pre></div>
         <span class="mono" id="llK" style="font-size:12.5px">klik beberapa ukuran n buat "mengukur"…</span>
         <button class="btn ghost" id="llReset">Reset</button>
       </div>
-      <div class="term sample" id="llList" style="min-height:0">pengukuran: —</div>
+      <div class="term sample" id="llList" style="min-height:0">pengukuran: -</div>
     </div>
   </div>
 </section>
@@ -813,7 +813,7 @@ plt.legend(); plt.show()</pre></div>
   <h2 class="st">Yang perlu dibawa pulang dari pertemuan ini</h2>
   <div class="cols c2" style="margin-top:6px">
     <div class="stack">
-      <div class="card soft"><p class="b">Kita menghitung <b>langkah</b>, bukan detik — biar adil untuk semua komputer.</p></div>
+      <div class="card soft"><p class="b">Kita menghitung <b>langkah</b>, bukan detik - biar adil untuk semua komputer.</p></div>
       <div class="card soft"><p class="b">Memori itu <b>lift</b>, bukan tangga. Akses lewat indeks = O(1).</p></div>
       <div class="card soft"><p class="b"><b>O</b> = paling lama segini. <b>Ω</b> = paling cepat segini. <b>Θ</b> = pas segini.</p></div>
       <div class="card soft"><p class="b">Konstanta dan suku kecil <b>dibuang</b>; yang tersisa suku terbesar.</p></div>
@@ -837,7 +837,7 @@ plt.legend(); plt.show()</pre></div>
       <div class="step"><div class="sn">2</div><p>Klik <b>File → New notebook</b> (atau tombol "New Notebook" di pop-up).</p></div>
       <div class="step"><div class="sn">3</div><p>Klik sel pertama, tempel kodenya, jalankan dengan <b>Shift+Enter</b> atau tombol play di kiri sel.</p></div>
       <div class="step"><div class="sn">4</div><p>Hasilnya muncul tepat di bawah sel. Gratis, tidak perlu install Python di laptop.</p></div>
-      <div class="note"><b>Simpan notebook-nya</b> (File → Save, otomatis ke Google Drive). Hasil latihan Bagian C nanti dibahas di awal pertemuan depan — catat angka yang kamu dapat.</div>
+      <div class="note"><b>Simpan notebook-nya</b> (File → Save, otomatis ke Google Drive). Hasil latihan Bagian C nanti dibahas di awal pertemuan depan - catat angka yang kamu dapat.</div>
     </div>
     <div class="stack">
       <p class="b"><b>Sel pertama yang bisa langsung ditempel:</b></p>
@@ -858,7 +858,7 @@ def jumlah(a):            # Θ(n)
     return s
 
 print(ukur(jumlah, 100000))   # coba ganti n-nya</pre>
-      <p class="tiny">Kalau mau, tambahkan sel baru dengan tombol <b>+ Code</b> — satu sel per soal biar rapi. Kalau Colab bilang "connecting", tunggu sebentar, itu normal.</p>
+      <p class="tiny">Kalau mau, tambahkan sel baru dengan tombol <b>+ Code</b> - satu sel per soal biar rapi. Kalau Colab bilang "connecting", tunggu sebentar, itu normal.</p>
     </div>
   </div>
 </section>
@@ -866,8 +866,8 @@ print(ukur(jumlah, 100000))   # coba ganti n-nya</pre>
 <!-- ====== 27 · LATIHAN A ====== -->
 <section class="slide" id="s27">
   <div class="kicker">LATIHAN · BAGIAN A</div>
-  <h2 class="st">Soal konsep — kerjakan tanpa komputer</h2>
-  <p class="sub">Tulis jawaban di kertas atau dokumen. Kunci jawabannya ada di slide belakang — jangan dilihat dulu.</p>
+  <h2 class="st">Soal konsep - kerjakan tanpa komputer</h2>
+  <p class="sub">Tulis jawaban di kertas atau dokumen. Kunci jawabannya ada di slide belakang - jangan dilihat dulu.</p>
   <div class="qlist">
     <div class="q"><span class="qn">1</span><p>Kenapa mengukur program dengan detik/stopwatch itu <b>tidak adil</b> untuk membandingkan dua algoritma? Sebutkan minimal dua alasan.</p></div>
     <div class="q"><span class="qn">2</span><p>Sebutkan <b>tiga aturan model RAM</b>. Lalu jelaskan dengan kalimat sendiri: kenapa array itu "lift" dan linked list itu "tangga"?</p></div>
@@ -907,11 +907,11 @@ d)  i = 1
 <!-- ====== 29 · LATIHAN C ====== -->
 <section class="slide" id="s29">
   <div class="kicker">LATIHAN · BAGIAN C</div>
-  <h2 class="st">Soal praktik — kerjakan di Google Colab</h2>
-  <p class="sub">Panduan buka Colab ada di slide sebelumnya. Catat hasilnya — kita bahas bersama di awal pertemuan depan.</p>
+  <h2 class="st">Soal praktik - kerjakan di Google Colab</h2>
+  <p class="sub">Panduan buka Colab ada di slide sebelumnya. Catat hasilnya - kita bahas bersama di awal pertemuan depan.</p>
   <div class="qlist">
     <div class="q"><span class="qn">10</span><p>Tempel kode <span class="mono">hitung_ops</span> (slide 21) ke Colab dan jalankan. Tambahkan sendiri n = 160 dan 320. Apakah kolom hasil loop selalu sama dengan rumus n(n−1)/2? Kesimpulannya apa untuk klaim "Contoh C = Θ(n²)"?</p></div>
-    <div class="q"><span class="qn">11</span><p>Pakai kode <span class="mono">ukur_waktu</span> (slide 22). Buat tabel: n, waktu, rasio — untuk <span class="mono">jumlah</span> dan <span class="mono">semua_pasangan</span>. Apakah rasionya mendekati 2 dan 4 seperti prediksi? Kalau meleset jauh, kemungkinan besar kenapa? <i>(petunjuk: ingat catatan soal noise)</i></p></div>
+    <div class="q"><span class="qn">11</span><p>Pakai kode <span class="mono">ukur_waktu</span> (slide 22). Buat tabel: n, waktu, rasio - untuk <span class="mono">jumlah</span> dan <span class="mono">semua_pasangan</span>. Apakah rasionya mendekati 2 dan 4 seperti prediksi? Kalau meleset jauh, kemungkinan besar kenapa? <i>(petunjuk: ingat catatan soal noise)</i></p></div>
     <div class="q"><span class="qn">12</span><p>Tulis program kecil yang menghitung banyaknya putaran loop <span class="mono">i *= 2</span> untuk n = 10⁶ dan n = 10⁷. Tulis satu kalimat kesimpulan yang menjelaskan kenapa ini Θ(log n). <i>(petunjuk: bandingkan selisih putarannya dengan selisih ukuran datanya)</i></p></div>
   </div>
 </section>
@@ -922,10 +922,10 @@ d)  i = 1
   <h2 class="st">Kunci jawaban soal konsep</h2>
   <div class="qlist">
     <div class="ans"><span class="qn">1</span><p>Karena waktu tergantung <b>hardware</b> (laptop gaming vs laptop lama), <b>bahasa pemrograman</b>, <b>beban lain</b> yang kebetulan jalan, dan kondisi cache/suhu. Stopwatch mengukur <b>komputernya</b>, bukan <b>cara</b>-nya. (Dua alasan saja sudah cukup.)</p></div>
-    <div class="ans"><span class="qn">2</span><p>(1) Perintah dikerjakan satu per satu, berurutan. (2) Operasi dasar (tambah, bandingkan, simpan, ambil) masing-masing 1 langkah. (3) Akses data lewat indeks, nomor berapa pun, tetap 1 langkah. <b>Lift</b>: tinggal tekan nomor loker — sampai loker 1 atau 99.999 sama lamanya, itulah array (O(1)). <b>Tangga</b>: harus melewati semua lantai sebelumnya — makin jauh makin lama, itulah linked list.</p></div>
+    <div class="ans"><span class="qn">2</span><p>(1) Perintah dikerjakan satu per satu, berurutan. (2) Operasi dasar (tambah, bandingkan, simpan, ambil) masing-masing 1 langkah. (3) Akses data lewat indeks, nomor berapa pun, tetap 1 langkah. <b>Lift</b>: tinggal tekan nomor loker - sampai loker 1 atau 99.999 sama lamanya, itulah array (O(1)). <b>Tangga</b>: harus melewati semua lantai sebelumnya - makin jauh makin lama, itulah linked list.</p></div>
     <div class="ans"><span class="qn">3</span><p><b>O</b> = janji batas atas: "paling lama segini" (boleh lebih cepat). <b>Ω</b> = batas bawah: "paling cepat segini". <b>Θ</b> = batas pas: atas dan bawahnya sama, "ya sekitar segini". Pernyataan itu <b>salah</b>: O itu jenis <b>batas</b>, sedangkan "terburuk" itu jenis <b>situasi data</b>. Keduanya bisa digabung, misalnya "waktu terburuknya O(n²)".</p></div>
     <div class="ans"><span class="qn">4</span><p><span class="mono">O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²) &lt; O(2ⁿ)</span>. Program A jadi sekitar <b>2 kali</b> lebih lambat; program B jadi sekitar <b>4 kali</b> lebih lambat.</p></div>
-    <div class="ans"><span class="qn">5</span><p>Karena kasus terburuk berlaku untuk <b>semua</b> data yang mungkin masuk — itu jaminan. Rata-rata hanya berlaku kalau asumsi distribusi datanya benar. Contoh meleset: data datang dari user yang iseng atau jahat — misalnya pencarian yang selalu gagal (selalu kasus terburuk), atau input angka terurut untuk quicksort versi naif.</p></div>
+    <div class="ans"><span class="qn">5</span><p>Karena kasus terburuk berlaku untuk <b>semua</b> data yang mungkin masuk - itu jaminan. Rata-rata hanya berlaku kalau asumsi distribusi datanya benar. Contoh meleset: data datang dari user yang iseng atau jahat - misalnya pencarian yang selalu gagal (selalu kasus terburuk), atau input angka terurut untuk quicksort versi naif.</p></div>
   </div>
 </section>
 
@@ -935,7 +935,7 @@ d)  i = 1
   <h2 class="st">Kunci jawaban analisis kode</h2>
   <div class="qlist">
     <div class="ans"><span class="qn">6</span><p>Untuk n ≥ 1 berlaku <span class="mono">20 ≤ 20n</span>. Maka <span class="mono">5n + 20 ≤ 5n + 20n = 25n</span>. Pilih <b>c = 25</b> dan <b>n₀ = 1</b>. Terbukti.</p></div>
-    <div class="ans"><span class="qn">7</span><p><b>a)</b> Θ(n) — n putaran × 1 langkah per putaran. <b>b)</b> Θ(n²) — n × n × 5; angka 5 itu konstanta, dibuang. <b>c)</b> Θ(n²) — totalnya 0+1+…+(n−1) = n(n−1)/2; setengahnya loop penuh, tapi bentuknya tetap n². <b>d)</b> Θ(log n) — i melompat 1, 3, 9, 27, … ; butuh sekitar log₃ n langkah sampai menyusul n (basisnya boleh beda-beda, ordanya sama).</p></div>
+    <div class="ans"><span class="qn">7</span><p><b>a)</b> Θ(n) - n putaran × 1 langkah per putaran. <b>b)</b> Θ(n²) - n × n × 5; angka 5 itu konstanta, dibuang. <b>c)</b> Θ(n²) - totalnya 0+1+…+(n−1) = n(n−1)/2; setengahnya loop penuh, tapi bentuknya tetap n². <b>d)</b> Θ(log n) - i melompat 1, 3, 9, 27, … ; butuh sekitar log₃ n langkah sampai menyusul n (basisnya boleh beda-beda, ordanya sama).</p></div>
     <div class="ans"><span class="qn">8</span><p>Terbaik: <b>1</b> pengecekan (x di posisi pertama) → Θ(1). Terburuk: <b>n</b> (x di akhir atau tidak ada) → Θ(n). Rata-rata: <b>(n+1)/2</b> (posisi acak) → Θ(n).</p></div>
     <div class="ans"><span class="qn">9</span><p>n naik 128.000 ÷ 8.000 = <b>16 kali</b>. Karena Θ(n²), dikuadratkan: 16² = <b>256 kali lipat</b>.</p></div>
   </div>
@@ -947,26 +947,26 @@ d)  i = 1
   <h2 class="st">Kunci jawaban praktik Colab</h2>
   <div class="qlist">
     <div class="ans"><span class="qn">10</span><p>Kolom hasil loop dan kolom rumus <b>selalu identik</b> untuk semua n (mis. n=160 → 12.720 = 160·159/2; n=320 → 51.040). Artinya analisis kita tepat: ops = n(n−1)/2 ≈ n²/2 → <b>Θ(n²) terbukti</b>. Ingat: setengah dari n² tetap n².</p></div>
-    <div class="ans"><span class="qn">11</span><p>Rasio <span class="mono">jumlah</span> mendekati <b>2,0</b> dan <span class="mono">semua_pasangan</span> mendekati <b>4,0</b> (di Colab angka detiknya boleh beda, rasionya tidak). Kalau meleset jauh, biasanya karena <b>n terlalu kecil</b> sehingga kena noise, atau komputer sedang sibuk — perbaikannya: naikkan n dan ulangi beberapa kali lalu ambil yang tercepat.</p></div>
-    <div class="ans"><span class="qn">12</span><p>Hasil: n = 10⁶ → sekitar <b>20</b> putaran (log₂ 10⁶ ≈ 19,9); n = 10⁷ → sekitar <b>24</b> putaran (log₂ 10⁷ ≈ 23,3). Kesimpulan: <i>data 10 kali lebih banyak hanya menambah sekitar 3–4 putaran — pertumbuhannya sangat lambat, itulah Θ(log n).</i></p></div>
+    <div class="ans"><span class="qn">11</span><p>Rasio <span class="mono">jumlah</span> mendekati <b>2,0</b> dan <span class="mono">semua_pasangan</span> mendekati <b>4,0</b> (di Colab angka detiknya boleh beda, rasionya tidak). Kalau meleset jauh, biasanya karena <b>n terlalu kecil</b> sehingga kena noise, atau komputer sedang sibuk - perbaikannya: naikkan n dan ulangi beberapa kali lalu ambil yang tercepat.</p></div>
+    <div class="ans"><span class="qn">12</span><p>Hasil: n = 10⁶ → sekitar <b>20</b> putaran (log₂ 10⁶ ≈ 19,9); n = 10⁷ → sekitar <b>24</b> putaran (log₂ 10⁷ ≈ 23,3). Kesimpulan: <i>data 10 kali lebih banyak hanya menambah sekitar 3–4 putaran - pertumbuhannya sangat lambat, itulah Θ(log n).</i></p></div>
   </div>
-  <div class="note" style="flex:none">Kalau jawabanmu beda tipis dari kunci (misal rasio 1,9 atau 4,3) itu normal — itu konstanta dan noise. Yang penting <b>ordanya</b> yang cocok.</div>
+  <div class="note" style="flex:none">Kalau jawabanmu beda tipis dari kunci (misal rasio 1,9 atau 4,3) itu normal - itu konstanta dan noise. Yang penting <b>ordanya</b> yang cocok.</div>
 </section>
 
 <!-- ====== 33 · PENUTUP + LINK ====== -->
 <section class="slide" id="s33" style="justify-content:center;align-items:center;text-align:center">
   <div class="kicker">PERTEMUAN 1 · SELESAI</div>
   <h2 class="st" style="font-size:32px;margin:10px 0">Hitung dulu teorinya,<br>baru buktikan dengan mengukur.</h2>
-  <p class="sub" style="max-width:700px;margin-top:8px">Kalau masih ada yang bikin bingung, catat pertanyaannya — kita bahas di awal pertemuan depan, sebelum masuk materi baru. Jangan lupa kerjakan latihannya dulu baru cocokkan ke kunci jawaban.</p>
+  <p class="sub" style="max-width:700px;margin-top:8px">Kalau masih ada yang bikin bingung, catat pertanyaannya - kita bahas di awal pertemuan depan, sebelum masuk materi baru. Jangan lupa kerjakan latihannya dulu baru cocokkan ke kunci jawaban.</p>
   <div style="margin:26px 0 10px">
     <a class="biglink" href="https://github.com/Muhammad-Ikhwan-Fathulloh/Algorithm-Complexity-Course-Bank" target="_blank" rel="noopener">
-      <span class="ln1">REPO MATA KULIAH — KLIK UNTUK BUKA</span>
+      <span class="ln1">REPO MATA KULIAH - KLIK UNTUK BUKA</span>
       <span class="ln2">github.com/Muhammad-Ikhwan-Fathulloh/Algorithm-Complexity-Course-Bank</span>
       <span class="ln3">RPS · handout · bank soal · materi pendukung</span>
     </a>
   </div>
   <div style="margin-top:18px;max-width:760px;text-align:left">
-    <p class="tiny"><b>Bacaan kalau mau lanjut sendiri:</b> Cormen dkk. (CLRS) Bab 3 · Jeff Erickson, <i>Algorithms</i> (gratis, bisa didownload) · MIT 6.006 di OpenCourseWare · Rinaldi Munir, <i>Strategi Algoritma</i> (ITB). Untuk bagian AI: Attention Is All You Need (2017) · FlashAttention (2022) · Scaling Laws (2020) · Chinchilla (2022) · HNSW (2016) — nomor arXiv-nya ada di handout bagian 10.</p>
+    <p class="tiny"><b>Bacaan kalau mau lanjut sendiri:</b> Cormen dkk. (CLRS) Bab 3 · Jeff Erickson, <i>Algorithms</i> (gratis, bisa didownload) · MIT 6.006 di OpenCourseWare · Rinaldi Munir, <i>Strategi Algoritma</i> (ITB). Untuk bagian AI: Attention Is All You Need (2017) · FlashAttention (2022) · Scaling Laws (2020) · Chinchilla (2022) · HNSW (2016) - nomor arXiv-nya ada di handout bagian 10.</p>
   </div>
 </section>
 
@@ -1033,7 +1033,7 @@ function fit(){const s=Math.min((innerWidth-30)/1280,(innerHeight-80)/720);
   $('#deck').style.transform=`translate(-50%,-50%) scale(${s})`}
 addEventListener('resize',fit);fit();
 slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot';
-  f.innerHTML=`<span>Kompleksitas Algoritma · Pertemuan 1 — Pendahuluan dan Notasi Asimtotik</span><span>${j+1}</span>`;s.appendChild(f)});
+  f.innerHTML=`<span>Kompleksitas Algoritma · Pertemuan 1 - Pendahuluan dan Notasi Asimtotik</span><span>${j+1}</span>`;s.appendChild(f)});
 
 /* ================= s4: RAM ================= */
 (function(){
@@ -1097,7 +1097,7 @@ slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot'
     svg.innerHTML=s;
     let n0=null;for(let n=1;n<=12;n++){if(f(n)<=c*n*n){n0=n;break}}
     const v=$('#cVerdict');
-    if(n0===null){v.className='verdict bad';v.innerHTML=`c = ${c} terlalu pelit — sampai n = 12, fungsinya masih lolos ke atas batas (lihat titik merah).`}
+    if(n0===null){v.className='verdict bad';v.innerHTML=`c = ${c} terlalu pelit - sampai n = 12, fungsinya masih lolos ke atas batas (lihat titik merah).`}
     else if(n0===1){v.className='verdict good';v.innerHTML=`Sah. Dengan c = ${c}, semua titik sudah tertutup mulai n = 1. Boleh dipakai: n₀ = 1.`}
     else{v.className='verdict mid';v.innerHTML=`Bisa juga, tapi baru berlaku mulai n₀ = ${n0}. Titik merah itu tempat janjinya dilanggar.`}
   }
@@ -1154,9 +1154,9 @@ slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot'
       if(prev&&x>prev){
         if(r.kind==='const')d='× 1';
         else if(r.kind==='delta')d='+'+fmtI(r.f(x)-r.f(prev),2);
-        else if(r.kind==='exp'){const dd=x-prev;d=dd>0?'× 2<sup>'+dd+'</sup>':'—'}
+        else if(r.kind==='exp'){const dd=x-prev;d=dd>0?'× 2<sup>'+dd+'</sup>':'-'}
         else d='× '+fmtI(r.f(x)/r.f(prev),1)}
-      h+=`<tr><td class="mono" style="color:${r.c};font-weight:800">${r.n}</td><td><div class="bar${over?' over':''}"><i style="width:${pct}%;background:${r.c}"></i></div></td><td class="mono">${fmtVal(r,x)}</td><td class="mono">${d||'—'}</td></tr>`});
+      h+=`<tr><td class="mono" style="color:${r.c};font-weight:800">${r.n}</td><td><div class="bar${over?' over':''}"><i style="width:${pct}%;background:${r.c}"></i></div></td><td class="mono">${fmtVal(r,x)}</td><td class="mono">${d||'-'}</td></tr>`});
     tbl.innerHTML=h;
     const ins=$('#growInsight');
     if(prev&&x/prev>1){const rr=x/prev;
@@ -1219,7 +1219,7 @@ slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot'
       if(!any){clearInterval(timer);timer=null;
         $('#cFull').innerHTML=`<b>${n*n}</b> langkah (n×n)`;
         $('#cTri').innerHTML=`<b>${n*(n-1)/2}</b> langkah (n(n−1)/2)`;
-        $('#loopIns').innerHTML=`n = ${n}: Contoh C cuma ${fmtI(n*n/(n*(n-1)/2),1)}× dari Contoh B. Tapi bentuk pertumbuhannya sama — dua-duanya Θ(n²).`}}
+        $('#loopIns').innerHTML=`n = ${n}: Contoh C cuma ${fmtI(n*n/(n*(n-1)/2),1)}× dari Contoh B. Tapi bentuk pertumbuhannya sama - dua-duanya Θ(n²).`}}
     ,n>8?26:45)}
   $('#nSlide').addEventListener('input',play);
   $('#loopReplay').onclick=play;
@@ -1326,7 +1326,7 @@ slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot'
   function brute(){reset();let k=0;
     const step=()=>{if(k>=pts.length){finish();
         $('#ragVerdict').className='verdict bad';
-        $('#ragVerdict').innerHTML=`Brute force: <b>${pts.length}</b> hitungan jarak — semua "buku" dicek satu per satu. Θ(n·d).`;return}
+        $('#ragVerdict').innerHTML=`Brute force: <b>${pts.length}</b> hitungan jarak - semua "buku" dicek satu per satu. Θ(n·d).`;return}
       get(k).setAttribute('fill','#fbbf24');$('#ragCount').textContent=(k+1);k++;
       timers.push(setTimeout(step,55))};
     timers.push(setTimeout(step,250))}
@@ -1335,7 +1335,7 @@ slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot'
     let k=0;
     const step=()=>{if(k>=path.length){finish();
         $('#ragVerdict').className='verdict good';
-        $('#ragVerdict').innerHTML=`HNSW (versi disederhanakan): cuma <b>${path.length}</b> hitungan jarak — "katalognya" nganter hampir sampai. Yang asli lebih pinter lagi: mendekati logaritmik.`;return}
+        $('#ragVerdict').innerHTML=`HNSW (versi disederhanakan): cuma <b>${path.length}</b> hitungan jarak - "katalognya" nganter hampir sampai. Yang asli lebih pinter lagi: mendekati logaritmik.`;return}
       const seg=path[k];get(seg.i).setAttribute('fill','#7c3aed');
       const L=document.getElementById('ragLine');
       L.setAttribute('x2',seg.p.x);L.setAttribute('y2',seg.p.y);L.setAttribute('opacity','1');
@@ -1356,9 +1356,9 @@ slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot'
     const g=G[key].f;let prev=null;
     let h='<tr><th>n</th><th>waktu (diasumsikan 1 dtk saat n=1.000)</th><th>rasio</th></tr>';
     [1000,2000,4000,8000].forEach(n=>{const t=g(n)/g(1000);const r=prev?t/prev:null;
-      h+=`<tr><td class="mono">${fmtI(n,0)}</td><td class="mono">${t<1?fmtI(t*1000,0)+' ms':fmtI(t,2)+' dtk'}</td><td class="mono">${r?'× '+fmtI(r,2):'—'}</td></tr>`;prev=t});
+      h+=`<tr><td class="mono">${fmtI(n,0)}</td><td class="mono">${t<1?fmtI(t*1000,0)+' ms':fmtI(t,2)+' dtk'}</td><td class="mono">${r?'× '+fmtI(r,2):'-'}</td></tr>`;prev=t});
     tbl.innerHTML=h;
-    const exp={n:'tepat 2,00×',nlogn:'sekitar 2,2× — makin besar n makin mendekati 2',
+    const exp={n:'tepat 2,00×',nlogn:'sekitar 2,2× - makin besar n makin mendekati 2',
                n2:'tepat 4,00×',n3:'tepat 8,00×'}[key];
     $('#dbNote').innerHTML=`Prediksinya: gandakan n → waktu ${G[key].l} jadi ${exp}.`}
   btns.forEach(b=>b.onclick=()=>render(b.dataset.k));render('n2');
@@ -1394,7 +1394,7 @@ slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot'
       const r=prev?best/prev:null;
       line(`n=${fmtI(n,0)}  waktu=${best<1000?fmtI(best,2)+' ms':fmtI(best/1000,3)+' s'}${r?'  rasio='+fmtI(r,2):''}`);
       prev=best}
-    line(isN?'rasio ≈ 2 — sama kayak prediksi Θ(n)':'rasio ≈ 4 — sama kayak prediksi Θ(n²)','ok');
+    line(isN?'rasio ≈ 2 - sama kayak prediksi Θ(n)':'rasio ≈ 4 - sama kayak prediksi Θ(n²)','ok');
     btn.disabled=false}
   tN.onclick=()=>bench('n');tN2.onclick=()=>bench('n2');
 })();
@@ -1462,7 +1462,7 @@ slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot'
       s+=`<line x1="${X(X0)}" y1="${Y(y1)}" x2="${X(X1)}" y2="${Y(y2)}" stroke="#2563eb" stroke-width="2.5"/>`}
     m.forEach(([n,t])=>{s+=`<circle cx="${X(Math.log10(n))}" cy="${Y(Math.log10(t))}" r="6" fill="#fff" stroke="#2563eb" stroke-width="2.5"/>`});
     svg.innerHTML=s;
-    $('#llList').textContent='pengukuran: '+(m.length?m.map(([n,t])=>`n=${fmtI(n,0)} → ${t<100?fmtI(t,1):fmtI(t,0)} ms`).join(' · '):'—');
+    $('#llList').textContent='pengukuran: '+(m.length?m.map(([n,t])=>`n=${fmtI(n,0)} → ${t<100?fmtI(t,1):fmtI(t,0)} ms`).join(' · '):'-');
     const k=$('#llK');
     if(f){const kk=f.k;
       k.innerHTML=`kemiringan k ≈ <b>${fmtI(kk,2)}</b> → ${kk>1.75&&kk<2.25?'cocok sama Θ(n²)':'tambah titik lagi biar presisi'}`}

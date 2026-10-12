@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pertemuan 3 - Brute Force dan Pencarian Ruang Keadaan · Kompleksitas Algoritma</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#0b1526;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+#stage{position:fixed;inset:0;background:radial-gradient(1200px 700px at 70% -10%,#16294d 0%,#0b1526 60%)}
+#deck{position:absolute;left:50%;top:50%;width:1280px;height:720px}
+.slide{position:absolute;inset:0;background:#fff;border-radius:8px;box-shadow:0 24px 80px rgba(0,0,0,.55);padding:44px 60px 60px;opacity:0;pointer-events:none;overflow:hidden;display:flex;flex-direction:column;gap:18px;z-index:1;transition:opacity .38s ease,transform .38s ease}
+.slide.from-right{transition:none;transform:translateX(90px)}.slide.from-left{transition:none;transform:translateX(-90px)}
+.slide.exit-left{opacity:0;transform:translateX(-90px);z-index:2}.slide.exit-right{opacity:0;transform:translateX(90px);z-index:2}
+.slide.active{opacity:1;pointer-events:auto;z-index:3}
+.sfoot{position:absolute;left:60px;right:60px;bottom:14px;display:flex;justify-content:space-between;font-size:11px;color:#94a3b8;border-top:1px solid #f1f5f9;padding-top:6px}
+.kicker{font-size:13px;font-weight:800;letter-spacing:.14em;color:#2563eb;text-transform:uppercase}
+h2.st{font-size:32px;color:#0f172a;line-height:1.25}
+p.b{font-size:17px;line-height:1.65;color:#334155}
+.cols{display:grid;gap:20px;flex:1;min-height:0}
+.c2{grid-template-columns:1fr 1fr}.c2l{grid-template-columns:1.1fr .9fr}.c2r{grid-template-columns:.9fr 1.1fr}
+.stack{display:flex;flex-direction:column;gap:9px;min-height:0}
+.card{border:1px solid #e2e8f0;border-radius:10px;padding:10px 13px;background:#fff}
+.card.soft{background:#f8fafc}
+.analogy{background:#fffbeb;border:2px solid #fde68a;border-left:6px solid #d97706;padding:14px 18px;border-radius:10px;font-size:17px;line-height:1.7;color:#334155}
+.analogy b{color:#b45309}
+.warn{background:#fef2f2;border:2px solid #fecaca;border-left:6px solid #b91c1c;padding:14px 18px;border-radius:10px;font-size:17px;color:#334155;line-height:1.7}
+.note{background:#eff6ff;border:1px solid #bfdbfe;border-left:5px solid #2563eb;padding:9px 12px;border-radius:8px;font-size:12.5px;color:#334155;line-height:1.6}
+table.tbl{width:100%;border-collapse:collapse;font-size:16px}
+.tbl th{background:#1e293b;color:#fff;text-align:left;padding:10px 14px;font-size:14px}
+.tbl td{border:1px solid #e2e8f0;padding:9px 14px;color:#334155;vertical-align:middle;line-height:1.45}
+pre.pycode{background:#0f172a;color:#e2e8f0;border-radius:12px;padding:18px 22px;font:15px/1.7 Consolas,'Courier New',monospace;overflow:auto}
+.tk{color:#93c5fd}.ts{color:#fbbf24}.tc{color:#7dd3fc;font-style:italic}.tn{color:#f9a8d4}
+.mono{font-family:Consolas,monospace}.tiny{font-size:14px;color:#64748b;line-height:1.55}
+.btn{display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn:hover{background:#1d4ed8}.btn.go{background:#16a34a}.btn.go:hover{background:#15803d}
+.btn.ghost{background:#fff;color:#2563eb;border:1.5px solid #bfdbfe}.btn.ghost:hover{background:#eff6ff}
+.btn.warn2{background:#dc2626}.btn.warn2:hover{background:#b91c1c}
+.chipbtn{background:#fff;border:2px solid #bfdbfe;color:#1d4ed8;border-radius:20px;padding:7px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.chipbtn:hover{background:#eff6ff}.chipbtn.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.sim{border:1.5px solid #dbeafe;background:linear-gradient(180deg,#f8fbff,#fff);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-height:0}
+.sim .cap{font-size:12px;font-weight:800;letter-spacing:.1em;color:#2563eb;text-transform:uppercase}
+.term{background:#0f172a;color:#a7f3d0;border-radius:10px;padding:14px 16px;font:14px/1.8 Consolas,monospace;min-height:80px;white-space:pre-wrap;overflow:auto;flex:1}
+.term .dim{color:#64748b}.term .ok{color:#4ade80}.term b{color:#fbbf24}
+.cbadge{display:inline-block;background:#0f172a;color:#93c5fd;font:700 11px Consolas,monospace;padding:3px 11px;border-radius:20px;margin-bottom:5px}
+ol.agenda{margin:6px 0 0 22px;font-size:14px;line-height:2.05;color:#334155}
+ol.agenda b{color:#0f172a}
+.qlist{display:flex;flex-direction:column;gap:8px;overflow:auto;flex:1;min-height:0}
+.q{display:flex;gap:12px;align-items:flex-start;border:1px solid #e2e8f0;border-radius:10px;padding:9px 12px;background:#f8fafc}
+.q .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#1e293b;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.q p{font-size:16px;line-height:1.65;color:#334155}
+.ans{display:flex;gap:12px;align-items:flex-start;border:1px solid #bbf7d0;border-radius:10px;padding:9px 12px;background:#f0fdf4}
+.ans .qn{flex:none;min-width:30px;height:30px;border-radius:50%;background:#16a34a;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.ans p{font-size:16px;line-height:1.65;color:#14532d}
+.biglink{display:inline-block;background:#0f172a;border:2px solid #334155;border-radius:12px;padding:16px 26px;text-decoration:none;transition:all .2s}
+.biglink:hover{border-color:#2563eb}.biglink .ln1{display:block;font:700 12px Arial;color:#94a3b8;letter-spacing:.08em;margin-bottom:5px}
+.biglink .ln2{display:block;font:600 15.5px Consolas,monospace;color:#60a5fa}
+.biglink .ln3{display:block;font-size:11.5px;color:#94a3b8;margin-top:5px}
+#progress{position:fixed;top:0;left:0;height:5px;background:#2563eb;width:0;z-index:50;transition:width .3s}
+#hud{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;z-index:50;pointer-events:none;gap:12px}
+#hud>*{pointer-events:auto}#dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:52%}
+#dots button{width:9px;height:9px;border-radius:50%;border:none;background:#334155;cursor:pointer;padding:0}
+#dots button.on{background:#60a5fa;transform:scale(1.4)}
+.navbtn{width:38px;height:38px;border-radius:50%;border:none;background:#1e293b;color:#fff;font-size:19px;cursor:pointer}
+.navbtn:hover{background:#2563eb}
+#hud-left{color:#94a3b8;font-size:13px;display:flex;gap:12px;align-items:center;background:rgba(11,21,38,.8);padding:6px 12px;border-radius:20px}
+kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size:11px;border:1px solid #334155}
+/* puzzle grid */
+.puzzle-grid{display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(3,52px);gap:4px}
+.pcell{border-radius:8px;display:flex;align-items:center;justify-content:center;font:700 18px Consolas;background:#dbeafe;border:2px solid #2563eb;color:#1e40af;transition:all .2s}
+.pcell.empty{background:#f1f5f9;border-color:#cbd5e1;color:transparent}
+.pcell.moved{background:#fef9c3;border-color:#d97706;color:#92400e}
+/* search vis */
+.snode{width:36px;height:24px;border-radius:6px;background:#f1f5f9;border:1.5px solid #cbd5e1;display:flex;align-items:center;justify-content:center;font:600 10px Consolas;color:#334155;transition:all .2s}
+.snode.open{background:#dbeafe;border-color:#2563eb;color:#1e40af}
+.snode.closed{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.snode.goal{background:#fef9c3;border-color:#d97706;color:#92400e}
+.verdict{border-radius:8px;padding:8px 11px;font-size:12.5px;line-height:1.5}
+.verdict.good{background:#dcfce7;color:#166534}.verdict.mid{background:#fef9c3;color:#854d0e}
+.verdict.bad{background:#fee2e2;color:#991b1b}
+/* 5W1H box */
+.w5h1{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.wcard{border-radius:10px;padding:9px 12px;border:1.5px solid}
+.wcard .wlabel{font:800 12px Arial;letter-spacing:.1em;text-transform:uppercase}
+.wcard p{font-size:15px;line-height:1.6;color:#334155;flex:1}
+.wcard.what{border-color:#bfdbfe;background:#eff6ff}.wcard.what .wlabel{color:#1d4ed8}
+.wcard.why{border-color:#bbf7d0;background:#f0fdf4}.wcard.why .wlabel{color:#15803d}
+.wcard.who{border-color:#fde68a;background:#fffbeb}.wcard.who .wlabel{color:#b45309}
+.wcard.when{border-color:#e9d5ff;background:#faf5ff}.wcard.when .wlabel{color:#7c3aed}
+.wcard.where{border-color:#fecaca;background:#fef2f2}.wcard.where .wlabel{color:#b91c1c}
+.wcard.how{border-color:#cbd5e1;background:#f8fafc}.wcard.how .wlabel{color:#334155}
+#s1{justify-content:center}#s1 h1{font-size:48px;line-height:1.1;color:#0f172a;margin:10px 0 16px}
+#s1 .lead{font-size:16px;color:#334155;line-height:1.65;max-width:640px}
+#s1 .deco{position:absolute;right:50px;top:90px;width:320px}
+.navhint{margin-top:18px;font-size:12.5px;color:#64748b}
+</style>
+</head>
+<body>
+<div id="stage"><div id="deck">
+
+<!-- 1. JUDUL -->
+<section class="slide" id="s1">
+  <svg class="deco" viewBox="0 0 320 260" aria-hidden="true">
+    <rect x="10" y="10" width="60" height="60" rx="8" fill="#fef9c3" stroke="#d97706" stroke-width="2"/>
+    <text x="40" y="45" text-anchor="middle" font-size="22" fill="#92400e" font-weight="bold">?</text>
+    <rect x="90" y="10" width="60" height="60" rx="8" fill="#fef9c3" stroke="#d97706" stroke-width="2"/>
+    <text x="120" y="45" text-anchor="middle" font-size="22" fill="#92400e" font-weight="bold">?</text>
+    <rect x="170" y="10" width="60" height="60" rx="8" fill="#fef9c3" stroke="#d97706" stroke-width="2"/>
+    <text x="200" y="45" text-anchor="middle" font-size="22" fill="#92400e" font-weight="bold">?</text>
+    <text x="260" y="42" font-size="28" fill="#dc2626" font-weight="bold">…</text>
+    <text x="10" y="110" font-size="13" fill="#94a3b8">n kota, (n-1)! rute</text>
+    <line x1="10" y1="160" x2="90" y2="120" stroke="#bfdbfe" stroke-width="1.5"/>
+    <line x1="10" y1="160" x2="90" y2="200" stroke="#bfdbfe" stroke-width="1.5"/>
+    <circle cx="10" cy="160" r="16" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <text x="10" y="164" text-anchor="middle" font-size="9" fill="#1e40af">Start</text>
+    <circle cx="90" cy="120" r="14" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <circle cx="90" cy="200" r="14" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <line x1="90" y1="120" x2="170" y2="100" stroke="#bfdbfe" stroke-width="1.5"/>
+    <line x1="90" y1="120" x2="170" y2="140" stroke="#bfdbfe" stroke-width="1.5"/>
+    <line x1="90" y1="200" x2="170" y2="180" stroke="#bfdbfe" stroke-width="1.5"/>
+    <line x1="90" y1="200" x2="170" y2="220" stroke="#bfdbfe" stroke-width="1.5"/>
+    <circle cx="170" cy="100" r="12" fill="#fef9c3" stroke="#d97706" stroke-width="1.5"/>
+    <circle cx="170" cy="140" r="12" fill="#fef9c3" stroke="#d97706" stroke-width="1.5"/>
+    <circle cx="170" cy="180" r="12" fill="#fef9c3" stroke="#d97706" stroke-width="1.5"/>
+    <circle cx="170" cy="220" r="12" fill="#fef9c3" stroke="#d97706" stroke-width="1.5"/>
+    <text x="220" y="160" font-size="13" fill="#7c3aed" font-weight="bold">O(n!)</text>
+  </svg>
+  <div class="kicker">KOMPLEKSITAS ALGORITMA · PERTEMUAN 3</div>
+  <h1>Brute Force dan<br>Pencarian Ruang Keadaan</h1>
+  <p class="lead">Kadang satu-satunya cara yang jelas adalah mencoba semua kemungkinan. Hari ini kita ukur <b>seberapa mahal itu</b> - dan kapan ada cara yang jauh lebih cerdas tanpa kehilangan ketepatan.</p>
+  <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · <a href="index.html" style="color:#2563eb;font-size:12px">← Daftar Materi</a></div>
+</section>
+
+<!-- 5W1H -->
+<section class="slide" id="s5w1h">
+  <div class="kicker">KERANGKA TEORI · 5W1H - Brute Force dan Pencarian Ruang Keadaan</div>
+  <h2 class="st">Kenapa materi ini ada, untuk siapa, dan bagaimana memakainya?</h2>
+  <div class="w5h1" style="margin-top:6px">
+    <div class="wcard what"><div class="wlabel">What - Apa?</div><p>Brute force = coba semua kemungkinan secara sistematis, pilih yang terbaik. Pencarian ruang keadaan = modelkan masalah sebagai graf state→goal, lalu cari jalur dengan BFS/DFS/IDDFS. Keduanya adalah fondasi sebelum teknik lebih canggih (greedy, DP, heuristik) diperkenalkan.</p></div>
+    <div class="wcard why"><div class="wlabel">Why - Mengapa?</div><p>Setiap algoritma canggih butuh baseline yang jelas dan pasti benar. Brute force adalah baseline tersebut. Pencarian ruang keadaan adalah cara formal memecahkan masalah AI - perencanaan, game-playing, puzzle - semuanya bermula dari framework ini sebelum A* dan MCTS dikembangkan.</p></div>
+    <div class="wcard who"><div class="wlabel">Who - Siapa?</div><p>Programmer yang baru mulai menyelesaikan masalah baru (brute force dulu sebagai verifikasi), peneliti AI yang merancang agent berbasis search, developer game yang butuh pathfinding, dan kandidat coding interview yang harus tahu kapan brute force cukup vs kapan perlu dioptimasi.</p></div>
+    <div class="wcard when"><div class="wlabel">When - Kapan?</div><p>Brute force: saat n sangat kecil (n ≤ 15), butuh verifikasi solusi, atau sebagai langkah pertama sebelum optimasi. BFS: cari jalur terpendek di graf unweighted. DFS: topological sort, cycle detection. IDDFS: saat butuh optimalitas BFS dengan memori DFS.</p></div>
+    <div class="wcard where"><div class="wlabel">Where - Di mana?</div><p>Brute force di: testing, kriptografi (key exhaustion), small-n optimization. BFS di: web crawling, social network shortest hop. DFS di: maze generation, compiler dependency resolution. IDDFS di: chess engine, puzzle solver AI. Semua dipakai langsung di library python-constraint, OpenAI Gym, dan game engine.</p></div>
+    <div class="wcard how"><div class="wlabel">How - Bagaimana?</div><p>Brute force: generate semua kandidat → evaluasi → simpan terbaik. BFS: antrian FIFO, jelajah level per level, O(b^d) waktu + memori. DFS: stack LIFO, depth-first, O(b·d) memori. IDDFS: ulangi DFS dengan batas kedalaman naik 0,1,2,... - waktu O(b^d) memori O(b·d) seperti DFS, optimalitas seperti BFS.</p></div>
+  </div>
+</section>
+
+<!-- 2. AGENDA -->
+<section class="slide" id="s2">
+  <div class="kicker">RENCANA HARI INI</div>
+  <h2 class="st">Yang akan kita bahas</h2>
+  <div class="cols c2">
+    <ol class="agenda">
+      <li><b>Apa itu brute force?</b> - prinsip dan kegunaannya</li>
+      <li><b>TSP brute force</b> - O((n−1)!) dan ekstrapolasinya</li>
+      <li><b>Pencarian ruang keadaan</b> - state, goal, operator</li>
+      <li><b>BFS</b> - jaminan lintasan terpendek, O(b^d)</li>
+      <li><b>DFS</b> - hemat memori, tapi bisa tersesat</li>
+      <li><b>Iterative Deepening (IDDFS)</b> - terbaik dari BFS dan DFS</li>
+      <li><b>[Modern]</b> Branchin factor dan trade-off AI</li>
+      <li><b>Latihan</b> dan kunci jawaban</li>
+    </ol>
+    <div class="stack">
+      <div class="note">Brute force itu bukan cara yang bodoh - dia adalah <b>baseline yang jujur</b>. Sebelum klaim "algoritma saya lebih cepat", harus ada yang dikalahin: brute force-nya.</div>
+      <div class="card soft"><p class="b">Bagian B membahas pencarian ruang keadaan - fondasi AI modern dari game-playing hingga robot navigasi. BFS, DFS, dan IDDFS adalah tiga kartu awal yang wajib dikuasai.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. BRUTE FORCE -->
+<section class="slide" id="s3">
+  <div class="kicker">BAGIAN A · PRINSIP BRUTE FORCE</div>
+  <h2 class="st">Coba semua, pilih yang terbaik</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b">Brute force = enumerasi semua solusi yang mungkin secara lengkap, lalu pilih yang optimal. Tidak ada trik, tidak ada heuristik.</p>
+      <div class="analogy"><b>Analogi - kode gembok 4 digit.</b> Tidak tahu kombinasinya? Coba 0000, 0001, 0002 … sampai 9999. Pasti ketemu. Biaya: 10.000 percobaan = O(10ⁿ) untuk n digit. Besar, tapi <i>pasti benar</i>.</div>
+      <div class="card soft">
+        <p class="b"><b>Kegunaan brute force:</b></p>
+        <table class="tbl">
+          <tr><th>Situasi</th><th>Kenapa cocok</th></tr>
+          <tr><td>n sangat kecil (n ≤ 10)</td><td>Biaya terjangkau</td></tr>
+          <tr><td>Verifikasi algoritma lain</td><td>Hasil pasti benar</td></tr>
+          <tr><td>Baseline benchmark</td><td>Patokan kecepatan</td></tr>
+          <tr><td>Pertama kali menyelesaikan soal baru</td><td>Cepat dikode</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="warn"><b>Bahaya brute force:</b> ukuran ruang pencarian bisa meledak. Selection sort O(n²) masih wajar untuk n=10.000, tapi TSP O(n!) untuk n=20 sudah mustahil seumur hidup.</div>
+      <div class="card soft">
+        <p class="b"><b>Contoh sederhana: cari semua pasangan</b></p>
+<pre class="pycode">def all_pairs(A):
+    pairs = []
+    for i in range(len(A)):         # O(n)
+        for j in range(i+1,len(A)): # O(n)
+            pairs.append((A[i],A[j]))
+    return pairs  # → O(n²)</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. TSP -->
+<section class="slide" id="s4">
+  <div class="kicker">BAGIAN A · TSP BRUTE FORCE</div>
+  <h2 class="st">Travelling Salesman Problem - O((n−1)!)</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <p class="b">Diberikan n kota, cari rute terpendek yang mengunjungi semua kota tepat sekali dan kembali ke asal. Solusi brute force: coba <b>semua permutasi</b> kota (kecuali kota awal yang dikunci).</p>
+      <div class="card soft mono" style="font-size:12.5px;line-height:1.85">
+        Jumlah rute = (n−1)!<br>
+        n=5 → 24 rute&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= cepat<br>
+        n=10 → 362.880 rute&nbsp;&nbsp;= masih OK<br>
+        n=15 → 87 miliar rute = hitungan menit<br>
+        n=20 → 1.2×10¹⁷ rute&nbsp;≈ 3.800 tahun
+      </div>
+      <div class="warn"><b>n naik 1, biaya × n.</b> Ini bukan O(n²) atau O(2ⁿ) - ini O(n!). Faktorial tumbuh lebih cepat dari eksponensial. Solusi eksaknya jadi mustahil untuk n ≥ 20.</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · ekstrapolasi waktu TSP</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap" id="tspChips">
+        <button class="chipbtn" data-n="5">n=5</button>
+        <button class="chipbtn" data-n="8">n=8</button>
+        <button class="chipbtn" data-n="10">n=10</button>
+        <button class="chipbtn" data-n="12">n=12</button>
+        <button class="chipbtn" data-n="15">n=15</button>
+        <button class="chipbtn" data-n="20">n=20</button>
+      </div>
+      <div id="tspOut" class="term" style="min-height:140px">Pilih n di atas…</div>
+      <p class="tiny">Diasumsikan 1 miliar permutasi/detik (komputer modern). Angka sebenarnya bergantung hardware - tapi orde besarnya benar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5. STATE SPACE -->
+<section class="slide" id="s5">
+  <div class="kicker">BAGIAN B · PENCARIAN RUANG KEADAAN</div>
+  <h2 class="st">Ruang keadaan: graf dari semua konfigurasi</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b">Masalah seperti 8-puzzle, perencanaan robot, atau permainan bisa dimodelkan sebagai pencarian di ruang keadaan:</p>
+      <div class="card soft">
+        <table class="tbl">
+          <tr><th>Komponen</th><th>Di 8-puzzle</th></tr>
+          <tr><td><b>State</b></td><td>Posisi semua ubin (9! = 362.880 state unik)</td></tr>
+          <tr><td><b>Initial state</b></td><td>Konfigurasi awal</td></tr>
+          <tr><td><b>Goal state</b></td><td>Ubin 1–8 urut, 0 di pojok</td></tr>
+          <tr><td><b>Operator</b></td><td>Geser ubin kosong: atas/bawah/kiri/kanan</td></tr>
+          <tr><td><b>Cost</b></td><td>Jumlah langkah</td></tr>
+        </table>
+      </div>
+      <div class="note">Pencarian di ruang keadaan = graph traversal. BFS dan DFS dari mata kuliah struktur data langsung berlaku - dengan kompleksitas yang berbeda secara fundamental.</div>
+    </div>
+    <div class="stack">
+      <div class="analogy"><b>Analogi - labirin.</b> State = posisimu sekarang. Operator = langkah ke kiri/kanan/atas/bawah. Goal = pintu keluar. Pertanyaannya: algoritma mana yang paling efisien menjelajahi labirin ini?</div>
+      <div class="card soft">
+        <p class="b"><b>Kompleksitas pencarian:</b> O(b^d)</p>
+        <p class="tiny">b = branching factor (rata-rata operator yang valid per state). d = kedalaman solusi. Di 8-puzzle, b ≈ 3 dan d ≈ 20 → sekitar 3²⁰ ≈ 3.5 miliar state dalam kasus terburuk BFS. Di sinilah heuristik (A*) sangat membantu.</p>
+      </div>
+      <div class="card soft">
+        <p class="b"><b>b dan d di beberapa domain:</b></p>
+        <table class="tbl">
+          <tr><th>Masalah</th><th>b</th><th>d (khas)</th></tr>
+          <tr><td>8-puzzle</td><td>3</td><td>20–25</td></tr>
+          <tr><td>Catur</td><td>~35</td><td>~80</td></tr>
+          <tr><td>Go (19×19)</td><td>~250</td><td>~150</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. BFS -->
+<section class="slide" id="s6">
+  <div class="kicker">BAGIAN B · BFS</div>
+  <h2 class="st">BFS - jaminan solusi terpendek, memori O(b^d)</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <p class="b">BFS menjelajah level demi level. Dijamin menemukan solusi dengan jumlah langkah terkecil (optimal untuk uniform cost). Tapi menyimpan seluruh frontier dalam memori.</p>
+<pre class="pycode">from collections import deque
+def bfs(start, goal_fn, expand_fn):
+    queue = deque([(start, [start])])
+    seen = {start}
+    while queue:
+        state, path = queue.popleft()
+        if goal_fn(state):
+            return path           # ← solusi terpendek
+        for nxt in expand_fn(state):
+            if nxt not in seen:
+                seen.add(nxt)
+                queue.append((nxt, path+[nxt]))
+    return None  # tidak ada solusi</pre>
+      <div class="note">Kompleksitas: <b>waktu O(b^d), memori O(b^d)</b>. Masalahnya di memori - pada d=20 dan b=3 butuh ~3.5 miliar entry.</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · BFS vs DFS di pohon kecil</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" id="runBfs">▶ BFS</button>
+        <button class="btn warn2" id="runDfs">▶ DFS</button>
+        <button class="btn ghost" id="resetSearch">Reset</button>
+      </div>
+      <div id="searchVis" style="min-height:120px;background:#f8fafc;border-radius:8px;padding:10px;font:12px Consolas;color:#334155;overflow:auto"></div>
+      <div class="verdict mid" id="searchVerdict">Pilih BFS atau DFS untuk menjelajahi pohon 3-level (b=2).</div>
+      <p class="tiny">Angka di setiap simpul = urutan kunjungan. BFS kunjungi level per level; DFS langsung terjun ke kedalaman.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7. DFS & IDDFS -->
+<section class="slide" id="s7">
+  <div class="kicker">BAGIAN B · DFS DAN IDDFS</div>
+  <h2 class="st">DFS hemat memori - IDDFS ambil yang terbaik</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <div class="card" style="border-left:4px solid #dc2626">
+        <p class="b"><b>DFS</b> - waktu O(b^m), memori O(b·m)</p>
+        <p class="tiny">Menjelajah cabang sedalam mungkin sebelum backtrack. Memori hanya menyimpan <i>satu jalur</i> aktif = O(b·m). Tapi <b>tidak optimal</b> - bisa menemukan solusi lebih dalam daripada yang terpendek. Dan bisa macet di loop tak terbatas kalau tidak ada pembatas kedalaman.</p>
+      </div>
+      <div class="card" style="border-left:4px solid #7c3aed">
+        <p class="b"><b>IDDFS (Iterative Deepening DFS)</b> - waktu O(b^d), memori O(b·d)</p>
+        <p class="tiny">Jalankan DFS dengan batas kedalaman 0, lalu 1, lalu 2, dst. Kalau batas d ketemu solusinya, selesai. Waktu seperti BFS (optimal), memori seperti DFS (linear). Ini yang biasanya dipakai di praktek AI tanpa heuristik.</p>
+      </div>
+    </div>
+    <div class="stack">
+      <table class="tbl">
+        <tr><th>Metode</th><th>Waktu</th><th>Memori</th><th>Optimal?</th><th>Lengkap?</th></tr>
+        <tr><td><b>BFS</b></td><td>O(b^d)</td><td>O(b^d)</td><td>✓</td><td>✓</td></tr>
+        <tr><td><b>DFS</b></td><td>O(b^m)</td><td>O(b·m)</td><td>✗</td><td>✗*</td></tr>
+        <tr><td><b>IDDFS</b></td><td>O(b^d)</td><td>O(b·d)</td><td>✓</td><td>✓</td></tr>
+      </table>
+      <div class="analogy"><b>Analogi - baca buku.</b> BFS = baca semua buku level-1 dulu, lalu level-2. DFS = baca satu buku sampai habis, lalu buku berikutnya. IDDFS = baca bab pertama semua buku, lalu bab dua semua buku, dst. Tampak boros tapi ternyata efisien karena bab pertama jauh lebih kecil dari keseluruhan buku.</div>
+      <div class="note">IDDFS mengulang kerja: state di level d dikunjungi d kali. Tapi karena pohon tumbuh eksponensial, kerja berulang itu cuma O(b/(b-1)) ≈ konstan kali lebih lambat dari BFS. Tradeoffnya sangat worth it.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. MODERN AI -->
+<section class="slide" id="s8">
+  <div class="kicker">BAGIAN B · [MODERN] PENCARIAN DI AI</div>
+  <h2 class="st">Brute force ruang keadaan di sistem AI nyata</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b">BFS/DFS murni langsung collapse di masalah dunia nyata karena b^d meledak. Praktiknya AI pakai tiga strategi:</p>
+      <div class="card" style="border-left:4px solid #2563eb">
+        <p class="b"><b>1. Heuristik (A*)</b> - Pertemuan 9</p>
+        <p class="tiny">Tambahkan estimasi jarak ke goal (h(n)) untuk memandu pencarian. Bisa drastis memotong ruang yang dijelajah - dari b^d ke jauh lebih sedikit kalau heuristiknya bagus.</p>
+      </div>
+      <div class="card" style="border-left:4px solid #16a34a">
+        <p class="b"><b>2. Monte Carlo Tree Search (MCTS)</b></p>
+        <p class="tiny">Dipakai AlphaGo: sample jalur secara acak, bukan jelajah semua. Perkiraan nilai simpul bertambah akurat seiring simulasi. O(b^d) tapi dengan konstanta kecil karena sampling.</p>
+      </div>
+      <div class="card" style="border-left:4px solid #7c3aed">
+        <p class="b"><b>3. Pruning (Alpha-Beta)</b></p>
+        <p class="tiny">Di game seperti catur: kalau sudah ketemu bahwa cabang ini tidak mungkin lebih baik dari yang sudah ditemukan, potong. Mengurangi O(b^d) ke O(b^(d/2)) dalam kasus terbaik.</p>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="analogy"><b>Analogi - cari rute di peta.</b> BFS murni = jelajahi semua jalan yang mungkin dalam radius 1 km, lalu 2 km, dst. A* = punya kompas: hanya jelajahi jalan yang mengarah ke tujuan. MCTS = kirim beberapa pramuka secara acak, lihat siapa yang paling sering sampai.</div>
+      <table class="tbl">
+        <tr><th>Metode</th><th>Waktu praktis</th><th>Domain</th></tr>
+        <tr><td>BFS/IDDFS</td><td>O(b^d) eksak</td><td>Puzzle, perencanaan kecil</td></tr>
+        <tr><td>A*</td><td>O(b^d) worst, lebih cepat biasanya</td><td>Navigasi, robotika</td></tr>
+        <tr><td>Alpha-Beta</td><td>O(b^(d/2))</td><td>Game 2-pemain</td></tr>
+        <tr><td>MCTS</td><td>Bergantung simulasi</td><td>Go, catur modern</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 9. LATIHAN -->
+<section class="slide" id="s9">
+  <div class="kicker">LATIHAN</div>
+  <h2 class="st">Soal brute force dan pencarian</h2>
+  <div class="qlist">
+    <div class="q"><span class="qn">1</span><p>TSP brute force untuk n=8 kota memerlukan berapa rute yang diperiksa? Berapa lama kalau tiap rute butuh 1 μs untuk dievaluasi?</p></div>
+    <div class="q"><span class="qn">2</span><p>Jelaskan perbedaan antara BFS dan DFS dalam hal <b>memori</b>, <b>optimalitas</b>, dan <b>kelengkapan</b>. Mana yang lebih cocok untuk mencari solusi terpendek dalam labirin terbatas?</p></div>
+    <div class="q"><span class="qn">3</span><p>Sebuah robot punya 4 operator per state (branching factor b=4) dan solusi ada di kedalaman d=6. Berapa node yang dijelajahi BFS dalam kasus terburuk? Berapa memori yang dibutuhkan jika tiap node = 100 byte?</p></div>
+    <div class="q"><span class="qn">4</span><p>Kenapa IDDFS disebut "terbaik dari dua dunia"? Jelaskan mengapa pengulangan kerja level-level sebelumnya secara asimtotik tidak signifikan.</p></div>
+    <div class="q"><span class="qn">5</span><p>Di Colab: implementasikan BFS dan DFS untuk 8-puzzle (konfigurasi awal <code>(1,2,3,4,0,6,7,5,8)</code> → goal <code>(1,2,3,4,5,6,7,8,0)</code>). Bandingkan jumlah node yang diekspansi.</p></div>
+  </div>
+</section>
+
+<!-- 10. KUNCI -->
+<section class="slide" id="s10">
+  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
+  <h2 class="st">Kunci brute force dan pencarian</h2>
+  <div class="qlist">
+    <div class="ans"><span class="qn">1</span><p>(n−1)! = 7! = 5.040 rute. Pada 1 μs per rute → 5.040 μs ≈ <b>5 milidetik</b>. Untuk n=15: (14)! ≈ 87 miliar → ≈ 24 jam. Untuk n=20: ≈ 3.800 tahun.</p></div>
+    <div class="ans"><span class="qn">2</span><p><b>Memori:</b> BFS O(b^d), DFS O(b·d). <b>Optimalitas:</b> BFS ✓ (jika cost seragam), DFS ✗. <b>Kelengkapan:</b> BFS ✓, DFS ✗ (bisa loop). Untuk labirin terbatas: <b>BFS</b> - karena menjamin solusi terpendek.</p></div>
+    <div class="ans"><span class="qn">3</span><p>Node yang dijelajahi BFS: 1+4+16+64+256+1024+4096 = <b>5.461 node</b> (total Σ 4^i dari i=0 ke 6). Memori: 5.461 × 100 byte ≈ <b>546 KB</b>. Masih sangat ringan untuk kasus ini.</p></div>
+    <div class="ans"><span class="qn">4</span><p>IDDFS punya optimalitas dan kelengkapan BFS (O(b^d)) dengan memori DFS (O(b·d)). Pengulangan level-k mengunjungi O(b^k) node, tapi mayoritas kerja ada di level d → total = O(b^d · d/(d-1)) ≈ O(b^d). Faktor konstan b/(b-1) diabaikan asimtotik.</p></div>
+    <div class="ans"><span class="qn">5</span><p>BFS untuk konfigurasi sederhana itu ekspansi ~20–100 node. DFS tanpa pembatas kedalaman bisa jauh lebih banyak karena tidak optimal. Perhatikan set <code>seen</code> - tanpa itu BFS tidak pernah selesai di state space yang berputar.</p></div>
+  </div>
+</section>
+
+<!-- 11. PENUTUP -->
+<section class="slide" id="s11" style="justify-content:center;align-items:center;text-align:center">
+  <div class="kicker">PERTEMUAN 3 · SELESAI</div>
+  <h2 class="st" style="font-size:30px;margin:10px 0">Brute force itu jujur.<br>Pencarian cerdas itu perlu.</h2>
+  <p style="font-size:13.5px;color:#64748b;max-width:680px;margin:10px auto 0">Pertemuan berikutnya: Divide and Conquer I - Merge Sort, Quick Sort, Binary Search. Strategi memecah soal hingga subsoal jadi trivial.</p>
+  <div style="margin:24px 0 10px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+    <a class="biglink" href="index.html"><span class="ln1">← KEMBALI KE DAFTAR MATERI</span><span class="ln2">index.html</span><span class="ln3">Semua pertemuan</span></a>
+    <a class="biglink" href="P03_BruteForce_Search.ipynb" target="_blank"><span class="ln1">BUKA NOTEBOOK</span><span class="ln2">P03_BruteForce_Search.ipynb</span><span class="ln3">TSP brute force + BFS/DFS/IDDFS pada 8-puzzle</span></a>
+  </div>
+</section>
+
+</div></div>
+<div id="progress"></div>
+<div id="hud">
+  <div id="hud-left"><span id="pageno">1 / 11</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="dots"></div>
+  <div style="display:flex;gap:8px">
+    <button class="navbtn" id="btnFs">⛶</button>
+    <button class="navbtn" id="btnPrev">‹</button>
+    <button class="navbtn" id="btnNext">›</button>
+  </div>
+</div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function hlCode(t){const e=esc(t);return e.replace(/(#[^\n]*)|("[^"]*")|\b(def|for|in|range|while|if|elif|else|return|import|from|print|lambda|len|not|and|or|True|False|None|float|int|min|max|pass|add|append)\b|\b(\d+(?:\.\d+)?)\b/g,(m,c,s,k,n)=>c?`<span class="tc">${c}</span>`:s?`<span class="ts">${s}</span>`:k?`<span class="tk">${k}</span>`:`<span class="tn">${n}</span>`)}
+$$('.pycode').forEach(p=>p.innerHTML=hlCode(p.textContent));
+const slides=$$('.slide');let cur=0;
+function go(i){i=Math.max(0,Math.min(slides.length-1,i));if(i===cur)return;
+  const dir=i>cur?1:-1,oldEl=slides[cur],newEl=slides[i];
+  oldEl.classList.remove('active');oldEl.classList.add(dir>0?'exit-left':'exit-right');
+  newEl.classList.add(dir>0?'from-right':'from-left');void newEl.offsetWidth;
+  newEl.classList.remove('from-right','from-left');newEl.classList.add('active');
+  setTimeout(()=>oldEl.classList.remove('exit-left','exit-right'),420);cur=i;sync();}
+function sync(){$('#progress').style.width=((cur+1)/slides.length*100)+'%';$('#pageno').textContent=(cur+1)+' / '+slides.length;$$('#dots button').forEach((d,j)=>d.classList.toggle('on',j===cur))}
+const dots=$('#dots');slides.forEach((s,j)=>{const b=document.createElement('button');b.title='Slide '+(j+1);b.onclick=()=>go(j);dots.appendChild(b)});
+$('#btnNext').onclick=()=>go(cur+1);$('#btnPrev').onclick=()=>go(cur-1);
+function toggleFs(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+$('#btnFs').onclick=toggleFs;
+addEventListener('keydown',e=>{const t=e.target,tag=t&&t.tagName,inter=tag==='INPUT'||tag==='TEXTAREA';
+  if(e.key==='ArrowRight'||(e.key===' '&&!inter&&tag!=='BUTTON')){e.preventDefault();go(cur+1)}
+  else if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
+  else if((e.key==='f'||e.key==='F')&&!inter)toggleFs();});
+function fit(){const s=Math.min((innerWidth-30)/1280,(innerHeight-80)/720);$('#deck').style.transform=`translate(-50%,-50%) scale(${s})`}
+addEventListener('resize',fit);fit();
+slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot';f.innerHTML=`<span>Kompleksitas Algoritma · Pertemuan 3 - Brute Force dan Pencarian Ruang Keadaan</span><span>${j+1}</span>`;s.appendChild(f)});
+
+/* TSP ekstrapolasi */
+(function(){
+  const chips=$$('#tspChips .chipbtn'),out=$('#tspOut');
+  function fact(n){let r=1;for(let i=2;i<=n;i++)r*=i;return r}
+  chips.forEach(b=>b.onclick=()=>{
+    chips.forEach(x=>x.classList.remove('active'));b.classList.add('active');
+    const n=+b.dataset.n,routes=fact(n-1),perSec=1e9;
+    const secs=routes/perSec;
+    let timeStr;
+    if(secs<0.001)timeStr=(secs*1e6).toFixed(2)+' μs';
+    else if(secs<1)timeStr=(secs*1000).toFixed(2)+' ms';
+    else if(secs<60)timeStr=secs.toFixed(2)+' detik';
+    else if(secs<3600)timeStr=(secs/60).toFixed(1)+' menit';
+    else if(secs<86400)timeStr=(secs/3600).toFixed(1)+' jam';
+    else if(secs<86400*365)timeStr=(secs/86400).toFixed(1)+' hari';
+    else timeStr=(secs/86400/365).toFixed(1)+' tahun';
+    out.innerHTML=`n = ${n} kota\n(n-1)! = ${routes.toLocaleString()} rute\n\n@1 miliar rute/detik:\n→ ${timeStr}\n\n${secs>1e10?'⚠ TIDAK PRAKTIS - butuh algoritma lain (DP, aproksimasi, B&B)':'✓ masih bisa dikerjakan'}`});
+  chips[0].click();
+})();
+
+/* BFS vs DFS visualisasi */
+(function(){
+  const vis=$('#searchVis'),verdict=$('#searchVerdict');
+  // pohon 3 level, b=2, 15 node total (0..14)
+  const children={0:[1,2],1:[3,4],2:[5,6],3:[7,8],4:[9,10],5:[11,12],6:[13,14]};
+  const goal=11;let timers=[];
+  function reset(){timers.forEach(clearTimeout);timers=[];vis.innerHTML='';verdict.className='verdict mid';verdict.textContent='Pilih BFS atau DFS.';}
+  function line(txt,cls){const d=document.createElement('div');if(cls)d.style.color=cls;d.textContent=txt;vis.appendChild(d);vis.scrollTop=vis.scrollHeight}
+  function runBFS(){reset();const q=[0],seen=new Set([0]);let step=0,found=false;
+    function tick(){if(!q.length||found)return;const node=q.shift();step++;
+      line(`Langkah ${step}: kunjungi node ${node}${node===goal?' ← GOAL!':''}`,(node===goal)?'#16a34a':'#334155');
+      if(node===goal){found=true;verdict.className='verdict good';verdict.innerHTML=`BFS: goal ditemukan di langkah <b>${step}</b>. Ini solusi terpendek (level 3).`;return}
+      (children[node]||[]).forEach(c=>{if(!seen.has(c)){seen.add(c);q.push(c)}});
+      timers.push(setTimeout(tick,350))}
+    timers.push(setTimeout(tick,200))}
+  function runDFS(){reset();const stack=[0],seen=new Set([0]);let step=0,found=false;
+    function tick(){if(!stack.length||found)return;const node=stack.pop();step++;
+      line(`Langkah ${step}: kunjungi node ${node}${node===goal?' ← GOAL!':''}`,(node===goal)?'#16a34a':'#334155');
+      if(node===goal){found=true;verdict.className='verdict mid';verdict.innerHTML=`DFS: goal ditemukan di langkah <b>${step}</b>. Bukan solusi terpendek (DFS tidak optimal).`;return}
+      const ch=(children[node]||[]).slice().reverse();ch.forEach(c=>{if(!seen.has(c)){seen.add(c);stack.push(c)}});
+      timers.push(setTimeout(tick,350))}
+    timers.push(setTimeout(tick,200))}
+  $('#runBfs').onclick=runBFS;$('#runDfs').onclick=runDFS;$('#resetSearch').onclick=reset;
+})();
+</script>
+</body>
+</html>

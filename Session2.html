@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pertemuan 2 - Rekursi dan Persamaan Rekurens · Kompleksitas Algoritma</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#0b1526;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+#stage{position:fixed;inset:0;background:radial-gradient(1200px 700px at 70% -10%,#16294d 0%,#0b1526 60%)}
+#deck{position:absolute;left:50%;top:50%;width:1280px;height:720px}
+.slide{position:absolute;inset:0;background:#fff;border-radius:8px;box-shadow:0 24px 80px rgba(0,0,0,.55);padding:44px 60px 60px;opacity:0;pointer-events:none;overflow:hidden;display:flex;flex-direction:column;gap:18px;z-index:1;transition:opacity .38s ease,transform .38s ease}
+.slide.from-right{transition:none;transform:translateX(90px)}.slide.from-left{transition:none;transform:translateX(-90px)}
+.slide.exit-left{opacity:0;transform:translateX(-90px);z-index:2}.slide.exit-right{opacity:0;transform:translateX(90px);z-index:2}
+.slide.active{opacity:1;pointer-events:auto;z-index:3}
+.sfoot{position:absolute;left:60px;right:60px;bottom:14px;display:flex;justify-content:space-between;font-size:13px;color:#94a3b8;border-top:1px solid #f1f5f9;padding-top:8px}
+.kicker{font-size:13px;font-weight:800;letter-spacing:.14em;color:#2563eb;text-transform:uppercase}
+h1.title{font-size:54px;color:#0f172a;line-height:1.1;margin:6px 0 16px}
+h2.st{font-size:34px;color:#0f172a;line-height:1.2}
+h3.sh{font-size:22px;font-weight:700;color:#0f172a}
+p.lead{font-size:19px;line-height:1.7;color:#334155;max-width:760px}
+p.b{font-size:17px;line-height:1.7;color:#334155}
+p.sm{font-size:15px;line-height:1.65;color:#475569}
+.mono{font-family:Consolas,monospace}
+.cols{display:grid;gap:24px;flex:1;min-height:0}
+.c2{grid-template-columns:1fr 1fr}.c2l{grid-template-columns:1.15fr .85fr}.c2r{grid-template-columns:.85fr 1.15fr}
+.stack{display:flex;flex-direction:column;gap:14px;min-height:0}
+.card{border:2px solid #e2e8f0;border-radius:12px;padding:16px 20px;background:#fff}
+.card.soft{background:#f8fafc}
+.card.blue{border-color:#bfdbfe;background:#eff6ff}
+.card.green{border-color:#bbf7d0;background:#f0fdf4}
+.card.yellow{border-color:#fde68a;background:#fffbeb}
+.card.purple{border-color:#e9d5ff;background:#faf5ff}
+.card h3{font-size:18px;font-weight:700;color:#0f172a;margin-bottom:6px}
+.card p,.card li{font-size:16px;line-height:1.65;color:#334155}
+.analogy{background:#fffbeb;border:2px solid #fde68a;border-left:6px solid #d97706;padding:14px 18px;border-radius:10px;font-size:17px;line-height:1.7;color:#334155}
+.analogy b{color:#b45309}
+.note{background:#eff6ff;border:2px solid #bfdbfe;border-left:6px solid #2563eb;padding:14px 18px;border-radius:10px;font-size:17px;line-height:1.7;color:#334155}
+.note b{color:#1d4ed8}
+.warn{background:#fef2f2;border:2px solid #fecaca;border-left:6px solid #b91c1c;padding:14px 18px;border-radius:10px;font-size:17px;line-height:1.7;color:#334155}
+table.tbl{width:100%;border-collapse:collapse;font-size:16px}
+.tbl th{background:#1e293b;color:#fff;text-align:left;padding:10px 14px;font-size:14px}
+.tbl td{border:1px solid #e2e8f0;padding:9px 14px;color:#334155;vertical-align:middle}
+.tbl tr:nth-child(even) td{background:#f8fafc}
+pre.pycode{background:#0f172a;color:#e2e8f0;border-radius:12px;padding:18px 22px;font:15px/1.7 Consolas,'Courier New',monospace;overflow:auto}
+.tk{color:#93c5fd}.ts{color:#fbbf24}.tc{color:#7dd3fc;font-style:italic}.tn{color:#f9a8d4}
+.cbadge{display:inline-block;background:#0f172a;color:#93c5fd;font:700 13px Consolas,monospace;padding:5px 14px;border-radius:20px;margin-bottom:8px}
+.complexity{display:inline-flex;align-items:center;background:#0f172a;color:#a7f3d0;border-radius:10px;padding:8px 18px;font:700 20px Consolas;margin:2px}
+.complexity.red{color:#fca5a5}.complexity.yellow{color:#fde68a}.complexity.blue{color:#93c5fd}
+.steps{display:flex;flex-direction:column;gap:12px}
+.step-item{display:flex;gap:16px;align-items:flex-start}
+.step-num{flex:none;width:40px;height:40px;border-radius:50%;background:#2563eb;color:#fff;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center}
+.step-body h4{font-size:18px;font-weight:700;color:#0f172a;margin-bottom:4px}
+.step-body p{font-size:15px;line-height:1.6;color:#475569}
+.pills{display:flex;flex-wrap:wrap;gap:10px}
+.pill{background:#eff6ff;border:2px solid #bfdbfe;color:#1d4ed8;border-radius:20px;padding:6px 16px;font-size:15px;font-weight:600}
+.pill.green{background:#f0fdf4;border-color:#bbf7d0;color:#15803d}
+.pill.red{background:#fef2f2;border-color:#fecaca;color:#b91c1c}
+.qlist{display:flex;flex-direction:column;gap:12px;overflow:auto;flex:1}
+.q{display:flex;gap:16px;align-items:flex-start;border:2px solid #e2e8f0;border-radius:12px;padding:14px 18px;background:#f8fafc}
+.q .qn{flex:none;width:38px;height:38px;border-radius:50%;background:#1e293b;color:#fff;font-weight:800;font-size:17px;display:flex;align-items:center;justify-content:center}
+.q p{font-size:16px;line-height:1.65;color:#334155}
+.ans{display:flex;gap:16px;align-items:flex-start;border:2px solid #bbf7d0;border-radius:12px;padding:14px 18px;background:#f0fdf4}
+.ans .qn{flex:none;width:38px;height:38px;border-radius:50%;background:#16a34a;color:#fff;font-weight:800;font-size:17px;display:flex;align-items:center;justify-content:center}
+.ans p{font-size:16px;line-height:1.65;color:#14532d}
+.biglink{display:inline-block;background:#0f172a;border:2px solid #334155;border-radius:14px;padding:20px 30px;text-decoration:none;transition:all .22s}
+.biglink:hover{border-color:#2563eb;transform:translateY(-3px)}
+.biglink .ln1{display:block;font:700 12px Arial;color:#94a3b8;letter-spacing:.1em;margin-bottom:6px}
+.biglink .ln2{display:block;font:700 17px Consolas,monospace;color:#60a5fa}
+.biglink .ln3{display:block;font-size:13px;color:#94a3b8;margin-top:6px}
+.sim{border:2px solid #dbeafe;background:linear-gradient(180deg,#f8fbff,#fff);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-height:0}
+.sim .cap{font-size:12px;font-weight:800;letter-spacing:.1em;color:#2563eb;text-transform:uppercase}
+.term{background:#0f172a;color:#a7f3d0;border-radius:10px;padding:14px 16px;font:14px/1.8 Consolas,monospace;min-height:80px;white-space:pre-wrap;overflow:auto;flex:1}
+.term b{color:#fbbf24}.term .ok{color:#4ade80}
+.verdict{border-radius:10px;padding:12px 16px;font-size:16px;line-height:1.55}
+.verdict.good{background:#dcfce7;color:#166534}.verdict.mid{background:#fef9c3;color:#854d0e}.verdict.bad{background:#fee2e2;color:#991b1b}
+.btn{display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn:hover{background:#1d4ed8}.btn.go{background:#16a34a}.btn.go:hover{background:#15803d}
+.btn.ghost{background:#fff;color:#2563eb;border:2px solid #bfdbfe}.btn.ghost:hover{background:#eff6ff}
+.chipbtn{background:#fff;border:2px solid #bfdbfe;color:#1d4ed8;border-radius:20px;padding:7px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.chipbtn:hover{background:#eff6ff}.chipbtn.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.w5h1{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;flex:1;min-height:0}
+.wcard{border-radius:12px;padding:14px 16px;border:2px solid;display:flex;flex-direction:column;gap:6px}
+.wcard .wlabel{font:800 12px Arial;letter-spacing:.1em;text-transform:uppercase}
+.wcard p{font-size:15px;line-height:1.6;color:#334155;flex:1}
+.wcard.what{border-color:#bfdbfe;background:#eff6ff}.wcard.what .wlabel{color:#1d4ed8}
+.wcard.why{border-color:#bbf7d0;background:#f0fdf4}.wcard.why .wlabel{color:#15803d}
+.wcard.who{border-color:#fde68a;background:#fffbeb}.wcard.who .wlabel{color:#b45309}
+.wcard.when{border-color:#e9d5ff;background:#faf5ff}.wcard.when .wlabel{color:#7c3aed}
+.wcard.where{border-color:#fecaca;background:#fef2f2}.wcard.where .wlabel{color:#b91c1c}
+.wcard.how{border-color:#cbd5e1;background:#f8fafc}.wcard.how .wlabel{color:#334155}
+#progress{position:fixed;top:0;left:0;height:5px;background:#2563eb;width:0;z-index:50;transition:width .3s}
+#hud{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;z-index:50;pointer-events:none;gap:12px}
+#hud>*{pointer-events:auto}
+#dots{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;max-width:52%}
+#dots button{width:10px;height:10px;border-radius:50%;border:none;background:#334155;cursor:pointer;padding:0}
+#dots button.on{background:#60a5fa;transform:scale(1.5)}
+.navbtn{width:42px;height:42px;border-radius:50%;border:none;background:#1e293b;color:#fff;font-size:20px;cursor:pointer}
+.navbtn:hover{background:#2563eb}
+#hud-left{color:#94a3b8;font-size:13px;display:flex;gap:14px;align-items:center;background:rgba(11,21,38,.85);padding:8px 14px;border-radius:22px}
+kbd{background:#1e293b;color:#e2e8f0;border-radius:5px;padding:2px 8px;font-size:13px;border:1px solid #334155}
+input[type=range]{accent-color:#2563eb;flex:1}
+#s1{justify-content:center}
+#s1 h1{font-size:56px;line-height:1.1;color:#0f172a;margin:8px 0 18px}
+#s1 .lead{font-size:19px;color:#334155;line-height:1.7;max-width:700px}
+.navhint{margin-top:16px;font-size:14px;color:#64748b}
+</style>
+</head>
+<body>
+<div id="stage"><div id="deck">
+
+<!-- 1. JUDUL -->
+<section class="slide" id="s1">
+  <svg style="position:absolute;right:60px;top:80px;width:380px;opacity:.9" viewBox="0 0 420 300" aria-hidden="true">
+    <line x1="40" y1="270" x2="400" y2="270" stroke="#e2e8f0" stroke-width="2"/>
+    <line x1="40" y1="20" x2="40" y2="270" stroke="#e2e8f0" stroke-width="2"/>
+    <!-- T(n) tree -->
+    <circle cx="220" cy="50" r="28" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <text x="220" y="55" text-anchor="middle" font-size="13" fill="#1e40af" font-weight="bold">T(n)</text>
+    <line x1="197" y1="75" x2="140" y2="125" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="243" y1="75" x2="300" y2="125" stroke="#94a3b8" stroke-width="1.5"/>
+    <circle cx="140" cy="143" r="22" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <text x="140" y="148" text-anchor="middle" font-size="11" fill="#1e40af">T(n/2)</text>
+    <circle cx="300" cy="143" r="22" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <text x="300" y="148" text-anchor="middle" font-size="11" fill="#1e40af">T(n/2)</text>
+    <line x1="122" y1="163" x2="90" y2="205" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="158" y1="163" x2="190" y2="205" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="282" y1="163" x2="250" y2="205" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="318" y1="163" x2="350" y2="205" stroke="#94a3b8" stroke-width="1.5"/>
+    <circle cx="90" cy="220" r="16" fill="#fef9c3" stroke="#d97706" stroke-width="2"/>
+    <circle cx="190" cy="220" r="16" fill="#fef9c3" stroke="#d97706" stroke-width="2"/>
+    <circle cx="250" cy="220" r="16" fill="#fef9c3" stroke="#d97706" stroke-width="2"/>
+    <circle cx="350" cy="220" r="16" fill="#fef9c3" stroke="#d97706" stroke-width="2"/>
+    <text x="390" y="55" font-size="13" fill="#2563eb" font-weight="bold">n</text>
+    <text x="390" y="148" font-size="13" fill="#2563eb">n</text>
+    <text x="390" y="222" font-size="13" fill="#2563eb">n</text>
+    <text x="200" y="265" font-size="11" fill="#94a3b8" text-anchor="middle">log₂n level × biaya n = Θ(n log n)</text>
+  </svg>
+  <div class="kicker">KOMPLEKSITAS ALGORITMA · PERTEMUAN 2</div>
+  <h1>Rekursi dan<br>Persamaan Rekurens</h1>
+  <p class="lead">Merge Sort, Binary Search, Strassen - semuanya mengandung rekurens. Hari ini kita punya tiga alat untuk menyelesaikannya tanpa takut: <b>recursion tree</b>, <b>substitusi</b>, dan <b>Master Theorem</b>.</p>
+  <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · layar penuh: <kbd>F</kbd> · <a href="index.html" style="color:#2563eb">← Daftar Materi</a></div>
+</section>
+
+<!-- 2. 5W1H -->
+<section class="slide" id="s2">
+  <div class="kicker">KERANGKA TEORI · 5W1H</div>
+  <h2 class="st">Rekurens - kenapa ada, untuk siapa, dan bagaimana memakainya</h2>
+  <div class="w5h1">
+    <div class="wcard what"><div class="wlabel">What - Apa?</div><p>Persamaan rekurens mendefinisikan T(n) dalam bentuk T(n/b) atau T(n−1). Tiga alat: recursion tree untuk intuisi visual, substitusi untuk pembuktian formal, Master Theorem untuk jawaban cepat T(n)=aT(n/b)+f(n).</p></div>
+    <div class="wcard why"><div class="wlabel">Why - Mengapa?</div><p>Algoritma rekursif tidak bisa dianalisis dengan menghitung loop biasa. Tanpa rekurens, kita tidak bisa tahu Merge Sort itu Θ(n log n) atau Strassen Θ(n^2.807). Rekurens adalah bahasa resmi untuk semua algoritma divide &amp; conquer.</p></div>
+    <div class="wcard who"><div class="wlabel">Who - Siapa?</div><p>Developer backend (quicksort, mergesort), peneliti ML yang analisis training complexity, dan kandidat technical interview Google/Meta yang ditanya "berapa kompleksitas fungsi rekursif ini?" - wajib hafal tiga kasus Master Theorem.</p></div>
+    <div class="wcard when"><div class="wlabel">When - Kapan?</div><p>Setiap kali fungsi memanggil dirinya sendiri dengan input lebih kecil. Juga untuk D&C, binary search, tree traversal, dan rekursi di DP. Kapan pun ada "T(n) bergantung pada T(n/k) atau T(n−k)".</p></div>
+    <div class="wcard where"><div class="wlabel">Where - Di mana?</div><p>Di analisis Merge Sort, Quick Sort, Binary Search, Karatsuba, Strassen, BST operations, dan sistem file rekursif. Master Theorem dipakai langsung di whiteboard interview dan paper algoritma.</p></div>
+    <div class="wcard how"><div class="wlabel">How - Bagaimana?</div><p>(1) Tulis rekurens T(n) dari kode. (2) Pilih alat: tree untuk intuisi, substitusi untuk bukti formal, Master Theorem untuk solusi cepat. (3) Verifikasi numerik: cek rasio T(n)/g(n) konvergen ke konstanta.</p></div>
+  </div>
+</section>
+
+<!-- 3. MOTIVASI -->
+<section class="slide" id="s3">
+  <div class="kicker">BAGIAN 1 · MOTIVASI</div>
+  <h2 class="st">Mengapa fungsi rekursif tidak bisa dianalisis seperti loop?</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b">Loop kita hitung langsung: <span class="mono">"berapa kali baris dalam dijalankan?"</span> Mudah.</p>
+      <p class="b">Fungsi rekursif berbeda: dia memanggil dirinya sendiri. Biayanya bergantung pada berapa kali dia dipanggil dan seberapa besar panggilan itu.</p>
+      <div class="card blue">
+        <h3>Merge Sort - biaya di mana?</h3>
+<pre class="pycode">def merge_sort(A):
+    if len(A) <= 1: return A
+    mid = len(A) // 2
+    L = merge_sort(A[:mid])   # ← T(n/2)
+    R = merge_sort(A[mid:])   # ← T(n/2)
+    return merge(L, R)        # ← biaya n
+# Rekurens: T(n) = 2T(n/2) + n</pre>
+      </div>
+      <div class="note"><b>Kuncinya:</b> tulis persamaan dulu. T(n) = 2T(n/2) + n. Baru selesaikan persamaan itu - itulah rekurens.</div>
+    </div>
+    <div class="stack">
+      <div class="card green">
+        <h3>Binary Search - beda lagi</h3>
+<pre class="pycode">def bsearch(A, lo, hi, x):
+    mid = (lo + hi) // 2
+    if A[mid] == x: return mid
+    if A[mid] < x:
+        return bsearch(A, mid+1, hi, x)
+    return bsearch(A, lo, mid-1, x)
+# Rekurens: T(n) = T(n/2) + 1</pre>
+        <p>Binary Search hanya satu subpanggilan dengan ukuran n/2, biaya penggabungan 1.</p>
+      </div>
+      <div class="analogy"><b>Analogi:</b> Rekurens itu seperti tagihan berjenjang. Total tagihan = tagihan anak cabang kiri + tagihan anak cabang kanan + biaya kantor pusat. Kita perlu formula untuk tahu totalnya.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. RECURSION TREE -->
+<section class="slide" id="s4">
+  <div class="kicker">BAGIAN 2 · RECURSION TREE</div>
+  <h2 class="st">Recursion Tree - gambar pohon, hitung biaya per level</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <p class="b">Cara paling intuitif: gambar pohon pemanggilan. Setiap simpul = satu panggilan. Biaya simpul = f(ukurannya). Jumlahkan per level.</p>
+      <div class="card soft">
+        <h3>T(n) = 2T(n/2) + n</h3>
+        <table class="tbl" style="margin-top:8px">
+          <tr><th>Level</th><th># Subsoal</th><th>Ukuran</th><th>Biaya total/level</th></tr>
+          <tr><td>0</td><td>1</td><td>n</td><td style="color:#2563eb;font-weight:700">n</td></tr>
+          <tr><td>1</td><td>2</td><td>n/2</td><td style="color:#2563eb;font-weight:700">2 × n/2 = n</td></tr>
+          <tr><td>2</td><td>4</td><td>n/4</td><td style="color:#2563eb;font-weight:700">4 × n/4 = n</td></tr>
+          <tr><td>⋮</td><td>⋮</td><td>⋮</td><td style="color:#2563eb;font-weight:700">n</td></tr>
+          <tr><td>log₂n</td><td>n</td><td>1</td><td style="color:#2563eb;font-weight:700">n</td></tr>
+        </table>
+      </div>
+      <div class="success"><b>Kesimpulan:</b> log₂n + 1 level, tiap level biaya n → Total = n(log₂n + 1) = <b>Θ(n log n)</b>. Ini Merge Sort.</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri - breakdown level-by-level</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="rtBtns">
+        <button class="chipbtn" data-n="8">n = 8</button>
+        <button class="chipbtn" data-n="16">n = 16</button>
+        <button class="chipbtn" data-n="32">n = 32</button>
+        <button class="chipbtn" data-n="64">n = 64</button>
+      </div>
+      <div id="rtOut" style="overflow:auto;flex:1;min-height:0"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. SUBSTITUSI -->
+<section class="slide" id="s5">
+  <div class="kicker">BAGIAN 3 · SUBSTITUSI</div>
+  <h2 class="st">Metode Substitusi - tebak bentuk, buktikan dengan induksi</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b">Dua langkah: <b>(1)</b> Tebak T(n) ≤ c · g(n). <b>(2)</b> Substitusi ke rekurens, cari c yang membuat pernyataan valid.</p>
+      <div class="card blue">
+        <h3>Contoh: T(n) = 2T(n/2) + n</h3>
+        <p style="margin-top:8px;font-family:Consolas;font-size:15px;line-height:2">
+          Tebak: T(n) ≤ c · n log₂n<br>
+          T(n) ≤ 2 · c·(n/2)·log₂(n/2) + n<br>
+          &nbsp;&nbsp;&nbsp;= c·n·(log₂n − 1) + n<br>
+          &nbsp;&nbsp;&nbsp;= c·n log₂n − (c−1)n<br>
+          &nbsp;&nbsp;&nbsp;≤ c·n log₂n &nbsp; asal c ≥ 1 ✓
+        </p>
+      </div>
+      <div class="note"><b>Pilih c = 2, n₀ = 2.</b> Kasus dasar cek T(2) = 2T(1)+2 = 4 ≤ 2·2·log₂2 = 4. ✓ Selesai.</div>
+    </div>
+    <div class="stack">
+      <div class="warn"><b>Jebakan umum:</b> Tebak T(n) = O(n) untuk T(n) = 2T(n/2) + n. Substitusi: T(n) ≤ 2·c·(n/2) + n = cn + n = (c+1)n. Ini tidak pernah ≤ cn karena c terus bertambah. Tebakan salah!</div>
+      <div class="analogy"><b>Analogi - cari ukuran baju.</b> Tebak dulu ukurannya. Coba pakai (substitusi). Kalau muat, selesai. Kalau tidak, ganti tebakan. Metode substitusi persis begini - tebak, cek, sesuaikan.</div>
+      <div class="card green">
+        <h3>Cara memilih tebakan</h3>
+        <p>Gambar recursion tree dulu → lihat pola biaya per level → buat hipotesis → buktikan. Atau pakai Master Theorem langsung sebagai "spoiler" untuk verifikasi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. MASTER THEOREM -->
+<section class="slide" id="s6">
+  <div class="kicker">BAGIAN 4 · MASTER THEOREM</div>
+  <h2 class="st">Master Theorem - T(n) = aT(n/b) + Θ(nᵈ): tiga kasus</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b">Bandingkan <b>d</b> (pangkat biaya gabungan) dengan <b>log_b(a)</b> (pertumbuhan jumlah submasalah).</p>
+      <div class="card blue" style="border-left:6px solid #2563eb">
+        <p style="font-size:13px;font-weight:800;color:#1d4ed8;letter-spacing:.08em;text-transform:uppercase">Kasus 1 - Daun mendominasi (d &lt; log_b a)</p>
+        <p style="font-size:18px;font-family:Consolas;margin:6px 0"><b>Θ(n^(log_b a))</b></p>
+        <p>Contoh: Strassen - T(n)=7T(n/2)+n², log₂7≈2.807 &gt; 2 → Θ(n^2.807)</p>
+      </div>
+      <div class="card purple" style="border-left:6px solid #7c3aed">
+        <p style="font-size:13px;font-weight:800;color:#7c3aed;letter-spacing:.08em;text-transform:uppercase">Kasus 2 - Seimbang (d = log_b a)</p>
+        <p style="font-size:18px;font-family:Consolas;margin:6px 0"><b>Θ(nᵈ · log n)</b></p>
+        <p>Contoh: Merge Sort - T(n)=2T(n/2)+n, log₂2=1=d → Θ(n log n)</p>
+      </div>
+      <div class="card green" style="border-left:6px solid #16a34a">
+        <p style="font-size:13px;font-weight:800;color:#15803d;letter-spacing:.08em;text-transform:uppercase">Kasus 3 - Akar mendominasi (d &gt; log_b a)</p>
+        <p style="font-size:18px;font-family:Consolas;margin:6px 0"><b>Θ(nᵈ)</b></p>
+        <p>Contoh: T(n)=2T(n/2)+n², log₂2=1 &lt; 2=d → Θ(n²)</p>
+      </div>
+    </div>
+    <div class="sim">
+      <div class="cap">Kalkulator Master Theorem</div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:10px 14px;align-items:center;font-size:16px">
+        <label>a =</label><input type="number" id="mtA" value="2" min="1" style="border:2px solid #bfdbfe;border-radius:8px;padding:7px 10px;font:16px Consolas;width:90px">
+        <label>b =</label><input type="number" id="mtB" value="2" min="2" style="border:2px solid #bfdbfe;border-radius:8px;padding:7px 10px;font:16px Consolas;width:90px">
+        <label>d =</label><input type="number" id="mtD" value="1" min="0" step="0.5" style="border:2px solid #bfdbfe;border-radius:8px;padding:7px 10px;font:16px Consolas;width:90px">
+      </div>
+      <button class="btn" id="mtSolve">Selesaikan</button>
+      <div class="verdict mid" id="mtResult" style="font-size:17px">Isi a, b, d lalu klik Selesaikan</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="chipbtn" data-a="2" data-b="2" data-d="1">Merge Sort</button>
+        <button class="chipbtn" data-a="1" data-b="2" data-d="0">Binary Search</button>
+        <button class="chipbtn" data-a="7" data-b="2" data-d="2">Strassen</button>
+        <button class="chipbtn" data-a="3" data-b="2" data-d="1">Karatsuba</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. TABEL REKURENS PENTING -->
+<section class="slide" id="s7">
+  <div class="kicker">BAGIAN 4 · REKURENS PENTING</div>
+  <h2 class="st">Rekurens wajib dikenal - hafal ini, selesaikan apa pun</h2>
+  <table class="tbl">
+    <tr><th>Algoritma</th><th>Rekurens</th><th>a</th><th>b</th><th>d</th><th>log_b a</th><th>Kasus</th><th style="color:#a7f3d0">Hasil Θ</th></tr>
+    <tr><td><b>Binary Search</b></td><td class="mono">T(n)=T(n/2)+1</td><td>1</td><td>2</td><td>0</td><td>0</td><td>2</td><td class="mono" style="color:#16a34a;font-size:17px"><b>Θ(log n)</b></td></tr>
+    <tr><td><b>Merge Sort</b></td><td class="mono">T(n)=2T(n/2)+n</td><td>2</td><td>2</td><td>1</td><td>1</td><td>2</td><td class="mono" style="color:#2563eb;font-size:17px"><b>Θ(n log n)</b></td></tr>
+    <tr><td><b>Quickselect avg</b></td><td class="mono">T(n)=T(n/2)+n</td><td>1</td><td>2</td><td>1</td><td>0</td><td>3</td><td class="mono" style="color:#16a34a;font-size:17px"><b>Θ(n)</b></td></tr>
+    <tr><td><b>Karatsuba</b></td><td class="mono">T(n)=3T(n/2)+n</td><td>3</td><td>2</td><td>1</td><td>≈1.585</td><td>1</td><td class="mono" style="color:#7c3aed;font-size:17px"><b>Θ(n^1.585)</b></td></tr>
+    <tr><td><b>Strassen</b></td><td class="mono">T(n)=7T(n/2)+n²</td><td>7</td><td>2</td><td>2</td><td>≈2.807</td><td>1</td><td class="mono" style="color:#7c3aed;font-size:17px"><b>Θ(n^2.807)</b></td></tr>
+    <tr><td><b>Matriks naif</b></td><td class="mono">T(n)=8T(n/2)+n²</td><td>8</td><td>2</td><td>2</td><td>3</td><td>1</td><td class="mono" style="color:#dc2626;font-size:17px"><b>Θ(n³)</b></td></tr>
+  </table>
+  <div class="note" style="margin-top:4px"><b>Insight utama Strassen:</b> mengurangi submasalah dari 8 ke 7 mengubah eksponen dari log₂8=3 ke log₂7≈2.807. Satu pengurangan kecil = perbedaan besar secara asimtotik untuk n yang sangat besar.</div>
+</section>
+
+<!-- 8. AKRA-BAZZI -->
+<section class="slide" id="s8">
+  <div class="kicker">BAGIAN 5 · AKRA-BAZZI</div>
+  <h2 class="st">Di luar Master Theorem - rekurens subsoal berbeda ukuran</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b">Master Theorem hanya berlaku jika semua subsoal <b>ukurannya sama</b> (n/b). Ada kasus subsoal berbeda ukuran:</p>
+      <div class="card yellow">
+        <h3>Contoh: T(n) = T(n/2) + T(n/3) + n</h3>
+        <p style="margin-top:8px">Cari p sehingga: <span class="mono">(1/2)ᵖ + (1/3)ᵖ = 1</span></p>
+        <p>Untuk p=1: 1/2 + 1/3 = 5/6 &lt; 1 → p &gt; 1? Tidak, f(n)=n mendominasi.</p>
+        <p>Solusi numerik: p ≈ 0.788. Karena f(n)=n dan ∫ n/n^(p+1) dn menyumbang, hasilnya <b>T(n) = Θ(n)</b>.</p>
+      </div>
+      <div class="analogy"><b>Analogi bagi tugas tidak rata.</b> Bos kasih 1/2 pekerjaan ke tim A dan 1/3 ke tim B. Total bobot = 5/6 &lt; 1 per level, artinya beban berkurang tiap level. Akra-Bazzi menghitung "secara berapa cepat" beban itu berkurang.</div>
+    </div>
+    <div class="stack">
+      <div class="card soft">
+        <h3>Rekurens lain yang tidak bisa pakai Master Theorem langsung</h3>
+        <table class="tbl" style="margin-top:8px">
+          <tr><th>Rekurens</th><th>Hasil</th></tr>
+          <tr><td class="mono">T(n)=T(⌊n/2⌋)+T(⌈n/2⌉)+n</td><td class="mono"><b>Θ(n log n)</b></td></tr>
+          <tr><td class="mono">T(n)=T(n/3)+T(2n/3)+n</td><td class="mono"><b>Θ(n log n)</b></td></tr>
+          <tr><td class="mono">T(n)=T(n/2)+T(n/4)+T(n/8)+n</td><td class="mono"><b>Θ(n log n)</b></td></tr>
+        </table>
+      </div>
+      <div class="note"><b>Untuk kursus ini:</b> yang perlu diingat adalah - jika subsoal ukurannya berbeda, Master Theorem tidak langsung berlaku. Akra-Bazzi adalah alat yang tepat, tapi perhitungannya lebih rumit.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. LATIHAN -->
+<section class="slide" id="s9">
+  <div class="kicker">LATIHAN</div>
+  <h2 class="st">Soal rekurens - coba sebelum lihat kunci</h2>
+  <div class="qlist">
+    <div class="q"><span class="qn">1</span><p>Gunakan Master Theorem untuk: a) T(n)=4T(n/2)+n &nbsp;&nbsp; b) T(n)=4T(n/2)+n² &nbsp;&nbsp; c) T(n)=4T(n/2)+n³. Tentukan kasus dan hasilnya untuk masing-masing.</p></div>
+    <div class="q"><span class="qn">2</span><p>Gambarkan recursion tree untuk <b>T(n) = 3T(n/3) + n</b>. Berapa biaya per level? Berapa level totalnya? Simpulkan Θ-nya.</p></div>
+    <div class="q"><span class="qn">3</span><p>Buktikan dengan metode substitusi bahwa T(n) = T(n/2) + 1 adalah O(log n). Tulis langkah formal: tebak, substitusi, pilih c dan n₀.</p></div>
+    <div class="q"><span class="qn">4</span><p>Mengapa Strassen lebih cepat dari perkalian matriks naif? Tunjukkan bagaimana mengurangi satu subperkalian rekursif mengubah eksponen kompleksitas waktu secara fundamental.</p></div>
+  </div>
+</section>
+
+<!-- 10. KUNCI -->
+<section class="slide" id="s10">
+  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
+  <h2 class="st">Kunci - bandingkan dengan jawabanmu</h2>
+  <div class="qlist">
+    <div class="ans"><span class="qn">1</span><p>log₂4 = 2. <b>a)</b> d=1 &lt; 2 → Kasus 1 → <b>Θ(n²)</b>. &nbsp; <b>b)</b> d=2 = 2 → Kasus 2 → <b>Θ(n² log n)</b>. &nbsp; <b>c)</b> d=3 &gt; 2 → Kasus 3 → <b>Θ(n³)</b>.</p></div>
+    <div class="ans"><span class="qn">2</span><p>Level 0: 1 subsoal ukuran n, biaya n. Level 1: 3 subsoal ukuran n/3, biaya 3×(n/3)=n. Level k: biaya n selalu. Jumlah level = log₃n + 1. Total = n·(log₃n+1) → <b>Θ(n log n)</b>.</p></div>
+    <div class="ans"><span class="qn">3</span><p>Tebak T(n) ≤ c·log₂n. Substitusi: T(n) = T(n/2)+1 ≤ c·log₂(n/2)+1 = c·(log₂n−1)+1 = c·log₂n−(c−1). Ini ≤ c·log₂n asal c≥1. Pilih <b>c=1, n₀=2</b>. Terbukti.</p></div>
+    <div class="ans"><span class="qn">4</span><p>Naif: T(n)=8T(n/2)+n², log₂8=3 → Θ(n³). Strassen: T(n)=7T(n/2)+n², log₂7≈2.807 → Θ(n^2.807). Mengurangi satu subperkalian (8→7) mengubah dasar logaritma dari 8 ke 7, menurunkan eksponen dari 3 ke 2.807. Untuk n=1000: n³=10⁹ vs n^2.807≈4×10⁸ - penghematan ~60%.</p></div>
+  </div>
+</section>
+
+<!-- 11. PENUTUP -->
+<section class="slide" id="s11" style="justify-content:center;align-items:center;text-align:center">
+  <div class="kicker">PERTEMUAN 2 · SELESAI</div>
+  <h2 class="st" style="font-size:38px;margin:12px 0 16px">Tiga alat, satu tujuan:<br>tahu Θ tanpa ngitung detail.</h2>
+  <p class="lead" style="margin:0 auto">Recursion tree untuk intuisi, substitusi untuk pembuktian formal, Master Theorem untuk kecepatan. Pertemuan depan: Brute Force dan Pencarian Ruang Keadaan.</p>
+  <div style="margin:28px 0;display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+    <a class="biglink" href="index.html"><span class="ln1">← KEMBALI KE DAFTAR MATERI</span><span class="ln2">index.html</span><span class="ln3">Semua pertemuan dalam satu halaman</span></a>
+    <a class="biglink" href="P02_Rekurens.ipynb" target="_blank"><span class="ln1">BUKA NOTEBOOK PRAKTIK</span><span class="ln2">P02_Rekurens.ipynb</span><span class="ln3">Master Theorem · recursion tree · Akra-Bazzi</span></a>
+  </div>
+</section>
+
+</div></div>
+<div id="progress"></div>
+<div id="hud">
+  <div id="hud-left"><span id="pageno">1 / 11</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="dots"></div>
+  <div style="display:flex;gap:8px">
+    <button class="navbtn" id="btnFs">⛶</button>
+    <button class="navbtn" id="btnPrev">‹</button>
+    <button class="navbtn" id="btnNext">›</button>
+  </div>
+</div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function hlCode(t){const e=esc(t);return e.replace(/(#[^\n]*)|("[^"]*")|\b(def|for|in|range|while|if|elif|else|return|import|from|print|lambda|len|not|and|or|True|False|None|float|int|min|max|pass)\b|\b(\d+(?:\.\d+)?)\b/g,(m,c,s,k,n)=>c?`<span class="tc">${c}</span>`:s?`<span class="ts">${s}</span>`:k?`<span class="tk">${k}</span>`:`<span class="tn">${n}</span>`)}
+$$('.pycode').forEach(p=>p.innerHTML=hlCode(p.textContent));
+const slides=$$('.slide');let cur=0;
+function go(i){i=Math.max(0,Math.min(slides.length-1,i));if(i===cur)return;
+  const dir=i>cur?1:-1,o=slides[cur],n=slides[i];
+  o.classList.remove('active');o.classList.add(dir>0?'exit-left':'exit-right');
+  n.classList.add(dir>0?'from-right':'from-left');void n.offsetWidth;
+  n.classList.remove('from-right','from-left');n.classList.add('active');
+  setTimeout(()=>o.classList.remove('exit-left','exit-right'),420);cur=i;sync();}
+function sync(){$('#progress').style.width=((cur+1)/slides.length*100)+'%';$('#pageno').textContent=(cur+1)+' / '+slides.length;$$('#dots button').forEach((d,j)=>d.classList.toggle('on',j===cur))}
+const dots=$('#dots');slides.forEach((s,j)=>{const b=document.createElement('button');b.title='Slide '+(j+1);b.onclick=()=>go(j);dots.appendChild(b)});
+$('#btnNext').onclick=()=>go(cur+1);$('#btnPrev').onclick=()=>go(cur-1);
+function toggleFs(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+$('#btnFs').onclick=toggleFs;
+addEventListener('keydown',e=>{const t=e.target,tag=t&&t.tagName,inter=tag==='INPUT'||tag==='TEXTAREA';
+  if(e.key==='ArrowRight'||(e.key===' '&&!inter&&tag!=='BUTTON')){e.preventDefault();go(cur+1)}
+  else if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
+  else if((e.key==='f'||e.key==='F')&&!inter)toggleFs();});
+function fit(){const s=Math.min((innerWidth-30)/1280,(innerHeight-80)/720);$('#deck').style.transform=`translate(-50%,-50%) scale(${s})`}
+addEventListener('resize',fit);fit();
+slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot';f.innerHTML=`<span>Kompleksitas Algoritma · Pertemuan 2 - Rekursi dan Persamaan Rekurens</span><span>${j+1}</span>`;s.appendChild(f)});
+/* Recursion tree */
+(function(){
+  function render(n){
+    const levels=Math.ceil(Math.log2(n))+1;
+    let html=`<table style="border-collapse:collapse;width:100%;font-size:15px"><tr style="background:#1e293b;color:#fff"><th style="padding:8px 12px">Level</th><th style="padding:8px 12px"># Subsoal</th><th style="padding:8px 12px">Ukuran</th><th style="padding:8px 12px;color:#a7f3d0">Biaya/level</th></tr>`;
+    let total=0;
+    for(let l=0;l<levels;l++){const cnt=Math.pow(2,l),sz=Math.ceil(n/Math.pow(2,l)),cost=Math.min(cnt*sz,n);total+=cost;
+      html+=`<tr style="background:${l%2===0?'#f8fafc':'#fff'}"><td style="padding:8px 12px;border:1px solid #e2e8f0">${l}</td><td style="padding:8px 12px;border:1px solid #e2e8f0">${cnt}</td><td style="padding:8px 12px;border:1px solid #e2e8f0">≈${sz}</td><td style="padding:8px 12px;border:1px solid #e2e8f0;color:#2563eb;font-weight:700">${cost}</td></tr>`}
+    html+=`<tr style="background:#eff6ff"><td colspan="3" style="padding:8px 12px;border:1px solid #e2e8f0;font-weight:700">Total (${levels} level × n)</td><td style="padding:8px 12px;border:1px solid #e2e8f0;color:#2563eb;font-weight:800;font-size:16px">${total} ≈ n·log₂n</td></tr>`;
+    html+=`</table>`;$('#rtOut').innerHTML=html}
+  $$('#rtBtns .chipbtn').forEach(b=>b.onclick=()=>{$$('#rtBtns .chipbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');render(+b.dataset.n)});
+  render(8);$$('#rtBtns .chipbtn')[0].classList.add('active');
+})();
+/* Master Theorem */
+(function(){
+  function solve(a,b,d){const c=Math.log(a)/Math.log(b),diff=d-c;
+    if(Math.abs(diff)<1e-9)return{cls:'mid',txt:`Kasus 2 (seimbang): d = log_b(a) = ${c.toFixed(3)} &nbsp;→&nbsp; <b style="font-size:19px">Θ(n^${d.toFixed(2)} · log n)</b>`};
+    if(diff<0)return{cls:'bad',txt:`Kasus 1 (daun dominan): log_b(a) = ${c.toFixed(3)} &gt; d = ${d} &nbsp;→&nbsp; <b style="font-size:19px">Θ(n^${c.toFixed(3)})</b>`};
+    return{cls:'good',txt:`Kasus 3 (akar dominan): d = ${d} &gt; log_b(a) = ${c.toFixed(3)} &nbsp;→&nbsp; <b style="font-size:19px">Θ(n^${d.toFixed(2)})</b>`}}
+  function run(){const a=+$('#mtA').value,b=+$('#mtB').value,d=+$('#mtD').value;
+    if(!a||!b||b<2){$('#mtResult').className='verdict bad';$('#mtResult').textContent='Isi a≥1, b≥2, d≥0';return}
+    const r=solve(a,b,d);$('#mtResult').className='verdict '+r.cls;$('#mtResult').innerHTML=r.txt}
+  $('#mtSolve').onclick=run;
+  $$('[data-a]').forEach(b=>b.onclick=()=>{$('#mtA').value=b.dataset.a;$('#mtB').value=b.dataset.b;$('#mtD').value=b.dataset.d;run()});
+})();
+</script>
+</body>
+</html>
