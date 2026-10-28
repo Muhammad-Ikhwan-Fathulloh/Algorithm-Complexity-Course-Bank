@@ -64,6 +64,49 @@ ol.agenda b{color:#0f172a}
 kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size:11px;border:1px solid #334155}
 canvas{border:1.5px solid #cbd5e1;border-radius:8px;cursor:pointer}
 .navhint{margin-top:18px;font-size:12.5px;color:#64748b}
+/*RX-CSS-START*/
+/* Anti-terpotong: kode & daftar tidak lagi disembunyikan di dalam scroll; slide di-auto-fit oleh JS */
+pre.pycode{overflow:visible;white-space:pre-wrap;word-break:break-word;flex:none}
+.qlist{overflow:visible}
+.cols,.stack{min-height:auto}
+/* Bedah Rumus */
+.fxbox{background:#0f172a;border-radius:14px;padding:16px 28px;text-align:center;color:#f8fafc;font:500 31px/1.5 'Cambria Math',Cambria,'Times New Roman',serif;flex:none}
+.fxbox sub,.fxbox sup{font-size:.62em}
+.fxbox .hl{color:#fbbf24}.fxbox .hb{color:#93c5fd}.fxbox .hg{color:#86efac}
+.fxsmall{font:500 20px/1.5 'Cambria Math',Cambria,'Times New Roman',serif;color:#0f172a}
+.say{font-size:16px;line-height:1.65;color:#1e3a8a;font-style:italic;background:#fff;border-radius:8px;padding:10px 14px;border:1px dashed #93c5fd;margin-bottom:10px}
+table.sym{width:100%;border-collapse:collapse;font-size:15px}
+.sym td{border-bottom:1px solid #e2e8f0;padding:6px 10px;vertical-align:top;color:#334155;line-height:1.5}
+.sym tr:last-child td{border-bottom:none}
+.sym td:first-child{font:600 18px 'Cambria Math',Cambria,serif;color:#0f172a;white-space:nowrap;width:1%}
+.rxgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rxitem{display:flex;gap:14px;align-items:center;border:2px solid #e2e8f0;border-radius:12px;padding:10px 16px;background:#f8fafc}
+.rxitem .qn{flex:none;width:34px;height:34px;border-radius:50%;background:#2563eb;color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center}
+.rxitem b{display:block;font-size:15px;color:#0f172a}
+.rxitem span{font:500 17px 'Cambria Math',Cambria,serif;color:#334155}
+.rxcard{border:2px solid #e2e8f0;border-radius:12px;padding:14px 18px;background:#f8fafc;min-width:0}
+.rxcard.blue{border-color:#bfdbfe;background:#eff6ff}.rxcard.green{border-color:#bbf7d0;background:#f0fdf4}.rxcard.yellow{border-color:#fde68a;background:#fffbeb}
+.rxcard h3{font-size:18px;font-weight:700;color:#0f172a;margin-bottom:8px}
+.rxcard p{font-size:15.5px;line-height:1.6;color:#334155}
+.rxsteps{display:flex;flex-direction:column;gap:9px}
+.rxstep{display:flex;gap:12px;align-items:flex-start}
+.rxnum{flex:none;width:30px;height:30px;border-radius:50%;background:#2563eb;color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
+.rxcard.yellow .rxnum{background:#d97706}
+.rxbody h4{font-size:16px;font-weight:700;color:#0f172a;margin-bottom:2px}
+.rxbody p{font-size:15px;line-height:1.55;color:#475569}
+.rxsm{font-size:15px;line-height:1.6;color:#475569}
+.rxcard pre.pycode{font-size:14px;padding:12px 16px;margin-top:10px;line-height:1.55}
+.rxsoal{background:#f1f5f9;border:2px solid #cbd5e1;border-left:6px solid #475569;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#1e293b;flex:none}
+.rxcalc{font:500 15.5px/1.55 'Cambria Math',Cambria,'Times New Roman',serif!important;color:#0f172a!important}
+table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
+.rxtbl th{background:#1e293b;color:#fff;text-align:center;padding:6px 8px;font-size:13.5px;font-weight:700}
+.rxtbl td{border:1px solid #e2e8f0;padding:5px 8px;text-align:center;color:#334155;background:#fff;font-family:'Cambria Math',Cambria,serif}
+.rxtbl tr:nth-child(even) td{background:#f8fafc}
+.rxtbl td:first-child{font-weight:700;color:#0f172a}
+.rxhasil{background:#f0fdf4;border:2px solid #bbf7d0;border-left:6px solid #16a34a;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#14532d;flex:none}
+.rxhasil b{color:#15803d}
+.rxstack{display:flex;flex-direction:column;gap:12px;min-width:0}
+/*RX-CSS-END*/
 </style>
 </head>
 <body>
@@ -298,6 +341,172 @@ def astar(graph, start, goal, h):
 </section>
 
 <!-- 7. LATIHAN -->
+<!--RX-SLIDES-START-->
+<section class="slide" id="rx0">
+<div class="kicker">Bedah Rumus · Greedy II (Graf) dan A*</div>
+<h2 class="st">Empat rumus greedy pada graf dan pencarian A*</h2>
+<p class="b">MST, Dijkstra, Huffman, dan A* menjalankan dunia nyata: jaringan listrik, Google Maps, file ZIP, dan karakter game. Masing-masing punya satu rumus inti yang perlu bisa dibaca.</p>
+<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Bobot Minimum Spanning Tree</b><span>W(T) = Σ w(e), |T| = V − 1</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Relaksasi Dijkstra</b><span>d[v] ← min(d[v], d[u] + w(u,v))</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Panjang kode rata-rata Huffman dan entropi</b><span>H ≤ L = Σ pᵢℓᵢ < H + 1</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Fungsi evaluasi A*</b><span>f(n) = g(n) + h(n), h ≤ h*</span></div></div></div>
+<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas tiga slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+</section>
+<section class="slide" id="rx1a">
+<div class="kicker">Bedah Rumus 1/4 · Langkah 1: cara membaca</div>
+<h2 class="st">Bobot Minimum Spanning Tree</h2>
+<div class="fxbox">minimalkan &nbsp;W(T) = Σ<sub>e ∈ T</sub> <span class='hl'>w(e)</span>, &nbsp; |T| = <span class='hb'>V − 1</span>; &nbsp; Kruskal O(E log E), Prim O(E log V)</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Minimalkan W dari T, yaitu jumlah bobot w dari e untuk semua sisi e di dalam T, dengan banyak sisi T sama dengan V kurang satu. Kruskal berjalan O E log E, Prim O E log V.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>e ∈ T</h4><p class="">“sisi e anggota pohon T”.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>|T| = V − 1</h4><p class="">pohon yang menghubungkan V simpul selalu punya tepat V − 1 sisi (tanpa siklus).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Kruskal</h4><p class="">urutkan sisi termurah, ambil jika tidak membentuk siklus (Union-Find).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Prim</h4><p class="">tumbuhkan satu pohon, selalu tambah sisi termurah yang keluar dari pohon (heap).</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>T</td><td>himpunan sisi spanning tree</td></tr><tr><td>w(e)</td><td>bobot/biaya sisi e</td></tr><tr><td>V, E</td><td>banyaknya simpul dan sisi</td></tr><tr><td>log E ≈ log V</td><td>karena E ≤ V², log E ≤ 2 log V</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> <b>Cut property</b>: untuk setiap potongan graf, sisi termurah yang menyeberanginya aman dimasukkan ke MST. Kruskal dan Prim sama-sama menerapkan sifat ini.</div>
+</section>
+<section class="slide" id="rx1m">
+<div class="kicker">Bedah Rumus 1/4 · Langkah 2: hitung manual</div>
+<h2 class="st">Hitung manual: Bobot Minimum Spanning Tree</h2>
+<div class="rxsoal"><b>Soal:</b> Kruskal pada 4 gedung: AB = 1, BC = 4, AC = 3, CD = 2, BD = 5.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Urutkan sisi</h4><p class="rxcalc">AB 1, CD 2, AC 3, BC 4, BD 5</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>AB (1)</h4><p class="rxcalc">A dan B beda komponen → ambil. Komponen: {A,B}, {C}, {D}</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>CD (2)</h4><p class="rxcalc">beda komponen → ambil. {A,B}, {C,D}</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>AC (3)</h4><p class="rxcalc">beda komponen → ambil. {A,B,C,D} → sudah V − 1 = 3 sisi</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>BC, BD</h4><p class="rxcalc">B dan C/D sudah satu komponen → membentuk siklus, tolak</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>sisi</th><th>bobot</th><th>beda komponen?</th><th>aksi</th><th>total</th></tr><tr><td>AB</td><td>1</td><td>ya</td><td>ambil</td><td>1</td></tr><tr><td>CD</td><td>2</td><td>ya</td><td>ambil</td><td>3</td></tr><tr><td>AC</td><td>3</td><td>ya</td><td>ambil</td><td>6</td></tr><tr><td>BC</td><td>4</td><td>tidak</td><td>tolak</td><td>6</td></tr><tr><td>BD</td><td>5</td><td>tidak</td><td>tolak</td><td>6</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> MST = {AB, CD, AC} dengan total bobot 6.</div>
+</section>
+<section class="slide" id="rx1b">
+<div class="kicker">Bedah Rumus 1/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<h2 class="st">Merancang jaringan kabel fiber antar gedung</h2>
+<div class="cols c2">
+<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Perencanaan jaringan <b>listrik, fiber optik, pipa air</b>, dan clustering data (single-linkage clustering = MST lalu potong sisi termahal). Penyedia internet memakai MST sebagai titik awal desain backbone sebelum menambah redundansi.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>4 gedung A-D</h4><p class="">biaya: AB=1, BC=4, AC=3, CD=2, BD=5.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Kruskal: urut</h4><p class="">AB(1), CD(2), AC(3), BC(4), BD(5).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ambil</h4><p class="">AB ✓, CD ✓, AC ✓ (3 sisi = V−1) - BC dan BD ditolak.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Total</h4><p class="">1 + 2 + 3 = 6 (paling murah yang menghubungkan semua).</p></div></div></div></div></div>
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> kruskal(n, edges):              <span class="tc"># edges: (w, u, v)</span>
+    parent = list(<span class="tk">range</span>(n))
+    <span class="tk">def</span> find(x):
+        <span class="tk">while</span> parent[x] != x: parent[x] = parent[parent[x]]; x = parent[x]
+        <span class="tk">return</span> x
+    total = <span class="tn">0</span>
+    <span class="tk">for</span> w, u, v <span class="tk">in</span> <span class="tk">sorted</span>(edges):
+        ru, rv = find(u), find(v)
+        <span class="tk">if</span> ru != rv: parent[ru] = rv; total += w
+    <span class="tk">return</span> total
+
+<span class="tk">print</span>(kruskal(<span class="tn">4</span>, [(<span class="tn">1</span>,<span class="tn">0</span>,<span class="tn">1</span>),(<span class="tn">4</span>,<span class="tn">1</span>,<span class="tn">2</span>),(<span class="tn">3</span>,<span class="tn">0</span>,<span class="tn">2</span>),(<span class="tn">2</span>,<span class="tn">2</span>,<span class="tn">3</span>),(<span class="tn">5</span>,<span class="tn">1</span>,<span class="tn">3</span>)]))  <span class="tc"># 6</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> MST = sambungkan semua titik dengan biaya total minimum; selalu V − 1 sisi.</div>
+</section>
+<section class="slide" id="rx2a">
+<div class="kicker">Bedah Rumus 2/4 · Langkah 1: cara membaca</div>
+<h2 class="st">Relaksasi Dijkstra</h2>
+<div class="fxbox">d[v] ← <span class='hl'>min</span>( d[v], &nbsp;<span class='hb'>d[u] + w(u, v)</span> ), &nbsp;&nbsp; total O((V + E) log V) dengan heap</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“d dari v diperbarui menjadi minimum antara d dari v sekarang dan d dari u ditambah bobot sisi u ke v. Totalnya O dari V tambah E kali log V dengan heap.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>d[v]</h4><p class="">jarak terpendek ke v yang diketahui SAAT INI (awal: ∞).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>d[u] + w(u,v)</h4><p class="">jarak jika lewat u lalu menyeberang ke v.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>min(…)</h4><p class="">kalau jalur baru lebih pendek, perbarui - itulah “relaksasi”.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Syarat</h4><p class="">semua bobot w ≥ 0; kalau ada bobot negatif, pakai Bellman-Ford.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>d[·]</td><td>tabel jarak sementara</td></tr><tr><td>u</td><td>simpul yang baru diambil dari heap (jaraknya sudah final)</td></tr><tr><td>w(u,v)</td><td>bobot sisi u→v</td></tr><tr><td>log V</td><td>biaya operasi heap</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Dijkstra selalu memproses simpul dengan d terkecil berikutnya. Karena bobot non-negatif, <b>tidak mungkin ada jalan memutar yang lebih pendek</b> ke simpul itu, jadi jaraknya final.</div>
+</section>
+<section class="slide" id="rx2m">
+<div class="kicker">Bedah Rumus 2/4 · Langkah 2: hitung manual</div>
+<h2 class="st">Hitung manual: Relaksasi Dijkstra</h2>
+<div class="rxsoal"><b>Soal:</b> Dijkstra dari S: S→A 4, S→B 1, B→A 2, A→T 1, B→T 6.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Inisialisasi</h4><p class="rxcalc">d[S] = 0, sisanya ∞</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Ambil S (0)</h4><p class="rxcalc">d[A] = min(∞, 0+4) = 4; d[B] = min(∞, 0+1) = 1</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ambil B (1)</h4><p class="rxcalc">d[A] = min(4, 1+2) = 3; d[T] = min(∞, 1+6) = 7</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Ambil A (3)</h4><p class="rxcalc">d[T] = min(7, 3+1) = 4</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Ambil T (4)</h4><p class="rxcalc">selesai; jalur S → B → A → T</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>ambil</th><th>d[S]</th><th>d[A]</th><th>d[B]</th><th>d[T]</th></tr><tr><td>awal</td><td>0</td><td>∞</td><td>∞</td><td>∞</td></tr><tr><td>S</td><td>0</td><td>4</td><td>1</td><td>∞</td></tr><tr><td>B</td><td>0</td><td>3</td><td>1</td><td>7</td></tr><tr><td>A</td><td>0</td><td>3</td><td>1</td><td>4</td></tr><tr><td>T</td><td>0</td><td>3</td><td>1</td><td>4</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Jarak terpendek S ke T = 4 lewat S → B → A → T.</div>
+</section>
+<section class="slide" id="rx2b">
+<div class="kicker">Bedah Rumus 2/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<h2 class="st">Rute tercepat di aplikasi peta</h2>
+<div class="cols c2">
+<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Mesin rute (OSRM, GraphHopper, Google Maps) berbasis Dijkstra yang dipercepat (Contraction Hierarchies, A*). Protokol routing internet <b>OSPF</b> menjalankan Dijkstra di setiap router untuk mengisi tabel routing.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Graf</h4><p class="">S→A 4, S→B 1, B→A 2, A→T 1, B→T 6.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Ambil S (0)</h4><p class="">d[A]=4, d[B]=1.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ambil B (1)</h4><p class="">A: min(4, 1+2) = 3; T: min(∞, 1+6) = 7.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Ambil A (3)</h4><p class="">T: min(7, 3+1) = 4 → rute S→B→A→T = 4.</p></div></div></div></div></div>
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> heapq
+<span class="tk">def</span> dijkstra(g, s):
+    d = {v: float(<span class="ts">"inf"</span>) <span class="tk">for</span> v <span class="tk">in</span> g}; d[s] = <span class="tn">0</span>
+    pq = [(<span class="tn">0</span>, s)]
+    <span class="tk">while</span> pq:
+        du, u = heapq.heappop(pq)
+        <span class="tk">if</span> du &gt; d[u]: <span class="tk">continue</span>
+        <span class="tk">for</span> v, w <span class="tk">in</span> g[u]:
+            <span class="tk">if</span> d[u] + w &lt; d[v]:            <span class="tc"># relaksasi</span>
+                d[v] = d[u] + w; heapq.heappush(pq, (d[v], v))
+    <span class="tk">return</span> d</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Relaksasi = “kalau lewat u lebih dekat, perbarui”. Heap memastikan simpul diproses dari yang terdekat.</div>
+</section>
+<section class="slide" id="rx3a">
+<div class="kicker">Bedah Rumus 3/4 · Langkah 1: cara membaca</div>
+<h2 class="st">Panjang kode rata-rata Huffman dan entropi</h2>
+<div class="fxbox">L = Σ <span class='hl'>p<sub>i</sub></span>·<span class='hb'>ℓ<sub>i</sub></span>, &nbsp;&nbsp; H = −Σ p<sub>i</sub> log<sub>2</sub> p<sub>i</sub>, &nbsp;&nbsp; <span class='hg'>H ≤ L<sub>Huffman</sub> &lt; H + 1</span></div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“L adalah jumlah p i kali l i. H adalah minus jumlah p i kali log dua p i. Panjang rata-rata Huffman paling kecil H dan kurang dari H tambah satu.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>pᵢ</h4><p class="">peluang (frekuensi relatif) simbol i.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>ℓᵢ</h4><p class="">panjang kode biner simbol i (jumlah bit).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>L</h4><p class="">rata-rata bit per simbol - yang ingin diminimalkan.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>H (entropi)</h4><p class="">batas bawah teoretis; tidak ada kode prefix yang bisa lebih kecil.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>pᵢ</td><td>frekuensi relatif simbol i</td></tr><tr><td>ℓᵢ</td><td>panjang kode simbol i</td></tr><tr><td>L</td><td>panjang kode rata-rata</td></tr><tr><td>H</td><td>entropi Shannon (bit/simbol)</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Simbol yang sering muncul diberi kode pendek, yang jarang diberi kode panjang. Huffman menggabungkan dua simbol terjarang berulang kali, dan hasilnya <b>dijamin optimal</b> di antara kode prefix.</div>
+</section>
+<section class="slide" id="rx3m">
+<div class="kicker">Bedah Rumus 3/4 · Langkah 2: hitung manual</div>
+<h2 class="st">Hitung manual: Panjang kode rata-rata Huffman dan entropi</h2>
+<div class="rxsoal"><b>Soal:</b> Bangun kode Huffman untuk A 0,5; B 0,25; C 0,125; D 0,125 lalu hitung L dan H.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Gabung 2 terkecil</h4><p class="rxcalc">C (0,125) + D (0,125) → simpul 0,25</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Gabung lagi</h4><p class="rxcalc">B (0,25) + CD (0,25) → simpul 0,5</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Gabung terakhir</h4><p class="rxcalc">A (0,5) + BCD (0,5) → akar 1,0</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Baca kode (kiri 0, kanan 1)</h4><p class="rxcalc">A = 0, B = 10, C = 110, D = 111</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Hitung</h4><p class="rxcalc">L = 0,5 + 0,5 + 0,375 + 0,375 = 1,75; H = 0,5 + 0,5 + 0,375 + 0,375 = 1,75</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>simbol</th><th>p</th><th>kode</th><th>ℓ</th><th>p·ℓ</th><th>−p log₂p</th></tr><tr><td>A</td><td>0,5</td><td>0</td><td>1</td><td>0,5</td><td>0,5</td></tr><tr><td>B</td><td>0,25</td><td>10</td><td>2</td><td>0,5</td><td>0,5</td></tr><tr><td>C</td><td>0,125</td><td>110</td><td>3</td><td>0,375</td><td>0,375</td></tr><tr><td>D</td><td>0,125</td><td>111</td><td>3</td><td>0,375</td><td>0,375</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> L = H = 1,75 bit/simbol (kode tetap butuh 2 bit) → hemat 12,5%.</div>
+</section>
+<section class="slide" id="rx3b">
+<div class="kicker">Bedah Rumus 3/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<h2 class="st">Kompresi teks dan file ZIP</h2>
+<div class="cols c2">
+<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Format <b>DEFLATE</b> (ZIP, gzip, PNG) dan <b>JPEG</b> memakai Huffman sebagai tahap akhir kompresi. Setiap kali browser menerima halaman ber-gzip, ia sedang mendekode kode Huffman.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Frekuensi</h4><p class="">A 0,5; B 0,25; C 0,125; D 0,125.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Kode Huffman</h4><p class="">A=0, B=10, C=110, D=111.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>L</h4><p class="">0,5·1 + 0,25·2 + 0,125·3 + 0,125·3 = 1,75 bit.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>H</h4><p class="">0,5·1 + 0,25·2 + 2·0,125·3 = 1,75 → optimal sempurna (vs 2 bit tetap).</p></div></div></div></div></div>
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> heapq, math
+<span class="tk">def</span> huffman_len(freq):              <span class="tc"># kembalikan panjang kode tiap simbol</span>
+    pq = [(p, i, {s: <span class="tn">0</span>}) <span class="tk">for</span> i, (s, p) <span class="tk">in</span> enumerate(freq.items())]
+    heapq.heapify(pq); k = <span class="tk">len</span>(pq)
+    <span class="tk">while</span> <span class="tk">len</span>(pq) &gt; <span class="tn">1</span>:
+        p1, _, a = heapq.heappop(pq); p2, _, b = heapq.heappop(pq)
+        heapq.heappush(pq, (p1 + p2, k, {s: l + <span class="tn">1</span> <span class="tk">for</span> s, l <span class="tk">in</span> {**a, **b}.items()})); k += <span class="tn">1</span>
+    <span class="tk">return</span> pq[<span class="tn">0</span>][<span class="tn">2</span>]
+
+f = {<span class="ts">"A"</span>: .<span class="tn">5</span>, <span class="ts">"B"</span>: .<span class="tn">25</span>, <span class="ts">"C"</span>: .<span class="tn">125</span>, <span class="ts">"D"</span>: .<span class="tn">125</span>}
+L = huffman_len(f); <span class="tk">print</span>(L, <span class="tk">sum</span>(f[s] * L[s] <span class="tk">for</span> s <span class="tk">in</span> f))   <span class="tc"># 1.75</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Kode pendek untuk simbol sering. Entropi H adalah batas bawah; Huffman selalu kurang dari 1 bit di atasnya.</div>
+</section>
+<section class="slide" id="rx4a">
+<div class="kicker">Bedah Rumus 4/4 · Langkah 1: cara membaca</div>
+<h2 class="st">Fungsi evaluasi A*</h2>
+<div class="fxbox">f(n) = <span class='hb'>g(n)</span> + <span class='hl'>h(n)</span>, &nbsp;&nbsp; admissible: <span class='hl'>h(n) ≤ h*(n)</span>; &nbsp; Manhattan: |x₁ − x₂| + |y₁ − y₂|</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“f dari n sama dengan g dari n ditambah h dari n. Heuristik disebut admissible jika h dari n tidak pernah melebihi biaya sebenarnya h bintang dari n. Contohnya jarak Manhattan: selisih x mutlak ditambah selisih y mutlak.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>g(n)</h4><p class="">biaya yang SUDAH ditempuh dari start ke n (pasti).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>h(n)</h4><p class="">TEBAKAN biaya dari n ke tujuan (heuristik).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>f(n)</h4><p class="">perkiraan total biaya jalur yang melewati n; A* selalu mengembangkan f terkecil.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>h ≤ h*</h4><p class="">heuristik tidak boleh melebih-lebihkan, agar solusi tetap optimal.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>g(n)</td><td>biaya nyata start → n</td></tr><tr><td>h(n)</td><td>estimasi n → goal</td></tr><tr><td>h*(n)</td><td>biaya sebenarnya n → goal (tidak diketahui)</td></tr><tr><td>h = 0</td><td>A* berubah menjadi Dijkstra</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Dijkstra menyebar ke segala arah. A* <b>condong ke arah tujuan</b> karena h(n). Selama h tidak berlebihan, ia tetap menemukan jalur terpendek, tetapi mengunjungi jauh lebih sedikit simpul.</div>
+</section>
+<section class="slide" id="rx4m">
+<div class="kicker">Bedah Rumus 4/4 · Langkah 2: hitung manual</div>
+<h2 class="st">Hitung manual: Fungsi evaluasi A*</h2>
+<div class="rxsoal"><b>Soal:</b> A* di grid 3×3 dari (0,0) ke (2,2), tembok di (1,1), gerak 4 arah, h = Manhattan.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Start (0,0)</h4><p class="rxcalc">g = 0, h = 2 + 2 = 4, f = 4</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Tetangga</h4><p class="rxcalc">(1,0): g 1, h 3, f 4; (0,1): g 1, h 3, f 4</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Kembangkan (1,0)</h4><p class="rxcalc">(2,0): g 2, h 2, f 4; (1,1) tembok, lewati</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Kembangkan (2,0)</h4><p class="rxcalc">(2,1): g 3, h 1, f 4</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Kembangkan (2,1)</h4><p class="rxcalc">(2,2): g 4, h 0, f 4 → tujuan tercapai</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>simpul</th><th>g</th><th>h</th><th>f = g + h</th></tr><tr><td>(0,0)</td><td>0</td><td>4</td><td>4</td></tr><tr><td>(1,0)</td><td>1</td><td>3</td><td>4</td></tr><tr><td>(2,0)</td><td>2</td><td>2</td><td>4</td></tr><tr><td>(2,1)</td><td>3</td><td>1</td><td>4</td></tr><tr><td>(2,2)</td><td>4</td><td>0</td><td>4</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Jalur (0,0) → (1,0) → (2,0) → (2,1) → (2,2), biaya 4 - menghindari tembok tanpa menjelajah seluruh grid.</div>
+</section>
+<section class="slide" id="rx4b">
+<div class="kicker">Bedah Rumus 4/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<h2 class="st">Pathfinding karakter game dan robot gudang</h2>
+<div class="cols c2">
+<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Hampir semua game (RTS, RPG) memakai A* untuk NPC. Robot gudang <b>Amazon</b>/AGV di pabrik memakai varian A* di peta grid. Pilihan h penting: Manhattan untuk gerak 4 arah, Euclid/octile untuk gerak diagonal.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Grid, start (0,0), goal (4,3)</h4><p class="">h(start) = 4 + 3 = 7.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Simpul n = (2,1), g = 3</h4><p class="">h(n) = |4−2| + |3−1| = 4 → f = 7.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Simpul m = (0,2), g = 2</h4><p class="">h(m) = 4 + 1 = 5 → f = 7.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Simpul k = (1,0) arah salah? g = 1</h4><p class="">h = 3 + 3 = 6 → f = 7; jika ada tembok, f naik dan simpul itu ditunda.</p></div></div></div></div></div>
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> heapq
+<span class="tk">def</span> astar(grid, s, t):
+    h = <span class="tk">lambda</span> p: abs(p[<span class="tn">0</span>] - t[<span class="tn">0</span>]) + abs(p[<span class="tn">1</span>] - t[<span class="tn">1</span>])     <span class="tc"># Manhattan</span>
+    g, pq = {s: <span class="tn">0</span>}, [(h(s), s)]
+    <span class="tk">while</span> pq:
+        f, u = heapq.heappop(pq)
+        <span class="tk">if</span> u == t: <span class="tk">return</span> g[u]
+        <span class="tk">for</span> dx, dy <span class="tk">in</span> ((<span class="tn">1</span>,<span class="tn">0</span>),(-<span class="tn">1</span>,<span class="tn">0</span>),(<span class="tn">0</span>,<span class="tn">1</span>),(<span class="tn">0</span>,-<span class="tn">1</span>)):
+            v = (u[<span class="tn">0</span>]+dx, u[<span class="tn">1</span>]+dy)
+            <span class="tk">if</span> v <span class="tk">in</span> grid <span class="tk">and</span> g[u] + <span class="tn">1</span> &lt; g.get(v, 1e9):
+                g[v] = g[u] + <span class="tn">1</span>; heapq.heappush(pq, (g[v] + h(v), v))</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> A* = Dijkstra + “kompas” h(n). Kompas boleh meremehkan, tidak boleh melebih-lebihkan.</div>
+</section>
+<!--RX-SLIDES-END-->
 <section class="slide" id="s7">
   <div class="kicker">LATIHAN</div>
   <h2 class="st">Soal Greedy II (Graf) dan A*</h2>
@@ -426,6 +635,29 @@ go(0);
   $('#btnResetGrid').onclick=()=>{walls.clear();drawGrid(null,null);log.textContent=''};
   drawGrid(null,null);
 })();
+/*RX-JS-START*/
+/* Auto-fit: bila isi slide melebihi area 1280x720, perkecil (zoom) slide itu saja
+   sampai muat, supaya tidak ada konten yang terpotong. Footer tetap ukuran normal. */
+(function(){
+  const MIN=0.62;
+  function over(s,z){const sr=s.getBoundingClientRect();if(!sr.height)return 0;const k=sr.height/720;let m=0;
+    s.querySelectorAll('*').forEach(el=>{if(el.closest('.sfoot'))return;const r=el.getBoundingClientRect();
+      if(r.height&&r.width){const b=(r.bottom-sr.top)/k;if(b>m)m=b}});
+    return m-(720-50*z)}
+  function fitSlide(s){let z=1;s.style.zoom='';s.style.overflowY='';
+    const f=s.querySelector('.sfoot');if(f)f.style.zoom='';
+    let o=over(s,1);
+    for(let i=0;i<30&&o>0.5&&z>MIN;i++){z=Math.max(MIN,z-Math.max(0.01,Math.min(0.08,o/720)));
+      s.style.zoom=z;if(f)f.style.zoom=1/z;o=over(s,z)}
+    if(o>0.5)s.style.overflowY='auto';
+    s.dataset.fit=z.toFixed(2)}
+  const all=()=>document.querySelectorAll('.slide').forEach(fitSlide);
+  all();if(document.fonts)document.fonts.ready.then(all);addEventListener('load',all);
+  document.querySelectorAll('.slide').forEach(s=>{let t;new MutationObserver(m=>{
+    if(m.every(r=>r.target.closest&&r.target.closest('.sfoot')))return;
+    clearTimeout(t);t=setTimeout(()=>fitSlide(s),60)}).observe(s,{childList:true,subtree:true,characterData:true})});
+})();
+/*RX-JS-END*/
 </script>
 </body>
 </html>

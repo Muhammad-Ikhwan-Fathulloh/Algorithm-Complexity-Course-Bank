@@ -70,6 +70,49 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
 #s1{justify-content:center}#s1 h1{font-size:48px;line-height:1.1;color:#0f172a;margin:10px 0 16px}
 #s1 .lead{font-size:16px;color:#334155;line-height:1.65;max-width:680px}
 .navhint{margin-top:18px;font-size:12.5px;color:#64748b}
+/*RX-CSS-START*/
+/* Anti-terpotong: kode & daftar tidak lagi disembunyikan di dalam scroll; slide di-auto-fit oleh JS */
+pre.pycode{overflow:visible;white-space:pre-wrap;word-break:break-word;flex:none}
+.qlist{overflow:visible}
+.cols,.stack{min-height:auto}
+/* Bedah Rumus */
+.fxbox{background:#0f172a;border-radius:14px;padding:16px 28px;text-align:center;color:#f8fafc;font:500 31px/1.5 'Cambria Math',Cambria,'Times New Roman',serif;flex:none}
+.fxbox sub,.fxbox sup{font-size:.62em}
+.fxbox .hl{color:#fbbf24}.fxbox .hb{color:#93c5fd}.fxbox .hg{color:#86efac}
+.fxsmall{font:500 20px/1.5 'Cambria Math',Cambria,'Times New Roman',serif;color:#0f172a}
+.say{font-size:16px;line-height:1.65;color:#1e3a8a;font-style:italic;background:#fff;border-radius:8px;padding:10px 14px;border:1px dashed #93c5fd;margin-bottom:10px}
+table.sym{width:100%;border-collapse:collapse;font-size:15px}
+.sym td{border-bottom:1px solid #e2e8f0;padding:6px 10px;vertical-align:top;color:#334155;line-height:1.5}
+.sym tr:last-child td{border-bottom:none}
+.sym td:first-child{font:600 18px 'Cambria Math',Cambria,serif;color:#0f172a;white-space:nowrap;width:1%}
+.rxgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rxitem{display:flex;gap:14px;align-items:center;border:2px solid #e2e8f0;border-radius:12px;padding:10px 16px;background:#f8fafc}
+.rxitem .qn{flex:none;width:34px;height:34px;border-radius:50%;background:#2563eb;color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center}
+.rxitem b{display:block;font-size:15px;color:#0f172a}
+.rxitem span{font:500 17px 'Cambria Math',Cambria,serif;color:#334155}
+.rxcard{border:2px solid #e2e8f0;border-radius:12px;padding:14px 18px;background:#f8fafc;min-width:0}
+.rxcard.blue{border-color:#bfdbfe;background:#eff6ff}.rxcard.green{border-color:#bbf7d0;background:#f0fdf4}.rxcard.yellow{border-color:#fde68a;background:#fffbeb}
+.rxcard h3{font-size:18px;font-weight:700;color:#0f172a;margin-bottom:8px}
+.rxcard p{font-size:15.5px;line-height:1.6;color:#334155}
+.rxsteps{display:flex;flex-direction:column;gap:9px}
+.rxstep{display:flex;gap:12px;align-items:flex-start}
+.rxnum{flex:none;width:30px;height:30px;border-radius:50%;background:#2563eb;color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
+.rxcard.yellow .rxnum{background:#d97706}
+.rxbody h4{font-size:16px;font-weight:700;color:#0f172a;margin-bottom:2px}
+.rxbody p{font-size:15px;line-height:1.55;color:#475569}
+.rxsm{font-size:15px;line-height:1.6;color:#475569}
+.rxcard pre.pycode{font-size:14px;padding:12px 16px;margin-top:10px;line-height:1.55}
+.rxsoal{background:#f1f5f9;border:2px solid #cbd5e1;border-left:6px solid #475569;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#1e293b;flex:none}
+.rxcalc{font:500 15.5px/1.55 'Cambria Math',Cambria,'Times New Roman',serif!important;color:#0f172a!important}
+table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
+.rxtbl th{background:#1e293b;color:#fff;text-align:center;padding:6px 8px;font-size:13.5px;font-weight:700}
+.rxtbl td{border:1px solid #e2e8f0;padding:5px 8px;text-align:center;color:#334155;background:#fff;font-family:'Cambria Math',Cambria,serif}
+.rxtbl tr:nth-child(even) td{background:#f8fafc}
+.rxtbl td:first-child{font-weight:700;color:#0f172a}
+.rxhasil{background:#f0fdf4;border:2px solid #bbf7d0;border-left:6px solid #16a34a;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#14532d;flex:none}
+.rxhasil b{color:#15803d}
+.rxstack{display:flex;flex-direction:column;gap:12px;min-width:0}
+/*RX-CSS-END*/
 </style>
 </head>
 <body>
@@ -135,10 +178,8 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
 <!-- 3. KNAPSACK B&B -->
 <section class="slide" id="s3">
   <div class="kicker">BAGIAN 2 · KNAPSACK B&B</div>
-  <h2 class="st">0/1 Knapsack dengan Branch and Bound</h2>
-  <div class="cols c2l">
-    <div class="stack">
-      <p class="b">Urutkan item berdasarkan rasio nilai/berat. <b>Upper bound</b> = nilai saat ini + relaksasi fraksional sisa item (ambil item sebagian jika perlu memenuhi kapasitas).</p>
+  <h2 class="st">0/1 Knapsack dengan Branch and Bound - kodenya</h2>
+  <p class="b">Urutkan item berdasarkan rasio nilai/berat. <b>Upper bound</b> = nilai saat ini + relaksasi fraksional sisa item (ambil item sebagian jika perlu memenuhi kapasitas).</p>
 <pre class="pycode">import heapq
 def knapsack_bnb(weights, values, W):
     items = sorted(zip(values, weights),
@@ -161,7 +202,11 @@ def knapsack_bnb(weights, values, W):
         ub = upper_bound(items, lv+1, cv, cw, W)
         if ub > best: heapq.heappush(pq, (-ub, lv+1, cv, cw))
     return best</pre>
-    </div>
+</section>
+<section class="slide" id="s3b">
+  <div class="kicker">BAGIAN 2 · KNAPSACK B&B</div>
+  <h2 class="st">0/1 Knapsack dengan Branch and Bound - coba sendiri</h2>
+  <div class="cols c2">
     <div class="sim">
       <div class="cap">Coba sendiri · B&B Knapsack</div>
       <p class="tiny">Item: [(v=10,w=2),(v=6,w=2),(v=12,w=3),(v=13,w=5),(v=18,w=7)], W=10</p>
@@ -169,9 +214,11 @@ def knapsack_bnb(weights, values, W):
       <div class="term" id="bnbLog" style="min-height:150px">Klik untuk melihat proses B&B dengan pruning…</div>
       <div class="verdict mid" id="bnbVerdict">Klik tombol di atas.</div>
     </div>
+    <div class="stack">
+      <div class="note"><b>Cara membaca rumus:</b><br>• Upper bound = nilai saat ini + nilai relaksasi fraksional sisa kapasitas.<br>• Relaksasi fraksional: item boleh diambil sebagian, sehingga batasnya selalu lebih longgar tetapi valid.<br>• Jika upper bound ≤ solusi terbaik yang sudah ditemukan, cabang ini dipangkas.</div>
+      <div class="analogy"><b>Perhatikan log-nya:</b> setiap baris "prune" adalah satu cabang pohon yang <b>tidak perlu dijelajahi</b>. Semakin cepat solusi bagus ditemukan, semakin tinggi nilai <i>best</i>, dan semakin banyak cabang yang dipangkas.</div>
+    </div>
   </div>
-  <!-- RUMUS -->
-  <div class="note"><b>Cara membaca rumus:</b><br>• Upper bound = nilai saat ini + nilai relaksasi fraksional sisa kapasitas.<br>• Relaksasi fraksional: item boleh diambil sebagian, sehingga batasnya selalu lebih longgar tetapi valid.<br>• Jika upper bound ≤ solusi terbaik yang sudah ditemukan, cabang ini dipangkas.</div>
 </section>
 
 <!-- 4. MODERN: ILP -->
@@ -206,6 +253,126 @@ def knapsack_bnb(weights, values, W):
 </section>
 
 <!-- 5. LATIHAN -->
+<!--RX-SLIDES-START-->
+<section class="slide" id="rx0">
+<div class="kicker">Bedah Rumus · Branch and Bound</div>
+<h2 class="st">Tiga rumus inti Branch and Bound</h2>
+<p class="b">Branch and Bound menjelajah pohon kemungkinan seperti backtracking, tetapi memotong cabang memakai batas numerik. Tiga rumus berikut adalah mesin pemotongnya.</p>
+<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Aturan pangkas (pruning rule)</b><span>pangkas jika bound(node) ≤ best</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Upper bound knapsack dengan relaksasi fraksional</b><span>UB = v + Σ penuh + sisa·(vₖ/wₖ)</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Integer Linear Programming dan MIP gap</b><span>maks cᵀx, Ax ≤ b, x ∈ ℤⁿ; gap = (UB−LB)/UB</span></div></div></div>
+<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas tiga slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+</section>
+<section class="slide" id="rx1a">
+<div class="kicker">Bedah Rumus 1/3 · Langkah 1: cara membaca</div>
+<h2 class="st">Aturan pangkas (pruning rule)</h2>
+<div class="fxbox">Maksimasi: pangkas simpul jika <span class='hl'>UB(node) ≤ best</span>; &nbsp;&nbsp; Minimasi: pangkas jika <span class='hb'>LB(node) ≥ best</span></div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Untuk masalah maksimasi, pangkas simpul jika batas atasnya tidak lebih besar dari solusi terbaik yang sudah ditemukan. Untuk minimasi, pangkas jika batas bawahnya tidak lebih kecil dari solusi terbaik.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>UB (upper bound)</h4><p class="">nilai paling optimis yang MUNGKIN dicapai dari cabang ini.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>best (incumbent)</h4><p class="">solusi valid terbaik yang sudah ditemukan sejauh ini.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>UB ≤ best</h4><p class="">sebaik-baiknya cabang ini tidak akan mengalahkan best → buang.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>UB / LB</td><td>batas atas / batas bawah cabang</td></tr><tr><td>best</td><td>incumbent: solusi terbaik sementara</td></tr><tr><td>node</td><td>simpul pohon = keputusan sebagian</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Kita tidak perlu menjelajahi cabang untuk tahu cabang itu kalah. <b>Batas yang optimis tetapi valid</b> sudah cukup sebagai bukti.</div>
+</section>
+<section class="slide" id="rx1m">
+<div class="kicker">Bedah Rumus 1/3 · Langkah 2: hitung manual</div>
+<h2 class="st">Hitung manual: Aturan pangkas (pruning rule)</h2>
+<div class="rxsoal"><b>Soal:</b> B&B knapsack: (40,2) (30,5) (50,10) (10,5), W = 16, sudah urut rasio. Telusuri dan tunjukkan cabang yang dipangkas.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Akar</h4><p class="rxcalc">UB = 40 + 30 + 9·5 = 115, best = 0</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Ambil 1, ambil 2, lewati 3, ambil 4</h4><p class="rxcalc">nilai 80 (berat 12) → best = 80</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ambil 1, lewati 2, ambil 3</h4><p class="rxcalc">nilai 90 (berat 12), UB = 90 + 4·2 = 98 → item 4 tidak muat → best = 90</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Ambil 1, lewati 2, lewati 3</h4><p class="rxcalc">UB = 40 + 10 = 50 ≤ 90 → PANGKAS</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Lewati item 1</h4><p class="rxcalc">UB = 30 + 50 + 1·2 = 82 ≤ 90 → PANGKAS seluruh subpohon</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>simpul</th><th>nilai</th><th>berat</th><th>UB</th><th>aksi</th></tr><tr><td>akar</td><td>0</td><td>0</td><td>115</td><td>cabang</td></tr><tr><td>1,2,¬3,4</td><td>80</td><td>12</td><td>80</td><td>best = 80</td></tr><tr><td>1,¬2,3</td><td>90</td><td>12</td><td>98</td><td>best = 90</td></tr><tr><td>1,¬2,¬3</td><td>40</td><td>2</td><td>50</td><td>pangkas</td></tr><tr><td>¬1</td><td>0</td><td>0</td><td>82</td><td>pangkas</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Optimal 90 (item 1 + item 3); separuh pohon tidak perlu dijelajahi.</div>
+</section>
+<section class="slide" id="rx1b">
+<div class="kicker">Bedah Rumus 1/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<h2 class="st">Mengapa solusi awal yang bagus mempercepat B&B</h2>
+<div class="cols c2">
+<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Solver industri (Gurobi, CPLEX, OR-Tools) menjalankan <b>heuristik primal</b> di awal untuk mendapatkan incumbent yang bagus, karena rumus pangkas ini membuat incumbent bagus = pohon pencarian kecil.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>best = 0 di awal</h4><p class="">hampir tidak ada yang bisa dipangkas.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Heuristik greedy cepat → best = 200</h4><p class="">semua cabang dengan UB ≤ 200 langsung dibuang.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Cabang UB = 230</h4><p class="">tetap dijelajahi; jika menghasilkan 220, best naik lagi.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Efek</h4><p class="">best naik → pruning makin agresif → pohon makin kecil.</p></div></div></div></div></div>
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> bnb(node, best):
+    <span class="tk">if</span> upper_bound(node) &lt;= best:      <span class="tc"># aturan pangkas (maksimasi)</span>
+        <span class="tk">return</span> best
+    <span class="tk">if</span> is_leaf(node):
+        <span class="tk">return</span> <span class="tk">max</span>(best, value(node))
+    <span class="tk">for</span> child <span class="tk">in</span> branch(node):          <span class="tc"># telusuri anak yang paling menjanjikan dulu</span>
+        best = bnb(child, best)
+    <span class="tk">return</span> best</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Pangkas bila “sebaik-baiknya cabang ini” tidak lebih baik dari yang sudah dimiliki.</div>
+</section>
+<section class="slide" id="rx2a">
+<div class="kicker">Bedah Rumus 2/3 · Langkah 1: cara membaca</div>
+<h2 class="st">Upper bound knapsack dengan relaksasi fraksional</h2>
+<div class="fxbox">UB = <span class='hb'>v<sub>saat ini</sub></span> + Σ<sub>item muat penuh</sub> v<sub>j</sub> + <span class='hl'>(W<sub>sisa</sub>)·(v<sub>k</sub> / w<sub>k</sub>)</span></div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Batas atas sama dengan nilai saat ini, ditambah nilai semua item berikutnya yang muat penuh, ditambah sisa kapasitas dikali rasio nilai per berat item pertama yang tidak muat.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Urutkan menurut vᵢ/wᵢ</h4><p class="">seperti fractional knapsack.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Masukkan penuh selagi muat</h4><p class="">item-item dengan rasio terbaik.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Item k tidak muat</h4><p class="">ambil “sebagian” sebesar sisa kapasitas - hanya untuk menghitung batas.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>v_saat ini</td><td>nilai item yang sudah diputuskan diambil</td></tr><tr><td>W_sisa</td><td>kapasitas yang tersisa setelah item penuh</td></tr><tr><td>vₖ/wₖ</td><td>rasio item pertama yang tidak muat</td></tr><tr><td>UB</td><td>nilai fractional knapsack dari sisa masalah</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Fractional knapsack selalu ≥ 0/1 knapsack (karena lebih bebas). Jadi nilainya adalah <b>batas atas yang valid</b> dan dapat dihitung cepat dengan greedy.</div>
+</section>
+<section class="slide" id="rx2m">
+<div class="kicker">Bedah Rumus 2/3 · Langkah 2: hitung manual</div>
+<h2 class="st">Hitung manual: Upper bound knapsack dengan relaksasi fraksional</h2>
+<div class="rxsoal"><b>Soal:</b> Hitung UB di akar untuk item terurut rasio (40,2) (30,5) (50,10) (10,5), W = 16.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Rasio</h4><p class="rxcalc">20; 6; 5; 2 (sudah menurun)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Ambil (40,2)</h4><p class="rxcalc">nilai 40, sisa kapasitas 14</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ambil (30,5)</h4><p class="rxcalc">nilai 70, sisa 9</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>(50,10) tidak muat</h4><p class="rxcalc">ambil sebagian: 9 × (50/10) = 45</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>UB</h4><p class="rxcalc">70 + 45 = 115</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>item</th><th>v/w</th><th>porsi</th><th>tambahan</th><th>sisa W</th></tr><tr><td>(40,2)</td><td>20</td><td>1</td><td>40</td><td>14</td></tr><tr><td>(30,5)</td><td>6</td><td>1</td><td>30</td><td>9</td></tr><tr><td>(50,10)</td><td>5</td><td>9/10</td><td>45</td><td>0</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> UB akar = 115; solusi 0/1 manapun pasti ≤ 115 (optimal sebenarnya 90).</div>
+</section>
+<section class="slide" id="rx2b">
+<div class="kicker">Bedah Rumus 2/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<h2 class="st">Memilih proyek investasi dengan anggaran tetap</h2>
+<div class="cols c2">
+<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Pemilihan portofolio proyek (capital budgeting), pemilihan fitur dengan biaya pengembangan, dan pengisian kargo pesawat. Pola umumnya: <b>longgarkan</b> satu syarat yang sulit (integer) agar batas mudah dihitung.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Item terurut rasio (v, w)</h4><p class="">(40,2) r=20, (30,5) r=6, (50,10) r=5, (10,5) r=2; W = 16.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Akar</h4><p class="">40 + 30 = 70, sisa 9 → 9 × 5 = 45 → UB = 115.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Cabang “tanpa item 1”</h4><p class="">30 + 50 = 80, sisa 1 → 1 × 2 = 2 → UB = 82.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Jika best = 90 sudah ditemukan</h4><p class="">cabang tanpa item 1 (UB 82) langsung dipangkas.</p></div></div></div></div></div>
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> upper_bound(items, i, val, wt, W):   <span class="tc"># items terurut v/w menurun</span>
+    ub, cap = val, W - wt
+    <span class="tk">while</span> i &lt; <span class="tk">len</span>(items) <span class="tk">and</span> items[i][<span class="tn">1</span>] &lt;= cap:
+        ub += items[i][<span class="tn">0</span>]; cap -= items[i][<span class="tn">1</span>]; i += <span class="tn">1</span>
+    <span class="tk">if</span> i &lt; <span class="tk">len</span>(items):
+        ub += cap * items[i][<span class="tn">0</span>] / items[i][<span class="tn">1</span>]   <span class="tc"># ambil sebagian</span>
+    <span class="tk">return</span> ub
+
+<span class="tk">print</span>(upper_bound([(<span class="tn">40</span>,<span class="tn">2</span>),(<span class="tn">30</span>,<span class="tn">5</span>),(<span class="tn">50</span>,<span class="tn">10</span>),(<span class="tn">10</span>,<span class="tn">5</span>)], <span class="tn">0</span>, <span class="tn">0</span>, <span class="tn">0</span>, <span class="tn">16</span>))  <span class="tc"># 115.0</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Batas atas yang baik = relaksasi yang mudah dihitung tetapi tidak pernah meremehkan.</div>
+</section>
+<section class="slide" id="rx3a">
+<div class="kicker">Bedah Rumus 3/3 · Langkah 1: cara membaca</div>
+<h2 class="st">Integer Linear Programming dan MIP gap</h2>
+<div class="fxbox">maks <span class='hb'>c<sup>T</sup>x</span> &nbsp;s.t.&nbsp; Ax ≤ b, &nbsp;<span class='hl'>x ∈ ℤ<sup>n</sup></span>; &nbsp;&nbsp; gap = (UB − LB) / UB</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Maksimalkan c transpos x dengan syarat A x kurang dari sama dengan b dan x bilangan bulat. Gap adalah selisih batas atas dan batas bawah dibagi batas atas.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>cᵀx</h4><p class="">fungsi tujuan: jumlah cᵢ·xᵢ (keuntungan total).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Ax ≤ b</h4><p class="">kumpulan batasan linear (anggaran, kapasitas, jam kerja).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>x ∈ ℤⁿ</h4><p class="">variabel harus bilangan bulat - inilah yang membuatnya NP-hard.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>gap</h4><p class="">UB dari relaksasi LP, LB dari solusi bulat terbaik; gap 0 = terbukti optimal.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>x</td><td>vektor variabel keputusan</td></tr><tr><td>c</td><td>koefisien keuntungan/biaya</td></tr><tr><td>A, b</td><td>matriks dan batas kanan batasan</td></tr><tr><td>ℤⁿ</td><td>himpunan vektor bilangan bulat</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Tanpa syarat bulat, LP bisa diselesaikan cepat. Solver ILP memakai <b>LP relaksasi sebagai bound</b> di setiap simpul B&B, lalu bercabang pada variabel yang hasilnya pecahan (x = 2,6 → cabang x ≤ 2 dan x ≥ 3).</div>
+</section>
+<section class="slide" id="rx3m">
+<div class="kicker">Bedah Rumus 3/3 · Langkah 2: hitung manual</div>
+<h2 class="st">Hitung manual: Integer Linear Programming dan MIP gap</h2>
+<div class="rxsoal"><b>Soal:</b> Maksimalkan 7x + 5y dengan 2x + y ≤ 10, x + 2y ≤ 8, x, y ≥ 0 bulat.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Titik sudut sumbu</h4><p class="rxcalc">(0,0) → 0; (5,0) → 35; (0,4) → 20</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Titik potong</h4><p class="rxcalc">2x + y = 10 → y = 10 − 2x; x + 2(10 − 2x) = 8 → −3x = −12 → x = 4, y = 2</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Nilai di (4,2)</h4><p class="rxcalc">7·4 + 5·2 = 28 + 10 = 38</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Cek bulat</h4><p class="rxcalc">x = 4, y = 2 sudah bulat → LP relaksasi = solusi ILP</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Seandainya pecahan</h4><p class="rxcalc">misal x = 2,6 → cabang x ≤ 2 dan x ≥ 3, hitung LP lagi di tiap cabang</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>titik</th><th>x</th><th>y</th><th>7x + 5y</th></tr><tr><td>O</td><td>0</td><td>0</td><td>0</td></tr><tr><td>P</td><td>5</td><td>0</td><td>35</td></tr><tr><td>Q</td><td>0</td><td>4</td><td>20</td></tr><tr><td>R</td><td>4</td><td>2</td><td>38 ✓</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Optimal x = 4 meja, y = 2 kursi, keuntungan 38 (gap = 0%).</div>
+</section>
+<section class="slide" id="rx3b">
+<div class="kicker">Bedah Rumus 3/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<h2 class="st">Penjadwalan shift dan rute armada</h2>
+<div class="cols c2">
+<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Maskapai menjadwalkan kru, perusahaan logistik menyusun rute armada, rumah sakit menyusun shift perawat - semuanya ILP berukuran ribuan sampai jutaan variabel yang diselesaikan dengan <b>Gurobi, CPLEX, HiGHS, atau OR-Tools</b>. Log solver selalu menampilkan kolom “Gap”.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Produksi meja (x) dan kursi (y)</h4><p class="">maks 7x + 5y; 2x + y ≤ 10; x + 2y ≤ 8.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>LP relaksasi</h4><p class="">x = 4, y = 2 → 38 (kebetulan sudah bulat → optimal).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Jika LP memberi x = 2,6</h4><p class="">bercabang x ≤ 2 dan x ≥ 3, ulangi.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Gap</h4><p class="">UB 40, LB 38 → gap 5%; solver berhenti jika gap ≤ toleransi.</p></div></div></div></div></div>
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tc"># pip install pulp</span>
+<span class="tk">import</span> pulp
+m = pulp.LpProblem(<span class="ts">"produksi"</span>, pulp.LpMaximize)
+x = pulp.LpVariable(<span class="ts">"meja"</span>, lowBound=<span class="tn">0</span>, cat=<span class="ts">"Integer"</span>)
+y = pulp.LpVariable(<span class="ts">"kursi"</span>, lowBound=<span class="tn">0</span>, cat=<span class="ts">"Integer"</span>)
+m += <span class="tn">7</span> * x + <span class="tn">5</span> * y
+m += <span class="tn">2</span> * x + y &lt;= <span class="tn">10</span>
+m += x + <span class="tn">2</span> * y &lt;= <span class="tn">8</span>
+m.solve(pulp.PULP_CBC_CMD(msg=<span class="tn">0</span>))
+<span class="tk">print</span>(x.value(), y.value(), pulp.value(m.objective))   <span class="tc"># 4 2 38</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> ILP = B&B dengan LP relaksasi sebagai bound. Gap memberi tahu seberapa jauh dari optimal yang terbukti.</div>
+</section>
+<!--RX-SLIDES-END-->
 <section class="slide" id="s5">
   <div class="kicker">LATIHAN</div>
   <h2 class="st">Soal Branch and Bound</h2>
@@ -297,6 +464,29 @@ slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot'
       const s=steps[si];const d=document.createElement('div');d.style.color=s.prune?'#f87171':s.ok?'#4ade80':'#a7f3d0';d.textContent=s.msg;log.appendChild(d);log.scrollTop=log.scrollHeight;si++;timers.push(setTimeout(tick,300))}
     tick()};
 })();
+/*RX-JS-START*/
+/* Auto-fit: bila isi slide melebihi area 1280x720, perkecil (zoom) slide itu saja
+   sampai muat, supaya tidak ada konten yang terpotong. Footer tetap ukuran normal. */
+(function(){
+  const MIN=0.62;
+  function over(s,z){const sr=s.getBoundingClientRect();if(!sr.height)return 0;const k=sr.height/720;let m=0;
+    s.querySelectorAll('*').forEach(el=>{if(el.closest('.sfoot'))return;const r=el.getBoundingClientRect();
+      if(r.height&&r.width){const b=(r.bottom-sr.top)/k;if(b>m)m=b}});
+    return m-(720-50*z)}
+  function fitSlide(s){let z=1;s.style.zoom='';s.style.overflowY='';
+    const f=s.querySelector('.sfoot');if(f)f.style.zoom='';
+    let o=over(s,1);
+    for(let i=0;i<30&&o>0.5&&z>MIN;i++){z=Math.max(MIN,z-Math.max(0.01,Math.min(0.08,o/720)));
+      s.style.zoom=z;if(f)f.style.zoom=1/z;o=over(s,z)}
+    if(o>0.5)s.style.overflowY='auto';
+    s.dataset.fit=z.toFixed(2)}
+  const all=()=>document.querySelectorAll('.slide').forEach(fitSlide);
+  all();if(document.fonts)document.fonts.ready.then(all);addEventListener('load',all);
+  document.querySelectorAll('.slide').forEach(s=>{let t;new MutationObserver(m=>{
+    if(m.every(r=>r.target.closest&&r.target.closest('.sfoot')))return;
+    clearTimeout(t);t=setTimeout(()=>fitSlide(s),60)}).observe(s,{childList:true,subtree:true,characterData:true})});
+})();
+/*RX-JS-END*/
 </script>
 </body>
 </html>

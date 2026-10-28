@@ -144,6 +144,49 @@ ol.agenda b{color:#0f172a}
 .navbtn{width:38px;height:38px;border-radius:50%;border:none;background:#1e293b;color:#fff;font-size:19px;cursor:pointer}
 .navbtn:hover{background:#2563eb}
 #hud-left{color:#94a3b8;font-size:13px;display:flex;gap:12px;align-items:center;background:rgba(11,21,38,.8);padding:6px 12px;border-radius:20px}
+/*RX-CSS-START*/
+/* Anti-terpotong: kode & daftar tidak lagi disembunyikan di dalam scroll; slide di-auto-fit oleh JS */
+pre.pycode{overflow:visible;white-space:pre-wrap;word-break:break-word;flex:none}
+.qlist{overflow:visible}
+.cols,.stack{min-height:auto}
+/* Bedah Rumus */
+.fxbox{background:#0f172a;border-radius:14px;padding:16px 28px;text-align:center;color:#f8fafc;font:500 31px/1.5 'Cambria Math',Cambria,'Times New Roman',serif;flex:none}
+.fxbox sub,.fxbox sup{font-size:.62em}
+.fxbox .hl{color:#fbbf24}.fxbox .hb{color:#93c5fd}.fxbox .hg{color:#86efac}
+.fxsmall{font:500 20px/1.5 'Cambria Math',Cambria,'Times New Roman',serif;color:#0f172a}
+.say{font-size:16px;line-height:1.65;color:#1e3a8a;font-style:italic;background:#fff;border-radius:8px;padding:10px 14px;border:1px dashed #93c5fd;margin-bottom:10px}
+table.sym{width:100%;border-collapse:collapse;font-size:15px}
+.sym td{border-bottom:1px solid #e2e8f0;padding:6px 10px;vertical-align:top;color:#334155;line-height:1.5}
+.sym tr:last-child td{border-bottom:none}
+.sym td:first-child{font:600 18px 'Cambria Math',Cambria,serif;color:#0f172a;white-space:nowrap;width:1%}
+.rxgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rxitem{display:flex;gap:14px;align-items:center;border:2px solid #e2e8f0;border-radius:12px;padding:10px 16px;background:#f8fafc}
+.rxitem .qn{flex:none;width:34px;height:34px;border-radius:50%;background:#2563eb;color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center}
+.rxitem b{display:block;font-size:15px;color:#0f172a}
+.rxitem span{font:500 17px 'Cambria Math',Cambria,serif;color:#334155}
+.rxcard{border:2px solid #e2e8f0;border-radius:12px;padding:14px 18px;background:#f8fafc;min-width:0}
+.rxcard.blue{border-color:#bfdbfe;background:#eff6ff}.rxcard.green{border-color:#bbf7d0;background:#f0fdf4}.rxcard.yellow{border-color:#fde68a;background:#fffbeb}
+.rxcard h3{font-size:18px;font-weight:700;color:#0f172a;margin-bottom:8px}
+.rxcard p{font-size:15.5px;line-height:1.6;color:#334155}
+.rxsteps{display:flex;flex-direction:column;gap:9px}
+.rxstep{display:flex;gap:12px;align-items:flex-start}
+.rxnum{flex:none;width:30px;height:30px;border-radius:50%;background:#2563eb;color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
+.rxcard.yellow .rxnum{background:#d97706}
+.rxbody h4{font-size:16px;font-weight:700;color:#0f172a;margin-bottom:2px}
+.rxbody p{font-size:15px;line-height:1.55;color:#475569}
+.rxsm{font-size:15px;line-height:1.6;color:#475569}
+.rxcard pre.pycode{font-size:14px;padding:12px 16px;margin-top:10px;line-height:1.55}
+.rxsoal{background:#f1f5f9;border:2px solid #cbd5e1;border-left:6px solid #475569;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#1e293b;flex:none}
+.rxcalc{font:500 15.5px/1.55 'Cambria Math',Cambria,'Times New Roman',serif!important;color:#0f172a!important}
+table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
+.rxtbl th{background:#1e293b;color:#fff;text-align:center;padding:6px 8px;font-size:13.5px;font-weight:700}
+.rxtbl td{border:1px solid #e2e8f0;padding:5px 8px;text-align:center;color:#334155;background:#fff;font-family:'Cambria Math',Cambria,serif}
+.rxtbl tr:nth-child(even) td{background:#f8fafc}
+.rxtbl td:first-child{font-weight:700;color:#0f172a}
+.rxhasil{background:#f0fdf4;border:2px solid #bbf7d0;border-left:6px solid #16a34a;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#14532d;flex:none}
+.rxhasil b{color:#15803d}
+.rxstack{display:flex;flex-direction:column;gap:12px;min-width:0}
+/*RX-CSS-END*/
 </style>
 </head>
 <body>
@@ -638,12 +681,25 @@ while i &lt; n:
 <section class="slide" id="s19">
   <div class="kicker">BAGIAN 6 · KENAPA PENTING DI DUNIA AI (3)</div>
   <h2 class="st">Cari dokumen mirip (RAG): ngecek semua vs pakai katalog</h2>
-  <div class="cols c2r" style="margin-top:4px">
+  <div class="cols c2" style="margin-top:4px">
     <div class="stack">
       <p class="b">Sistem AI yang bisa "baca dokumen" (RAG) kerjanya begini: dari jutaan potongan dokumen, cari yang paling mirip sama pertanyaan user. Carinya ada dua:</p>
       <div class="analogy"><b>Brute force</b> - Θ(n·d): bandingin pertanyaannya sama <b>semua</b> dokumen satu per satu. Kayak nyari buku di perpus dengan ngecek semua buku dari rak pertama.</div>
       <div class="analogy"><b>HNSW</b> - mendekati logaritmik: pakai struktur berlapis, kayak <b>katalog dan peta rak</b> - langsung diarahkan ke area yang mungkin. Konsekuensinya: ada kemungkinan kecil kelewat dokumen yang mirip, tapi bukan yang paling mirip.</div>
+    </div>
+    <div class="stack">
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Θ(n·d) untuk brute force: n = jumlah dokumen, d = dimensi vektor. Setiap dokumen dibandingkan sekali.<br>• HNSW mendekati O(log n) per pencarian, karena hanya menelusuri jalur kecil dalam struktur berlapis.<br>• Konsekuensinya hasil bisa sedikit meleset (approximate), tetapi jauh lebih cepat.</div>
+    </div>
+  </div>
+</section>
+<section class="slide" id="s19b">
+  <div class="kicker">BAGIAN 6 · KENAPA PENTING DI DUNIA AI (3b)</div>
+  <h2 class="st">Coba sendiri: brute force vs HNSW</h2>
+  <div class="cols c2r" style="margin-top:4px">
+    <div class="stack">
       <div class="note">Perhatiin: ini pola yang sama kayak tebak angka. Kalau datanya terstruktur berlapis, kita tidak perlu memeriksa semuanya.</div>
+      <div class="analogy"><b>Yang diamati:</b> klik <b>Brute force</b> lalu <b>HNSW</b>, bandingkan angka <i>hitungan jarak</i>. Brute force selalu menghitung jarak ke semua 40 buku; HNSW hanya ke sebagian kecil.</div>
     </div>
     <div class="sim">
       <div class="cap">Coba sendiri · 40 "buku", 1 pertanyaan</div>
@@ -657,8 +713,6 @@ while i &lt; n:
       <div class="verdict mid" id="ragVerdict">pilih metode pencariannya dulu…</div>
     </div>
   </div>
-  <!-- RUMUS -->
-  <div class="note"><b>Cara membaca rumus:</b><br>• Θ(n·d) untuk brute force: n = jumlah dokumen, d = dimensi vektor. Setiap dokumen dibandingkan sekali.<br>• HNSW mendekati O(log n) per pencarian, karena hanya menelusuri jalur kecil dalam struktur berlapis.<br>• Konsekuensinya hasil bisa sedikit meleset (approximate), tetapi jauh lebih cepat.</div>
 </section>
 
 <!-- ====== 20 · KONSTANTA + STOPWATCH ====== -->
@@ -726,10 +780,10 @@ for n in (10, 20, 40, 80):
 
 <!-- ====== 22 · PYTHON 2 ====== -->
 <section class="slide" id="s22">
-  <div class="kicker" style="color:#16a34a">PRAKTIK PYTHON (2)</div>
-  <h2 class="st">Ukur waktu, lihat rasionya</h2>
-  <div class="cols c2r" style="margin-top:2px">
-    <div><span class="cbadge">ukur_waktu.py</span>
+  <div class="kicker" style="color:#16a34a">PRAKTIK PYTHON (2a)</div>
+  <h2 class="st">Ukur waktu, lihat rasionya - kodenya</h2>
+  <div class="cols c2" style="margin-top:2px">
+    <div><span class="cbadge">ukur_waktu.py · bagian 1: dua fungsi uji</span>
 <pre class="pycode">import time, random
 
 def jumlah(a):              # Θ(n)
@@ -741,9 +795,10 @@ def semua_pasangan(a):      # Θ(n²)
     c = 0
     for x in a:
         for y in a: c += 1
-    return c
-
-def ukur(f, n, ulang=3):    # ambil tercepat
+    return c</pre>
+      <p class="rxsm" style="margin-top:10px"><b>jumlah</b> menyentuh tiap elemen sekali → Θ(n). <b>semua_pasangan</b> memasangkan tiap elemen dengan semua elemen → Θ(n²).</p></div>
+    <div><span class="cbadge">ukur_waktu.py · bagian 2: alat ukur</span>
+<pre class="pycode">def ukur(f, n, ulang=3):    # ambil tercepat
     data = [random.random() for _ in range(n)]
     best = float("inf")
     for _ in range(ulang):
@@ -759,7 +814,14 @@ for f, ns in ((jumlah, (10**5, 2*10**5, 4*10**5)),
         t = ukur(f, n)
         print(f.__name__, n, f"{t:.4f}s",
               f"rasio={t/prev:.2f}" if prev else "")
-        prev = t</pre></div>
+        prev = t</pre>
+      <p class="rxsm" style="margin-top:10px">n selalu <b>digandakan</b>. Yang dicetak adalah <b>rasio</b> waktu sekarang ÷ waktu sebelumnya.</p></div>
+  </div>
+</section>
+<section class="slide" id="s22b">
+  <div class="kicker" style="color:#16a34a">PRAKTIK PYTHON (2b)</div>
+  <h2 class="st">Ukur waktu, lihat rasionya - hasilnya</h2>
+  <div class="cols c2" style="margin-top:2px">
     <div class="sim">
       <div class="cap">Ukur beneran di browser ini</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -775,6 +837,10 @@ semua_pasangan 500 0.0198s
 semua_pasangan 1000 0.0791s rasio=3.99
 semua_pasangan 2000 0.3157s rasio=3.99</div>
       <p class="tiny">Yang perlu dilihat: rasionya. jumlah → sekitar 2, semua_pasangan → sekitar 4. Pas sama teori. Angka detiknya boleh beda-beda antar komputer, rasionya tidak.</p>
+    </div>
+    <div class="stack">
+      <div class="note"><b>Cara baca rasio:</b> kalau n digandakan (×2) lalu waktunya ikut ×2<sup>k</sup>, maka ordenya Θ(n<sup>k</sup>). Rasio ≈ 2 → k = 1 (linear). Rasio ≈ 4 → k = 2 (kuadratik). Rasio ≈ 8 → k = 3 (kubik).</div>
+      <div class="analogy"><b>Kenapa ambil yang tercepat dari 3 kali ulang?</b> Komputer sering "diganggu" proses lain. Waktu tercepat adalah yang paling sedikit gangguannya, jadi paling mendekati biaya asli algoritmanya.</div>
     </div>
   </div>
 </section>
@@ -851,6 +917,194 @@ plt.legend(); plt.show()</pre></div>
 </section>
 
 <!-- ====== 25 · RANGKUMAN ====== -->
+<!--RX-SLIDES-START-->
+<section class="slide" id="rx0">
+<div class="kicker">Bedah Rumus · Pendahuluan dan Notasi Asimtotik</div>
+<h2 class="st">Lima rumus inti analisis asimtotik</h2>
+<p class="b">Semua analisis di mata kuliah ini berdiri di atas lima rumus berikut. Kita bedah satu per satu: bagaimana membacanya, apa arti tiap simbolnya, dan di mana rumus itu benar-benar dipakai saat membangun sistem.</p>
+<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Definisi Big-O (batas atas)</b><span>f(n) ≤ c·g(n) untuk n ≥ n₀</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Definisi Big-Theta (batas ketat)</b><span>c₁·g(n) ≤ f(n) ≤ c₂·g(n)</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Deret loop bersarang: 1 + 2 + … + n</b><span>Σ i = n(n+1)/2 = Θ(n²)</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Berapa kali n bisa dibagi dua? log₂ n</b><span>2ᵏ = n ⇔ k = log₂ n</span></div></div><div class="rxitem"><div class="qn">5</div><div><b>Eksperimen penggandaan (doubling ratio)</b><span>T(2n)/T(n) ≈ 2ᵏ → Θ(nᵏ)</span></div></div></div>
+<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas tiga slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+</section>
+<section class="slide" id="rx1a">
+<div class="kicker">Bedah Rumus 1/5 · Langkah 1: cara membaca</div>
+<h2 class="st">Definisi Big-O (batas atas)</h2>
+<div class="fxbox">f(n) = O(g(n)) &nbsp;⇔&nbsp; ∃ <span class='hl'>c</span> &gt; 0, ∃ <span class='hl'>n₀</span> : &nbsp;0 ≤ f(n) ≤ <span class='hl'>c</span>·g(n) &nbsp;∀ n ≥ <span class='hl'>n₀</span></div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“f dari n adalah Big-O dari g dari n, jika dan hanya jika ada konstanta c positif dan ada titik n-nol, sehingga f(n) tidak pernah melebihi c kali g(n) untuk semua n mulai dari n-nol.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Baca kiri dulu</h4><p class="">“f(n) = O(g(n))” adalah klaim: pertumbuhan f paling cepat sama dengan g.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>⇔ = “jika dan hanya jika”</h4><p class="">Bagian kanan adalah syarat yang harus dibuktikan supaya klaim itu sah.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>∃ = “ada”, ∀ = “untuk semua”</h4><p class="">Cukup temukan SATU pasangan (c, n₀); setelah itu ketaksamaan harus berlaku untuk SEMUA n ≥ n₀.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>f(n)</td><td>jumlah langkah algoritma sebenarnya (hasil hitungan)</td></tr><tr><td>g(n)</td><td>fungsi pembanding sederhana: 1, log n, n, n², 2ⁿ, ...</td></tr><tr><td>c</td><td>konstanta pengali bebas - boleh besar, asal tetap</td></tr><tr><td>n₀</td><td>titik mulai; perilaku untuk n kecil diabaikan</td></tr><tr><td>∃ / ∀</td><td>“ada” / “untuk semua”</td></tr><tr><td>⇔</td><td>jika dan hanya jika</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Big-O adalah <b>atap</b>. Mulai dari ukuran input tertentu, kurva f(n) selalu berada di bawah kurva c·g(n). Detail kecil seperti kecepatan CPU tertelan oleh konstanta c.</div>
+</section>
+<section class="slide" id="rx1m">
+<div class="kicker">Bedah Rumus 1/5 · Langkah 2: hitung manual</div>
+<h2 class="st">Hitung manual: Definisi Big-O (batas atas)</h2>
+<div class="rxsoal"><b>Soal:</b> Buktikan f(n) = 3n² + 10n + 7 = O(n²) dengan mencari pasangan c dan n₀.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Tulis target</h4><p class="rxcalc">3n² + 10n + 7 ≤ c·n²</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Pilih c = 4</h4><p class="rxcalc">3n² + 10n + 7 ≤ 4n²  ⇔  n² − 10n − 7 ≥ 0</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Coba n = 10</h4><p class="rxcalc">100 − 100 − 7 = −7  ✗ (belum berlaku)</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Coba n = 11</h4><p class="rxcalc">121 − 110 − 7 = 4  ✓</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Kenapa seterusnya aman?</h4><p class="rxcalc">n² tumbuh lebih cepat dari 10n, jadi selisihnya makin positif</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>n</th><th>f(n)</th><th>4n²</th><th>f(n) ≤ 4n²?</th></tr><tr><td>5</td><td>132</td><td>100</td><td>✗</td></tr><tr><td>10</td><td>407</td><td>400</td><td>✗</td></tr><tr><td>11</td><td>480</td><td>484</td><td>✓</td></tr><tr><td>20</td><td>1.407</td><td>1.600</td><td>✓</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> c = 4 dan n₀ = 11 → f(n) = O(n²).</div>
+</section>
+<section class="slide" id="rx1b">
+<div class="kicker">Bedah Rumus 1/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<h2 class="st">Big-O untuk menjanjikan batas waktu (SLA) layanan</h2>
+<div class="cols c2">
+<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Tim backend menjanjikan endpoint <b>/import-kontak</b> selesai &lt; 2 detik. Dengan O(n²), kalau 1.000 kontak butuh 0,05 s, maka 10.000 kontak ≈ 100× lebih lama ≈ 5 s → <b>melanggar SLA</b>. Big-O memberi tahu ini sebelum dirilis, sehingga tim mengganti ke set (O(n)).</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Hitung f(n)</h4><p class="">Kode cek duplikat email: f(n) = 3n² + 10n + 7 langkah.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Pilih g(n) = n² dan c = 4</h4><p class="">Butuh 3n² + 10n + 7 ≤ 4n², yaitu n² − 10n − 7 ≥ 0.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Cari n₀</h4><p class="">n = 11 → 121 − 110 − 7 = 4 ≥ 0 ✓. Jadi n₀ = 11.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Kesimpulan</h4><p class="">Untuk semua n ≥ 11: f(n) ≤ 4n², maka f(n) = O(n²).</p></div></div></div></div></div>
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tc"># O(n^2): bandingkan semua pasangan</span>
+<span class="tk">def</span> ada_duplikat_lambat(emails):
+    <span class="tk">for</span> i <span class="tk">in</span> <span class="tk">range</span>(<span class="tk">len</span>(emails)):
+        <span class="tk">for</span> j <span class="tk">in</span> <span class="tk">range</span>(i + <span class="tn">1</span>, <span class="tk">len</span>(emails)):
+            <span class="tk">if</span> emails[i] == emails[j]: <span class="tk">return</span> <span class="tk">True</span>
+    <span class="tk">return</span> <span class="tk">False</span>
+
+<span class="tc"># O(n): pakai set (hash)</span>
+<span class="tk">def</span> ada_duplikat_cepat(emails):
+    <span class="tk">return</span> <span class="tk">len</span>(set(emails)) != <span class="tk">len</span>(emails)</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Big-O menjawab pertanyaan “kalau data 10× lebih besar, waktunya jadi berapa kali?” - pertanyaan yang selalu muncul saat aplikasi mulai ramai.</div>
+</section>
+<section class="slide" id="rx2a">
+<div class="kicker">Bedah Rumus 2/5 · Langkah 1: cara membaca</div>
+<h2 class="st">Definisi Big-Theta (batas ketat)</h2>
+<div class="fxbox">f(n) = Θ(g(n)) &nbsp;⇔&nbsp; ∃ <span class='hl'>c₁, c₂</span> &gt; 0, ∃ n₀ : &nbsp;<span class='hl'>c₁</span>·g(n) ≤ f(n) ≤ <span class='hl'>c₂</span>·g(n) &nbsp;∀ n ≥ n₀</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“f dari n adalah Theta dari g dari n, jika ada dua konstanta positif c-satu dan c-dua serta titik n-nol, sehingga f(n) selalu terjepit di antara c-satu kali g(n) dan c-dua kali g(n).”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Dua ketaksamaan sekaligus</h4><p class="">Kiri (c₁·g ≤ f) = batas bawah atau Ω. Kanan (f ≤ c₂·g) = batas atas atau O.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Θ = O dan Ω sekaligus</h4><p class="">f(n) = Θ(g) berarti f(n) = O(g) DAN f(n) = Ω(g).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>“Terjepit”</h4><p class="">Bayangkan dua dinding c₁·g(n) dan c₂·g(n); kurva f(n) berjalan di koridor di antaranya.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>c₁</td><td>konstanta dinding bawah (Ω)</td></tr><tr><td>c₂</td><td>konstanta dinding atas (O)</td></tr><tr><td>n₀</td><td>mulai dari n ini, jepitan berlaku</td></tr><tr><td>Θ</td><td>huruf Yunani theta: “tumbuh persis seperti”</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> O hanya bilang “tidak lebih lambat dari”, jadi merge sort secara teknis juga O(n³). <b>Θ memberi angka yang jujur</b>: pertumbuhannya persis n log n, tidak lebih, tidak kurang.</div>
+</section>
+<section class="slide" id="rx2m">
+<div class="kicker">Bedah Rumus 2/5 · Langkah 2: hitung manual</div>
+<h2 class="st">Hitung manual: Definisi Big-Theta (batas ketat)</h2>
+<div class="rxsoal"><b>Soal:</b> Tunjukkan f(n) = 3n² + 10n + 7 = Θ(n²): cari c₁, c₂, dan n₀.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Dinding bawah</h4><p class="rxcalc">3n² ≤ 3n² + 10n + 7 karena 10n + 7 &gt; 0 → c₁ = 3 (n ≥ 1)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Dinding atas</h4><p class="rxcalc">dari bukti Big-O: f(n) ≤ 4n² untuk n ≥ 11 → c₂ = 4</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Gabungkan n₀</h4><p class="rxcalc">n₀ = maks(1, 11) = 11</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Cek n = 11</h4><p class="rxcalc">3·121 = 363 ≤ 480 ≤ 484 = 4·121  ✓</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>n</th><th>3n²</th><th>f(n)</th><th>4n²</th></tr><tr><td>11</td><td>363</td><td>480</td><td>484</td></tr><tr><td>20</td><td>1.200</td><td>1.407</td><td>1.600</td></tr><tr><td>100</td><td>30.000</td><td>31.007</td><td>40.000</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> c₁ = 3, c₂ = 4, n₀ = 11 → f(n) terjepit, jadi Θ(n²).</div>
+</section>
+<section class="slide" id="rx2b">
+<div class="kicker">Bedah Rumus 2/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<h2 class="st">Θ untuk perencanaan kapasitas server</h2>
+<div class="cols c2">
+<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Tim data menjalankan job pengurutan log harian Θ(n log n). Hari ini 10 juta baris selesai 40 detik. Bulan depan diperkirakan 40 juta baris: 40 s × 4 × (log 4·10⁷ / log 10⁷) ≈ <b>173 s</b>. Karena Θ (bukan cuma O), perkiraan ini bisa dipakai menghitung kebutuhan server - tidak terlalu boros, tidak kekurangan.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>f(n) = 3n² + 10n + 7</h4><p class="">Kita ingin menunjukkan f(n) = Θ(n²).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Dinding bawah</h4><p class="">3n² ≤ 3n² + 10n + 7 untuk semua n ≥ 1 → c₁ = 3.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Dinding atas</h4><p class="">dari slide sebelumnya: ≤ 4n² untuk n ≥ 11 → c₂ = 4.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Kesimpulan</h4><p class="">3n² ≤ f(n) ≤ 4n² untuk n ≥ 11 → f(n) = Θ(n²).</p></div></div></div></div></div>
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> math
+<span class="tk">def</span> prediksi(t_lama, n_lama, n_baru):
+    <span class="tc"># asumsi job Theta(n log n)</span>
+    rasio = (n_baru * math.log2(n_baru)) / (n_lama * math.log2(n_lama))
+    <span class="tk">return</span> t_lama * rasio
+
+<span class="tk">print</span>(prediksi(<span class="tn">40</span>, 10_000_000, 40_000_000))  <span class="tc"># ~173 detik</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Pakai O untuk “jaminan tidak lebih buruk”, pakai Θ untuk “perkiraan yang akurat”. Laporan kapasitas sebaiknya memakai Θ.</div>
+</section>
+<section class="slide" id="rx3a">
+<div class="kicker">Bedah Rumus 3/5 · Langkah 1: cara membaca</div>
+<h2 class="st">Deret loop bersarang: 1 + 2 + … + n</h2>
+<div class="fxbox"><span class='hb'>Σ</span><sub>i=1</sub><sup>n</sup> i &nbsp;=&nbsp; 1 + 2 + 3 + … + n &nbsp;=&nbsp; <span class='hl'>n(n+1)/2</span> &nbsp;=&nbsp; Θ(n²)</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Sigma i, dari i sama dengan satu sampai n, sama dengan satu tambah dua tambah tiga sampai n, sama dengan n kali n tambah satu dibagi dua, yang tumbuh seperti n kuadrat.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Σ = “jumlahkan”</h4><p class="">Angka di bawah (i=1) adalah awal, angka di atas (n) adalah akhir, ekspresi di kanan (i) yang dijumlahkan.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Trik Gauss</h4><p class="">Pasangkan 1+n, 2+(n−1), ... → setiap pasangan bernilai n+1, ada n/2 pasangan.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ambil suku terbesar</h4><p class="">n(n+1)/2 = ½n² + ½n → buang ½ dan ½n → Θ(n²).</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>Σ</td><td>sigma: operator penjumlahan berulang</td></tr><tr><td>i</td><td>indeks loop luar (putaran ke-i)</td></tr><tr><td>i (yang dijumlah)</td><td>jumlah langkah loop dalam pada putaran ke-i</td></tr><tr><td>n(n+1)/2</td><td>bentuk tertutup (closed form) deretnya</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Loop dalam yang panjangnya “ikut” loop luar (j dari 0 sampai i) terlihat lebih hemat, tetapi totalnya tetap setengah dari n². <b>Setengah dari kuadrat tetaplah kuadrat.</b></div>
+</section>
+<section class="slide" id="rx3m">
+<div class="kicker">Bedah Rumus 3/5 · Langkah 2: hitung manual</div>
+<h2 class="st">Hitung manual: Deret loop bersarang: 1 + 2 + … + n</h2>
+<div class="rxsoal"><b>Soal:</b> Berapa kali bandingkan(i, j) dijalankan oleh for i in range(n): for j in range(i) untuk n = 5? Lalu untuk n = 10.000?</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Hitung per putaran i</h4><p class="rxcalc">i = 0,1,2,3,4 → loop dalam jalan 0,1,2,3,4 kali</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Jumlahkan</h4><p class="rxcalc">0 + 1 + 2 + 3 + 4 = 10</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Cek dengan rumus</h4><p class="rxcalc">n(n−1)/2 = 5·4/2 = 10  ✓</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>n = 10.000</h4><p class="rxcalc">10.000 · 9.999 / 2 = 49.995.000</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>i</th><th>j yang dijalankan</th><th>banyak</th></tr><tr><td>0</td><td>-</td><td>0</td></tr><tr><td>1</td><td>0</td><td>1</td></tr><tr><td>2</td><td>0, 1</td><td>2</td></tr><tr><td>3</td><td>0, 1, 2</td><td>3</td></tr><tr><td>4</td><td>0, 1, 2, 3</td><td>4</td></tr><tr><td></td><td>Total</td><td>10</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> n = 5 → 10 perbandingan; n = 10.000 → 49.995.000 perbandingan.</div>
+</section>
+<section class="slide" id="rx3b">
+<div class="kicker">Bedah Rumus 3/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<h2 class="st">Membandingkan semua pasangan pengguna</h2>
+<div class="cols c2">
+<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Fitur <b>“teman yang mungkin Anda kenal”</b> versi naif membandingkan setiap pasangan pengguna. Rumus n(n−1)/2 langsung menunjukkan bahwa 1 juta pengguna = ~5×10¹¹ pasangan - tidak mungkin dihitung tiap malam. Karena itu sistem nyata hanya membandingkan kandidat dari teman-dari-teman.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Kode</h4><p class="">for i in range(n): for j in range(i): bandingkan(i, j)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Putaran ke-i</h4><p class="">loop dalam jalan i kali: 0, 1, 2, ..., n−1.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Jumlahkan</h4><p class="">0 + 1 + ... + (n−1) = n(n−1)/2.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>n = 10.000</h4><p class="">≈ 50 juta perbandingan. n = 100.000 → ≈ 5 miliar (100× lebih banyak).</p></div></div></div></div></div>
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> jumlah_pasangan(n):
+    <span class="tk">return</span> n * (n - <span class="tn">1</span>) // <span class="tn">2</span>
+
+<span class="tk">for</span> n <span class="tk">in</span> (1_000, 10_000, 1_000_000):
+    <span class="tk">print</span>(n, jumlah_pasangan(n))
+<span class="tc"># 1000 -&gt; 499500 ; 10000 -&gt; 49995000 ; 1e6 -&gt; 499999500000</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Lihat loop bersarang dengan batas dalam “ikut” loop luar? Langsung ingat n(n+1)/2 → Θ(n²).</div>
+</section>
+<section class="slide" id="rx4a">
+<div class="kicker">Bedah Rumus 4/5 · Langkah 1: cara membaca</div>
+<h2 class="st">Berapa kali n bisa dibagi dua? log₂ n</h2>
+<div class="fxbox">2<sup><span class='hl'>k</span></sup> = n &nbsp;⇔&nbsp; <span class='hl'>k</span> = log<sub>2</sub> n &nbsp;&nbsp;→&nbsp;&nbsp; langkah = ⌊log<sub>2</sub> n⌋ + 1</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Dua pangkat k sama dengan n, jika dan hanya jika k sama dengan logaritma basis dua dari n. Jadi banyaknya langkah adalah lantai log dua n ditambah satu.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>log adalah kebalikan pangkat</h4><p class="">log₂ n menjawab: “2 dipangkatkan berapa supaya jadi n?”</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>⌊ ⌋ = floor (lantai)</h4><p class="">bulatkan ke bawah: ⌊log₂ 1000⌋ = ⌊9,97⌋ = 9.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>+1</h4><p class="">menghitung langkah terakhir saat tersisa 1 elemen.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>n</td><td>ukuran data awal</td></tr><tr><td>k</td><td>banyaknya pembagian dua (atau penggandaan)</td></tr><tr><td>log₂</td><td>logaritma basis 2</td></tr><tr><td>⌊x⌋</td><td>bilangan bulat terbesar ≤ x</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Setiap langkah membuang separuh data. Data 1 miliar hanya butuh sekitar 30 langkah. Inilah alasan <b>Θ(log n) terasa “gratis”</b> berapa pun besar datanya.</div>
+</section>
+<section class="slide" id="rx4m">
+<div class="kicker">Bedah Rumus 4/5 · Langkah 2: hitung manual</div>
+<h2 class="st">Hitung manual: Berapa kali n bisa dibagi dua? log₂ n</h2>
+<div class="rxsoal"><b>Soal:</b> Ada 1.000 commit. Berapa kali tes maksimum yang dibutuhkan git bisect (bagi dua terus)?</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Cari pangkat 2 terdekat</h4><p class="rxcalc">2⁹ = 512 ≤ 1.000 &lt; 1.024 = 2¹⁰</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Jadi</h4><p class="rxcalc">log₂ 1.000 ≈ 9,97 → ⌊9,97⌋ = 9</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Tambah 1</h4><p class="rxcalc">9 + 1 = 10 langkah</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Cek dengan tabel</h4><p class="rxcalc">sisa kandidat dibagi dua tiap langkah sampai tinggal 1</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>langkah</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr><tr><td>sisa</td><td>1000</td><td>500</td><td>250</td><td>125</td><td>62</td><td>31</td><td>15</td><td>7</td><td>3</td><td>1</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Paling banyak 10 kali tes (bandingkan: cek satu per satu bisa 1.000 kali).</div>
+</section>
+<section class="slide" id="rx4b">
+<div class="kicker">Bedah Rumus 4/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<h2 class="st">git bisect: mencari commit penyebab bug</h2>
+<div class="cols c2">
+<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>git bisect</b> menerapkan rumus ini secara langsung. Hal yang sama terjadi di indeks database (B-tree), pencarian di daftar harga terurut, dan menebak angka 1-100 (maksimal 7 tebakan).</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Situasi</h4><p class="">Ada 1.000 commit; salah satunya merusak aplikasi.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Bagi dua</h4><p class="">Tes commit tengah (ke-500). Rusak? cari di kiri. Aman? cari di kanan.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Hitung</h4><p class="">log₂ 1000 ≈ 9,97 → paling banyak ⌊9,97⌋ + 1 = 10 kali tes.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Bandingkan</h4><p class="">Cek satu per satu bisa butuh 1.000 kali tes.</p></div></div></div></div></div>
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> math
+<span class="tk">def</span> langkah_maks(n):
+    <span class="tk">return</span> math.floor(math.log2(n)) + <span class="tn">1</span>
+
+<span class="tk">for</span> n <span class="tk">in</span> (1_000, 1_000_000, 1_000_000_000):
+    <span class="tk">print</span>(n, langkah_maks(n))   <span class="tc"># 10, 20, 30</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Setiap kali data dibuang separuh di tiap langkah, ingat: banyaknya langkah = log₂ n.</div>
+</section>
+<section class="slide" id="rx5a">
+<div class="kicker">Bedah Rumus 5/5 · Langkah 1: cara membaca</div>
+<h2 class="st">Eksperimen penggandaan (doubling ratio)</h2>
+<div class="fxbox">T(n) ≈ a·n<sup><span class='hl'>k</span></sup> &nbsp;⇒&nbsp; <span class='hb'>T(2n) / T(n)</span> ≈ 2<sup><span class='hl'>k</span></sup> &nbsp;⇒&nbsp; <span class='hl'>k</span> ≈ log<sub>2</sub>(rasio)</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Jika T dari n kira-kira a kali n pangkat k, maka T dari dua n dibagi T dari n kira-kira dua pangkat k, sehingga k kira-kira log dua dari rasionya.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Mulai dari model</h4><p class="">anggap waktu = a·nᵏ, dengan a konstanta mesin yang tidak kita ketahui.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Bagi dua pengukuran</h4><p class="">a·(2n)ᵏ / (a·nᵏ) = 2ᵏ → konstanta a hilang!</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ambil log</h4><p class="">rasio 4 → k = log₂ 4 = 2 → kuadratik.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>T(n)</td><td>waktu terukur untuk input ukuran n</td></tr><tr><td>a</td><td>konstanta mesin (CPU, bahasa) - tidak perlu diketahui</td></tr><tr><td>k</td><td>pangkat/orde yang dicari</td></tr><tr><td>rasio</td><td>T(2n) ÷ T(n) dari stopwatch</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Detik berbeda antar laptop, tetapi <b>rasio</b> tidak. Dengan menggandakan n dan membagi waktunya, kita bisa menebak orde algoritma tanpa membaca kodenya.</div>
+</section>
+<section class="slide" id="rx5m">
+<div class="kicker">Bedah Rumus 5/5 · Langkah 2: hitung manual</div>
+<h2 class="st">Hitung manual: Eksperimen penggandaan (doubling ratio)</h2>
+<div class="rxsoal"><b>Soal:</b> Waktu terukur: n = 1.000 → 0,8 s; n = 2.000 → 3,1 s; n = 4.000 → 12,6 s. Tentukan ordenya.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Rasio pertama</h4><p class="rxcalc">3,1 / 0,8 = 3,875</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Rasio kedua</h4><p class="rxcalc">12,6 / 3,1 ≈ 4,06</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Rata-rata rasio</h4><p class="rxcalc">(3,875 + 4,06) / 2 ≈ 3,97</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Cari k</h4><p class="rxcalc">2ᵏ = 3,97 → k = log₂ 3,97 ≈ 1,99 ≈ 2</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Prediksi n = 8.000</h4><p class="rxcalc">12,6 × 4 ≈ 50 detik</p></div></div></div></div>
+<div class="rxcard soft"><h3>Latihan cepat dengan angka lain</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Ukur</h4><p class="">Laporan 1.000 baris: 0,8 s. Laporan 2.000 baris: 3,1 s.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Rasio</h4><p class="">3,1 / 0,8 ≈ 3,9.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Orde</h4><p class="">k ≈ log₂ 3,9 ≈ 1,96 → hampir pasti Θ(n²).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Tindakan</h4><p class="">Cari loop bersarang di kode laporan; jangan buang waktu mengoptimasi query lain.</p></div></div></div></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> k ≈ 2 → algoritma Θ(n²); data 2× lebih besar = waktu 4× lebih lama.</div>
+</section>
+<section class="slide" id="rx5b">
+<div class="kicker">Bedah Rumus 5/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<h2 class="st">Profiling fitur yang mendadak lambat</h2>
+<div class="cols c2">
+<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Tim QA bisa memasang <b>tes performa otomatis</b> di CI: jalankan fungsi dengan n dan 2n, hitung k. Jika k naik dari 1 ke 2 setelah sebuah commit, build ditandai merah - regresi kompleksitas tertangkap sebelum sampai ke pengguna.</p></div></div>
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> math, random, time
+<span class="tk">def</span> tebak_orde(f, n):
+    <span class="tk">def</span> ukur(m):
+        t = time.perf_counter(); f(m); <span class="tk">return</span> time.perf_counter() - t
+    rasio = ukur(<span class="tn">2</span> * n) / ukur(n)
+    <span class="tk">return</span> math.log2(rasio)
+
+data = [random.random() <span class="tk">for</span> _ <span class="tk">in</span> <span class="tk">range</span>(400_000)]
+k = tebak_orde(<span class="tk">lambda</span> m: <span class="tk">sorted</span>(data[:m]), 200_000)
+<span class="tk">print</span>(round(k, <span class="tn">2</span>))  <span class="tc"># ~1.0-1.1 (n log n)</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Teori memberi Θ dari kode; eksperimen penggandaan mengecek Θ dari stopwatch. Dua-duanya harus cocok.</div>
+</section>
+<!--RX-SLIDES-END-->
 <section class="slide" id="s25">
   <div class="kicker">RANGKUMAN</div>
   <h2 class="st">Yang perlu dibawa pulang dari pertemuan ini</h2>
@@ -1518,6 +1772,29 @@ slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot'
 
 /* ================= start ================= */
 slides[0].classList.add('active');sync();
+/*RX-JS-START*/
+/* Auto-fit: bila isi slide melebihi area 1280x720, perkecil (zoom) slide itu saja
+   sampai muat, supaya tidak ada konten yang terpotong. Footer tetap ukuran normal. */
+(function(){
+  const MIN=0.62;
+  function over(s,z){const sr=s.getBoundingClientRect();if(!sr.height)return 0;const k=sr.height/720;let m=0;
+    s.querySelectorAll('*').forEach(el=>{if(el.closest('.sfoot'))return;const r=el.getBoundingClientRect();
+      if(r.height&&r.width){const b=(r.bottom-sr.top)/k;if(b>m)m=b}});
+    return m-(720-50*z)}
+  function fitSlide(s){let z=1;s.style.zoom='';s.style.overflowY='';
+    const f=s.querySelector('.sfoot');if(f)f.style.zoom='';
+    let o=over(s,1);
+    for(let i=0;i<30&&o>0.5&&z>MIN;i++){z=Math.max(MIN,z-Math.max(0.01,Math.min(0.08,o/720)));
+      s.style.zoom=z;if(f)f.style.zoom=1/z;o=over(s,z)}
+    if(o>0.5)s.style.overflowY='auto';
+    s.dataset.fit=z.toFixed(2)}
+  const all=()=>document.querySelectorAll('.slide').forEach(fitSlide);
+  all();if(document.fonts)document.fonts.ready.then(all);addEventListener('load',all);
+  document.querySelectorAll('.slide').forEach(s=>{let t;new MutationObserver(m=>{
+    if(m.every(r=>r.target.closest&&r.target.closest('.sfoot')))return;
+    clearTimeout(t);t=setTimeout(()=>fitSlide(s),60)}).observe(s,{childList:true,subtree:true,characterData:true})});
+})();
+/*RX-JS-END*/
 </script>
 </body>
 </html>

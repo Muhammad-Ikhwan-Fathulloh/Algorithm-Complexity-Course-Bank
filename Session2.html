@@ -104,6 +104,49 @@ input[type=range]{accent-color:#2563eb;flex:1}
 #s1 h1{font-size:56px;line-height:1.1;color:#0f172a;margin:8px 0 18px}
 #s1 .lead{font-size:19px;color:#334155;line-height:1.7;max-width:700px}
 .navhint{margin-top:16px;font-size:14px;color:#64748b}
+/*RX-CSS-START*/
+/* Anti-terpotong: kode & daftar tidak lagi disembunyikan di dalam scroll; slide di-auto-fit oleh JS */
+pre.pycode{overflow:visible;white-space:pre-wrap;word-break:break-word;flex:none}
+.qlist{overflow:visible}
+.cols,.stack{min-height:auto}
+/* Bedah Rumus */
+.fxbox{background:#0f172a;border-radius:14px;padding:16px 28px;text-align:center;color:#f8fafc;font:500 31px/1.5 'Cambria Math',Cambria,'Times New Roman',serif;flex:none}
+.fxbox sub,.fxbox sup{font-size:.62em}
+.fxbox .hl{color:#fbbf24}.fxbox .hb{color:#93c5fd}.fxbox .hg{color:#86efac}
+.fxsmall{font:500 20px/1.5 'Cambria Math',Cambria,'Times New Roman',serif;color:#0f172a}
+.say{font-size:16px;line-height:1.65;color:#1e3a8a;font-style:italic;background:#fff;border-radius:8px;padding:10px 14px;border:1px dashed #93c5fd;margin-bottom:10px}
+table.sym{width:100%;border-collapse:collapse;font-size:15px}
+.sym td{border-bottom:1px solid #e2e8f0;padding:6px 10px;vertical-align:top;color:#334155;line-height:1.5}
+.sym tr:last-child td{border-bottom:none}
+.sym td:first-child{font:600 18px 'Cambria Math',Cambria,serif;color:#0f172a;white-space:nowrap;width:1%}
+.rxgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rxitem{display:flex;gap:14px;align-items:center;border:2px solid #e2e8f0;border-radius:12px;padding:10px 16px;background:#f8fafc}
+.rxitem .qn{flex:none;width:34px;height:34px;border-radius:50%;background:#2563eb;color:#fff;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center}
+.rxitem b{display:block;font-size:15px;color:#0f172a}
+.rxitem span{font:500 17px 'Cambria Math',Cambria,serif;color:#334155}
+.rxcard{border:2px solid #e2e8f0;border-radius:12px;padding:14px 18px;background:#f8fafc;min-width:0}
+.rxcard.blue{border-color:#bfdbfe;background:#eff6ff}.rxcard.green{border-color:#bbf7d0;background:#f0fdf4}.rxcard.yellow{border-color:#fde68a;background:#fffbeb}
+.rxcard h3{font-size:18px;font-weight:700;color:#0f172a;margin-bottom:8px}
+.rxcard p{font-size:15.5px;line-height:1.6;color:#334155}
+.rxsteps{display:flex;flex-direction:column;gap:9px}
+.rxstep{display:flex;gap:12px;align-items:flex-start}
+.rxnum{flex:none;width:30px;height:30px;border-radius:50%;background:#2563eb;color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
+.rxcard.yellow .rxnum{background:#d97706}
+.rxbody h4{font-size:16px;font-weight:700;color:#0f172a;margin-bottom:2px}
+.rxbody p{font-size:15px;line-height:1.55;color:#475569}
+.rxsm{font-size:15px;line-height:1.6;color:#475569}
+.rxcard pre.pycode{font-size:14px;padding:12px 16px;margin-top:10px;line-height:1.55}
+.rxsoal{background:#f1f5f9;border:2px solid #cbd5e1;border-left:6px solid #475569;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#1e293b;flex:none}
+.rxcalc{font:500 15.5px/1.55 'Cambria Math',Cambria,'Times New Roman',serif!important;color:#0f172a!important}
+table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
+.rxtbl th{background:#1e293b;color:#fff;text-align:center;padding:6px 8px;font-size:13.5px;font-weight:700}
+.rxtbl td{border:1px solid #e2e8f0;padding:5px 8px;text-align:center;color:#334155;background:#fff;font-family:'Cambria Math',Cambria,serif}
+.rxtbl tr:nth-child(even) td{background:#f8fafc}
+.rxtbl td:first-child{font-weight:700;color:#0f172a}
+.rxhasil{background:#f0fdf4;border:2px solid #bbf7d0;border-left:6px solid #16a34a;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#14532d;flex:none}
+.rxhasil b{color:#15803d}
+.rxstack{display:flex;flex-direction:column;gap:12px;min-width:0}
+/*RX-CSS-END*/
 </style>
 </head>
 <body>
@@ -376,6 +419,161 @@ input[type=range]{accent-color:#2563eb;flex:1}
 </section>
 
 <!-- 9. LATIHAN -->
+<!--RX-SLIDES-START-->
+<section class="slide" id="rx0">
+<div class="kicker">Bedah Rumus · Rekursi dan Persamaan Rekurens</div>
+<h2 class="st">Empat rumus rekurens yang wajib bisa dibaca</h2>
+<p class="b">Rekurens adalah “rumus yang memanggil dirinya sendiri”. Banyak mahasiswa hafal hasilnya tetapi tidak bisa membacanya. Berikut empat bentuk paling penting, dari cara membaca sampai pemakaiannya di sistem nyata.</p>
+<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Rekurens bagi-dua: T(n) = 2T(n/2) + n</b><span>T(n) = 2T(n/2) + n → Θ(n log n)</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Master Theorem</b><span>T(n) = aT(n/b) + Θ(nᵈ)</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Rekurens kurang-satu: T(n) = T(n−1) + n</b><span>T(n) = T(n−1) + n → Θ(n²)</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Rekurens Fibonacci naif</b><span>T(n) = T(n−1) + T(n−2) + 1 → Θ(φⁿ)</span></div></div></div>
+<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas tiga slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+</section>
+<section class="slide" id="rx1a">
+<div class="kicker">Bedah Rumus 1/4 · Langkah 1: cara membaca</div>
+<h2 class="st">Rekurens bagi-dua: T(n) = 2T(n/2) + n</h2>
+<div class="fxbox">T(n) = <span class='hl'>2</span>·T(n/<span class='hl'>2</span>) + <span class='hb'>n</span>, &nbsp; T(1) = 1 &nbsp;&nbsp;⇒&nbsp;&nbsp; T(n) = n·log<sub>2</sub>n + n = Θ(n log n)</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“T dari n sama dengan dua kali T dari n per dua, ditambah n; dengan T dari satu sama dengan satu. Hasilnya n log dua n tambah n, yaitu Theta n log n.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>T(n)</h4><p class="">biaya total menyelesaikan masalah berukuran n.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>2·T(n/2)</h4><p class="">dua panggilan rekursif, masing-masing untuk separuh data.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>+ n</h4><p class="">biaya pekerjaan non-rekursif di level ini (misalnya merge).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>T(1) = 1</h4><p class="">kasus dasar: data 1 elemen selesai seketika.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>a = 2</td><td>banyaknya subsoal (panggilan rekursif)</td></tr><tr><td>n/2</td><td>ukuran tiap subsoal</td></tr><tr><td>+ n</td><td>biaya divide + combine di satu level</td></tr><tr><td>log₂ n</td><td>kedalaman pohon rekursi</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Gambar pohonnya: level 0 biaya n, level 1 ada 2 simpul × n/2 = n, level 2 ada 4 × n/4 = n. <b>Setiap level biayanya n, dan ada log₂ n + 1 level.</b></div>
+</section>
+<section class="slide" id="rx1m">
+<div class="kicker">Bedah Rumus 1/4 · Langkah 2: hitung manual</div>
+<h2 class="st">Hitung manual: Rekurens bagi-dua: T(n) = 2T(n/2) + n</h2>
+<div class="rxsoal"><b>Soal:</b> Hitung T(8) untuk T(n) = 2T(n/2) + n, T(1) = 1, lalu cocokkan dengan n·log₂n + n.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Mulai dari dasar</h4><p class="rxcalc">T(1) = 1</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>n = 2</h4><p class="rxcalc">T(2) = 2·T(1) + 2 = 2 + 2 = 4</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>n = 4</h4><p class="rxcalc">T(4) = 2·T(2) + 4 = 8 + 4 = 12</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>n = 8</h4><p class="rxcalc">T(8) = 2·T(4) + 8 = 24 + 8 = 32</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Cek rumus</h4><p class="rxcalc">8·log₂8 + 8 = 8·3 + 8 = 32  ✓</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>n</th><th>T(n) hitung</th><th>n log₂n + n</th></tr><tr><td>1</td><td>1</td><td>1</td></tr><tr><td>2</td><td>4</td><td>4</td></tr><tr><td>4</td><td>12</td><td>12</td></tr><tr><td>8</td><td>32</td><td>32</td></tr><tr><td>16</td><td>80</td><td>80</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> T(8) = 32, persis sama dengan n log₂ n + n.</div>
+</section>
+<section class="slide" id="rx1b">
+<div class="kicker">Bedah Rumus 1/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<h2 class="st">Mengurutkan file log yang lebih besar dari RAM</h2>
+<div class="cols c2">
+<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>External merge sort</b> di database (misalnya ORDER BY pada tabel 100 GB) memecah data menjadi potongan yang muat di RAM, mengurutkan tiap potongan, lalu menggabungkan. Rekurens yang sama menjamin waktu Θ(n log n) bahkan untuk data sebesar itu.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 8</h4><p class="">Level: 8 → 4,4 → 2,2,2,2 → 1×8. Ada log₂ 8 + 1 = 4 level.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Biaya per level</h4><p class="">masing-masing 8 (total ukuran potongan selalu 8).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Total</h4><p class="">8 × 3 level kerja + 8 daun = 8·3 + 8 = 32 = n log₂n + n ✓</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>n = 1 juta</h4><p class="">≈ 10⁶ × 20 = 2×10⁷ operasi - selesai dalam hitungan detik.</p></div></div></div></div></div>
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> T(n):
+    <span class="tc"># hitung biaya rekurens secara langsung</span>
+    <span class="tk">if</span> n == <span class="tn">1</span>: <span class="tk">return</span> <span class="tn">1</span>
+    <span class="tk">return</span> <span class="tn">2</span> * T(n // <span class="tn">2</span>) + n
+
+<span class="tk">import</span> math
+<span class="tk">for</span> n <span class="tk">in</span> (<span class="tn">8</span>, <span class="tn">1024</span>, <span class="tn">2</span>**<span class="tn">16</span>):
+    <span class="tk">print</span>(n, T(n), int(n * math.log2(n) + n))  <span class="tc"># sama persis</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> “Dua subsoal separuh ukuran + kerja linear” = Θ(n log n). Pola ini muncul di merge sort, FFT, dan closest pair.</div>
+</section>
+<section class="slide" id="rx2a">
+<div class="kicker">Bedah Rumus 2/4 · Langkah 1: cara membaca</div>
+<h2 class="st">Master Theorem</h2>
+<div class="fxbox">T(n) = <span class='hl'>a</span>·T(n/<span class='hl'>b</span>) + Θ(n<sup><span class='hl'>d</span></sup>) &nbsp;⇒&nbsp; bandingkan <span class='hl'>d</span> dengan <span class='hb'>log<sub>b</sub> a</span></div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“T dari n sama dengan a kali T dari n per b, ditambah Theta n pangkat d. Untuk menyelesaikannya, bandingkan d dengan logaritma basis b dari a.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>d &lt; log_b a → Θ(n^{log_b a})</h4><p class="">Kasus 1: daun yang dominan. Jumlah subsoal tumbuh lebih cepat daripada kerja per level.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>d = log_b a → Θ(nᵈ log n)</h4><p class="">Kasus 2: seimbang. Setiap level biayanya sama, dikali banyaknya level.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>d &gt; log_b a → Θ(nᵈ)</h4><p class="">Kasus 3: akar yang dominan. Kerja di level teratas mengalahkan semuanya.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>a</td><td>banyaknya panggilan rekursif (≥ 1)</td></tr><tr><td>b</td><td>faktor pengecilan ukuran (> 1)</td></tr><tr><td>d</td><td>pangkat biaya kerja di luar rekursi</td></tr><tr><td>log_b a</td><td>“pangkat kritis”: laju pertambahan jumlah daun</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Ini adu tarik antara <b>perbanyakan subsoal</b> (a) dan <b>pengecilan ukuran</b> (b). log_b a mengukur seberapa cepat daun bertambah; d mengukur seberapa berat kerja di tiap simpul.</div>
+</section>
+<section class="slide" id="rx2m">
+<div class="kicker">Bedah Rumus 2/4 · Langkah 2: hitung manual</div>
+<h2 class="st">Hitung manual: Master Theorem</h2>
+<div class="rxsoal"><b>Soal:</b> Selesaikan T(n) = 3T(n/2) + n (Karatsuba) dengan Master Theorem.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Baca parameter</h4><p class="rxcalc">a = 3, b = 2, d = 1</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Hitung log_b a</h4><p class="rxcalc">log₂ 3 = log 3 / log 2 = 0,4771 / 0,3010 ≈ 1,585</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Bandingkan</h4><p class="rxcalc">d = 1 &lt; 1,585 = log₂ 3 → Kasus 1 (daun dominan)</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Tulis hasil</h4><p class="rxcalc">T(n) = Θ(n^log₂3) = Θ(n^1,585)</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Rasakan angkanya (n = 1.024)</h4><p class="rxcalc">n^1,585 = 3¹⁰ = 59.049 vs n² = 1.048.576</p></div></div></div></div>
+<div class="rxcard soft"><h3>Latihan cepat dengan angka lain</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Binary search: a=1, b=2, d=0</h4><p class="">log₂1 = 0 = d → Kasus 2 → Θ(log n).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Merge sort: a=2, b=2, d=1</h4><p class="">log₂2 = 1 = d → Kasus 2 → Θ(n log n).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Karatsuba: a=3, b=2, d=1</h4><p class="">log₂3 ≈ 1,585 &gt; 1 → Kasus 1 → Θ(n^1,585).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Quadtree gambar: a=4, b=2, d=0</h4><p class="">log₂4 = 2 &gt; 0 → Kasus 1 → Θ(n²) = sebanyak piksel.</p></div></div></div></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Θ(n^1,585), sekitar 18× lebih sedikit operasi daripada n² untuk n = 1.024.</div>
+</section>
+<section class="slide" id="rx2b">
+<div class="kicker">Bedah Rumus 2/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<h2 class="st">Memperkirakan algoritma rekursif sebelum menulisnya</h2>
+<div class="cols c2">
+<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Saat merancang pemrosesan citra berbasis <b>quadtree</b> (kompresi peta, deteksi area di citra satelit), engineer bisa langsung tahu bahwa membagi gambar n×n menjadi 4 kuadran dengan kerja konstan tetap Θ(n²). Kalau kerja per simpul dinaikkan menjadi Θ(n²), maka d=2=log₂4 → Θ(n² log n). Keputusan desain bisa diambil di papan tulis.</p></div></div>
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> math
+<span class="tk">def</span> master(a, b, d):
+    c = math.log(a, b)
+    <span class="tk">if</span> abs(d - c) &lt; 1e-<span class="tn">9</span>: <span class="tk">return</span> f<span class="ts">"Theta(n^{d} log n)"</span>
+    <span class="tk">if</span> d &lt; c:             <span class="tk">return</span> f<span class="ts">"Theta(n^{c:.3f})"</span>
+    <span class="tk">return</span> f<span class="ts">"Theta(n^{d})"</span>
+
+<span class="tk">print</span>(master(<span class="tn">2</span>, <span class="tn">2</span>, <span class="tn">1</span>), master(<span class="tn">3</span>, <span class="tn">2</span>, <span class="tn">1</span>), master(<span class="tn">7</span>, <span class="tn">2</span>, <span class="tn">2</span>))</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Ekstrak tiga angka (a, b, d), hitung log_b a, lalu bandingkan. Tiga detik untuk menjawab kompleksitas algoritma D&C apa pun yang cocok dengan bentuknya.</div>
+</section>
+<section class="slide" id="rx3a">
+<div class="kicker">Bedah Rumus 3/4 · Langkah 1: cara membaca</div>
+<h2 class="st">Rekurens kurang-satu: T(n) = T(n−1) + n</h2>
+<div class="fxbox">T(n) = T(n<span class='hl'>−1</span>) + <span class='hb'>n</span> &nbsp;=&nbsp; n + (n−1) + … + 1 &nbsp;=&nbsp; <span class='hl'>n(n+1)/2</span> = Θ(n²)</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“T dari n sama dengan T dari n kurang satu ditambah n. Kalau dibuka terus, hasilnya n tambah n kurang satu sampai satu, yaitu n kali n tambah satu per dua, Theta n kuadrat.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Bentuk “minus satu”</h4><p class="">subsoal hanya lebih kecil SATU elemen - bukan separuh.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Unrolling (buka berulang)</h4><p class="">T(n) = n + T(n−1) = n + (n−1) + T(n−2) = ...</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Kenali deretnya</h4><p class="">Jumlah 1..n = n(n+1)/2 (rumus Gauss) → Θ(n²).</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>T(n−1)</td><td>panggilan rekursif dengan data berkurang satu</td></tr><tr><td>+ n</td><td>kerja linear di tiap panggilan (misalnya mencari minimum)</td></tr><tr><td>n(n+1)/2</td><td>hasil penjumlahan semua level</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Rekursi yang hanya “mengupas satu elemen” membuat pohonnya menjadi <b>rantai sepanjang n</b>, bukan pohon setinggi log n. Itulah mengapa quicksort dengan pivot buruk jatuh ke Θ(n²).</div>
+</section>
+<section class="slide" id="rx3m">
+<div class="kicker">Bedah Rumus 3/4 · Langkah 2: hitung manual</div>
+<h2 class="st">Hitung manual: Rekurens kurang-satu: T(n) = T(n−1) + n</h2>
+<div class="rxsoal"><b>Soal:</b> Hitung T(5) untuk T(n) = T(n−1) + n, T(0) = 0, dengan membuka (unrolling).</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Buka satu kali</h4><p class="rxcalc">T(5) = 5 + T(4)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Buka terus</h4><p class="rxcalc">= 5 + 4 + T(3) = 5 + 4 + 3 + T(2) = …</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Sampai dasar</h4><p class="rxcalc">= 5 + 4 + 3 + 2 + 1 + T(0) = 15</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Cek rumus</h4><p class="rxcalc">n(n+1)/2 = 5·6/2 = 15  ✓</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>n = 10.000</h4><p class="rxcalc">10.000 · 10.001 / 2 = 50.005.000</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>n</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr><tr><td>T(n)</td><td>1</td><td>3</td><td>6</td><td>10</td><td>15</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> T(5) = 15; T(10.000) = 50.005.000 → Θ(n²).</div>
+</section>
+<section class="slide" id="rx3b">
+<div class="kicker">Bedah Rumus 3/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<h2 class="st">Quicksort pada data yang sudah terurut</h2>
+<div class="cols c2">
+<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Banyak data produksi <b>sudah hampir terurut</b> (ID auto-increment, timestamp). Library seperti C++ <i>std::sort</i> (introsort) dan Java memakai pivot median-of-three/acak dan beralih ke heapsort untuk menghindari jebakan T(n) = T(n−1) + n.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Data</h4><p class="">[1, 2, 3, ..., n] dan pivot = elemen pertama.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Partisi</h4><p class="">pivot 1 → kiri kosong, kanan n−1 elemen; kerja partisi n.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Rekurens</h4><p class="">T(n) = T(n−1) + n.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>n = 10.000</h4><p class="">≈ 50 juta perbandingan, bukan ~130 ribu seperti kasus rata-rata.</p></div></div></div></div></div>
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> T(n):
+    total = <span class="tn">0</span>
+    <span class="tk">while</span> n &gt; <span class="tn">0</span>:          <span class="tc"># unrolling sebagai loop</span>
+        total += n
+        n -= <span class="tn">1</span>
+    <span class="tk">return</span> total
+
+<span class="tk">print</span>(T(10_000), 10_000 * 10_001 // <span class="tn">2</span>)  <span class="tc"># sama</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Kurang SATU per langkah → kuadratik (dengan kerja linear). Kurang SEPARUH per langkah → logaritmik. Perbedaannya sangat besar.</div>
+</section>
+<section class="slide" id="rx4a">
+<div class="kicker">Bedah Rumus 4/4 · Langkah 1: cara membaca</div>
+<h2 class="st">Rekurens Fibonacci naif</h2>
+<div class="fxbox">T(n) = T(n−1) + T(n−2) + 1 &nbsp;⇒&nbsp; T(n) = Θ(<span class='hl'>φ</span><sup>n</sup>), &nbsp; <span class='hl'>φ</span> = (1+√5)/2 ≈ 1,618</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“T dari n sama dengan T dari n kurang satu ditambah T dari n kurang dua ditambah satu. Hasilnya Theta phi pangkat n, dengan phi sama dengan satu tambah akar lima per dua, kira-kira satu koma enam satu delapan.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Dua panggilan, ukuran hampir sama</h4><p class="">n−1 dan n−2 hampir sebesar n, jadi pohonnya bercabang dua tanpa menyusut cepat.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>φ (phi) = rasio emas</h4><p class="">akar dari x² = x + 1; laju pertumbuhan bilangan Fibonacci.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Θ(φⁿ)</h4><p class="">eksponensial: setiap n bertambah 1, biaya ×1,618.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>T(n−1), T(n−2)</td><td>dua subsoal yang saling tumpang-tindih</td></tr><tr><td>+1</td><td>kerja konstan (satu penjumlahan)</td></tr><tr><td>φ ≈ 1,618</td><td>basis pertumbuhan eksponensial</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> fib(5) memanggil fib(3) dua kali, fib(2) tiga kali, dan seterusnya. <b>Subsoal yang sama dihitung ulang berkali-kali</b> - inilah tanda bahwa butuh memoisasi (dynamic programming).</div>
+</section>
+<section class="slide" id="rx4m">
+<div class="kicker">Bedah Rumus 4/4 · Langkah 2: hitung manual</div>
+<h2 class="st">Hitung manual: Rekurens Fibonacci naif</h2>
+<div class="rxsoal"><b>Soal:</b> Hitung banyaknya panggilan fungsi fib_naif(6): P(n) = P(n−1) + P(n−2) + 1, P(0) = P(1) = 1.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Dasar</h4><p class="rxcalc">P(0) = 1, P(1) = 1</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Naik satu per satu</h4><p class="rxcalc">P(2) = 1+1+1 = 3, P(3) = 3+1+1 = 5, P(4) = 5+3+1 = 9</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Lanjut</h4><p class="rxcalc">P(5) = 9+5+1 = 15, P(6) = 15+9+1 = 25</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Lihat rasionya</h4><p class="rxcalc">25 / 15 ≈ 1,67 → mendekati φ ≈ 1,618</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Dengan memo</h4><p class="rxcalc">fib(0)…fib(6) masing-masing sekali = 7 panggilan</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>n</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr><tr><td>fib(n)</td><td>0</td><td>1</td><td>1</td><td>2</td><td>3</td><td>5</td><td>8</td></tr><tr><td>panggilan naif</td><td>1</td><td>1</td><td>3</td><td>5</td><td>9</td><td>15</td><td>25</td></tr><tr><td>panggilan memo</td><td>1</td><td>1</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> fib_naif(6) = 25 panggilan vs 7 dengan memo; untuk n = 30 naif ≈ 2,7 juta panggilan.</div>
+</section>
+<section class="slide" id="rx4b">
+<div class="kicker">Bedah Rumus 4/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<h2 class="st">Resolusi dependensi tanpa cache</h2>
+<div class="cols c2">
+<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Pola ini muncul di <b>build system atau package manager</b> yang menelusuri dependensi secara rekursif: modul A butuh B dan C, B juga butuh C, dan seterusnya. Tanpa cache “sudah diproses”, waktu meledak secara eksponensial. Webpack, Bazel, dan pip semua menyimpan hasil per modul.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 30</h4><p class="">φ³⁰ ≈ 1,9 juta panggilan.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>n = 40</h4><p class="">φ⁴⁰ ≈ 228 juta panggilan - beberapa detik di Python.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>n = 50</h4><p class="">≈ 28 miliar panggilan - praktis tidak selesai.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Dengan memo</h4><p class="">setiap fib(k) dihitung sekali → n panggilan → Θ(n).</p></div></div></div></div></div>
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">from</span> functools <span class="tk">import</span> lru_cache
+
+<span class="tk">def</span> fib_naif(n):            <span class="tc"># Theta(phi^n)</span>
+    <span class="tk">return</span> n <span class="tk">if</span> n &lt; <span class="tn">2</span> <span class="tk">else</span> fib_naif(n-<span class="tn">1</span>) + fib_naif(n-<span class="tn">2</span>)
+
+@lru_cache(maxsize=<span class="tk">None</span>)
+<span class="tk">def</span> fib_memo(n):            <span class="tc"># Theta(n)</span>
+    <span class="tk">return</span> n <span class="tk">if</span> n &lt; <span class="tn">2</span> <span class="tk">else</span> fib_memo(n-<span class="tn">1</span>) + fib_memo(n-<span class="tn">2</span>)
+
+<span class="tk">print</span>(fib_memo(<span class="tn">90</span>))   <span class="tc"># instan</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Dua panggilan rekursif yang ukurannya nyaris tidak menyusut = eksponensial. Obatnya: simpan hasil (memo).</div>
+</section>
+<!--RX-SLIDES-END-->
 <section class="slide" id="s9">
   <div class="kicker">LATIHAN</div>
   <h2 class="st">Soal rekurens - coba sebelum lihat kunci</h2>
@@ -471,6 +669,29 @@ slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot'
   $('#mtSolve').onclick=run;
   $$('[data-a]').forEach(b=>b.onclick=()=>{$('#mtA').value=b.dataset.a;$('#mtB').value=b.dataset.b;$('#mtD').value=b.dataset.d;run()});
 })();
+/*RX-JS-START*/
+/* Auto-fit: bila isi slide melebihi area 1280x720, perkecil (zoom) slide itu saja
+   sampai muat, supaya tidak ada konten yang terpotong. Footer tetap ukuran normal. */
+(function(){
+  const MIN=0.62;
+  function over(s,z){const sr=s.getBoundingClientRect();if(!sr.height)return 0;const k=sr.height/720;let m=0;
+    s.querySelectorAll('*').forEach(el=>{if(el.closest('.sfoot'))return;const r=el.getBoundingClientRect();
+      if(r.height&&r.width){const b=(r.bottom-sr.top)/k;if(b>m)m=b}});
+    return m-(720-50*z)}
+  function fitSlide(s){let z=1;s.style.zoom='';s.style.overflowY='';
+    const f=s.querySelector('.sfoot');if(f)f.style.zoom='';
+    let o=over(s,1);
+    for(let i=0;i<30&&o>0.5&&z>MIN;i++){z=Math.max(MIN,z-Math.max(0.01,Math.min(0.08,o/720)));
+      s.style.zoom=z;if(f)f.style.zoom=1/z;o=over(s,z)}
+    if(o>0.5)s.style.overflowY='auto';
+    s.dataset.fit=z.toFixed(2)}
+  const all=()=>document.querySelectorAll('.slide').forEach(fitSlide);
+  all();if(document.fonts)document.fonts.ready.then(all);addEventListener('load',all);
+  document.querySelectorAll('.slide').forEach(s=>{let t;new MutationObserver(m=>{
+    if(m.every(r=>r.target.closest&&r.target.closest('.sfoot')))return;
+    clearTimeout(t);t=setTimeout(()=>fitSlide(s),60)}).observe(s,{childList:true,subtree:true,characterData:true})});
+})();
+/*RX-JS-END*/
 </script>
 </body>
 </html>
