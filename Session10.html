@@ -185,6 +185,8 @@ def fib_tab(n):                # bottom-up
       <div class="verdict mid" id="knapVerdict">Klik untuk melihat tabel DP diisi baris per baris.</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• dp[i][w] = nilai maksimum memakai item 1 sampai i dengan kapasitas w.<br>• Dua pilihan: tidak mengambil item i → dp[i−1][w]; atau mengambil item i (jika wᵢ ≤ w) → dp[i−1][w−wᵢ] + vᵢ.<br>• Ambil yang lebih besar dari kedua pilihan. Tabel n × W menghasilkan Θ(n·W).</div>
 </section>
 
 <!-- 4. COIN CHANGE -->
@@ -216,6 +218,8 @@ def fib_tab(n):                # bottom-up
       <div class="verdict" id="coinVerdict">Masukkan target dan klik Hitung.</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• dp[x] = jumlah koin minimum untuk mencapai jumlah x.<br>• dp[x] = min(dp[x − c] + 1) untuk setiap koin c yang tidak melebihi x.<br>• Contoh: koin [1,3,4], target 6 → dp[6] = dp[3] + 1 = 2 (koin 3 + 3).</div>
 </section>
 
 <!-- 5. TOP-DOWN vs BOTTOM-UP -->

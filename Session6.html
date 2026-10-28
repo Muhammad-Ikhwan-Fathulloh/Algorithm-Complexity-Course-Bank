@@ -201,6 +201,8 @@ def heapsort(arr):
       </div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• O(log n) untuk AVL dan Red-Black: tinggi pohon dijaga sekitar log₂n, sehingga tiap operasi hanya menelusuri jalur itu.<br>• O(n) pada BST biasa: pohon bisa berubah menjadi daftar berantai, sehingga tinggi pohon menjadi n.</div>
 </section>
 
 <!-- 5. AMORTIZED -->
@@ -240,6 +242,8 @@ def heapsort(arr):
       </table>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Biaya amortisasi = total biaya serangkaian operasi ÷ jumlah operasi.<br>• Pada append: biaya satu operasi bisa O(n) saat resize, tetapi total n operasi tetap O(n), sehingga rata-rata O(1).</div>
 </section>
 
 <!-- 6. BLOOM FILTER & CMS -->
@@ -269,6 +273,8 @@ def heapsort(arr):
       </table>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• O(k): setiap insert dan query menyentuh k bit (k = jumlah fungsi hash).<br>• O(m): ruang yang dipakai, dengan m = ukuran array bit.<br>• Probabilitas false positive ≈ (1 − e^(−kn/m))ᵏ, dengan n = jumlah elemen yang dimasukkan.</div>
 </section>
 
 <!-- 7. SIMULATOR HASH TABLE -->
@@ -290,6 +296,8 @@ def heapsort(arr):
       <div class="card soft"><p class="b"><b>Aturan praktis:</b> Python dict mulai resize saat load factor &gt; 0.67. Java HashMap threshold 0.75. Redis hash table 1.0 (chaining).</p></div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• α = n/m: load factor, yaitu jumlah elemen dibagi ukuran tabel.<br>• Chaining: rata-rata panjang rantai = α. Semakin besar α, semakin lambat pencarian.<br>• Open addressing: butuh α < 1 agar masih ada slot kosong.</div>
 </section>
 
 <!-- 8. LATIHAN -->

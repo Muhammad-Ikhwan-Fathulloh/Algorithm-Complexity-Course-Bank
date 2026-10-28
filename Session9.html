@@ -222,6 +222,8 @@ def huffman(freq):
       <p class="tiny">Huffman: 2.24 bit/karakter rata-rata vs 3 bit fixed → penghematan 25%!</p>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Rata-rata bit = Σ (frekuensi × panjang kode). Contoh: 0,45·1 + 0,13·3 + … ≈ 2,24 bit per karakter.<br>• Fixed 3 bit: 3 bit untuk setiap karakter, jadi penghematannya (3 − 2,24)/3 ≈ 25%.</div>
 </section>
 
 <!-- 5. A* SEARCH -->
@@ -259,6 +261,8 @@ def astar(graph, start, goal, h):
       <div class="analogy"><b>A* vs Dijkstra:</b> Dijkstra = mencari kunci di seluruh rumah secara sistematis. A* = mencari kunci tapi tahu kira-kira di mana ("biasanya di meja"), jadi cek meja dulu. Lebih cepat dengan pengetahuan ekstra.</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• f(n) = g(n) + h(n): g = biaya aktual dari start ke n, h = estimasi sisa biaya ke goal.<br>• Admissible: h(n) ≤ biaya sebenarnya ke goal. Ini menjamin jalur optimal.<br>• Consistent: h(n) ≤ w(n,n′) + h(n′) untuk setiap sisi. Menjamin tiap simpul dikunjungi sekali.</div>
 </section>
 
 <!-- 6. A* VISUALIZER -->

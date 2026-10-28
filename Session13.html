@@ -170,6 +170,8 @@ def knapsack_bnb(weights, values, W):
       <div class="verdict mid" id="bnbVerdict">Klik tombol di atas.</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Upper bound = nilai saat ini + nilai relaksasi fraksional sisa kapasitas.<br>• Relaksasi fraksional: item boleh diambil sebagian, sehingga batasnya selalu lebih longgar tetapi valid.<br>• Jika upper bound ≤ solusi terbaik yang sudah ditemukan, cabang ini dipangkas.</div>
 </section>
 
 <!-- 4. MODERN: ILP -->
@@ -199,6 +201,8 @@ def knapsack_bnb(weights, values, W):
       </table>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• ILP: maksimalkan cᵀx dengan syarat Ax ≤ b dan x bilangan bulat.<br>• LP relaxation: hilangkan syarat bilangan bulat, selesaikan dengan LP biasa. Nilainya menjadi batas atas.<br>• B&B memecah variabel yang pecahan menjadi dua cabang: x ≤ ⌊v⌋ dan x ≥ ⌈v⌉.</div>
 </section>
 
 <!-- 5. LATIHAN -->

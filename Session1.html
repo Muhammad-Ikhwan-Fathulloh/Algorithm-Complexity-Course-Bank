@@ -285,6 +285,8 @@ ol.agenda b{color:#0f172a}
       <div class="tiny" id="domIns"></div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• 3n² + 10n + 7 adalah fungsi jumlah langkah program, dengan n = ukuran input.<br>• Yang dipertahankan hanya suku terbesar: n². Koefisien 3 dan suku 10n + 7 dibuang.<br>• Θ(n²) artinya pertumbuhannya sebanding dengan n² saat n besar.</div>
 </section>
 
 <!-- ====== 6 · EMPAT NOTASI ====== -->
@@ -298,6 +300,8 @@ ol.agenda b{color:#0f172a}
     <div class="ntcard"><div class="sym" style="color:#b91c1c">o(g)</div><div class="nm" style="color:#b91c1c">o kecil · kalah jauh</div><p>Tumbuh jauh lebih lambat dari g.</p><em>Motor lawan pesawat: makin jauh rutenya, makin ketara bedanya. Ini bukan sekadar "lebih pelan" - jaraknya makin melebar.</em></div>
   </div>
   <div class="warn"><b>Yang paling sering salah di kuis:</b> mengira O itu sama dengan "kasus terburuk". Bukan. O itu jenis <b>batas</b> (atas). "Terburuk" itu keadaan <b>datanya</b>. Dua hal beda - dan bisa digabung: "waktu terburuknya O(n²)" itu kalimat yang sah dan sering dipakai.</div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• O(g): f(n) ≤ c·g(n) untuk semua n ≥ n₀ (batas atas).<br>• Ω(g): f(n) ≥ c·g(n) untuk semua n ≥ n₀ (batas bawah).<br>• Θ(g): kedua batas berlaku sekaligus, jadi f(n) 'sebanding' dengan g(n).<br>• o(g): f(n) / g(n) → 0 saat n → ∞, artinya f tumbuh jauh lebih lambat.</div>
 </section>
 
 <!-- ====== 7 · PEMBUKTIAN ====== -->
@@ -325,6 +329,8 @@ ol.agenda b{color:#0f172a}
       <div class="verdict" id="cVerdict"></div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Langkah 1: ganti setiap suku kecil dengan batas yang lebih besar, misalnya 10n ≤ 10n² dan 7 ≤ 7n² untuk n ≥ 1.<br>• Langkah 2: jumlahkan: 3n² + 10n + 7 ≤ 20n².<br>• Hasilnya: c = 20 dan n₀ = 1 membuktikan 3n² + 10n + 7 = O(n²).</div>
 </section>
 
 <!-- ====== 8 · URUTAN ORDE ====== -->
@@ -350,6 +356,8 @@ ol.agenda b{color:#0f172a}
       <p class="tiny">Garis ungu (2ⁿ) dan merah (n²) cepat ninggalin yang lain. Yang hijau (n log n), biru (n), dan tosca (log n) kelihatan santai di rentang ini. Grafik ini juga ada di handout sebagai Gambar 2.</p>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Dari kiri ke kanan, orde makin besar: log n < n < n log n < n² < 2ⁿ.<br>• Contoh angka: untuk n = 1 juta, n log₂n ≈ 20 juta, sedangkan n² ≈ 10¹² (triliun).<br>• 2ⁿ tumbuh jauh lebih cepat lagi dan tidak praktis untuk n yang besar.</div>
 </section>
 
 <!-- ====== 9 · EXPLORER ====== -->
@@ -376,6 +384,8 @@ ol.agenda b{color:#0f172a}
       <div class="tiny" id="growInsight"></div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Jika n naik 10×, maka n² naik 100× (10²).<br>• Jika n naik 10×, log₂n hanya naik sekitar 3,3 (karena log₂10 ≈ 3,3).<br>• Inilah alasan kenapa perbedaan orde terasa besar pada data besar.</div>
 </section>
 
 <!-- ====== 10 · KASUS ====== -->
@@ -455,6 +465,8 @@ ol.agenda b{color:#0f172a}
       </table></div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Berurutan: T₁ + T₂ = O(max(T₁, T₂)), ambil yang terbesar.<br>• Loop di dalam loop: n × n = n², jumlah putaran dikali.<br>• Variabel dikali atau dibagi konstanta: jumlah langkah ≈ log n.</div>
 </section>
 
 <!-- ====== 13 · CONTOH A & B ====== -->
@@ -476,6 +488,8 @@ for i in range(n):   # n putaran
     </div>
   </div>
   <div class="note">Uji cepat buat ngecek pemahaman: kalau n digandakan, Contoh A jadi 2 kali lebih lama. Contoh B jadi <b>4 kali</b> lebih lama. Kalau jawabannya "dua-duanya dobel", ulangi baca Contoh B pelan-pelan.</div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Contoh A: n putaran, jadi Θ(n).<br>• Contoh B: n × n = n² pemanggilan, jadi Θ(n²).<br>• Jika n dinaikkan 2×, A menjadi 2× lebih lama dan B menjadi 4× lebih lama.</div>
 </section>
 
 <!-- ====== 14 · CONTOH C ====== -->
@@ -508,6 +522,8 @@ for i in range(n):   # n putaran
       <div class="tiny" id="loopIns"></div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Jumlah pasangan: 0 + 1 + 2 + … + (n−1) = n(n−1)/2.<br>• Untuk n besar, n(n−1)/2 ≈ n²/2. Faktor ½ adalah konstanta, jadi hasilnya Θ(n²).</div>
 </section>
 
 <!-- ====== 15 · CONTOH D ====== -->
@@ -537,6 +553,8 @@ while i &lt; n:
       <div class="term" id="guessLog" style="min-height:150px">Tulis angka 1–1000, klik "Cari". Biru muda = wilayah yang masih mungkin.</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• log n = berapa kali n bisa dibelah dua sampai tersisa 1.<br>• Contoh: log₂1000 ≈ 10, artinya cukup sekitar 10 tebakan untuk 1.000 angka.<br>• Jika n dikali 1.000, log n hanya bertambah sekitar 10.</div>
 </section>
 
 <!-- ====== 16 · CONTOH E ====== -->
@@ -556,6 +574,8 @@ while i &lt; n:
       <p class="tiny">Jadi waktu orang bilang "sortir yang bagus itu n log n", sekarang kalian tahu itu bukan cuma iklan - itu batas matematikanya.</p>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• n log n = n dikali log n, yaitu n tebakan masing-masing sekitar log n kali.<br>• Batas bawah untuk sortir berbasis perbandingan adalah Ω(n log n).</div>
 </section>
 
 <!-- ====== 17 · AI 1 ====== -->
@@ -610,6 +630,8 @@ while i &lt; n:
       <p class="tiny">Asumsinya sederhana (presisi BF16, abaikan efisiensi). Angka aslinya lebih rumit - tapi orde besarnya kayak gini.</p>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• 6 · N · D = perkiraan jumlah FLOP training, dengan N = jumlah parameter dan D = jumlah token latih.<br>• Faktor 6 adalah angka kasar yang dipakai pada banyak perhitungan skala model.<br>• Makin besar N atau D, biaya training ikut naik secara proporsional.</div>
 </section>
 
 <!-- ====== 19 · AI 3 ====== -->
@@ -635,6 +657,8 @@ while i &lt; n:
       <div class="verdict mid" id="ragVerdict">pilih metode pencariannya dulu…</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Θ(n·d) untuk brute force: n = jumlah dokumen, d = dimensi vektor. Setiap dokumen dibandingkan sekali.<br>• HNSW mendekati O(log n) per pencarian, karena hanya menelusuri jalur kecil dalam struktur berlapis.<br>• Konsekuensinya hasil bisa sedikit meleset (approximate), tetapi jauh lebih cepat.</div>
 </section>
 
 <!-- ====== 20 · KONSTANTA + STOPWATCH ====== -->
@@ -844,6 +868,8 @@ plt.legend(); plt.show()</pre></div>
       <div class="card soft"><p class="b">Di AI: konteks 2× lebih panjang = attention 4× lebih mahal. Training ≈ 6·N·D.</p></div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Θ(n) jika n dikali 2 → waktu ikut 2×; Θ(n²) → 4×.<br>• Θ(log n) bertambah sedikit walau n naik sangat besar.<br>• Di AI: konteks 2× lebih panjang berarti attention sekitar 4× lebih mahal, karena n².</div>
 </section>
 
 <!-- ====== 26 · PANDUAN COLAB ====== -->

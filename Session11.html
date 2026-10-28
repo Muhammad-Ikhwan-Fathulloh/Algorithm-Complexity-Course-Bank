@@ -137,6 +137,8 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
       <div class="verdict" id="edVerdict">Masukkan dua kata lalu klik Hitung.</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Jika X[i] = Y[j]: lcs[i][j] = lcs[i−1][j−1] + 1, yaitu huruf yang sama menambah panjang LCS.<br>• Jika tidak sama: lcs[i][j] = max(lcs[i−1][j], lcs[i][j−1]), ambil yang terpanjang dari dua kemungkinan.<br>• Tabel (m+1) × (n+1) diisi dalam O(mn).</div>
 </section>
 
 <!-- 3. EDIT DISTANCE -->
@@ -170,6 +172,8 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
       </div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Jika A[i] = B[j]: dp[i][j] = dp[i−1][j−1] (tidak ada biaya).<br>• Jika tidak: dp[i][j] = 1 + min(dp[i−1][j], dp[i][j−1], dp[i−1][j−1]).<br>• Tiga pilihan: hapus dari A, sisip ke A, atau ganti karakter. Masing-masing biaya 1.</div>
 </section>
 
 <!-- 4. BELLMAN-FORD & FLOYD-WARSHALL -->
@@ -215,6 +219,8 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
       </table>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Bellman-Ford: O(VE), V = jumlah simpul, E = jumlah sisi.<br>• Floyd-Warshall: O(V³), menghitung jarak semua pasangan simpul sekaligus.<br>• Dijkstra: O(E log V), tetapi tidak bisa bobot negatif.</div>
 </section>
 
 <!-- 5. MODERN: VITERBI -->
@@ -248,6 +254,8 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
       <div class="analogy"><b>Analogi - DP tangga lagi.</b> Tiap langkah, simpan probabilitas tertinggi untuk sampai ke state ini. Langkah berikutnya tinggal ambil simpanan dari langkah sebelumnya - tidak perlu menghitung semua jalur dari awal.</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Viterbi menyimpan δₜ(j): probabilitas terbaik sampai langkah t dan berada di state j.<br>• Rekurens: δₜ(j) = maks_i [δₜ₋₁(i) · a_ij] · b_j(oₜ), dengan a = transisi dan b = emisi.<br>• Telusuri balik dari δ_T terbesar untuk mendapatkan urutan state terbaik.</div>
 </section>
 
 <!-- 6. LATIHAN -->

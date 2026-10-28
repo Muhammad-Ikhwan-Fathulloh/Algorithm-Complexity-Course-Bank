@@ -218,6 +218,8 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
       </div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• O(10ⁿ): untuk gembok n digit ada 10ⁿ kombinasi, sehingga brute force mencoba sebanyak itu.<br>• Eksponensial berarti tiap digit tambahan mengalikan jumlah percobaan dengan 10.</div>
 </section>
 
 <!-- 4. TSP -->
@@ -250,6 +252,8 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
       <p class="tiny">Diasumsikan 1 miliar permutasi/detik (komputer modern). Angka sebenarnya bergantung hardware - tapi orde besarnya benar.</p>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• (n−1)!: jumlah rute TSP jika satu kota dikunci sebagai titik awal, lalu sisanya diurutkan (permutasi).<br>• Contoh: n = 5 → 4! = 24 rute. n = 20 → 19! ≈ 1,2×10¹⁷ rute.<br>• Faktorial tumbuh lebih cepat daripada eksponensial, sehingga n yang besar tidak bisa dihitung secara eksak.</div>
 </section>
 
 <!-- 5. STATE SPACE -->
@@ -288,6 +292,8 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
       </div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• 9! = 362.880: jumlah keadaan unik pada 8-puzzle (9 ubin, termasuk ubin kosong).<br>• Jumlah state adalah ukuran ruang pencarian yang harus dijelajahi dalam worst case.</div>
 </section>
 
 <!-- 6. BFS -->
@@ -324,6 +330,8 @@ def bfs(start, goal_fn, expand_fn):
       <p class="tiny">Angka di setiap simpul = urutan kunjungan. BFS kunjungi level per level; DFS langsung terjun ke kedalaman.</p>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• O(b^d) waktu dan memori: b = faktor cabang (branching factor), d = kedalaman solusi terdangkal.<br>• Contoh: b = 3 dan d = 20 → 3²⁰ ≈ 3,5 miliar entry yang harus disimpan.<br>• BFS selalu menemukan solusi terpendek karena level diperiksa satu per satu.</div>
 </section>
 
 <!-- 7. DFS & IDDFS -->
@@ -352,6 +360,8 @@ def bfs(start, goal_fn, expand_fn):
       <div class="note">IDDFS mengulang kerja: state di level d dikunjungi d kali. Tapi karena pohon tumbuh eksponensial, kerja berulang itu cuma O(b/(b-1)) ≈ konstan kali lebih lambat dari BFS. Tradeoffnya sangat worth it.</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• DFS: waktu O(bᵐ), memori O(b·m). m = kedalaman maksimum pohon.<br>• IDDFS: waktu O(bᵈ), memori O(b·d). Pada tiap iterasi kedalaman dibatasi lalu dinaikkan 1.<br>• Keuntungannya: memori kecil seperti DFS, tetapi tetap optimal seperti BFS.</div>
 </section>
 
 <!-- 8. MODERN AI -->
@@ -385,6 +395,8 @@ def bfs(start, goal_fn, expand_fn):
       </table>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• h(n): estimasi jarak dari simpul n ke goal, dipakai untuk memandu pencarian (A*).<br>• b^d: ukuran pencarian buta yang bisa 'meledak' jika b dan d besar.<br>• Pemangkasan (pruning) mengurangi jumlah cabang yang benar-benar dijelajahi.</div>
 </section>
 
 <!-- 9. LATIHAN -->

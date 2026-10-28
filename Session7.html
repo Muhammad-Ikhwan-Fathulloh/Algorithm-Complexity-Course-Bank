@@ -198,6 +198,8 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
       <div class="warn"><b>0/1 Knapsack:</b> Kalau tidak boleh ambil sebagian, greedy gagal! Item $60/10kg vs $100/20kg. Greedy ambil $60/10kg dulu (rasio 6), tapi $100/20kg saja sudah lebih untung untuk W=20. Butuh DP.</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Rasio v/w: nilai per satuan berat. Item dengan rasio tertinggi diambil lebih dulu.<br>• Contoh: emas 60/10 = 6, perak 100/20 = 5, perunggu 120/30 = 4.<br>• Kapasitas 50 kg: ambil emas (10 kg) dan perak (20 kg), lalu 20 kg dari perunggu (sebagian).</div>
 </section>
 
 <!-- 5. JOB SCHEDULING & LLM -->
@@ -222,6 +224,8 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
       <div class="note"><b>Temperature sampling:</b> Di LLM, "suhu" T mengatur keacakan. T→0: lebih greedy. T→∞: lebih acak. T=1: distribusi asli. Ini trade-off antara determinisme greedy dan eksplorasi.</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• tᵢ = durasi job i, dᵢ = deadline job i.<br>• Lateness job i = max(0, finish(i) − dᵢ): seberapa jauh job terlambat, nol jika tepat waktu.<br>• Earliest Deadline First (urutkan dᵢ naik) meminimalkan lateness maksimum. Waktunya O(n log n) karena sorting.</div>
 </section>
 
 <!-- 6. EXCHANGE ARGUMENT -->

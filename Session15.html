@@ -150,6 +150,8 @@ input[type=range]{accent-color:#2563eb;flex:1}
       <div class="analogy"><b>Analogi - pembelian massal.</b> Tidak tahu harga optimal, tapi dengan greedy matching kita bisa jamin tidak lebih boros dari 2× harga terbaik yang mungkin. Jaminan ini berlaku untuk <i>semua</i> input - bukan rata-rata.</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Minimasi: C(A) ≤ ρ · C(OPT). Hasil algoritma paling buruk ρ kali solusi optimal.<br>• Maksimasi: C(A) ≥ (1/ρ) · C(OPT). Hasilnya minimal 1/ρ dari optimal.<br>• ρ = 1 berarti optimal; ρ = 2 berarti solusinya paling buruk dua kali optimal.</div>
 </section>
 
 <!-- 3. RANDOMIZED -->
@@ -187,6 +189,8 @@ def rand_quicksort(A):
       <div class="note">Randomized QuickSort: pivot acak membuat adversary tidak bisa buat input kasus terburuk. Expected depth rekursi = O(log n) untuk semua input, tidak hanya data acak.</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Las Vegas: hasil selalu benar, waktu acak. Quick sort dengan pivot acak punya ekspektasi O(n log n).<br>• Monte Carlo: waktu tetap, hasil bisa salah dengan peluang kecil. Peluang error dibatasi oleh ε.<br>• Mengulang Monte Carlo beberapa kali menurunkan peluang salah secara eksponensial.</div>
 </section>
 
 <!-- 4. LSH & ANN -->
@@ -216,6 +220,8 @@ def rand_quicksort(A):
       <div class="analogy"><b>Analogi HNSW - peta bertingkat.</b> Layer 0 = jalan setapak (detil). Layer 1 = jalan raya. Layer 2 = jalan tol. Navigasi: masuk dari tol (kasar), turun ke jalan raya, lalu setapak. Jauh lebih cepat dari jalan setapak dari awal.</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Exact search: O(n·d), n = jumlah vektor dan d = dimensi. Mahal untuk jutaan vektor.<br>• LSH: vektor yang mirip di-hash ke bucket sama dengan peluang tinggi. Pencarian hanya di bucket itu.<br>• HNSW: pencarian approximate dengan struktur graf berlapis, mendekati O(log n) per query.</div>
 </section>
 
 <!-- 5. ATTENTION & FLASHATTENTION -->
@@ -253,6 +259,8 @@ def rand_quicksort(A):
       <p class="tiny">Tiap kotak ungu = 1 pasang token yang dibandingkan. Geser slider dan lihat n² membengkak.</p>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Standard attention: O(n²d) waktu dan O(n²) memori. n = panjang sekuens, d = dimensi.<br>• Menggandakan n berarti waktu dan memori sekitar 4×.<br>• FlashAttention mempertahankan O(n²d) waktu, tetapi memakai memori jauh lebih kecil dengan memproses per blok.</div>
 </section>
 
 <!-- 6. RANGKUMAN SELURUH MATERI -->

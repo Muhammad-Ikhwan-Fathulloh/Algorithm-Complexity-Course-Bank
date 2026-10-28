@@ -163,6 +163,8 @@ input[type=range]{accent-color:#2563eb;flex:1}
       <p class="tiny">* = kasus rata-rata. Kasus terburuk Quick Sort dan Quickselect bisa O(n²) kalau pivot-nya selalu buruk.</p>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• T(n) = a·T(n/b) + f(n): a = jumlah submasalah, n/b = ukuran tiap submasalah, f(n) = biaya divide dan combine.<br>• Rumus ini dibaca langsung oleh Master Theorem untuk menentukan kompleksitasnya.</div>
 </section>
 
 <!-- 3. MERGE SORT -->
@@ -199,6 +201,8 @@ def merge(L, R):              # O(n)
       <div class="term" id="mergeLog" style="min-height:130px">Klik "Jalankan" untuk melihat langkah merge sort…</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Merge sort: T(n) = 2T(n/2) + Θ(n). Dua bagian setengah ukuran, lalu merge dengan biaya linear.<br>• Hasilnya Θ(n log n) pada semua kasus, karena pembagian selalu sama besar.</div>
 </section>
 
 <!-- 4. QUICK SORT -->
@@ -237,6 +241,8 @@ def partition(A, lo, hi):
       <p class="tiny"><span style="color:#7c3aed">■</span> pivot &nbsp; <span style="color:#2563eb">■</span> ≤ pivot &nbsp; <span style="color:#dc2626">■</span> &gt; pivot &nbsp; <span style="color:#16a34a">■</span> terpasang</p>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Kasus terburuk: T(n) = T(n−1) + n. Pivot selalu memisahkan 0 dan n−1 elemen.<br>• Menjumlahkan: n + (n−1) + … + 1 = n(n+1)/2 = Θ(n²).</div>
 </section>
 
 <!-- 5. BINARY SEARCH -->
@@ -272,6 +278,8 @@ def partition(A, lo, hi):
       </div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• T(n) = T(n/2) + 1: tiap langkah membuang setengah data dan hanya melakukan 1 perbandingan.<br>• Master Theorem kasus 2 dengan a = 1, b = 2, d = 0 → Θ(log n).<br>• log₂100.000 ≈ 17, artinya cukup 17 langkah untuk 100 ribu data.</div>
 </section>
 
 <!-- 6. QUICKSELECT -->
@@ -306,6 +314,8 @@ def partition(A, lo, hi):
       <div class="warn"><b>Python:</b> <span class="mono">heapq.nsmallest(k, A)</span> untuk k kecil, atau gunakan introselect di library numpy. Quickselect murni cukup untuk n ≤ 10⁶.</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Dengan pivot rata-rata: T(n) = T(n/2) + n. Biaya partisi n, lalu hanya satu sisi yang dilanjutkan.<br>• Deret n + n/2 + n/4 + … ≤ 2n, sehingga totalnya Θ(n).</div>
 </section>
 
 <!-- 7. MERGE vs QUICK -->
@@ -339,6 +349,8 @@ def partition(A, lo, hi):
       </div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Θ(n log n) dan Θ(n²) adalah kompleksitas waktu dalam kasus terburuk dan rata-rata.<br>• O(n) dan O(log n) adalah memori tambahan yang dibutuhkan algoritma.</div>
 </section>
 
 <!-- 8. LATIHAN -->

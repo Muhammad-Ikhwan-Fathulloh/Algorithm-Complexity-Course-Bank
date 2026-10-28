@@ -133,6 +133,8 @@ input[type=range]{accent-color:#2563eb;flex:1}
       <div id="cpOut" style="font:12.5px Consolas;background:#f8fafc;border-radius:8px;padding:10px;min-height:110px;overflow:auto;color:#334155"></div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• T(n) = 2T(n/2) + O(n): dua subsoal setengah ukuran, plus biaya gabung O(n).<br>• Master Theorem kasus 2 (log₂2 = 1 = d) → Θ(n log n).<br>• Titik kunci: strip hanya perlu dicek dengan ≤ 7 tetangga, sehingga combine tetap O(n).</div>
 </section>
 
 <!-- 4. KARATSUBA -->
@@ -181,6 +183,8 @@ input[type=range]{accent-color:#2563eb;flex:1}
       </div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• T(n) = 3T(n/2) + n: 3 perkalian rekursif berukuran n/2, ditambah penjumlahan O(n).<br>• Eksponen = log₂3 ≈ 1,585, sehingga Θ(n^1,585), lebih kecil dari n² milik cara naif.<br>• x = a·10^(n/2) + b: membagi bilangan menjadi bagian tinggi (a) dan rendah (b).</div>
 </section>
 
 <!-- 5. STRASSEN -->
@@ -213,6 +217,8 @@ input[type=range]{accent-color:#2563eb;flex:1}
       <div class="warn"><b>Praktis:</b> Strassen jarang dipakai di library produksi (BLAS, cuBLAS) karena konstanta besar dan cache-unfriendly. Mulai efektif di n ≳ 512. AlphaTensor masih di tahap riset.</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• Strassen: T(n) = 7T(n/2) + n² → log₂7 ≈ 2,807 → Θ(n^2,807).<br>• AlphaTensor: T(n) = 47T(n/4) + n² → log₄47 ≈ 2,777 → Θ(n^2,777).<br>• Pangkat yang lebih kecil berarti pertumbuhan lebih lambat saat n besar.</div>
 </section>
 
 <!-- 6. FFT -->
@@ -251,6 +257,8 @@ input[type=range]{accent-color:#2563eb;flex:1}
       <div class="analogy"><b>Analogi FFT:</b> Alih-alih kalikan setiap koefisien satu per satu (O(n²)), pindah ke "domain frekuensi" (O(n log n)), kalikan semua sekaligus O(n), lalu balik lagi O(n log n). Serupa dengan bagaimana logaritma mengubah perkalian menjadi penjumlahan.</div>
     </div>
   </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• T(n) = 2T(n/2) + O(n) untuk FFT, sama bentuknya dengan merge sort → Θ(n log n).<br>• O(n log n log log n): kompleksitas perkalian bilangan n-digit dengan FFT.</div>
 </section>
 
 <!-- 7. LATIHAN -->
