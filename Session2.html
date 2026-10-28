@@ -146,6 +146,13 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 .rxhasil{background:#f0fdf4;border:2px solid #bbf7d0;border-left:6px solid #16a34a;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#14532d;flex:none}
 .rxhasil b{color:#15803d}
 .rxstack{display:flex;flex-direction:column;gap:12px;min-width:0}
+table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
+.rxtrace th{background:#0f172a;color:#e2e8f0;text-align:left;padding:6px 9px;font-size:13px;font-weight:700;white-space:nowrap}
+.rxtrace td{border-bottom:1px solid #e2e8f0;padding:4px 9px;text-align:left;color:#334155;font-family:Consolas,'Courier New',monospace;line-height:1.45;vertical-align:top}
+.rxtrace tr:nth-child(even) td{background:#f8fafc}
+.rxtrace td:first-child{color:#64748b;font-weight:700}
+b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
+.rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -425,7 +432,7 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 <h2 class="st">Empat rumus rekurens yang wajib bisa dibaca</h2>
 <p class="b">Rekurens adalah “rumus yang memanggil dirinya sendiri”. Banyak mahasiswa hafal hasilnya tetapi tidak bisa membacanya. Berikut empat bentuk paling penting, dari cara membaca sampai pemakaiannya di sistem nyata.</p>
 <div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Rekurens bagi-dua: T(n) = 2T(n/2) + n</b><span>T(n) = 2T(n/2) + n → Θ(n log n)</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Master Theorem</b><span>T(n) = aT(n/b) + Θ(nᵈ)</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Rekurens kurang-satu: T(n) = T(n−1) + n</b><span>T(n) = T(n−1) + n → Θ(n²)</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Rekurens Fibonacci naif</b><span>T(n) = T(n−1) + T(n−2) + 1 → Θ(φⁿ)</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas tiga slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
 </section>
 <section class="slide" id="rx1a">
 <div class="kicker">Bedah Rumus 1/4 · Langkah 1: cara membaca</div>
@@ -446,6 +453,14 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>n</th><th>T(n) hitung</th><th>n log₂n + n</th></tr><tr><td>1</td><td>1</td><td>1</td></tr><tr><td>2</td><td>4</td><td>4</td></tr><tr><td>4</td><td>12</td><td>12</td></tr><tr><td>8</td><td>32</td><td>32</td></tr><tr><td>16</td><td>80</td><td>80</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> T(8) = 32, persis sama dengan n log₂ n + n.</div>
+</section>
+<section class="slide" id="rx1t">
+<div class="kicker">Bedah Rumus 1/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Rekurens bagi-dua: T(n) = 2T(n/2) + n</h2>
+<div class="rxsoal"><b>Kasus:</b> Merge sort [5, 2, 4, 7, 1, 3, 2, 6] - setiap pemanggilan rekursif ditulis berurutan.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> “bagi” = T(n) memanggil dua T(n/2). “gabung” = kerja + n. Kolom level = kedalaman pohon rekursi (0 sampai log₂8 − 1 = 2). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>langkah</th><th>aksi</th><th>masukan</th><th>keluaran</th><th>level</th></tr><tr><td>1</td><td>bagi</td><td>[5, 2, 4, 7, 1, 3, 2, 6]</td><td>[5, 2, 4, 7] | [1, 3, 2, 6]</td><td>0</td></tr><tr><td>2</td><td>bagi</td><td>[5, 2, 4, 7]</td><td>[5, 2] | [4, 7]</td><td>1</td></tr><tr><td>3</td><td>bagi</td><td>[5, 2]</td><td>[5] | [2]</td><td>2</td></tr><tr><td>4</td><td>gabung</td><td>[5] + [2]</td><td><b class='chg'>[2, 5]</b></td><td>2</td></tr><tr><td>5</td><td>bagi</td><td>[4, 7]</td><td>[4] | [7]</td><td>2</td></tr><tr><td>6</td><td>gabung</td><td>[4] + [7]</td><td><b class='chg'>[4, 7]</b></td><td>2</td></tr><tr><td>7</td><td>gabung</td><td>[2, 5] + [4, 7]</td><td><b class='chg'>[2, 4, 5, 7]</b></td><td>1</td></tr><tr><td>8</td><td>bagi</td><td>[1, 3, 2, 6]</td><td>[1, 3] | [2, 6]</td><td>1</td></tr><tr><td>9</td><td>bagi</td><td>[1, 3]</td><td>[1] | [3]</td><td>2</td></tr><tr><td>10</td><td>gabung</td><td>[1] + [3]</td><td><b class='chg'>[1, 3]</b></td><td>2</td></tr><tr><td>11</td><td>bagi</td><td>[2, 6]</td><td>[2] | [6]</td><td>2</td></tr><tr><td>12</td><td>gabung</td><td>[2] + [6]</td><td><b class='chg'>[2, 6]</b></td><td>2</td></tr><tr><td>13</td><td>gabung</td><td>[1, 3] + [2, 6]</td><td><b class='chg'>[1, 2, 3, 6]</b></td><td>1</td></tr><tr><td>14</td><td>gabung</td><td>[2, 4, 5, 7] + [1, 2, 3, 6]</td><td><b class='chg'>[1, 2, 2, 3, 4, 5, 6, 7]</b></td><td>0</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Hasil [1, 2, 2, 3, 4, 5, 6, 7]: 7 kali bagi + 7 kali gabung, 3 level × 8 elemen kerja = n log₂ n.</div>
 </section>
 <section class="slide" id="rx1b">
 <div class="kicker">Bedah Rumus 1/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -483,6 +498,14 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Θ(n^1,585), sekitar 18× lebih sedikit operasi daripada n² untuk n = 1.024.</div>
 </section>
+<section class="slide" id="rx2t">
+<div class="kicker">Bedah Rumus 2/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Master Theorem</h2>
+<div class="rxsoal"><b>Kasus:</b> Terapkan Master Theorem langkah demi langkah ke lima rekurens.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Baca tiap baris kiri ke kanan: ambil (a, b, d) → hitung log_b a → bandingkan dengan d → tentukan kasus → tulis hasil. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>algoritma</th><th>a, b, d</th><th>pangkat kritis</th><th>bandingkan</th><th>kasus</th><th>hasil</th></tr><tr><td>binary search</td><td>1, 2, 0</td><td>log_2 1 = 0,000</td><td>d = log_b a</td><td>2 (seimbang)</td><td><b class='chg'>Θ(log n)</b></td></tr><tr><td>merge sort</td><td>2, 2, 1</td><td>log_2 2 = 1,000</td><td>d = log_b a</td><td>2 (seimbang)</td><td><b class='chg'>Θ(n^1 log n)</b></td></tr><tr><td>Karatsuba</td><td>3, 2, 1</td><td>log_2 3 = 1,585</td><td>d &lt; log_b a</td><td>1 (daun)</td><td><b class='chg'>Θ(n^1,585)</b></td></tr><tr><td>Strassen</td><td>7, 2, 2</td><td>log_2 7 = 2,807</td><td>d &lt; log_b a</td><td>1 (daun)</td><td><b class='chg'>Θ(n^2,807)</b></td></tr><tr><td>contoh akar dominan</td><td>2, 2, 2</td><td>log_2 2 = 1,000</td><td>d &gt; log_b a</td><td>3 (akar)</td><td><b class='chg'>Θ(n^2)</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Prosedurnya selalu sama: 3 angka, 1 logaritma, 1 perbandingan.</div>
+</section>
 <section class="slide" id="rx2b">
 <div class="kicker">Bedah Rumus 2/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">Memperkirakan algoritma rekursif sebelum menulisnya</h2>
@@ -519,6 +542,14 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> T(5) = 15; T(10.000) = 50.005.000 → Θ(n²).</div>
 </section>
+<section class="slide" id="rx3t">
+<div class="kicker">Bedah Rumus 3/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Rekurens kurang-satu: T(n) = T(n−1) + n</h2>
+<div class="rxsoal"><b>Kasus:</b> Quicksort (pivot = elemen pertama) pada data terurut [1, 2, 3, 4, 5].</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Pivot disorot. Setiap baris hanya mengupas SATU elemen (kiri selalu kosong), jadi rekurensnya T(n) = T(n−1) + (n−1). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>langkah</th><th>subarray</th><th>pivot</th><th>perbandingan</th><th>kiri</th><th>kanan</th><th>kumulatif</th></tr><tr><td>1</td><td>[<b class='chg'>1</b>, 2, 3, 4, 5]</td><td>1</td><td>4</td><td>[]</td><td>[2, 3, 4, 5]</td><td><b class='chg'>4</b></td></tr><tr><td>2</td><td>[<b class='chg'>2</b>, 3, 4, 5]</td><td>2</td><td>3</td><td>[]</td><td>[3, 4, 5]</td><td><b class='chg'>7</b></td></tr><tr><td>3</td><td>[<b class='chg'>3</b>, 4, 5]</td><td>3</td><td>2</td><td>[]</td><td>[4, 5]</td><td><b class='chg'>9</b></td></tr><tr><td>4</td><td>[<b class='chg'>4</b>, 5]</td><td>4</td><td>1</td><td>[]</td><td>[5]</td><td><b class='chg'>10</b></td></tr><tr><td>5</td><td>[<b class='chg'>5</b>]</td><td>5</td><td>0</td><td>[]</td><td>[]</td><td><b class='chg'>10</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Total 4 + 3 + 2 + 1 = 10 = n(n−1)/2 perbandingan → Θ(n²).</div>
+</section>
 <section class="slide" id="rx3b">
 <div class="kicker">Bedah Rumus 3/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">Quicksort pada data yang sudah terurut</h2>
@@ -554,6 +585,14 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>n</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr><tr><td>fib(n)</td><td>0</td><td>1</td><td>1</td><td>2</td><td>3</td><td>5</td><td>8</td></tr><tr><td>panggilan naif</td><td>1</td><td>1</td><td>3</td><td>5</td><td>9</td><td>15</td><td>25</td></tr><tr><td>panggilan memo</td><td>1</td><td>1</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> fib_naif(6) = 25 panggilan vs 7 dengan memo; untuk n = 30 naif ≈ 2,7 juta panggilan.</div>
+</section>
+<section class="slide" id="rx4t">
+<div class="kicker">Bedah Rumus 4/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Rekurens Fibonacci naif</h2>
+<div class="rxsoal"><b>Kasus:</b> Urutan pemanggilan fib_naif(4), persis seperti yang dijalankan komputer.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Indentasi = kedalaman rekursi. Hasil diisi saat panggilan selesai. Perhatikan fib(2) muncul dua kali - itulah pemborosan yang dihapus memoisasi. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>urutan</th><th>panggilan</th><th>kedalaman</th><th>hasil</th><th>catatan</th></tr><tr><td>1</td><td>fib(4)</td><td>0</td><td><b class='chg'>3</b></td><td></td></tr><tr><td>2</td><td>&nbsp;&nbsp;fib(3)</td><td>1</td><td><b class='chg'>2</b></td><td></td></tr><tr><td>3</td><td>&nbsp;&nbsp;&nbsp;&nbsp;fib(2)</td><td>2</td><td><b class='chg'>1</b></td><td>dihitung ulang!</td></tr><tr><td>4</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fib(1)</td><td>3</td><td>1</td><td></td></tr><tr><td>5</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fib(0)</td><td>3</td><td>0</td><td></td></tr><tr><td>6</td><td>&nbsp;&nbsp;&nbsp;&nbsp;fib(1)</td><td>2</td><td>1</td><td></td></tr><tr><td>7</td><td>&nbsp;&nbsp;fib(2)</td><td>1</td><td><b class='chg'>1</b></td><td>dihitung ulang!</td></tr><tr><td>8</td><td>&nbsp;&nbsp;&nbsp;&nbsp;fib(1)</td><td>2</td><td>1</td><td></td></tr><tr><td>9</td><td>&nbsp;&nbsp;&nbsp;&nbsp;fib(0)</td><td>2</td><td>0</td><td></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> fib(4) = 3 butuh 9 panggilan; dengan memo cukup 5 (fib(0)…fib(4)).</div>
 </section>
 <section class="slide" id="rx4b">
 <div class="kicker">Bedah Rumus 4/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>

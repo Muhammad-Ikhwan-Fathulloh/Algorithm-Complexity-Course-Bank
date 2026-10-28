@@ -116,6 +116,13 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 .rxhasil{background:#f0fdf4;border:2px solid #bbf7d0;border-left:6px solid #16a34a;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#14532d;flex:none}
 .rxhasil b{color:#15803d}
 .rxstack{display:flex;flex-direction:column;gap:12px;min-width:0}
+table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
+.rxtrace th{background:#0f172a;color:#e2e8f0;text-align:left;padding:6px 9px;font-size:13px;font-weight:700;white-space:nowrap}
+.rxtrace td{border-bottom:1px solid #e2e8f0;padding:4px 9px;text-align:left;color:#334155;font-family:Consolas,'Courier New',monospace;line-height:1.45;vertical-align:top}
+.rxtrace tr:nth-child(even) td{background:#f8fafc}
+.rxtrace td:first-child{color:#64748b;font-weight:700}
+b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
+.rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -317,7 +324,7 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 <h2 class="st">Tiga rumus untuk membaca teori kompleksitas</h2>
 <p class="b">P, NP, reduksi, dan SAT sering terasa abstrak. Padahal ketiganya dipakai setiap kali engineer memutuskan: “cari algoritma cepat, atau serahkan ke solver?”</p>
 <div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Definisi NP lewat verifier</b><span>x ∈ L ⇔ ∃y: V(x, y) = 1, |y| ≤ poly(|x|)</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Reduksi polinomial</b><span>A ≤ₚ B: x ∈ A ⇔ f(x) ∈ B</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Bentuk CNF dan ruang pencarian SAT</b><span>φ = ⋀ (⋁ literal), 2ⁿ assignment</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas tiga slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
 </section>
 <section class="slide" id="rx1a">
 <div class="kicker">Bedah Rumus 1/3 · Langkah 1: cara membaca</div>
@@ -338,6 +345,14 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th></th><th>k1</th><th>k2</th><th>k3</th><th>k4</th></tr><tr><td>b1</td><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr><td>b2</td><td>3</td><td>4</td><td>1</td><td>2</td></tr><tr><td>b3</td><td>2</td><td>1</td><td>4</td><td>3</td></tr><tr><td>b4</td><td>4</td><td>3</td><td>2</td><td>1</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Valid - dicek dalam 48 langkah. Mengecek mudah; mencari isiannya yang sulit.</div>
+</section>
+<section class="slide" id="rx1t">
+<div class="kicker">Bedah Rumus 1/3 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Definisi NP lewat verifier</h2>
+<div class="rxsoal"><b>Kasus:</b> Verifier Sudoku 4×4 bekerja grup demi grup pada isian [1 2 3 4 / 3 4 1 2 / 2 1 4 3 / 4 3 2 1].</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu grup (baris, kolom, atau kotak 2×2). Urutkan isinya; harus tepat 1 2 3 4. Kolom terakhir menghitung sel yang sudah dibaca. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>grup</th><th>isi</th><th>diurutkan</th><th>valid?</th><th>sel dibaca</th></tr><tr><td>baris 1</td><td>1 2 3 4</td><td>1 2 3 4</td><td>✓</td><td>4</td></tr><tr><td>baris 2</td><td>3 4 1 2</td><td>1 2 3 4</td><td>✓</td><td>8</td></tr><tr><td>baris 3</td><td>2 1 4 3</td><td>1 2 3 4</td><td>✓</td><td>12</td></tr><tr><td>baris 4</td><td>4 3 2 1</td><td>1 2 3 4</td><td>✓</td><td>16</td></tr><tr><td>kolom 1</td><td>1 3 2 4</td><td>1 2 3 4</td><td>✓</td><td>20</td></tr><tr><td>kolom 2</td><td>2 4 1 3</td><td>1 2 3 4</td><td>✓</td><td>24</td></tr><tr><td>kolom 3</td><td>3 1 4 2</td><td>1 2 3 4</td><td>✓</td><td>28</td></tr><tr><td>kolom 4</td><td>4 2 3 1</td><td>1 2 3 4</td><td>✓</td><td>32</td></tr><tr><td>kotak 1</td><td>1 2 3 4</td><td>1 2 3 4</td><td>✓</td><td>36</td></tr><tr><td>kotak 2</td><td>3 4 1 2</td><td>1 2 3 4</td><td>✓</td><td>40</td></tr><tr><td>kotak 3</td><td>2 1 4 3</td><td>1 2 3 4</td><td>✓</td><td>44</td></tr><tr><td>kotak 4</td><td>4 3 2 1</td><td>1 2 3 4</td><td>✓</td><td>48</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> 12 grup valid, 48 pembacaan sel → verifikasi selesai dalam waktu polinomial O(n²).</div>
 </section>
 <section class="slide" id="rx1b">
 <div class="kicker">Bedah Rumus 1/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -374,6 +389,14 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> 11 klausa; satu solusi SAT misalnya x₁ = 1, x₅ = 1 → simpul 0 merah, simpul 1 hijau.</div>
 </section>
+<section class="slide" id="rx2t">
+<div class="kicker">Bedah Rumus 2/3 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Reduksi polinomial</h2>
+<div class="rxsoal"><b>Kasus:</b> Reduksi 3-coloring → SAT untuk segitiga (simpul 0, 1, 2; sisi 01, 12, 02). Variabel x = v·3 + c + 1 (c: 0 merah, 1 hijau, 2 biru).</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu kelompok klausa yang ditambahkan fungsi f. Kolom kanan = jumlah klausa kumulatif; ukurannya polinomial terhadap ukuran graf. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>bagian</th><th>klausa</th><th>jumlah</th><th>kumulatif</th></tr><tr><td>simpul 0: minimal satu warna</td><td>[1, 2, 3]</td><td>1</td><td>1</td></tr><tr><td>simpul 1: minimal satu warna</td><td>[4, 5, 6]</td><td>1</td><td>2</td></tr><tr><td>simpul 2: minimal satu warna</td><td>[7, 8, 9]</td><td>1</td><td>3</td></tr><tr><td>simpul 0: paling banyak satu</td><td>[-1, -2] [-1, -3] [-2, -3]</td><td>3</td><td>6</td></tr><tr><td>simpul 1: paling banyak satu</td><td>[-4, -5] [-4, -6] [-5, -6]</td><td>3</td><td>9</td></tr><tr><td>simpul 2: paling banyak satu</td><td>[-7, -8] [-7, -9] [-8, -9]</td><td>3</td><td>12</td></tr><tr><td>sisi (0,1): warna beda</td><td>[-1, -4] [-2, -5] [-3, -6]</td><td>3</td><td><b class='chg'>15</b></td></tr><tr><td>sisi (1,2): warna beda</td><td>[-4, -7] [-5, -8] [-6, -9]</td><td>3</td><td><b class='chg'>18</b></td></tr><tr><td>sisi (0,2): warna beda</td><td>[-1, -7] [-2, -8] [-3, -9]</td><td>3</td><td><b class='chg'>21</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> 21 klausa, 9 variabel. Contoh solusi: x₁, x₅, x₉ benar → simpul 0 merah, 1 hijau, 2 biru.</div>
+</section>
 <section class="slide" id="rx2b">
 <div class="kicker">Bedah Rumus 2/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">Menerjemahkan masalah bisnis ke SAT/ILP</h2>
@@ -409,6 +432,14 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>a1 a2 b1</th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>φ</th></tr><tr><td>F F F</td><td>F</td><td>T</td><td>T</td><td>T</td><td>F</td></tr><tr><td>F T F</td><td>T</td><td>T</td><td>F</td><td>T</td><td>F</td></tr><tr><td>T F F</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T ✓</td></tr><tr><td>T F T</td><td>T</td><td>T</td><td>T</td><td>F</td><td>F</td></tr><tr><td>T T F</td><td>T</td><td>F</td><td>F</td><td>T</td><td>F</td></tr><tr><td>… 3 baris lain</td><td></td><td></td><td></td><td></td><td>F</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Satu-satunya solusi a1 = T, a2 = F, b1 = F; propagasi menemukannya dalam 3 langkah, bukan 8 baris.</div>
+</section>
+<section class="slide" id="rx3t">
+<div class="kicker">Bedah Rumus 3/3 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Bentuk CNF dan ruang pencarian SAT</h2>
+<div class="rxsoal"><b>Kasus:</b> DPLL pada φ = (x1∨x2)(¬x1∨x3)(¬x2∨x3)(¬x3∨x4)(¬x1∨¬x4)(x2∨¬x4).</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu aksi solver: keputusan (menebak nilai), propagasi (klausa tinggal satu literal memaksa nilai), konflik (semua literal salah → mundur). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>#</th><th>aksi</th><th>alasan</th><th>efek</th><th>assignment</th></tr><tr><td>1</td><td>keputusan</td><td>coba x1</td><td>x1 = T</td><td>x1=T</td></tr><tr><td>2</td><td>&nbsp;&nbsp;propagasi</td><td>(¬x1 ∨ x3) tinggal x3</td><td>x3 = T</td><td>x1=T x3=T</td></tr><tr><td>3</td><td>&nbsp;&nbsp;propagasi</td><td>(¬x3 ∨ x4) tinggal x4</td><td>x4 = T</td><td>x1=T x3=T x4=T</td></tr><tr><td>4</td><td>&nbsp;&nbsp;konflik</td><td>(¬x1 ∨ ¬x4) salah semua</td><td><b class='chg'>mundur</b></td><td>x1=T x3=T x4=T</td></tr><tr><td>5</td><td>keputusan</td><td>coba x1</td><td>x1 = F</td><td>x1=F</td></tr><tr><td>6</td><td>&nbsp;&nbsp;propagasi</td><td>(x1 ∨ x2) tinggal x2</td><td>x2 = T</td><td>x1=F x2=T</td></tr><tr><td>7</td><td>&nbsp;&nbsp;propagasi</td><td>(¬x2 ∨ x3) tinggal x3</td><td>x3 = T</td><td>x1=F x2=T x3=T</td></tr><tr><td>8</td><td>&nbsp;&nbsp;propagasi</td><td>(¬x3 ∨ x4) tinggal x4</td><td>x4 = T</td><td>x1=F x2=T x3=T x4=T</td></tr><tr><td>9</td><td>&nbsp;&nbsp;selesai</td><td>semua klausa benar</td><td><b class='chg'>SAT</b></td><td>x1=F x2=T x3=T x4=T</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Solusi: x1=F x2=T x3=T x4=T - ditemukan dalam 9 langkah, bukan mencoba 2⁴ = 16 kombinasi.</div>
 </section>
 <section class="slide" id="rx3b">
 <div class="kicker">Bedah Rumus 3/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>

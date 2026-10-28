@@ -106,6 +106,13 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 .rxhasil{background:#f0fdf4;border:2px solid #bbf7d0;border-left:6px solid #16a34a;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#14532d;flex:none}
 .rxhasil b{color:#15803d}
 .rxstack{display:flex;flex-direction:column;gap:12px;min-width:0}
+table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
+.rxtrace th{background:#0f172a;color:#e2e8f0;text-align:left;padding:6px 9px;font-size:13px;font-weight:700;white-space:nowrap}
+.rxtrace td{border-bottom:1px solid #e2e8f0;padding:4px 9px;text-align:left;color:#334155;font-family:Consolas,'Courier New',monospace;line-height:1.45;vertical-align:top}
+.rxtrace tr:nth-child(even) td{background:#f8fafc}
+.rxtrace td:first-child{color:#64748b;font-weight:700}
+b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
+.rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -303,7 +310,7 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 <h2 class="st">Empat rumus untuk merancang dan membuktikan greedy</h2>
 <p class="b">Greedy terlihat seperti “ambil yang paling menggiurkan sekarang”. Tetapi kriteria pilihannya harus tepat dan bisa dibuktikan. Rumus berikut adalah kriteria dan alat bukti utama.</p>
 <div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Aturan pilih Activity Selection</b><span>urut fᵢ naik; ambil jika sᵢ ≥ f_terakhir</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Fractional knapsack: rasio nilai per berat</b><span>urut vᵢ/wᵢ; maks Σ xᵢvᵢ, 0 ≤ xᵢ ≤ 1</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Minimasi keterlambatan maksimum (EDF)</b><span>L_max = maks(0, fⱼ − dⱼ); urut deadline</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Exchange argument (pola pembuktian)</b><span>OPT' = OPT − {o₁} ∪ {g₁}, |OPT'| = |OPT|</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas tiga slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
 </section>
 <section class="slide" id="rx1a">
 <div class="kicker">Bedah Rumus 1/4 · Langkah 1: cara membaca</div>
@@ -324,6 +331,14 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>rapat</th><th>s ≥ f_terakhir?</th><th>keputusan</th><th>f_terakhir</th></tr><tr><td>(1,4)</td><td>-</td><td>ambil</td><td>4</td></tr><tr><td>(3,5)</td><td>3 &lt; 4</td><td>lewati</td><td>4</td></tr><tr><td>(0,6)</td><td>0 &lt; 4</td><td>lewati</td><td>4</td></tr><tr><td>(5,7)</td><td>5 ≥ 4</td><td>ambil</td><td>7</td></tr><tr><td>(8,9)</td><td>8 ≥ 7</td><td>ambil</td><td>9</td></tr><tr><td>(5,9)</td><td>5 &lt; 9</td><td>lewati</td><td>9</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> 3 rapat: (1,4), (5,7), (8,9).</div>
+</section>
+<section class="slide" id="rx1t">
+<div class="kicker">Bedah Rumus 1/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Aturan pilih Activity Selection</h2>
+<div class="rxsoal"><b>Kasus:</b> Activity selection untuk 11 kegiatan (sudah diurutkan menurut waktu selesai).</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Baca dari atas ke bawah. Ambil kegiatan jika waktu mulainya ≥ waktu selesai kegiatan terakhir yang diambil. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>kegiatan (s, f)</th><th>syarat s ≥ f_terakhir</th><th>keputusan</th><th>f_terakhir</th><th>jumlah</th></tr><tr><td>(1, 4)</td><td>1 ≥ -</td><td><b class='chg'>ambil</b></td><td>4</td><td>1</td></tr><tr><td>(3, 5)</td><td>3 &lt; 4</td><td>lewati</td><td>4</td><td>1</td></tr><tr><td>(0, 6)</td><td>0 &lt; 4</td><td>lewati</td><td>4</td><td>1</td></tr><tr><td>(5, 7)</td><td>5 ≥ 4</td><td><b class='chg'>ambil</b></td><td>7</td><td>2</td></tr><tr><td>(3, 9)</td><td>3 &lt; 7</td><td>lewati</td><td>7</td><td>2</td></tr><tr><td>(5, 9)</td><td>5 &lt; 7</td><td>lewati</td><td>7</td><td>2</td></tr><tr><td>(6, 10)</td><td>6 &lt; 7</td><td>lewati</td><td>7</td><td>2</td></tr><tr><td>(8, 11)</td><td>8 ≥ 7</td><td><b class='chg'>ambil</b></td><td>11</td><td>3</td></tr><tr><td>(8, 12)</td><td>8 &lt; 11</td><td>lewati</td><td>11</td><td>3</td></tr><tr><td>(2, 14)</td><td>2 &lt; 11</td><td>lewati</td><td>11</td><td>3</td></tr><tr><td>(12, 16)</td><td>12 ≥ 11</td><td><b class='chg'>ambil</b></td><td>16</td><td>4</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Terpilih (1, 4), (5, 7), (8, 11), (12, 16) → 4 kegiatan.</div>
 </section>
 <section class="slide" id="rx1b">
 <div class="kicker">Bedah Rumus 1/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -360,6 +375,14 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>item</th><th>v/w</th><th>porsi</th><th>nilai</th><th>sisa W</th></tr><tr><td>A</td><td>6</td><td>1</td><td>60</td><td>40</td></tr><tr><td>B</td><td>5</td><td>1</td><td>100</td><td>20</td></tr><tr><td>C</td><td>4</td><td>2/3</td><td>80</td><td>0</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Nilai maksimum 240.</div>
+</section>
+<section class="slide" id="rx2t">
+<div class="kicker">Bedah Rumus 2/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Fractional knapsack: rasio nilai per berat</h2>
+<div class="rxsoal"><b>Kasus:</b> Fractional knapsack W = 12: A(v 10, w 2), B(5, 3), C(15, 5), D(7, 7).</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Urutkan menurut v/w terbesar. Setiap baris: ambil sebanyak mungkin, kurangi kapasitas, tambahkan nilai. Berhenti saat kapasitas 0. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>item</th><th>v</th><th>w</th><th>v/w</th><th>diambil</th><th>nilai</th><th>sisa W</th><th>total</th></tr><tr><td>A</td><td>10</td><td>2</td><td>5,00</td><td>penuh</td><td>10</td><td>10</td><td><b class='chg'>10</b></td></tr><tr><td>C</td><td>15</td><td>5</td><td>3,00</td><td>penuh</td><td>15</td><td>5</td><td><b class='chg'>25</b></td></tr><tr><td>B</td><td>5</td><td>3</td><td>1,67</td><td>penuh</td><td>5</td><td>2</td><td><b class='chg'>30</b></td></tr><tr><td>D</td><td>7</td><td>7</td><td>1,00</td><td>2/7</td><td>2</td><td>0</td><td><b class='chg'>32</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Nilai maksimum 32.</div>
 </section>
 <section class="slide" id="rx2b">
 <div class="kicker">Bedah Rumus 2/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -399,6 +422,14 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> EDF memberi L_max = 1 (urutan lain bisa sampai 4).</div>
 </section>
+<section class="slide" id="rx3t">
+<div class="kicker">Bedah Rumus 3/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Minimasi keterlambatan maksimum (EDF)</h2>
+<div class="rxsoal"><b>Kasus:</b> EDF untuk 5 job (durasi, deadline): A(2,4), B(3,5), C(1,7), D(4,10), E(2,11).</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Urutkan menurut deadline, jalankan berurutan tanpa jeda. Kolom garis waktu: █ = sedang dikerjakan. Telat = maks(0, selesai − deadline). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>job</th><th>durasi</th><th>deadline</th><th>waktu</th><th>garis waktu</th><th>telat</th><th>L_max</th></tr><tr><td>A</td><td>2</td><td>4</td><td>0–2</td><td><span class='mono'>██</span></td><td>0</td><td>0</td></tr><tr><td>B</td><td>3</td><td>5</td><td>2–5</td><td><span class='mono'>··███</span></td><td>0</td><td>0</td></tr><tr><td>C</td><td>1</td><td>7</td><td>5–6</td><td><span class='mono'>·····█</span></td><td>0</td><td>0</td></tr><tr><td>D</td><td>4</td><td>10</td><td>6–10</td><td><span class='mono'>······████</span></td><td>0</td><td>0</td></tr><tr><td>E</td><td>2</td><td>11</td><td>10–12</td><td><span class='mono'>··········██</span></td><td><b class='chg'>1</b></td><td>1</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> L_max = 1.</div>
+</section>
 <section class="slide" id="rx3b">
 <div class="kicker">Bedah Rumus 3/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">Antrian job batch / request dengan tenggat</h2>
@@ -435,6 +466,14 @@ edf([(<span class="ts">"A"</span>,<span class="tn">3</span>,<span class="tn">6</
 <div class="rxcard soft"><h3>Latihan cepat dengan angka lain</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Klaim</h4><p class="">selesai-paling-awal optimal untuk activity selection.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Misal OPT = {o₁, o₂, …}</h4><p class="">urut waktu selesai; g₁ = aktivitas dengan f terkecil di seluruh data.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>f(g₁) ≤ f(o₁)</h4><p class="">maka g₁ tidak bentrok dengan o₂ (karena s(o₂) ≥ f(o₁) ≥ f(g₁)).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Simpulkan</h4><p class="">OPT′ valid, |OPT′| = |OPT|; induksi pada sisa masalah.</p></div></div></div></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Greedy menghasilkan 3 rapat, sama dengan OPT → greedy optimal pada contoh ini (dan secara umum lewat induksi).</div>
+</section>
+<section class="slide" id="rx4t">
+<div class="kicker">Bedah Rumus 4/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Exchange argument (pola pembuktian)</h2>
+<div class="rxsoal"><b>Kasus:</b> Exchange argument pada data activity selection: ubah OPT menjadi solusi greedy satu pilihan demi satu pilihan.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = membandingkan pilihan ke-k di OPT dengan pilihan ke-k greedy. Jika beda, tukar - asalkan tetap valid dan ukurannya tidak berkurang. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>k</th><th>pilihan OPT</th><th>pilihan greedy</th><th>alasan</th><th>OPT sesudahnya</th></tr><tr><td>0</td><td>{(3,5), (5,7), (8,9)}</td><td>-</td><td>-</td><td>OPT awal, valid, ukuran 3</td></tr><tr><td>1</td><td>o₁ = (3,5)</td><td>g₁ = (1,4)</td><td>f(g₁) = 4 ≤ 5 = f(o₁) → tukar</td><td><b class='chg'>{(1,4), (5,7), (8,9)}</b></td></tr><tr><td>2</td><td>o₂ = (5,7)</td><td>g₂ = (5,7)</td><td>sama → tidak perlu tukar</td><td>{(1,4), (5,7), (8,9)}</td></tr><tr><td>3</td><td>o₃ = (8,9)</td><td>g₃ = (8,9)</td><td>sama → tidak perlu tukar</td><td>{(1,4), (5,7), (8,9)}</td></tr><tr><td>cek</td><td>validitas</td><td>-</td><td>5 ≥ 4 dan 8 ≥ 7 → tidak bentrok</td><td>ukuran tetap 3 = |OPT|</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> OPT berubah menjadi solusi greedy tanpa kehilangan satu kegiatan pun → greedy optimal.</div>
 </section>
 <section class="slide" id="rx4b">
 <div class="kicker">Bedah Rumus 4/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>

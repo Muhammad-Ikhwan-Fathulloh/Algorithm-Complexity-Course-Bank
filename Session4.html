@@ -129,6 +129,13 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 .rxhasil{background:#f0fdf4;border:2px solid #bbf7d0;border-left:6px solid #16a34a;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#14532d;flex:none}
 .rxhasil b{color:#15803d}
 .rxstack{display:flex;flex-direction:column;gap:12px;min-width:0}
+table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
+.rxtrace th{background:#0f172a;color:#e2e8f0;text-align:left;padding:6px 9px;font-size:13px;font-weight:700;white-space:nowrap}
+.rxtrace td{border-bottom:1px solid #e2e8f0;padding:4px 9px;text-align:left;color:#334155;font-family:Consolas,'Courier New',monospace;line-height:1.45;vertical-align:top}
+.rxtrace tr:nth-child(even) td{background:#f8fafc}
+.rxtrace td:first-child{color:#64748b;font-weight:700}
+b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
+.rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -403,7 +410,7 @@ def partition(A, lo, hi):
 <h2 class="st">Empat rumus Divide and Conquer dasar</h2>
 <p class="b">Merge sort, quick sort, binary search, dan quickselect sama-sama memecah masalah, tetapi rumus biayanya sangat berbeda. Membaca rumusnya dengan benar membantu memilih algoritma yang tepat.</p>
 <div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Banyaknya perbandingan merge sort</b><span>C(n) ≤ n⌈log₂ n⌉</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Quicksort: rata-rata vs terburuk</b><span>≈ 1,39·n log₂ n  vs  n²/2</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Binary search: langkah dan titik tengah</b><span>⌊log₂ n⌋ + 1 langkah; mid = lo + (hi−lo)//2</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Quickselect: mencari elemen ke-k</b><span>T(n) = T(n/2) + n → Θ(n)</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas tiga slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
 </section>
 <section class="slide" id="rx1a">
 <div class="kicker">Bedah Rumus 1/4 · Langkah 1: cara membaca</div>
@@ -424,6 +431,14 @@ def partition(A, lo, hi):
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>level</th><th>merge</th><th>perbandingan</th></tr><tr><td>1</td><td>4 pasang</td><td>4</td></tr><tr><td>2</td><td>2 × (2+2)</td><td>6</td></tr><tr><td>3</td><td>1 × (4+4)</td><td>7</td></tr><tr><td></td><td>Total</td><td>17</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> 17 perbandingan → [1, 2, 2, 3, 4, 5, 6, 7].</div>
+</section>
+<section class="slide" id="rx1t">
+<div class="kicker">Bedah Rumus 1/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Banyaknya perbandingan merge sort</h2>
+<div class="rxsoal"><b>Kasus:</b> Langkah merge: gabungkan [2, 4, 5, 7] dan [1, 2, 3, 6] dengan dua penunjuk i dan j.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu perbandingan. Elemen yang diambil disorot dan ditambahkan ke ujung output. Jika sama, ambil kiri (stable). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>#</th><th>kiri</th><th>kanan</th><th>perbandingan</th><th>output</th></tr><tr><td>1</td><td>[2, 4, 5, 7]</td><td>[<b class='chg'>1</b>, 2, 3, 6]</td><td>2 &gt; 1 → ambil kanan</td><td>[<b class='chg'>1</b>]</td></tr><tr><td>2</td><td>[<b class='chg'>2</b>, 4, 5, 7]</td><td>[1, 2, 3, 6]</td><td>2 ≤ 2 → ambil kiri</td><td>[1, <b class='chg'>2</b>]</td></tr><tr><td>3</td><td>[2, 4, 5, 7]</td><td>[1, <b class='chg'>2</b>, 3, 6]</td><td>4 &gt; 2 → ambil kanan</td><td>[1, 2, <b class='chg'>2</b>]</td></tr><tr><td>4</td><td>[2, 4, 5, 7]</td><td>[1, 2, <b class='chg'>3</b>, 6]</td><td>4 &gt; 3 → ambil kanan</td><td>[1, 2, 2, <b class='chg'>3</b>]</td></tr><tr><td>5</td><td>[2, <b class='chg'>4</b>, 5, 7]</td><td>[1, 2, 3, 6]</td><td>4 ≤ 6 → ambil kiri</td><td>[1, 2, 2, 3, <b class='chg'>4</b>]</td></tr><tr><td>6</td><td>[2, 4, <b class='chg'>5</b>, 7]</td><td>[1, 2, 3, 6]</td><td>5 ≤ 6 → ambil kiri</td><td>[1, 2, 2, 3, 4, <b class='chg'>5</b>]</td></tr><tr><td>7</td><td>[2, 4, 5, 7]</td><td>[1, 2, 3, <b class='chg'>6</b>]</td><td>7 &gt; 6 → ambil kanan</td><td>[1, 2, 2, 3, 4, 5, <b class='chg'>6</b>]</td></tr><tr><td>-</td><td></td><td></td><td>sisa [7] disalin tanpa perbandingan</td><td>[1, 2, 2, 3, 4, 5, 6, 7]</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> 7 perbandingan (≤ n − 1 = 7) untuk menggabungkan 8 elemen.</div>
 </section>
 <section class="slide" id="rx1b">
 <div class="kicker">Bedah Rumus 1/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -462,6 +477,14 @@ def partition(A, lo, hi):
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Data acak 6 vs terurut 10 perbandingan; untuk n = 1.000 bedanya ±36×.</div>
 </section>
+<section class="slide" id="rx2t">
+<div class="kicker">Bedah Rumus 2/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Quicksort: rata-rata vs terburuk</h2>
+<div class="rxsoal"><b>Kasus:</b> Quicksort [4, 7, 2, 6, 1, 5, 3] dengan pivot = elemen pertama.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Pivot disorot. Setiap baris = satu partisi: elemen &lt; pivot ke kiri, &gt; pivot ke kanan. Indentasi = kedalaman rekursi. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>#</th><th>subarray</th><th>pivot</th><th>kiri</th><th>sama</th><th>kanan</th><th>perbandingan</th></tr><tr><td>1</td><td>[<b class='chg'>4</b>, 7, 2, 6, 1, 5, 3]</td><td>4</td><td>[2, 1, 3]</td><td>[4]</td><td>[7, 6, 5]</td><td>6</td></tr><tr><td>2</td><td>&nbsp;&nbsp;[<b class='chg'>2</b>, 1, 3]</td><td>2</td><td>[1]</td><td>[2]</td><td>[3]</td><td>2</td></tr><tr><td>3</td><td>&nbsp;&nbsp;[<b class='chg'>7</b>, 6, 5]</td><td>7</td><td>[6, 5]</td><td>[7]</td><td>[]</td><td>2</td></tr><tr><td>4</td><td>&nbsp;&nbsp;&nbsp;&nbsp;[<b class='chg'>6</b>, 5]</td><td>6</td><td>[5]</td><td>[6]</td><td>[]</td><td>1</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Hasil [1, 2, 3, 4, 5, 6, 7] dengan total 11 perbandingan (data acak → pembagian cukup seimbang).</div>
+</section>
 <section class="slide" id="rx2b">
 <div class="kicker">Bedah Rumus 2/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">Serangan input terurut dan solusinya</h2>
@@ -498,6 +521,14 @@ def partition(A, lo, hi):
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Ketemu di indeks 7 dalam 2 langkah (maksimum 4).</div>
 </section>
+<section class="slide" id="rx3t">
+<div class="kicker">Bedah Rumus 3/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Binary search: langkah dan titik tengah</h2>
+<div class="rxsoal"><b>Kasus:</b> Binary search di a = [3, 8, 15, 21, 30, 42, 57, 66, 71, 90] untuk x = 66 (ada) dan x = 5 (tidak ada).</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu iterasi while. Hitung mid dengan rumus lo + (hi − lo)//2, bandingkan a[mid], lalu geser lo atau hi. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>x</th><th>lo</th><th>hi</th><th>mid</th><th>a[mid]</th><th>aksi</th></tr><tr><td>66</td><td>0</td><td>9</td><td>0 + (9−0)//2 = 4</td><td>30</td><td>30 &lt; 66 → lo = 5</td></tr><tr><td>66</td><td>5</td><td>9</td><td>5 + (9−5)//2 = 7</td><td>66</td><td><b class='chg'>ketemu</b></td></tr><tr><td>5</td><td>0</td><td>9</td><td>0 + (9−0)//2 = 4</td><td>30</td><td>30 &gt; 5 → hi = 3</td></tr><tr><td>5</td><td>0</td><td>3</td><td>0 + (3−0)//2 = 1</td><td>8</td><td>8 &gt; 5 → hi = 0</td></tr><tr><td>5</td><td>0</td><td>0</td><td>0 + (0−0)//2 = 0</td><td>3</td><td>3 &lt; 5 → lo = 1</td></tr><tr><td>5</td><td>1</td><td>0</td><td>-</td><td>-</td><td><b class='chg'>lo &gt; hi → tidak ada</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> x = 66 ketemu di iterasi ke-2; x = 5 dipastikan tidak ada setelah 3 iterasi (maks 4).</div>
+</section>
 <section class="slide" id="rx3b">
 <div class="kicker">Bedah Rumus 3/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">Mencari versi aplikasi yang membuat crash</h2>
@@ -533,6 +564,14 @@ def partition(A, lo, hi):
 <div class="rxcard soft"><h3>Latihan cepat dengan angka lain</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Data</h4><p class="">10 juta catatan latensi request per jam.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Sort penuh</h4><p class="">≈ 10⁷ × 23 ≈ 2,3×10⁸ operasi.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Quickselect k = 0,95n</h4><p class="">≈ 2 × 10⁷ operasi rata-rata.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Hasil</h4><p class="">~10× lebih cepat untuk satu persentil.</p></div></div></div></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Elemen terkecil ke-3 (0-based) = 4, ditemukan tanpa mengurutkan semua data.</div>
+</section>
+<section class="slide" id="rx4t">
+<div class="kicker">Bedah Rumus 4/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Quickselect: mencari elemen ke-k</h2>
+<div class="rxsoal"><b>Kasus:</b> Quickselect: cari elemen terkecil ke-3 (0-based) dari [7, 2, 9, 4, 1, 8, 3], pivot = elemen pertama.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu partisi. Berbeda dari quicksort, hanya SATU sisi yang diteruskan, sehingga ukuran data mengecil tiap baris. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>#</th><th>data</th><th>k</th><th>pivot</th><th>kiri</th><th>kanan</th><th>keputusan</th></tr><tr><td>1</td><td>[<b class='chg'>7</b>, 2, 9, 4, 1, 8, 3]</td><td>3</td><td>7</td><td>[2, 4, 1, 3]</td><td>[9, 8]</td><td>k = 3 &lt; |kiri| = 4 → cari di kiri</td></tr><tr><td>2</td><td>[<b class='chg'>2</b>, 4, 1, 3]</td><td>3</td><td>2</td><td>[1]</td><td>[4, 3]</td><td>k ≥ 2 → cari di kanan, k = 3 − 2 = 1</td></tr><tr><td>3</td><td>[<b class='chg'>4</b>, 3]</td><td>1</td><td>4</td><td>[3]</td><td>[]</td><td><b class='chg'>k = 1 jatuh di pivot → jawab 4</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Jawaban 4 setelah 3 partisi (memindai 7 + 4 + 2 = 13 elemen).</div>
 </section>
 <section class="slide" id="rx4b">
 <div class="kicker">Bedah Rumus 4/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>

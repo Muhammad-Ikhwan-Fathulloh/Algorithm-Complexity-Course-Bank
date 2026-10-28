@@ -186,6 +186,13 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 .rxhasil{background:#f0fdf4;border:2px solid #bbf7d0;border-left:6px solid #16a34a;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#14532d;flex:none}
 .rxhasil b{color:#15803d}
 .rxstack{display:flex;flex-direction:column;gap:12px;min-width:0}
+table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
+.rxtrace th{background:#0f172a;color:#e2e8f0;text-align:left;padding:6px 9px;font-size:13px;font-weight:700;white-space:nowrap}
+.rxtrace td{border-bottom:1px solid #e2e8f0;padding:4px 9px;text-align:left;color:#334155;font-family:Consolas,'Courier New',monospace;line-height:1.45;vertical-align:top}
+.rxtrace tr:nth-child(even) td{background:#f8fafc}
+.rxtrace td:first-child{color:#64748b;font-weight:700}
+b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
+.rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -923,7 +930,7 @@ plt.legend(); plt.show()</pre></div>
 <h2 class="st">Lima rumus inti analisis asimtotik</h2>
 <p class="b">Semua analisis di mata kuliah ini berdiri di atas lima rumus berikut. Kita bedah satu per satu: bagaimana membacanya, apa arti tiap simbolnya, dan di mana rumus itu benar-benar dipakai saat membangun sistem.</p>
 <div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Definisi Big-O (batas atas)</b><span>f(n) ≤ c·g(n) untuk n ≥ n₀</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Definisi Big-Theta (batas ketat)</b><span>c₁·g(n) ≤ f(n) ≤ c₂·g(n)</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Deret loop bersarang: 1 + 2 + … + n</b><span>Σ i = n(n+1)/2 = Θ(n²)</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Berapa kali n bisa dibagi dua? log₂ n</b><span>2ᵏ = n ⇔ k = log₂ n</span></div></div><div class="rxitem"><div class="qn">5</div><div><b>Eksperimen penggandaan (doubling ratio)</b><span>T(2n)/T(n) ≈ 2ᵏ → Θ(nᵏ)</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas tiga slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
 </section>
 <section class="slide" id="rx1a">
 <div class="kicker">Bedah Rumus 1/5 · Langkah 1: cara membaca</div>
@@ -944,6 +951,14 @@ plt.legend(); plt.show()</pre></div>
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>n</th><th>f(n)</th><th>4n²</th><th>f(n) ≤ 4n²?</th></tr><tr><td>5</td><td>132</td><td>100</td><td>✗</td></tr><tr><td>10</td><td>407</td><td>400</td><td>✗</td></tr><tr><td>11</td><td>480</td><td>484</td><td>✓</td></tr><tr><td>20</td><td>1.407</td><td>1.600</td><td>✓</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> c = 4 dan n₀ = 11 → f(n) = O(n²).</div>
+</section>
+<section class="slide" id="rx1t">
+<div class="kicker">Bedah Rumus 1/5 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Definisi Big-O (batas atas)</h2>
+<div class="rxsoal"><b>Kasus:</b> Cek ketaksamaan 3n² + 10n + 7 ≤ 4n² untuk n = 1, 2, 3, … satu per satu.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu nilai n. Hitung f(n) dan 4n², lalu bandingkan. n₀ adalah baris pertama yang ✓ dan setelahnya ✓ terus. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>n</th><th>f(n) = 3n² + 10n + 7</th><th>c·g(n) = 4n²</th><th>f(n) ≤ 4n²?</th></tr><tr><td>1</td><td>20</td><td>4</td><td>✗</td></tr><tr><td>2</td><td>39</td><td>16</td><td>✗</td></tr><tr><td>3</td><td>64</td><td>36</td><td>✗</td></tr><tr><td>4</td><td>95</td><td>64</td><td>✗</td></tr><tr><td>5</td><td>132</td><td>100</td><td>✗</td></tr><tr><td>6</td><td>175</td><td>144</td><td>✗</td></tr><tr><td>7</td><td>224</td><td>196</td><td>✗</td></tr><tr><td>8</td><td>279</td><td>256</td><td>✗</td></tr><tr><td>9</td><td>340</td><td>324</td><td>✗</td></tr><tr><td>10</td><td>407</td><td>400</td><td>✗</td></tr><tr><td>11</td><td>480</td><td>484</td><td><b class='chg'>✓ berlaku</b></td></tr><tr><td>12</td><td>559</td><td>576</td><td><b class='chg'>✓ berlaku</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Mulai n = 11 ketaksamaan selalu berlaku → n₀ = 11, c = 4.</div>
 </section>
 <section class="slide" id="rx1b">
 <div class="kicker">Bedah Rumus 1/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -983,6 +998,14 @@ plt.legend(); plt.show()</pre></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> c₁ = 3, c₂ = 4, n₀ = 11 → f(n) terjepit, jadi Θ(n²).</div>
 </section>
+<section class="slide" id="rx2t">
+<div class="kicker">Bedah Rumus 2/5 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Definisi Big-Theta (batas ketat)</h2>
+<div class="rxsoal"><b>Kasus:</b> Cek jepitan 3n² ≤ f(n) ≤ 4n² untuk beberapa nilai n.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Kolom kiri = dinding bawah, kolom kanan = dinding atas. Baris ✓ terjepit berarti f(n) berada di koridor. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>n</th><th>3n²</th><th>f(n)</th><th>4n²</th><th>bawah</th><th>keduanya</th></tr><tr><td>1</td><td>3</td><td>20</td><td>4</td><td>✓</td><td>✗ (atas)</td></tr><tr><td>2</td><td>12</td><td>39</td><td>16</td><td>✓</td><td>✗ (atas)</td></tr><tr><td>5</td><td>75</td><td>132</td><td>100</td><td>✓</td><td>✗ (atas)</td></tr><tr><td>8</td><td>192</td><td>279</td><td>256</td><td>✓</td><td>✗ (atas)</td></tr><tr><td>10</td><td>300</td><td>407</td><td>400</td><td>✓</td><td>✗ (atas)</td></tr><tr><td>11</td><td>363</td><td>480</td><td>484</td><td>✓</td><td><b class='chg'>✓ terjepit</b></td></tr><tr><td>12</td><td>432</td><td>559</td><td>576</td><td>✓</td><td><b class='chg'>✓ terjepit</b></td></tr><tr><td>15</td><td>675</td><td>832</td><td>900</td><td>✓</td><td><b class='chg'>✓ terjepit</b></td></tr><tr><td>20</td><td>1200</td><td>1407</td><td>1600</td><td>✓</td><td><b class='chg'>✓ terjepit</b></td></tr><tr><td>50</td><td>7500</td><td>8007</td><td>10000</td><td>✓</td><td><b class='chg'>✓ terjepit</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Dinding bawah selalu berlaku; dinding atas mulai n = 11 → Θ(n²) dengan n₀ = 11.</div>
+</section>
 <section class="slide" id="rx2b">
 <div class="kicker">Bedah Rumus 2/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">Θ untuk perencanaan kapasitas server</h2>
@@ -1018,6 +1041,14 @@ plt.legend(); plt.show()</pre></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> n = 5 → 10 perbandingan; n = 10.000 → 49.995.000 perbandingan.</div>
 </section>
+<section class="slide" id="rx3t">
+<div class="kicker">Bedah Rumus 3/5 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Deret loop bersarang: 1 + 2 + … + n</h2>
+<div class="rxsoal"><b>Kasus:</b> Jalankan for i in range(5): for j in range(i): bandingkan(i, j) baris demi baris.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu kali loop dalam berjalan. Perhatikan i = 0 tidak menghasilkan baris sama sekali, i = 4 menghasilkan 4 baris. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>eksekusi ke-</th><th>i</th><th>j</th><th>aksi</th><th>counter</th></tr><tr><td>1</td><td>1</td><td>0</td><td>bandingkan(1, 0)</td><td><b class='chg'>1</b></td></tr><tr><td>2</td><td>2</td><td>0</td><td>bandingkan(2, 0)</td><td><b class='chg'>2</b></td></tr><tr><td>3</td><td>2</td><td>1</td><td>bandingkan(2, 1)</td><td><b class='chg'>3</b></td></tr><tr><td>4</td><td>3</td><td>0</td><td>bandingkan(3, 0)</td><td><b class='chg'>4</b></td></tr><tr><td>5</td><td>3</td><td>1</td><td>bandingkan(3, 1)</td><td><b class='chg'>5</b></td></tr><tr><td>6</td><td>3</td><td>2</td><td>bandingkan(3, 2)</td><td><b class='chg'>6</b></td></tr><tr><td>7</td><td>4</td><td>0</td><td>bandingkan(4, 0)</td><td><b class='chg'>7</b></td></tr><tr><td>8</td><td>4</td><td>1</td><td>bandingkan(4, 1)</td><td><b class='chg'>8</b></td></tr><tr><td>9</td><td>4</td><td>2</td><td>bandingkan(4, 2)</td><td><b class='chg'>9</b></td></tr><tr><td>10</td><td>4</td><td>3</td><td>bandingkan(4, 3)</td><td><b class='chg'>10</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Counter berakhir di 10 = 5·4/2 → rumus n(n−1)/2 terbukti untuk n = 5.</div>
+</section>
 <section class="slide" id="rx3b">
 <div class="kicker">Bedah Rumus 3/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">Membandingkan semua pasangan pengguna</h2>
@@ -1052,6 +1083,14 @@ plt.legend(); plt.show()</pre></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Paling banyak 10 kali tes (bandingkan: cek satu per satu bisa 1.000 kali).</div>
 </section>
+<section class="slide" id="rx4t">
+<div class="kicker">Bedah Rumus 4/5 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Berapa kali n bisa dibagi dua? log₂ n</h2>
+<div class="rxsoal"><b>Kasus:</b> Tebak angka rahasia 777 di antara 1–1000 (binary search).</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu tebakan. Kolom “sisa kandidat” menunjukkan ruang pencarian menyusut kira-kira separuh tiap langkah. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>tebakan</th><th>lo</th><th>hi</th><th>mid</th><th>sisa kandidat</th><th>keputusan</th></tr><tr><td>1</td><td>1</td><td>1000</td><td>500</td><td>1000</td><td>terlalu kecil → lo = mid + 1</td></tr><tr><td>2</td><td>501</td><td>1000</td><td>750</td><td>500</td><td>terlalu kecil → lo = mid + 1</td></tr><tr><td>3</td><td>751</td><td>1000</td><td>875</td><td>250</td><td>terlalu besar → hi = mid − 1</td></tr><tr><td>4</td><td>751</td><td>874</td><td>812</td><td>124</td><td>terlalu besar → hi = mid − 1</td></tr><tr><td>5</td><td>751</td><td>811</td><td>781</td><td>61</td><td>terlalu besar → hi = mid − 1</td></tr><tr><td>6</td><td>751</td><td>780</td><td>765</td><td>30</td><td>terlalu kecil → lo = mid + 1</td></tr><tr><td>7</td><td>766</td><td>780</td><td>773</td><td>15</td><td>terlalu kecil → lo = mid + 1</td></tr><tr><td>8</td><td>774</td><td>780</td><td>777</td><td>7</td><td><b class='chg'>ketemu</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Ketemu dalam 8 tebakan (batas maksimum ⌊log₂ 1000⌋ + 1 = 10).</div>
+</section>
 <section class="slide" id="rx4b">
 <div class="kicker">Bedah Rumus 4/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">git bisect: mencari commit penyebab bug</h2>
@@ -1085,6 +1124,14 @@ plt.legend(); plt.show()</pre></div>
 <div class="rxcard soft"><h3>Latihan cepat dengan angka lain</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Ukur</h4><p class="">Laporan 1.000 baris: 0,8 s. Laporan 2.000 baris: 3,1 s.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Rasio</h4><p class="">3,1 / 0,8 ≈ 3,9.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Orde</h4><p class="">k ≈ log₂ 3,9 ≈ 1,96 → hampir pasti Θ(n²).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Tindakan</h4><p class="">Cari loop bersarang di kode laporan; jangan buang waktu mengoptimasi query lain.</p></div></div></div></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> k ≈ 2 → algoritma Θ(n²); data 2× lebih besar = waktu 4× lebih lama.</div>
+</section>
+<section class="slide" id="rx5t">
+<div class="kicker">Bedah Rumus 5/5 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Eksperimen penggandaan (doubling ratio)</h2>
+<div class="rxsoal"><b>Kasus:</b> Analisis hasil stopwatch: gandakan n, bagi waktunya, ambil log₂.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Baca dari atas: setiap baris membandingkan waktu dengan baris sebelumnya. Kolom terakhir adalah tebakan pangkat k. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>n</th><th>waktu</th><th>rasio T(2n)/T(n)</th><th>k = log₂(rasio)</th></tr><tr><td>1000</td><td>0,8 s</td><td>-</td><td>-</td></tr><tr><td>2000</td><td>3,1 s</td><td>3,1 / 0,8 = 3,88</td><td><b class='chg'>1,95</b></td></tr><tr><td>4000</td><td>12,6 s</td><td>12,6 / 3,1 = 4,06</td><td><b class='chg'>2,02</b></td></tr><tr><td>8000</td><td>? (prediksi)</td><td>anggap rasio ≈ 4</td><td>k ≈ 2 → 12,6 × 4 ≈ <b class='chg'>50 s</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> k ≈ 2 di setiap baris → algoritma kuadratik, dan prediksi n = 8.000 ≈ 50 detik.</div>
 </section>
 <section class="slide" id="rx5b">
 <div class="kicker">Bedah Rumus 5/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>

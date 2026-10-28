@@ -135,6 +135,13 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 .rxhasil{background:#f0fdf4;border:2px solid #bbf7d0;border-left:6px solid #16a34a;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#14532d;flex:none}
 .rxhasil b{color:#15803d}
 .rxstack{display:flex;flex-direction:column;gap:12px;min-width:0}
+table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
+.rxtrace th{background:#0f172a;color:#e2e8f0;text-align:left;padding:6px 9px;font-size:13px;font-weight:700;white-space:nowrap}
+.rxtrace td{border-bottom:1px solid #e2e8f0;padding:4px 9px;text-align:left;color:#334155;font-family:Consolas,'Courier New',monospace;line-height:1.45;vertical-align:top}
+.rxtrace tr:nth-child(even) td{background:#f8fafc}
+.rxtrace td:first-child{color:#64748b;font-weight:700}
+b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
+.rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -449,7 +456,7 @@ def bfs(start, goal_fn, expand_fn):
 <h2 class="st">Empat rumus untuk mengukur ledakan ruang pencarian</h2>
 <p class="b">Brute force dan pencarian buta gagal bukan karena kodenya salah, tetapi karena jumlah kemungkinannya meledak. Rumus berikut membantu menghitung ledakan itu sebelum menekan tombol Run.</p>
 <div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Banyaknya rute TSP</b><span>(n−1)!/2 rute unik</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Banyaknya subset: 2ⁿ</b><span>|P(S)| = 2ⁿ</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Jumlah simpul yang dikunjungi BFS</b><span>1 + b + b² + … + bᵈ = O(bᵈ)</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Overhead IDDFS</b><span>Σ (d−i+1)·bⁱ ≈ bᵈ·(b/(b−1))²</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas tiga slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
 </section>
 <section class="slide" id="rx1a">
 <div class="kicker">Bedah Rumus 1/4 · Langkah 1: cara membaca</div>
@@ -470,6 +477,14 @@ def bfs(start, goal_fn, expand_fn):
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>n</th><th>(n−1)!</th><th>rute unik</th></tr><tr><td>4</td><td>6</td><td>3</td></tr><tr><td>5</td><td>24</td><td>12</td></tr><tr><td>6</td><td>120</td><td>60</td></tr><tr><td>10</td><td>362.880</td><td>181.440</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> 5 alamat → 12 rute; 10 alamat → 181.440 rute.</div>
+</section>
+<section class="slide" id="rx1t">
+<div class="kicker">Bedah Rumus 1/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Banyaknya rute TSP</h2>
+<div class="rxsoal"><b>Kasus:</b> Brute force TSP 5 kota (A–E): coba ke-12 rute unik, catat yang terpendek.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu rute lengkap. Jumlahkan jarak tiap ruas, lalu perbarui “terbaik” jika lebih pendek (disorot). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>#</th><th>rute</th><th>jarak per ruas</th><th>total</th><th>terbaik sejauh ini</th></tr><tr><td>1</td><td>A-B-C-D-E-A</td><td>2 + 6 + 8 + 6 + 7</td><td>29</td><td><b class='chg'>terbaik = 29</b></td></tr><tr><td>2</td><td>A-B-C-E-D-A</td><td>2 + 6 + 5 + 6 + 10</td><td>29</td><td>terbaik = 29</td></tr><tr><td>3</td><td>A-B-D-C-E-A</td><td>2 + 4 + 8 + 5 + 7</td><td>26</td><td><b class='chg'>terbaik = 26</b></td></tr><tr><td>4</td><td>A-B-D-E-C-A</td><td>2 + 4 + 6 + 5 + 9</td><td>26</td><td>terbaik = 26</td></tr><tr><td>5</td><td>A-B-E-C-D-A</td><td>2 + 3 + 5 + 8 + 10</td><td>28</td><td>terbaik = 26</td></tr><tr><td>6</td><td>A-B-E-D-C-A</td><td>2 + 3 + 6 + 8 + 9</td><td>28</td><td>terbaik = 26</td></tr><tr><td>7</td><td>A-C-B-D-E-A</td><td>9 + 6 + 4 + 6 + 7</td><td>32</td><td>terbaik = 26</td></tr><tr><td>8</td><td>A-C-B-E-D-A</td><td>9 + 6 + 3 + 6 + 10</td><td>34</td><td>terbaik = 26</td></tr><tr><td>9</td><td>A-C-D-B-E-A</td><td>9 + 8 + 4 + 3 + 7</td><td>31</td><td>terbaik = 26</td></tr><tr><td>10</td><td>A-C-E-B-D-A</td><td>9 + 5 + 3 + 4 + 10</td><td>31</td><td>terbaik = 26</td></tr><tr><td>11</td><td>A-D-B-C-E-A</td><td>10 + 4 + 6 + 5 + 7</td><td>32</td><td>terbaik = 26</td></tr><tr><td>12</td><td>A-D-C-B-E-A</td><td>10 + 8 + 6 + 3 + 7</td><td>34</td><td>terbaik = 26</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Rute terpendek A-B-D-C-E-A dengan panjang 26, setelah mencoba semua 12 = 4!/2 rute.</div>
 </section>
 <section class="slide" id="rx1b">
 <div class="kicker">Bedah Rumus 1/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -505,6 +520,14 @@ def bfs(start, goal_fn, expand_fn):
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Tepat 8 = 2³ subset, termasuk himpunan kosong.</div>
 </section>
+<section class="slide" id="rx2t">
+<div class="kicker">Bedah Rumus 2/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Banyaknya subset: 2ⁿ</h2>
+<div class="rxsoal"><b>Kasus:</b> Belanja dengan uang Rp14 rb: kopi 5 rb, roti 8 rb, susu 6 rb. Coba semua 2³ subset, cari total terbesar yang muat.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Bit 0 = kopi, bit 1 = roti, bit 2 = susu. Setiap baris = satu subset; kolom terakhir menyimpan jawaban terbaik sejauh ini. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>mask</th><th>biner</th><th>subset</th><th>total</th><th>≤ 14 rb?</th><th>terbaik</th></tr><tr><td>0</td><td>000</td><td>{}</td><td>0 rb</td><td>✓</td><td>{ } = 0</td></tr><tr><td>1</td><td>001</td><td>{kopi}</td><td>5 rb</td><td>✓</td><td><b class='chg'>{kopi} = 5</b></td></tr><tr><td>2</td><td>010</td><td>{roti}</td><td>8 rb</td><td>✓</td><td><b class='chg'>{roti} = 8</b></td></tr><tr><td>3</td><td>011</td><td>{kopi, roti}</td><td>13 rb</td><td>✓</td><td><b class='chg'>{kopi, roti} = 13</b></td></tr><tr><td>4</td><td>100</td><td>{susu}</td><td>6 rb</td><td>✓</td><td>{kopi, roti} = 13</td></tr><tr><td>5</td><td>101</td><td>{kopi, susu}</td><td>11 rb</td><td>✓</td><td>{kopi, roti} = 13</td></tr><tr><td>6</td><td>110</td><td>{roti, susu}</td><td>14 rb</td><td>✓</td><td><b class='chg'>{roti, susu} = 14</b></td></tr><tr><td>7</td><td>111</td><td>{kopi, roti, susu}</td><td>19 rb</td><td>✗ lebih</td><td>{roti, susu} = 14</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Jawaban: {roti, susu} senilai 14 rb, setelah mengecek 8 subset.</div>
+</section>
 <section class="slide" id="rx2b">
 <div class="kicker">Bedah Rumus 2/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">Memilih paket promo / fitur model ML</h2>
@@ -539,6 +562,14 @@ def bfs(start, goal_fn, expand_fn):
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> 40 simpul; untuk b = 200, d = 2 → 1 + 200 + 40.000 = 40.201.</div>
 </section>
+<section class="slide" id="rx3t">
+<div class="kicker">Bedah Rumus 3/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Jumlah simpul yang dikunjungi BFS</h2>
+<div class="rxsoal"><b>Kasus:</b> BFS dari A mencari F pada pohon A→{B, C}, B→{D, E}, C→{F, G} (b = 2).</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu simpul diambil dari DEPAN antrian. Tetangga baru dimasukkan ke BELAKANG. Antrian adalah memori BFS. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>langkah</th><th>ambil</th><th>tetangga baru</th><th>antrian sesudahnya</th><th>dibangkitkan</th><th></th></tr><tr><td>1</td><td><b class='chg'>A</b></td><td>B, C</td><td>[B, C]</td><td>3</td><td></td></tr><tr><td>2</td><td><b class='chg'>B</b></td><td>D, E</td><td>[C, D, E]</td><td>5</td><td></td></tr><tr><td>3</td><td><b class='chg'>C</b></td><td>F, G</td><td>[D, E, F, G]</td><td>7</td><td></td></tr><tr><td>4</td><td><b class='chg'>D</b></td><td>-</td><td>[E, F, G]</td><td>7</td><td></td></tr><tr><td>5</td><td><b class='chg'>E</b></td><td>-</td><td>[F, G]</td><td>7</td><td></td></tr><tr><td>6</td><td><b class='chg'>F</b></td><td>-</td><td>[G]</td><td>7</td><td>TUJUAN!</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> F ditemukan setelah 6 pengambilan; seluruh level 2 (D, E, F, G) sempat disimpan di antrian → memori O(bᵈ).</div>
+</section>
 <section class="slide" id="rx3b">
 <div class="kicker">Bedah Rumus 3/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">“Derajat koneksi” di jejaring sosial</h2>
@@ -571,6 +602,14 @@ def bfs(start, goal_fn, expand_fn):
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th></th><th>IDDFS</th><th>BFS</th></tr><tr><td>simpul</td><td>1.234</td><td>1.111</td></tr><tr><td>rasio</td><td>1,11×</td><td>1×</td></tr><tr><td>memori</td><td>≈ b·d = 30</td><td>≈ 1.000</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Hanya 11% lebih banyak simpul dari BFS, tetapi memorinya jauh lebih kecil.</div>
+</section>
+<section class="slide" id="rx4t">
+<div class="kicker">Bedah Rumus 4/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Overhead IDDFS</h2>
+<div class="rxsoal"><b>Kasus:</b> IDDFS dari A mencari F pada pohon yang sama (b = 2): batas kedalaman 0, 1, 2.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu iterasi DFS penuh dengan batas kedalaman tertentu. Level atas dikunjungi ulang, tetapi memorinya hanya satu jalur. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>batas</th><th>urutan kunjungan</th><th>simpul iterasi ini</th><th>kumulatif</th><th>status</th></tr><tr><td>0</td><td>A</td><td>1</td><td>1</td><td>belum</td></tr><tr><td>1</td><td>A → B → C</td><td>3</td><td>4</td><td>belum</td></tr><tr><td>2</td><td>A → B → D → E → C → F</td><td>7</td><td>11</td><td><b class='chg'>ketemu F</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Ketemu di iterasi batas 2; level dangkal diulang, tetapi totalnya hanya sedikit di atas BFS.</div>
 </section>
 <section class="slide" id="rx4b">
 <div class="kicker">Bedah Rumus 4/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>

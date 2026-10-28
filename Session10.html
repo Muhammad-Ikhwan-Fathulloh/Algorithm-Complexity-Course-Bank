@@ -123,6 +123,13 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 .rxhasil{background:#f0fdf4;border:2px solid #bbf7d0;border-left:6px solid #16a34a;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#14532d;flex:none}
 .rxhasil b{color:#15803d}
 .rxstack{display:flex;flex-direction:column;gap:12px;min-width:0}
+table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
+.rxtrace th{background:#0f172a;color:#e2e8f0;text-align:left;padding:6px 9px;font-size:13px;font-weight:700;white-space:nowrap}
+.rxtrace td{border-bottom:1px solid #e2e8f0;padding:4px 9px;text-align:left;color:#334155;font-family:Consolas,'Courier New',monospace;line-height:1.45;vertical-align:top}
+.rxtrace tr:nth-child(even) td{background:#f8fafc}
+.rxtrace td:first-child{color:#64748b;font-weight:700}
+b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
+.rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -314,7 +321,7 @@ def dp(i, w):
 <h2 class="st">Tiga rumus DP yang menjadi pola semua DP</h2>
 <p class="b">Dynamic programming adalah seni menulis rumus rekurens yang tepat lalu mengisinya ke tabel. Tiga rumus berikut adalah pola dasar yang akan terus muncul.</p>
 <div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Rumus biaya DP</b><span>waktu = #subsoal × biaya per subsoal</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Rekurens Knapsack 0/1</b><span>K[i][w] = maks(K[i−1][w], vᵢ + K[i−1][w−wᵢ])</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Rekurens Coin Change</b><span>C[a] = 1 + min C[a − c]</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas tiga slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
 </section>
 <section class="slide" id="rx1a">
 <div class="kicker">Bedah Rumus 1/3 · Langkah 1: cara membaca</div>
@@ -335,6 +342,14 @@ def dp(i, w):
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>subsoal</th><th>F5</th><th>F4</th><th>F3</th><th>F2</th><th>F1</th><th>F0</th><th>total</th></tr><tr><td>naif</td><td>1</td><td>1</td><td>2</td><td>3</td><td>5</td><td>3</td><td>15</td></tr><tr><td>memo</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>6</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Naif 15 panggilan vs memo 6 = banyaknya subsoal unik × O(1).</div>
+</section>
+<section class="slide" id="rx1t">
+<div class="kicker">Bedah Rumus 1/3 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Rumus biaya DP</h2>
+<div class="rxsoal"><b>Kasus:</b> Urutan panggilan fib(5) DENGAN memo (lru_cache).</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu pemanggilan. “ambil dari memo” = subsoal sudah pernah dihitung, langsung dikembalikan O(1) tanpa rekursi lagi. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>urutan</th><th>panggilan</th><th>aksi</th><th>hasil</th></tr><tr><td>1</td><td>fib(5)</td><td>hitung, simpan</td><td>5</td></tr><tr><td>2</td><td>&nbsp;&nbsp;fib(4)</td><td>hitung, simpan</td><td>3</td></tr><tr><td>3</td><td>&nbsp;&nbsp;&nbsp;&nbsp;fib(3)</td><td>hitung, simpan</td><td>2</td></tr><tr><td>4</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fib(2)</td><td>hitung, simpan</td><td>1</td></tr><tr><td>5</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fib(1)</td><td>basis, simpan</td><td>1</td></tr><tr><td>6</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fib(0)</td><td>basis, simpan</td><td>0</td></tr><tr><td>7</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fib(1)</td><td><b class='chg'>ambil dari memo</b></td><td>1</td></tr><tr><td>8</td><td>&nbsp;&nbsp;&nbsp;&nbsp;fib(2)</td><td><b class='chg'>ambil dari memo</b></td><td>1</td></tr><tr><td>9</td><td>&nbsp;&nbsp;fib(3)</td><td><b class='chg'>ambil dari memo</b></td><td>2</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> 9 panggilan (3 di antaranya cache hit) vs 15 panggilan tanpa memo; subsoal unik hanya 6.</div>
 </section>
 <section class="slide" id="rx1b">
 <div class="kicker">Bedah Rumus 1/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -372,6 +387,14 @@ fib(<span class="tn">80</span>); <span class="tk">print</span>(calls)   <span cl
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> K[3][5] = 220 → ambil B + C (berat 2 + 3 = 5).</div>
 </section>
+<section class="slide" id="rx2t">
+<div class="kicker">Bedah Rumus 2/3 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Rekurens Knapsack 0/1</h2>
+<div class="rxsoal"><b>Kasus:</b> Knapsack 0/1 versi satu baris: A(60, 1), B(100, 2), C(120, 3), W = 5. Kapasitas diisi dari kanan ke kiri.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu sel diperbarui: K[cap] = maks(tidak ambil, ambil). Loop mundur memastikan tiap item dipakai paling banyak sekali. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>item</th><th>cap</th><th>maks(tidak ambil, ambil)</th><th>keputusan</th><th>K[0..5] sesudahnya</th></tr><tr><td>A</td><td>5</td><td>maks(0, 60 + K[4] = 60)</td><td><b class='chg'>ambil → 60</b></td><td>[0, 0, 0, 0, 0, <b class='chg'>60</b>]</td></tr><tr><td>A</td><td>4</td><td>maks(0, 60 + K[3] = 60)</td><td><b class='chg'>ambil → 60</b></td><td>[0, 0, 0, 0, <b class='chg'>60</b>, 60]</td></tr><tr><td>A</td><td>3</td><td>maks(0, 60 + K[2] = 60)</td><td><b class='chg'>ambil → 60</b></td><td>[0, 0, 0, <b class='chg'>60</b>, 60, 60]</td></tr><tr><td>A</td><td>2</td><td>maks(0, 60 + K[1] = 60)</td><td><b class='chg'>ambil → 60</b></td><td>[0, 0, <b class='chg'>60</b>, 60, 60, 60]</td></tr><tr><td>A</td><td>1</td><td>maks(0, 60 + K[0] = 60)</td><td><b class='chg'>ambil → 60</b></td><td>[0, <b class='chg'>60</b>, 60, 60, 60, 60]</td></tr><tr><td>B</td><td>5</td><td>maks(60, 100 + K[3] = 160)</td><td><b class='chg'>ambil → 160</b></td><td>[0, 60, 60, 60, 60, <b class='chg'>160</b>]</td></tr><tr><td>B</td><td>4</td><td>maks(60, 100 + K[2] = 160)</td><td><b class='chg'>ambil → 160</b></td><td>[0, 60, 60, 60, <b class='chg'>160</b>, 160]</td></tr><tr><td>B</td><td>3</td><td>maks(60, 100 + K[1] = 160)</td><td><b class='chg'>ambil → 160</b></td><td>[0, 60, 60, <b class='chg'>160</b>, 160, 160]</td></tr><tr><td>B</td><td>2</td><td>maks(60, 100 + K[0] = 100)</td><td><b class='chg'>ambil → 100</b></td><td>[0, 60, <b class='chg'>100</b>, 160, 160, 160]</td></tr><tr><td>C</td><td>5</td><td>maks(160, 120 + K[2] = 220)</td><td><b class='chg'>ambil → 220</b></td><td>[0, 60, 100, 160, 160, <b class='chg'>220</b>]</td></tr><tr><td>C</td><td>4</td><td>maks(160, 120 + K[1] = 180)</td><td><b class='chg'>ambil → 180</b></td><td>[0, 60, 100, 160, <b class='chg'>180</b>, 220]</td></tr><tr><td>C</td><td>3</td><td>maks(160, 120 + K[0] = 120)</td><td>tetap 160</td><td>[0, 60, 100, <b class='chg'>160</b>, 180, 220]</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> K[5] = 220 (ambil B + C) setelah 12 pembaruan sel.</div>
+</section>
 <section class="slide" id="rx2b">
 <div class="kicker">Bedah Rumus 2/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">Memilih proyek dengan anggaran terbatas</h2>
@@ -407,6 +430,14 @@ fib(<span class="tn">80</span>); <span class="tk">print</span>(calls)   <span cl
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>a</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr><tr><td>C[a]</td><td>0</td><td>1</td><td>2</td><td>1</td><td>1</td><td>2</td><td>2</td></tr><tr><td>koin terakhir</td><td>-</td><td>1</td><td>1</td><td>3</td><td>4</td><td>1/4</td><td>3</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> C[6] = 2 (3 + 3), sedangkan greedy 4 + 1 + 1 = 3 koin.</div>
+</section>
+<section class="slide" id="rx3t">
+<div class="kicker">Bedah Rumus 3/3 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Rekurens Coin Change</h2>
+<div class="rxsoal"><b>Kasus:</b> Coin change koin {1, 3, 4} untuk a = 1 sampai 7.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu nilai a. Coba setiap koin sebagai koin terakhir (kolom c = 1, 3, 4), ambil yang paling kecil. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>a</th><th>koin 1</th><th>koin 3</th><th>koin 4</th><th>C[a]</th></tr><tr><td>1</td><td>C[0]+1 = 1</td><td>-</td><td>-</td><td><b class='chg'>1</b></td></tr><tr><td>2</td><td>C[1]+1 = 2</td><td>-</td><td>-</td><td><b class='chg'>2</b></td></tr><tr><td>3</td><td>C[2]+1 = 3</td><td>C[0]+1 = 1</td><td>-</td><td><b class='chg'>1</b></td></tr><tr><td>4</td><td>C[3]+1 = 2</td><td>C[1]+1 = 2</td><td>C[0]+1 = 1</td><td><b class='chg'>1</b></td></tr><tr><td>5</td><td>C[4]+1 = 2</td><td>C[2]+1 = 3</td><td>C[1]+1 = 2</td><td><b class='chg'>2</b></td></tr><tr><td>6</td><td>C[5]+1 = 3</td><td>C[3]+1 = 2</td><td>C[2]+1 = 3</td><td><b class='chg'>2</b></td></tr><tr><td>7</td><td>C[6]+1 = 3</td><td>C[4]+1 = 2</td><td>C[3]+1 = 2</td><td><b class='chg'>2</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> C[6] = 2 (3 + 3) dan C[7] = 2 (3 + 4).</div>
 </section>
 <section class="slide" id="rx3b">
 <div class="kicker">Bedah Rumus 3/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>

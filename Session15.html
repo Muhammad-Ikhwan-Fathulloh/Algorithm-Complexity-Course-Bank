@@ -120,6 +120,13 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 .rxhasil{background:#f0fdf4;border:2px solid #bbf7d0;border-left:6px solid #16a34a;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#14532d;flex:none}
 .rxhasil b{color:#15803d}
 .rxstack{display:flex;flex-direction:column;gap:12px;min-width:0}
+table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
+.rxtrace th{background:#0f172a;color:#e2e8f0;text-align:left;padding:6px 9px;font-size:13px;font-weight:700;white-space:nowrap}
+.rxtrace td{border-bottom:1px solid #e2e8f0;padding:4px 9px;text-align:left;color:#334155;font-family:Consolas,'Courier New',monospace;line-height:1.45;vertical-align:top}
+.rxtrace tr:nth-child(even) td{background:#f8fafc}
+.rxtrace td:first-child{color:#64748b;font-weight:700}
+b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
+.rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -313,7 +320,7 @@ def rand_quicksort(A):
 <h2 class="st">Empat rumus untuk algoritma aproksimasi dan skala besar</h2>
 <p class="b">Saat solusi optimal terlalu mahal, kita menukar sedikit ketepatan dengan kecepatan yang sangat besar - tetapi dengan jaminan yang bisa dihitung. Rumus berikut adalah jaminan-jaminan itu.</p>
 <div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Rasio aproksimasi ρ</b><span>maks(ALG/OPT, OPT/ALG) ≤ ρ</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Mengulang algoritma Monte Carlo</b><span>P(salah) ≤ (1/2)ᵏ; Miller-Rabin ≤ 4⁻ᵏ</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Peluang kandidat LSH (banding MinHash)</b><span>P = 1 − (1 − sʳ)ᵇ</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Biaya self-attention</b><span>softmax(QKᵀ/√d)V, O(n²·d)</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas tiga slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
 </section>
 <section class="slide" id="rx1a">
 <div class="kicker">Bedah Rumus 1/4 · Langkah 1: cara membaca</div>
@@ -334,6 +341,14 @@ def rand_quicksort(A):
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>sisi</th><th>sudah tertutup?</th><th>aksi</th><th>cover</th></tr><tr><td>(1,2)</td><td>tidak</td><td>ambil 1, 2</td><td>{1,2}</td></tr><tr><td>(1,3)</td><td>ya</td><td>-</td><td>{1,2}</td></tr><tr><td>(2,4)</td><td>ya</td><td>-</td><td>{1,2}</td></tr><tr><td>(3,4)</td><td>tidak</td><td>ambil 3, 4</td><td>{1,2,3,4}</td></tr><tr><td>(4,5)</td><td>ya</td><td>-</td><td>{1,2,3,4}</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> ALG = 4, OPT = 2 → tepat di batas jaminan 2×.</div>
+</section>
+<section class="slide" id="rx1t">
+<div class="kicker">Bedah Rumus 1/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Rasio aproksimasi ρ</h2>
+<div class="rxsoal"><b>Kasus:</b> Vertex cover 2-approx pada 6 simpul dengan sisi 12, 13, 23, 24, 35, 45, 46, 56.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu sisi diperiksa. Jika belum tertutup, ambil KEDUA ujungnya (sisi itu masuk matching). Jika sudah tertutup, lewati. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>sisi</th><th>sudah tertutup?</th><th>aksi</th><th>cover sesudahnya</th></tr><tr><td>(1,2)</td><td>tidak</td><td><b class='chg'>ambil 1 dan 2</b></td><td>{1, 2}</td></tr><tr><td>(1,3)</td><td>ya</td><td>-</td><td>{1, 2}</td></tr><tr><td>(2,3)</td><td>ya</td><td>-</td><td>{1, 2}</td></tr><tr><td>(2,4)</td><td>ya</td><td>-</td><td>{1, 2}</td></tr><tr><td>(3,5)</td><td>tidak</td><td><b class='chg'>ambil 3 dan 5</b></td><td>{1, 2, 3, 5}</td></tr><tr><td>(4,5)</td><td>ya</td><td>-</td><td>{1, 2, 3, 5}</td></tr><tr><td>(4,6)</td><td>tidak</td><td><b class='chg'>ambil 4 dan 6</b></td><td>{1, 2, 3, 4, 5, 6}</td></tr><tr><td>(5,6)</td><td>ya</td><td>-</td><td>{1, 2, 3, 4, 5, 6}</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Cover {1, 2, 3, 4, 5, 6} berukuran 6; matching 3 sisi → OPT ≥ 3, jadi ALG ≤ 2·OPT. OPT sebenarnya 4, misalnya {2, 3, 4, 5} → rasio nyata 6/4 = 1,5.</div>
 </section>
 <section class="slide" id="rx1b">
 <div class="kicker">Bedah Rumus 1/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -371,6 +386,14 @@ E = [(<span class="tn">1</span>,<span class="tn">2</span>), (<span class="tn">1<
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>k</th><th>1</th><th>5</th><th>10</th><th>20</th></tr><tr><td>4⁻ᵏ</td><td>0,25</td><td>0,00098</td><td>9,5×10⁻⁷</td><td>9,1×10⁻¹³</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> 15 terbukti komposit (a = 2 adalah saksi); 13 lolos dan memang prima.</div>
+</section>
+<section class="slide" id="rx2t">
+<div class="kicker">Bedah Rumus 2/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Mengulang algoritma Monte Carlo</h2>
+<div class="rxsoal"><b>Kasus:</b> Miller-Rabin untuk n = 561 dengan a = 2.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Tulis n − 1 = 2ʳ·d, hitung a^d mod n, lalu kuadratkan berulang. Prima harus menghasilkan 1 atau n − 1 di urutan yang benar; munculnya 1 tiba-tiba = saksi komposit. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>langkah</th><th>perhitungan</th><th>hasil</th><th>arti</th></tr><tr><td>faktorkan n − 1</td><td>560 = 2^4 · 35</td><td>d = 35, r = 4</td><td>-</td></tr><tr><td>x = a^d mod n</td><td>2^35 mod 561</td><td>263</td><td>bukan 1 atau 560 → lanjut kuadratkan</td></tr><tr><td>kuadrat ke-1</td><td>263² mod 561</td><td>166</td><td>lanjut</td></tr><tr><td>kuadrat ke-2</td><td>166² mod 561</td><td>67</td><td>lanjut</td></tr><tr><td>kuadrat ke-3</td><td>67² mod 561</td><td>1</td><td><b class='chg'>= 1 tanpa lewat 560 → KOMPOSIT</b></td></tr><tr><td>pembanding Fermat</td><td>2^560 mod 561</td><td>1</td><td>Fermat tertipu (561 = 3·11·17 adalah bilangan Carmichael)</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> 561 terdeteksi komposit oleh Miller-Rabin, padahal lolos uji Fermat biasa.</div>
 </section>
 <section class="slide" id="rx2b">
 <div class="kicker">Bedah Rumus 2/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -413,6 +436,14 @@ E = [(<span class="tn">1</span>,<span class="tn">2</span>), (<span class="tn">1<
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Dokumen mirip 80% hampir pasti jadi kandidat; mirip 30% hanya ±5%.</div>
 </section>
+<section class="slide" id="rx3t">
+<div class="kicker">Bedah Rumus 3/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Peluang kandidat LSH (banding MinHash)</h2>
+<div class="rxsoal"><b>Kasus:</b> MinHash + banding untuk dokumen A = {1, 3, 5, 7} dan B = {1, 3, 5, 8} (Jaccard = 3/5 = 0,6), 6 hash, r = 2, b = 3.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Baris h: hitung hash setiap elemen, ambil minimum sebagai signature. Baris band: dua signature berturut-turut harus sama persis agar dokumen menjadi kandidat. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>fungsi</th><th>hash elemen A</th><th>min A</th><th>hash elemen B</th><th>min B</th><th>cocok?</th></tr><tr><td>h1(x) = (2x + 1) mod 11</td><td>3 7 0 4</td><td>0</td><td>3 7 0 6</td><td>0</td><td><b class='chg'>sama</b></td></tr><tr><td>h2(x) = (3x + 2) mod 11</td><td>5 0 6 1</td><td>0</td><td>5 0 6 4</td><td>0</td><td><b class='chg'>sama</b></td></tr><tr><td>h3(x) = (5x + 3) mod 11</td><td>8 7 6 5</td><td>5</td><td>8 7 6 10</td><td>6</td><td>beda</td></tr><tr><td>h4(x) = (7x + 1) mod 11</td><td>8 0 3 6</td><td>0</td><td>8 0 3 2</td><td>0</td><td><b class='chg'>sama</b></td></tr><tr><td>h5(x) = (4x + 5) mod 11</td><td>9 6 3 0</td><td>0</td><td>9 6 3 4</td><td>3</td><td>beda</td></tr><tr><td>h6(x) = (6x + 2) mod 11</td><td>8 9 10 0</td><td>0</td><td>8 9 10 6</td><td>6</td><td>beda</td></tr><tr><td>band 1 (h1, h2)</td><td></td><td>[0, 0]</td><td></td><td>[0, 0]</td><td><b class='chg'>cocok → kandidat</b></td></tr><tr><td>band 2 (h3, h4)</td><td></td><td>[5, 0]</td><td></td><td>[6, 0]</td><td>tidak cocok</td></tr><tr><td>band 3 (h5, h6)</td><td></td><td>[0, 0]</td><td></td><td>[3, 6]</td><td>tidak cocok</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> 3/6 signature sama (perkiraan Jaccard 0,50). Minimal satu band cocok → A dan B dibandingkan lebih lanjut.</div>
+</section>
 <section class="slide" id="rx3b">
 <div class="kicker">Bedah Rumus 3/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">Mendeteksi artikel duplikat atau plagiarisme</h2>
@@ -446,6 +477,14 @@ E = [(<span class="tn">1</span>,<span class="tn">2</span>), (<span class="tn">1<
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>n</th><th>n² (skor)</th><th>n²·d (d = 128)</th><th>relatif</th></tr><tr><td>2</td><td>4</td><td>512</td><td>-</td></tr><tr><td>8.000</td><td>6,4×10⁷</td><td>8,2×10⁹</td><td>1×</td></tr><tr><td>16.000</td><td>2,6×10⁸</td><td>3,3×10¹⁰</td><td>4×</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Output token 1 = [0,67; 0,33]; konteks 2× lebih panjang → biaya 4×.</div>
+</section>
+<section class="slide" id="rx4t">
+<div class="kicker">Bedah Rumus 4/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Biaya self-attention</h2>
+<div class="rxsoal"><b>Kasus:</b> Self-attention 3 token (d = 2), Q = K = V = X dengan t1 = [1, 0], t2 = [0, 1], t3 = [1, 1].</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu token sebagai query: hitung skor dengan SEMUA token (q·k), bagi √2, softmax, lalu rata-rata berbobot dari V. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>query</th><th>skor q·k</th><th>÷ √2</th><th>softmax (bobot)</th><th>output</th></tr><tr><td>t1</td><td>[1, 0, 1]</td><td>[0,71, 0,00, 0,71]</td><td>[0,40, 0,20, 0,40]</td><td><b class='chg'>[0,80, 0,60]</b></td></tr><tr><td>t2</td><td>[0, 1, 1]</td><td>[0,00, 0,71, 0,71]</td><td>[0,20, 0,40, 0,40]</td><td><b class='chg'>[0,60, 0,80]</b></td></tr><tr><td>t3</td><td>[1, 1, 2]</td><td>[0,71, 0,71, 1,41]</td><td>[0,25, 0,25, 0,50]</td><td><b class='chg'>[0,75, 0,75]</b></td></tr><tr><td>jumlah operasi</td><td>n·n·d = 3·3·2 = 18</td><td>9 pembagian</td><td>9 eksponen</td><td>n·n·d = 18</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Setiap token membandingkan diri dengan ketiga token → 3 × 3 skor. Untuk n token: n² skor, itulah sumber biaya O(n²·d).</div>
 </section>
 <section class="slide" id="rx4b">
 <div class="kicker">Bedah Rumus 4/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>

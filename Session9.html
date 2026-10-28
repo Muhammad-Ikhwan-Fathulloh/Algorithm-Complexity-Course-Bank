@@ -106,6 +106,13 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 .rxhasil{background:#f0fdf4;border:2px solid #bbf7d0;border-left:6px solid #16a34a;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#14532d;flex:none}
 .rxhasil b{color:#15803d}
 .rxstack{display:flex;flex-direction:column;gap:12px;min-width:0}
+table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
+.rxtrace th{background:#0f172a;color:#e2e8f0;text-align:left;padding:6px 9px;font-size:13px;font-weight:700;white-space:nowrap}
+.rxtrace td{border-bottom:1px solid #e2e8f0;padding:4px 9px;text-align:left;color:#334155;font-family:Consolas,'Courier New',monospace;line-height:1.45;vertical-align:top}
+.rxtrace tr:nth-child(even) td{background:#f8fafc}
+.rxtrace td:first-child{color:#64748b;font-weight:700}
+b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
+.rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -347,7 +354,7 @@ def astar(graph, start, goal, h):
 <h2 class="st">Empat rumus greedy pada graf dan pencarian A*</h2>
 <p class="b">MST, Dijkstra, Huffman, dan A* menjalankan dunia nyata: jaringan listrik, Google Maps, file ZIP, dan karakter game. Masing-masing punya satu rumus inti yang perlu bisa dibaca.</p>
 <div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Bobot Minimum Spanning Tree</b><span>W(T) = Σ w(e), |T| = V − 1</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Relaksasi Dijkstra</b><span>d[v] ← min(d[v], d[u] + w(u,v))</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Panjang kode rata-rata Huffman dan entropi</b><span>H ≤ L = Σ pᵢℓᵢ < H + 1</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Fungsi evaluasi A*</b><span>f(n) = g(n) + h(n), h ≤ h*</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas tiga slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
 </section>
 <section class="slide" id="rx1a">
 <div class="kicker">Bedah Rumus 1/4 · Langkah 1: cara membaca</div>
@@ -368,6 +375,14 @@ def astar(graph, start, goal, h):
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>sisi</th><th>bobot</th><th>beda komponen?</th><th>aksi</th><th>total</th></tr><tr><td>AB</td><td>1</td><td>ya</td><td>ambil</td><td>1</td></tr><tr><td>CD</td><td>2</td><td>ya</td><td>ambil</td><td>3</td></tr><tr><td>AC</td><td>3</td><td>ya</td><td>ambil</td><td>6</td></tr><tr><td>BC</td><td>4</td><td>tidak</td><td>tolak</td><td>6</td></tr><tr><td>BD</td><td>5</td><td>tidak</td><td>tolak</td><td>6</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> MST = {AB, CD, AC} dengan total bobot 6.</div>
+</section>
+<section class="slide" id="rx1t">
+<div class="kicker">Bedah Rumus 1/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Bobot Minimum Spanning Tree</h2>
+<div class="rxsoal"><b>Kasus:</b> Kruskal pada 5 simpul: AB 1, AC 3, BC 2, BD 4, CD 5, CE 6, DE 7.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Sisi diproses dari yang termurah. find() mencari wakil komponen; jika wakilnya beda → gabungkan (ambil), jika sama → membentuk siklus (tolak). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>sisi</th><th>bobot</th><th>wakil komponen</th><th>aksi</th><th>komponen sesudahnya</th><th>total</th></tr><tr><td>AB</td><td>1</td><td>A vs B</td><td><b class='chg'>ambil</b></td><td>{A,B} {C} {D} {E}</td><td>1</td></tr><tr><td>BC</td><td>2</td><td>B vs C</td><td><b class='chg'>ambil</b></td><td>{A,B,C} {D} {E}</td><td>3</td></tr><tr><td>AC</td><td>3</td><td>C vs C</td><td>tolak (siklus)</td><td>{A,B,C} {D} {E}</td><td>3</td></tr><tr><td>BD</td><td>4</td><td>C vs D</td><td><b class='chg'>ambil</b></td><td>{A,B,C,D} {E}</td><td>7</td></tr><tr><td>CD</td><td>5</td><td>D vs D</td><td>tolak (siklus)</td><td>{A,B,C,D} {E}</td><td>7</td></tr><tr><td>CE</td><td>6</td><td>D vs E</td><td><b class='chg'>ambil</b></td><td>{A,B,C,D,E}</td><td>13</td></tr><tr><td>DE</td><td>7</td><td>E vs E</td><td>tolak (siklus)</td><td>{A,B,C,D,E}</td><td>13</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> MST = AB, BC, BD, CE dengan total 13; berhenti efektif setelah V − 1 = 4 sisi diambil.</div>
 </section>
 <section class="slide" id="rx1b">
 <div class="kicker">Bedah Rumus 1/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -409,6 +424,14 @@ def astar(graph, start, goal, h):
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Jarak terpendek S ke T = 4 lewat S → B → A → T.</div>
 </section>
+<section class="slide" id="rx2t">
+<div class="kicker">Bedah Rumus 2/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Relaksasi Dijkstra</h2>
+<div class="rxsoal"><b>Kasus:</b> Dijkstra dari S: S→A 7, S→B 2, B→A 3, A→C 1, B→D 8, C→D 2.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = ambil simpul dengan jarak terkecil dari heap (jaraknya final), lalu relaksasi semua sisi keluarnya. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>ambil (jarak)</th><th>relaksasi</th><th>tabel d</th><th>isi heap sesudahnya</th></tr><tr><td><b class='chg'>S (0)</b></td><td>A: ∞ → 7; B: ∞ → 2</td><td>S=0 A=7 B=2 C=∞ D=∞</td><td>[B:2, A:7]</td></tr><tr><td><b class='chg'>B (2)</b></td><td>A: 7 → 5; D: ∞ → 10</td><td>S=0 A=5 B=2 C=∞ D=10</td><td>[A:5, A:7, D:10]</td></tr><tr><td><b class='chg'>A (5)</b></td><td>C: ∞ → 6</td><td>S=0 A=5 B=2 C=6 D=10</td><td>[C:6, A:7, D:10]</td></tr><tr><td><b class='chg'>C (6)</b></td><td>D: 10 → 8</td><td>S=0 A=5 B=2 C=6 D=8</td><td>[A:7, D:8, D:10]</td></tr><tr><td><b class='chg'>D (8)</b></td><td>-</td><td>S=0 A=5 B=2 C=6 D=8</td><td>[D:10]</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> d[D] = 8 lewat S → B → A → C → D (lebih pendek dari jalur langsung B → D = 10).</div>
+</section>
 <section class="slide" id="rx2b">
 <div class="kicker">Bedah Rumus 2/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">Rute tercepat di aplikasi peta</h2>
@@ -448,6 +471,14 @@ def astar(graph, start, goal, h):
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> L = H = 1,75 bit/simbol (kode tetap butuh 2 bit) → hemat 12,5%.</div>
 </section>
+<section class="slide" id="rx3t">
+<div class="kicker">Bedah Rumus 3/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Panjang kode rata-rata Huffman dan entropi</h2>
+<div class="rxsoal"><b>Kasus:</b> Huffman untuk teks “ABRACADABRA” (A 5, B 2, R 2, C 1, D 1).</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = ambil DUA frekuensi terkecil dari antrian, gabungkan jadi satu simpul baru, masukkan kembali. Ulangi sampai tinggal satu. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>#</th><th>gabung dua terkecil</th><th>simpul baru</th><th>antrian sesudahnya</th></tr><tr><td>1</td><td>C(1) + D(1)</td><td><b class='chg'>CD(2)</b></td><td>B(2) R(2) CD(2) A(5)</td></tr><tr><td>2</td><td>B(2) + R(2)</td><td><b class='chg'>BR(4)</b></td><td>CD(2) BR(4) A(5)</td></tr><tr><td>3</td><td>CD(2) + BR(4)</td><td><b class='chg'>CDBR(6)</b></td><td>A(5) CDBR(6)</td></tr><tr><td>4</td><td>A(5) + CDBR(6)</td><td><b class='chg'>ACDBR(11)</b></td><td>ACDBR(11)</td></tr><tr><td>kode</td><td>kiri = 0, kanan = 1</td><td>A=0, B=110, C=100, D=101, R=111</td><td>total 23 bit vs 11 × 3 = 33 bit</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> ABRACADABRA terkompresi menjadi 23 bit (rata-rata 2,09 bit/huruf) dibanding 33 bit kode tetap.</div>
+</section>
 <section class="slide" id="rx3b">
 <div class="kicker">Bedah Rumus 3/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">Kompresi teks dan file ZIP</h2>
@@ -486,6 +517,14 @@ L = huffman_len(f); <span class="tk">print</span>(L, <span class="tk">sum</span>
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>simpul</th><th>g</th><th>h</th><th>f = g + h</th></tr><tr><td>(0,0)</td><td>0</td><td>4</td><td>4</td></tr><tr><td>(1,0)</td><td>1</td><td>3</td><td>4</td></tr><tr><td>(2,0)</td><td>2</td><td>2</td><td>4</td></tr><tr><td>(2,1)</td><td>3</td><td>1</td><td>4</td></tr><tr><td>(2,2)</td><td>4</td><td>0</td><td>4</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Jalur (0,0) → (1,0) → (2,0) → (2,1) → (2,2), biaya 4 - menghindari tembok tanpa menjelajah seluruh grid.</div>
+</section>
+<section class="slide" id="rx4t">
+<div class="kicker">Bedah Rumus 4/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Fungsi evaluasi A*</h2>
+<div class="rxsoal"><b>Kasus:</b> A* di grid 4×3 dari (0,0) ke (3,0); tembok di (1,0) dan (1,1); h = Manhattan.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = kembangkan simpul dengan f = g + h terkecil dari open list, lalu hitung f untuk tetangga barunya. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>kembangkan</th><th>g</th><th>h</th><th>f</th><th>tetangga baru (f = g + h)</th><th>open list</th></tr><tr><td>(0, 0)</td><td>0</td><td>3</td><td>3</td><td>(0, 1) f=1+4=5</td><td>(0, 1)</td></tr><tr><td>(0, 1)</td><td>1</td><td>4</td><td>5</td><td>(0, 2) f=2+5=7</td><td>(0, 2)</td></tr><tr><td>(0, 2)</td><td>2</td><td>5</td><td>7</td><td>(1, 2) f=3+4=7</td><td>(1, 2)</td></tr><tr><td>(1, 2)</td><td>3</td><td>4</td><td>7</td><td>(2, 2) f=4+3=7</td><td>(2, 2)</td></tr><tr><td>(2, 2)</td><td>4</td><td>3</td><td>7</td><td>(3, 2) f=5+2=7; (2, 1) f=5+2=7</td><td>(2, 1) (3, 2)</td></tr><tr><td>(2, 1)</td><td>5</td><td>2</td><td>7</td><td>(3, 1) f=6+1=7; (2, 0) f=6+1=7</td><td>(2, 0) (3, 1) (3, 2)</td></tr><tr><td>(2, 0)</td><td>6</td><td>1</td><td>7</td><td>(3, 0) f=7+0=7</td><td>(3, 0) (3, 1) (3, 2)</td></tr><tr><td><b class='chg'>(3, 0)</b></td><td>7</td><td>0</td><td>7</td><td>TUJUAN</td><td>-</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Biaya jalur 7: harus memutar lewat baris y = 2 karena tembok; simpul yang menjauh dari tujuan tidak sempat dikembangkan.</div>
 </section>
 <section class="slide" id="rx4b">
 <div class="kicker">Bedah Rumus 4/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>

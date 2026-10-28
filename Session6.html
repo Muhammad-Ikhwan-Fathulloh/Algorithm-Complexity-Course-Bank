@@ -108,6 +108,13 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 .rxhasil{background:#f0fdf4;border:2px solid #bbf7d0;border-left:6px solid #16a34a;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#14532d;flex:none}
 .rxhasil b{color:#15803d}
 .rxstack{display:flex;flex-direction:column;gap:12px;min-width:0}
+table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
+.rxtrace th{background:#0f172a;color:#e2e8f0;text-align:left;padding:6px 9px;font-size:13px;font-weight:700;white-space:nowrap}
+.rxtrace td{border-bottom:1px solid #e2e8f0;padding:4px 9px;text-align:left;color:#334155;font-family:Consolas,'Courier New',monospace;line-height:1.45;vertical-align:top}
+.rxtrace tr:nth-child(even) td{background:#f8fafc}
+.rxtrace td:first-child{color:#64748b;font-weight:700}
+b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
+.rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -350,7 +357,7 @@ def heapsort(arr):
 <h2 class="st">Lima rumus di balik struktur data efisien</h2>
 <p class="b">Heap, hash table, BST seimbang, dynamic array, dan Bloom filter dipakai setiap hari oleh bahasa pemrograman dan database. Rumus-rumus berikut menjelaskan mengapa mereka cepat dan kapan mereka melambat.</p>
 <div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Indeks heap dalam array</b><span>parent = ⌊(i−1)/2⌋, anak = 2i+1, 2i+2</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Load factor hash table</b><span>α = n/m, probe ≈ 1/(1−α)</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Tinggi AVL tree</b><span>h ≤ 1,44·log₂(n+2)</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Amortized: dynamic array yang menggandakan diri</b><span>n + (1+2+4+…+n) ≤ 3n → O(1) amortized</span></div></div><div class="rxitem"><div class="qn">5</div><div><b>Peluang false positive Bloom filter</b><span>p ≈ (1 − e^(−kn/m))ᵏ</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas tiga slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
 </section>
 <section class="slide" id="rx1a">
 <div class="kicker">Bedah Rumus 1/5 · Langkah 1: cara membaca</div>
@@ -371,6 +378,14 @@ def heapsort(arr):
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>operasi</th><th>array heap</th><th>tukar</th></tr><tr><td>push 5</td><td>[5]</td><td>0</td></tr><tr><td>push 3</td><td>[3, 5]</td><td>1</td></tr><tr><td>push 8</td><td>[3, 5, 8]</td><td>0</td></tr><tr><td>push 1</td><td>[1, 3, 8, 5]</td><td>2</td></tr><tr><td>pop → 1</td><td>[3, 5, 8]</td><td>1</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Setiap push/pop paling banyak ⌊log₂ n⌋ tukar; pop pertama mengembalikan 1.</div>
+</section>
+<section class="slide" id="rx1t">
+<div class="kicker">Bedah Rumus 1/5 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Indeks heap dalam array</h2>
+<div class="rxsoal"><b>Kasus:</b> Min-heap: push 5, 3, 8, 1, 9, 2 lalu pop dua kali.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Push: taruh di ujung array, lalu naik (tukar dengan parent ⌊(i−1)/2⌋) selama lebih kecil. Pop: ambil akar, pindah elemen terakhir ke akar, lalu turun ke anak terkecil (2i+1, 2i+2). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>operasi</th><th>pertukaran</th><th>array heap sesudahnya</th></tr><tr><td>push 5</td><td>-</td><td>[<b class='chg'>5</b>]</td></tr><tr><td>push 3</td><td>3↔5</td><td>[<b class='chg'>3</b>, 5]</td></tr><tr><td>push 8</td><td>-</td><td>[3, 5, <b class='chg'>8</b>]</td></tr><tr><td>push 1</td><td>1↔5, 1↔3</td><td>[<b class='chg'>1</b>, 3, 8, 5]</td></tr><tr><td>push 9</td><td>-</td><td>[1, 3, 8, 5, <b class='chg'>9</b>]</td></tr><tr><td>push 2</td><td>2↔8</td><td>[1, 3, <b class='chg'>2</b>, 5, 9, 8]</td></tr><tr><td>pop → <b class='chg'>1</b></td><td>8↔2</td><td>[2, 3, 8, 5, 9]</td></tr><tr><td>pop → <b class='chg'>2</b></td><td>9↔3, 9↔5</td><td>[3, 5, 8, 9]</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Pop mengeluarkan 1 lalu 2 - selalu yang terkecil; tiap operasi paling banyak ⌊log₂ n⌋ tukar.</div>
 </section>
 <section class="slide" id="rx1b">
 <div class="kicker">Bedah Rumus 1/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -407,6 +422,14 @@ heapq.heappush(tiket, (<span class="tn">3</span>, <span class="ts">"ganti foto p
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Rata-rata 2,25 probe per insert pada α = 0,5; makin penuh, makin panjang antriannya.</div>
 </section>
+<section class="slide" id="rx2t">
+<div class="kicker">Bedah Rumus 2/5 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Load factor hash table</h2>
+<div class="rxsoal"><b>Kasus:</b> Hash table m = 8, h(k) = k mod 8, linear probing. Masukkan 10, 18, 26, 3, 11, 4.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu insert. Kolom “slot dicoba” memperlihatkan probe berurutan sampai slot kosong. Perhatikan probe makin panjang saat α naik. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>kunci</th><th>h(k)</th><th>slot dicoba</th><th>probe</th><th>isi tabel (slot 0–7)</th><th>α</th></tr><tr><td>10</td><td>10 mod 8 = 2</td><td><b class='chg'>2</b></td><td>1</td><td>[· · 10 · · · · ·]</td><td>1/8 = 0,125</td></tr><tr><td>18</td><td>18 mod 8 = 2</td><td>2 → <b class='chg'>3</b></td><td>2</td><td>[· · 10 18 · · · ·]</td><td>2/8 = 0,250</td></tr><tr><td>26</td><td>26 mod 8 = 2</td><td>2 → 3 → <b class='chg'>4</b></td><td>3</td><td>[· · 10 18 26 · · ·]</td><td>3/8 = 0,375</td></tr><tr><td>3</td><td>3 mod 8 = 3</td><td>3 → 4 → <b class='chg'>5</b></td><td>3</td><td>[· · 10 18 26 3 · ·]</td><td>4/8 = 0,500</td></tr><tr><td>11</td><td>11 mod 8 = 3</td><td>3 → 4 → 5 → <b class='chg'>6</b></td><td>4</td><td>[· · 10 18 26 3 11 ·]</td><td>5/8 = 0,625</td></tr><tr><td>4</td><td>4 mod 8 = 4</td><td>4 → 5 → 6 → <b class='chg'>7</b></td><td>4</td><td>[· · 10 18 26 3 11 4]</td><td>6/8 = 0,750</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Probe naik dari 1 menjadi 4 seiring tabel makin penuh; rumus 1/(1−α) untuk α = 0,75 juga memberi 4.</div>
+</section>
 <section class="slide" id="rx2b">
 <div class="kicker">Bedah Rumus 2/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">Kapan Python dict melakukan resize</h2>
@@ -439,6 +462,14 @@ heapq.heappush(tiket, (<span class="tn">3</span>, <span class="ts">"ganti foto p
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>simpul</th><th>h kiri</th><th>h kanan</th><th>BF</th><th>sebelum rotasi</th></tr><tr><td>1</td><td>−1</td><td>1</td><td>−2</td><td>✗</td></tr><tr><td>2</td><td>−1</td><td>0</td><td>−1</td><td>ok</td></tr><tr><td>3</td><td>−1</td><td>−1</td><td>0</td><td>ok</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Satu rotasi kiri mengubah rantai 1-2-3 menjadi pohon seimbang dengan akar 2.</div>
+</section>
+<section class="slide" id="rx3t">
+<div class="kicker">Bedah Rumus 3/5 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Tinggi AVL tree</h2>
+<div class="rxsoal"><b>Kasus:</b> AVL: insert 10, 20, 30, 40, 50, 25 dan perbaiki keseimbangan setiap kali BF melanggar.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Notasi x(kiri, kanan); · = kosong. BF = tinggi kiri − tinggi kanan. Begitu ada |BF| = 2, lakukan rotasi pada simpul terbawah yang melanggar. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>operasi</th><th>pohon sesudah insert</th><th>balance factor</th><th>perbaikan</th></tr><tr><td>insert 10</td><td>10</td><td>semua 0</td><td>-</td></tr><tr><td>insert 20</td><td>10(·, 20)</td><td>BF(10) = −1</td><td>-</td></tr><tr><td>insert 30</td><td>10(·, 20(·, 30))</td><td><b class='chg'>BF(10) = −2</b></td><td>rotasi kiri di 10 → 20(10, 30)</td></tr><tr><td>insert 40</td><td>20(10, 30(·, 40))</td><td>BF(20) = −1, BF(30) = −1</td><td>-</td></tr><tr><td>insert 50</td><td>20(10, 30(·, 40(·, 50)))</td><td><b class='chg'>BF(30) = −2</b></td><td>rotasi kiri di 30 → 20(10, 40(30, 50))</td></tr><tr><td>insert 25</td><td>20(10, 40(30(25, ·), 50))</td><td><b class='chg'>BF(20) = −2, BF(40) = +1</b></td><td>kasus kanan-kiri: rotasi kanan di 40, lalu kiri di 20</td></tr><tr><td>hasil</td><td>30(20(10, 25), 40(·, 50))</td><td>semua |BF| ≤ 1</td><td>tinggi 2 untuk 6 kunci</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Tanpa rotasi, data terurut akan membentuk rantai setinggi 5; AVL menjaganya setinggi 2.</div>
 </section>
 <section class="slide" id="rx3b">
 <div class="kicker">Bedah Rumus 3/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -473,6 +504,14 @@ heapq.heappush(tiket, (<span class="tn">3</span>, <span class="ts">"ganti foto p
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>append ke-</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr><tr><td>salin</td><td>0</td><td>1</td><td>2</td><td>0</td><td>4</td><td>0</td><td>0</td><td>0</td></tr><tr><td>total</td><td>1</td><td>3</td><td>6</td><td>7</td><td>12</td><td>13</td><td>14</td><td>15</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Total 15 ≤ 3n = 24 → O(1) amortized per append.</div>
+</section>
+<section class="slide" id="rx4t">
+<div class="kicker">Bedah Rumus 4/5 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Amortized: dynamic array yang menggandakan diri</h2>
+<div class="rxsoal"><b>Kasus:</b> Array dinamis berkapasitas awal 1, digandakan saat penuh. Lakukan 9 kali append.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu append. Biaya = salin (saat penuh) + 1 tulis. Kolom terakhir = biaya rata-rata sejauh ini; tidak pernah melewati 3. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>append</th><th>kapasitas</th><th>kondisi</th><th>salin</th><th>kapasitas baru</th><th>biaya</th><th>total</th><th>rata-rata</th></tr><tr><td>1</td><td>1</td><td>-</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1,00</td></tr><tr><td>2</td><td>1</td><td>penuh → ×2</td><td>1</td><td>2</td><td>2</td><td><b class='chg'>3</b></td><td>1,50</td></tr><tr><td>3</td><td>2</td><td>penuh → ×2</td><td>2</td><td>4</td><td>3</td><td><b class='chg'>6</b></td><td>2,00</td></tr><tr><td>4</td><td>4</td><td>-</td><td>0</td><td>4</td><td>1</td><td>7</td><td>1,75</td></tr><tr><td>5</td><td>4</td><td>penuh → ×2</td><td>4</td><td>8</td><td>5</td><td><b class='chg'>12</b></td><td>2,40</td></tr><tr><td>6</td><td>8</td><td>-</td><td>0</td><td>8</td><td>1</td><td>13</td><td>2,17</td></tr><tr><td>7</td><td>8</td><td>-</td><td>0</td><td>8</td><td>1</td><td>14</td><td>2,00</td></tr><tr><td>8</td><td>8</td><td>-</td><td>0</td><td>8</td><td>1</td><td>15</td><td>1,88</td></tr><tr><td>9</td><td>8</td><td>penuh → ×2</td><td>8</td><td>16</td><td>9</td><td><b class='chg'>24</b></td><td>2,67</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> 9 append = 24 operasi ≤ 3·9 = 27 → O(1) amortized.</div>
 </section>
 <section class="slide" id="rx4b">
 <div class="kicker">Bedah Rumus 4/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -509,6 +548,14 @@ a, last = [], <span class="tn">0</span>
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>bit</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th></tr><tr><td>nilai</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> 17 menjadi false positive; peluang teoretisnya ±11% untuk filter sekecil ini.</div>
+</section>
+<section class="slide" id="rx5t">
+<div class="kicker">Bedah Rumus 5/5 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Peluang false positive Bloom filter</h2>
+<div class="rxsoal"><b>Kasus:</b> Bloom filter 10 bit, h₁(x) = x mod 10, h₂(x) = 3x mod 10. Insert 7, 12, 25; cek 17, 5, 30.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Insert menyalakan bit h₁ dan h₂. Cek: jika salah satu bit 0 → pasti tidak ada; jika semua 1 → mungkin ada. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>operasi</th><th>bit h₁, h₂</th><th>bit 0…9 sesudahnya</th><th>jawaban</th></tr><tr><td>insert 7</td><td>7, 1</td><td>0100000100</td><td>-</td></tr><tr><td>insert 12</td><td>2, 6</td><td>0110001100</td><td>-</td></tr><tr><td>insert 25</td><td>5, 5</td><td>0110011100</td><td>-</td></tr><tr><td>cek 17</td><td>7, 1</td><td>0110011100</td><td><b class='chg'>mungkin ada (false positive!)</b></td></tr><tr><td>cek 5</td><td>5, 5</td><td>0110011100</td><td><b class='chg'>mungkin ada (false positive!)</b></td></tr><tr><td>cek 30</td><td>0, 0</td><td>0110011100</td><td>pasti tidak ada</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> 17 dan 5 terjawab “mungkin ada” padahal tidak pernah dimasukkan - itulah false positive; 30 terjawab benar “pasti tidak ada”.</div>
 </section>
 <section class="slide" id="rx5b">
 <div class="kicker">Bedah Rumus 5/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>

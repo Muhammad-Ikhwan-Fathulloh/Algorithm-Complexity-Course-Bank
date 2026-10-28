@@ -115,6 +115,13 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 .rxhasil{background:#f0fdf4;border:2px solid #bbf7d0;border-left:6px solid #16a34a;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#14532d;flex:none}
 .rxhasil b{color:#15803d}
 .rxstack{display:flex;flex-direction:column;gap:12px;min-width:0}
+table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
+.rxtrace th{background:#0f172a;color:#e2e8f0;text-align:left;padding:6px 9px;font-size:13px;font-weight:700;white-space:nowrap}
+.rxtrace td{border-bottom:1px solid #e2e8f0;padding:4px 9px;text-align:left;color:#334155;font-family:Consolas,'Courier New',monospace;line-height:1.45;vertical-align:top}
+.rxtrace tr:nth-child(even) td{background:#f8fafc}
+.rxtrace td:first-child{color:#64748b;font-weight:700}
+b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
+.rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -245,7 +252,7 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 <h2 class="st">Tiga rumus untuk memahami backtracking dan CSP</h2>
 <p class="b">Backtracking mencoba kemungkinan satu per satu dan mundur saat buntu. Rumus berikut membantu mengukur ruang pencarian, menulis uji konflik, dan memformalkan masalah sebagai CSP.</p>
 <div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Ukuran ruang pencarian N-Queens</b><span>nⁿ → n! → (dengan pruning) jauh lebih kecil</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Uji konflik ratu</b><span>c₁ = c₂ atau |r₁ − r₂| = |c₁ − c₂|</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Formalisme CSP dan ruang pencariannya</b><span>⟨X, D, C⟩, ruang = Π|Dᵢ| = dⁿ</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas tiga slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
 </section>
 <section class="slide" id="rx1a">
 <div class="kicker">Bedah Rumus 1/3 · Langkah 1: cara membaca</div>
@@ -266,6 +273,14 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>n</th><th>nⁿ</th><th>n!</th><th>simpul backtracking</th></tr><tr><td>4</td><td>256</td><td>24</td><td>9 sampai solusi pertama (17 untuk semua)</td></tr><tr><td>8</td><td>16.777.216</td><td>40.320</td><td>2.057 untuk SEMUA solusi</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Solusi pertama 4-Queens: ratu di kolom [1, 3, 0, 2] untuk baris 0–3.</div>
+</section>
+<section class="slide" id="rx1t">
+<div class="kicker">Bedah Rumus 1/3 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Ukuran ruang pencarian N-Queens</h2>
+<div class="rxsoal"><b>Kasus:</b> Backtracking 4-Queens sampai solusi pertama. Array q = kolom ratu untuk baris 0, 1, 2, …</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu kunjungan ke sebuah baris papan. Kolom “dicoba”: ✗kolom = sekolom, ✗diag = sediagonal, ✓ = aman, ↩ = sudah dicoba lalu dibatalkan. Jika semua gagal → mundur ke baris sebelumnya. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>#</th><th>q saat ini</th><th>baris</th><th>kolom dicoba</th><th>keputusan</th><th>q sesudahnya</th></tr><tr><td>1</td><td>[]</td><td>0</td><td><b class='chg'>0✓</b></td><td>taruh di kolom 0</td><td>[<b class='chg'>0</b>]</td></tr><tr><td>2</td><td>[0]</td><td>1</td><td>0✗kolom 1✗diag <b class='chg'>2✓</b></td><td>taruh di kolom 2</td><td>[0, <b class='chg'>2</b>]</td></tr><tr><td>3</td><td>[0, 2]</td><td>2</td><td>0✗kolom 1✗diag 2✗diag 3✗diag</td><td>semua kolom gagal → MUNDUR</td><td>[0]</td></tr><tr><td>4</td><td>[0]</td><td>1</td><td>2↩ <b class='chg'>3✓</b></td><td>taruh di kolom 3</td><td>[0, <b class='chg'>3</b>]</td></tr><tr><td>5</td><td>[0, 3]</td><td>2</td><td>0✗kolom <b class='chg'>1✓</b></td><td>taruh di kolom 1</td><td>[0, 3, <b class='chg'>1</b>]</td></tr><tr><td>6</td><td>[0, 3, 1]</td><td>3</td><td>0✗kolom 1✗diag 2✗diag 3✗diag</td><td>semua kolom gagal → MUNDUR</td><td>[0, 3]</td></tr><tr><td>7</td><td>[0, 3]</td><td>2</td><td>1↩ 2✗diag 3✗kolom</td><td>semua kolom gagal → MUNDUR</td><td>[0]</td></tr><tr><td>8</td><td>[0]</td><td>1</td><td>3↩</td><td>semua kolom gagal → MUNDUR</td><td>[]</td></tr><tr><td>9</td><td>[]</td><td>0</td><td>0↩ <b class='chg'>1✓</b></td><td>taruh di kolom 1</td><td>[<b class='chg'>1</b>]</td></tr><tr><td>10</td><td>[1]</td><td>1</td><td>0✗diag 1✗kolom 2✗diag <b class='chg'>3✓</b></td><td>taruh di kolom 3</td><td>[1, <b class='chg'>3</b>]</td></tr><tr><td>11</td><td>[1, 3]</td><td>2</td><td><b class='chg'>0✓</b></td><td>taruh di kolom 0</td><td>[1, 3, <b class='chg'>0</b>]</td></tr><tr><td>12</td><td>[1, 3, 0]</td><td>3</td><td>0✗kolom 1✗kolom <b class='chg'>2✓</b></td><td>taruh di kolom 2</td><td>[1, 3, 0, <b class='chg'>2</b>]</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Solusi pertama q = [1, 3, 0, 2] setelah 4 kali mundur.</div>
 </section>
 <section class="slide" id="rx1b">
 <div class="kicker">Bedah Rumus 1/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -307,6 +322,14 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Tidak ada |Δr| = |Δc| dan tidak ada kolom sama → solusi valid.</div>
 </section>
+<section class="slide" id="rx2t">
+<div class="kicker">Bedah Rumus 2/3 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Uji konflik ratu</h2>
+<div class="rxsoal"><b>Kasus:</b> Ratu sudah di (0,1), (1,3), (2,0). Cek setiap kolom di baris 3 terhadap ketiga ratu itu.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu kandidat posisi. Bandingkan dengan setiap ratu yang sudah ada: kolom sama atau |Δr| = |Δc| berarti bentrok. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>kandidat</th><th>cek terhadap ratu (0,1), (1,3), (2,0)</th><th>hasil</th><th>kunci diagonal</th></tr><tr><td>(3, 0)</td><td>(0,1): 3 ≠ 1 ✓ · (1,3): 2 ≠ 3 ✓ · (2,0): kolom sama ✗</td><td>bentrok</td><td>r−c = 3, r+c = 3</td></tr><tr><td>(3, 1)</td><td>(0,1): kolom sama ✗ · (1,3): |Δr| = 2 = |Δc| = 2 ✗ · (2,0): |Δr| = 1 = |Δc| = 1 ✗</td><td>bentrok</td><td>r−c = 2, r+c = 4</td></tr><tr><td>(3, 2)</td><td>(0,1): 3 ≠ 1 ✓ · (1,3): 2 ≠ 1 ✓ · (2,0): 1 ≠ 2 ✓</td><td><b class='chg'>AMAN</b></td><td>r−c = 1, r+c = 5</td></tr><tr><td>(3, 3)</td><td>(0,1): 3 ≠ 2 ✓ · (1,3): kolom sama ✗ · (2,0): 1 ≠ 3 ✓</td><td>bentrok</td><td>r−c = 0, r+c = 6</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Hanya (3, 2) yang aman → solusi lengkap [1, 3, 0, 2]. Kunci r − c dan r + c-nya tidak dipakai ratu lain (−1, −2, 2 dan 1, 4, 2).</div>
+</section>
 <section class="slide" id="rx2b">
 <div class="kicker">Bedah Rumus 2/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">Dari rumus menjadi pengecekan O(1)</h2>
@@ -340,6 +363,14 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>langkah</th><th>WA</th><th>NT</th><th>SA</th><th>Q</th></tr><tr><td>awal</td><td>MHB</td><td>MHB</td><td>MHB</td><td>MHB</td></tr><tr><td>WA = M</td><td>M</td><td>HB</td><td>HB</td><td>MHB</td></tr><tr><td>NT = H</td><td>M</td><td>H</td><td>B</td><td>MB</td></tr><tr><td>SA = B</td><td>M</td><td>H</td><td>B</td><td>M</td></tr><tr><td>Q = M</td><td>M</td><td>H</td><td>B</td><td>M</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> WA merah, NT hijau, SA biru, Q merah - hanya 4 langkah dari 81 kemungkinan.</div>
+</section>
+<section class="slide" id="rx3t">
+<div class="kicker">Bedah Rumus 3/3 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Formalisme CSP dan ruang pencariannya</h2>
+<div class="rxsoal"><b>Kasus:</b> Warnai peta Australia (7 wilayah) dengan M/H/B memakai forward checking, urutan WA, NT, SA, Q, NSW, V, T.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu variabel diberi nilai pertama yang masih ada di domainnya, lalu nilai itu dihapus dari domain tetangga yang belum diwarnai. [x] = sudah diberi nilai. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>penugasan</th><th>domain tetangga dipangkas</th><th>domain semua variabel sesudahnya</th></tr><tr><td>WA = <b class='chg'>M</b></td><td>NT, SA</td><td>WA:[M] NT:HB SA:HB Q:MHB NSW:MHB V:MHB T:MHB</td></tr><tr><td>NT = <b class='chg'>H</b></td><td>Q, SA</td><td>WA:[M] NT:[H] SA:B Q:MB NSW:MHB V:MHB T:MHB</td></tr><tr><td>SA = <b class='chg'>B</b></td><td>NSW, Q, V</td><td>WA:[M] NT:[H] SA:[B] Q:M NSW:MH V:MH T:MHB</td></tr><tr><td>Q = <b class='chg'>M</b></td><td>NSW</td><td>WA:[M] NT:[H] SA:[B] Q:[M] NSW:H V:MH T:MHB</td></tr><tr><td>NSW = <b class='chg'>H</b></td><td>V</td><td>WA:[M] NT:[H] SA:[B] Q:[M] NSW:[H] V:M T:MHB</td></tr><tr><td>V = <b class='chg'>M</b></td><td>-</td><td>WA:[M] NT:[H] SA:[B] Q:[M] NSW:[H] V:[M] T:MHB</td></tr><tr><td>T = <b class='chg'>M</b></td><td>-</td><td>WA:[M] NT:[H] SA:[B] Q:[M] NSW:[H] V:[M] T:[M]</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Semua terwarnai tanpa mundur: WA=M, NT=H, SA=B, Q=M, NSW=H, V=M, T=M. Ruang 3⁷ = 2.187 tidak perlu dijelajahi.</div>
 </section>
 <section class="slide" id="rx3b">
 <div class="kicker">Bedah Rumus 3/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>

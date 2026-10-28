@@ -112,6 +112,13 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 .rxhasil{background:#f0fdf4;border:2px solid #bbf7d0;border-left:6px solid #16a34a;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#14532d;flex:none}
 .rxhasil b{color:#15803d}
 .rxstack{display:flex;flex-direction:column;gap:12px;min-width:0}
+table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
+.rxtrace th{background:#0f172a;color:#e2e8f0;text-align:left;padding:6px 9px;font-size:13px;font-weight:700;white-space:nowrap}
+.rxtrace td{border-bottom:1px solid #e2e8f0;padding:4px 9px;text-align:left;color:#334155;font-family:Consolas,'Courier New',monospace;line-height:1.45;vertical-align:top}
+.rxtrace tr:nth-child(even) td{background:#f8fafc}
+.rxtrace td:first-child{color:#64748b;font-weight:700}
+b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
+.rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -259,7 +266,7 @@ def knapsack_bnb(weights, values, W):
 <h2 class="st">Tiga rumus inti Branch and Bound</h2>
 <p class="b">Branch and Bound menjelajah pohon kemungkinan seperti backtracking, tetapi memotong cabang memakai batas numerik. Tiga rumus berikut adalah mesin pemotongnya.</p>
 <div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Aturan pangkas (pruning rule)</b><span>pangkas jika bound(node) ≤ best</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Upper bound knapsack dengan relaksasi fraksional</b><span>UB = v + Σ penuh + sisa·(vₖ/wₖ)</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Integer Linear Programming dan MIP gap</b><span>maks cᵀx, Ax ≤ b, x ∈ ℤⁿ; gap = (UB−LB)/UB</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas tiga slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
 </section>
 <section class="slide" id="rx1a">
 <div class="kicker">Bedah Rumus 1/3 · Langkah 1: cara membaca</div>
@@ -280,6 +287,14 @@ def knapsack_bnb(weights, values, W):
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>simpul</th><th>nilai</th><th>berat</th><th>UB</th><th>aksi</th></tr><tr><td>akar</td><td>0</td><td>0</td><td>115</td><td>cabang</td></tr><tr><td>1,2,¬3,4</td><td>80</td><td>12</td><td>80</td><td>best = 80</td></tr><tr><td>1,¬2,3</td><td>90</td><td>12</td><td>98</td><td>best = 90</td></tr><tr><td>1,¬2,¬3</td><td>40</td><td>2</td><td>50</td><td>pangkas</td></tr><tr><td>¬1</td><td>0</td><td>0</td><td>82</td><td>pangkas</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Optimal 90 (item 1 + item 3); separuh pohon tidak perlu dijelajahi.</div>
+</section>
+<section class="slide" id="rx1t">
+<div class="kicker">Bedah Rumus 1/3 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Aturan pangkas (pruning rule)</h2>
+<div class="rxsoal"><b>Kasus:</b> Branch and Bound (DFS, ambil dulu) untuk item (40,2), (30,5), (50,10), (10,5), W = 16.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Label simpul: +k = item k diambil, −k = tidak diambil. Setiap baris = satu simpul dikunjungi; hitung UB lalu bandingkan dengan best. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>simpul</th><th>nilai</th><th>berat</th><th>UB</th><th>best</th><th>aksi</th></tr><tr><td>akar</td><td>0</td><td>0</td><td>115</td><td>0</td><td>cabang</td></tr><tr><td>+1</td><td>40</td><td>2</td><td>115</td><td>0</td><td>cabang</td></tr><tr><td>+1+2</td><td>70</td><td>7</td><td>115</td><td>0</td><td>cabang</td></tr><tr><td>+1+2+3</td><td>-</td><td>17</td><td>-</td><td>0</td><td>tidak muat</td></tr><tr><td>+1+2−3</td><td>70</td><td>7</td><td>80</td><td>0</td><td>cabang</td></tr><tr><td>+1+2−3+4</td><td>80</td><td>12</td><td>80</td><td>80</td><td><b class='chg'>daun: best baru</b></td></tr><tr><td>+1+2−3−4</td><td>70</td><td>7</td><td>70</td><td>80</td><td><b class='chg'>pangkas: UB ≤ best</b></td></tr><tr><td>+1−2</td><td>40</td><td>2</td><td>98</td><td>80</td><td>cabang</td></tr><tr><td>+1−2+3</td><td>90</td><td>12</td><td>98</td><td>80</td><td>cabang</td></tr><tr><td>+1−2+3+4</td><td>-</td><td>17</td><td>-</td><td>80</td><td>tidak muat</td></tr><tr><td>+1−2+3−4</td><td>90</td><td>12</td><td>90</td><td>90</td><td><b class='chg'>daun: best baru</b></td></tr><tr><td>+1−2−3</td><td>40</td><td>2</td><td>50</td><td>90</td><td><b class='chg'>pangkas: UB ≤ best</b></td></tr><tr><td>−1</td><td>0</td><td>0</td><td>82</td><td>90</td><td><b class='chg'>pangkas: UB ≤ best</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Optimal 90; 3 simpul dipangkas tanpa dijelajahi.</div>
 </section>
 <section class="slide" id="rx1b">
 <div class="kicker">Bedah Rumus 1/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -317,6 +332,14 @@ def knapsack_bnb(weights, values, W):
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> UB akar = 115; solusi 0/1 manapun pasti ≤ 115 (optimal sebenarnya 90).</div>
 </section>
+<section class="slide" id="rx2t">
+<div class="kicker">Bedah Rumus 2/3 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Upper bound knapsack dengan relaksasi fraksional</h2>
+<div class="rxsoal"><b>Kasus:</b> Hitung UB (relaksasi fraksional) untuk tiga simpul berbeda.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap blok = satu simpul. Mulai dari nilai simpul itu, masukkan item sisa (urut rasio) selama muat penuh, lalu isi sisa kapasitas dengan pecahan item berikutnya. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>simpul</th><th>langkah</th><th>kapasitas / tambahan</th><th>nilai berjalan</th></tr><tr><td>akar</td><td>mulai</td><td>nilai 0, sisa 16</td><td>0</td></tr><tr><td></td><td>item 1 (40, 2) penuh</td><td>sisa 14</td><td>40</td></tr><tr><td></td><td>item 2 (30, 5) penuh</td><td>sisa 9</td><td>70</td></tr><tr><td></td><td>item 3 sebagian 9/10</td><td>+45</td><td><b class='chg'>UB = 115</b></td></tr><tr><td>−1 (tanpa item 1)</td><td>mulai</td><td>nilai 0, sisa 16</td><td>0</td></tr><tr><td></td><td>item 2 (30, 5) penuh</td><td>sisa 11</td><td>30</td></tr><tr><td></td><td>item 3 (50, 10) penuh</td><td>sisa 1</td><td>80</td></tr><tr><td></td><td>item 4 sebagian 1/5</td><td>+2</td><td><b class='chg'>UB = 82</b></td></tr><tr><td>+1 −2</td><td>mulai</td><td>nilai 40, sisa 14</td><td>40</td></tr><tr><td></td><td>item 3 (50, 10) penuh</td><td>sisa 4</td><td>90</td></tr><tr><td></td><td>item 4 sebagian 4/5</td><td>+8</td><td><b class='chg'>UB = 98</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> UB akar 115, tanpa item 1 hanya 82, +1 −2 = 98: angka inilah yang dibandingkan dengan best untuk memangkas.</div>
+</section>
 <section class="slide" id="rx2b">
 <div class="kicker">Bedah Rumus 2/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">Memilih proyek investasi dengan anggaran tetap</h2>
@@ -353,6 +376,14 @@ def knapsack_bnb(weights, values, W):
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>titik</th><th>x</th><th>y</th><th>7x + 5y</th></tr><tr><td>O</td><td>0</td><td>0</td><td>0</td></tr><tr><td>P</td><td>5</td><td>0</td><td>35</td></tr><tr><td>Q</td><td>0</td><td>4</td><td>20</td></tr><tr><td>R</td><td>4</td><td>2</td><td>38 ✓</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Optimal x = 4 meja, y = 2 kursi, keuntungan 38 (gap = 0%).</div>
+</section>
+<section class="slide" id="rx3t">
+<div class="kicker">Bedah Rumus 3/3 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Integer Linear Programming dan MIP gap</h2>
+<div class="rxsoal"><b>Kasus:</b> ILP: maks 5x + 4y dengan 6x + 4y ≤ 24, x + 2y ≤ 6, x, y ≥ 0 bulat - selesaikan dengan B&B + LP relaksasi.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu subproblem LP. Jika solusinya pecahan, bercabang pada variabel itu. Nilai LP adalah UB; solusi bulat terbaik adalah LB (best). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>node</th><th>batasan tambahan</th><th>solusi LP</th><th>z (UB)</th><th>best (LB)</th><th>aksi</th></tr><tr><td>P0 (akar)</td><td>-</td><td>x = 3, y = 1,5</td><td>21</td><td>-</td><td>y pecahan → cabang y ≤ 1 dan y ≥ 2</td></tr><tr><td>P1</td><td>y ≤ 1</td><td>x = 3,33, y = 1</td><td>20,67</td><td>-</td><td>x pecahan → cabang x ≤ 3 dan x ≥ 4</td></tr><tr><td>P3</td><td>y ≤ 1, x ≤ 3</td><td>x = 3, y = 1</td><td>19</td><td><b class='chg'>19</b></td><td>bulat → solusi pertama (LB)</td></tr><tr><td>P4</td><td>y ≤ 1, x ≥ 4</td><td>x = 4, y = 0</td><td>20</td><td><b class='chg'>20</b></td><td>bulat dan lebih baik → best = 20</td></tr><tr><td>P2</td><td>y ≥ 2</td><td>x = 2, y = 2</td><td>18</td><td>20</td><td>18 ≤ 20 → pangkas</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Optimal x = 4, y = 0, z = 20. Gap akhir (20 − 20)/20 = 0%; LP akar 21 terlalu optimis karena y = 1,5.</div>
 </section>
 <section class="slide" id="rx3b">
 <div class="kicker">Bedah Rumus 3/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>

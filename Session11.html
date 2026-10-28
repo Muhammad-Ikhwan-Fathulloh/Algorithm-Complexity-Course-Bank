@@ -112,6 +112,13 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 .rxhasil{background:#f0fdf4;border:2px solid #bbf7d0;border-left:6px solid #16a34a;border-radius:10px;padding:10px 16px;font-size:16.5px;line-height:1.6;color:#14532d;flex:none}
 .rxhasil b{color:#15803d}
 .rxstack{display:flex;flex-direction:column;gap:12px;min-width:0}
+table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
+.rxtrace th{background:#0f172a;color:#e2e8f0;text-align:left;padding:6px 9px;font-size:13px;font-weight:700;white-space:nowrap}
+.rxtrace td{border-bottom:1px solid #e2e8f0;padding:4px 9px;text-align:left;color:#334155;font-family:Consolas,'Courier New',monospace;line-height:1.45;vertical-align:top}
+.rxtrace tr:nth-child(even) td{background:#f8fafc}
+.rxtrace td:first-child{color:#64748b;font-weight:700}
+b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
+.rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -308,7 +315,7 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 <h2 class="st">Empat rumus DP pada sekuens dan graf</h2>
 <p class="b">Membandingkan teks, memperbaiki salah ketik, mencari jalur terpendek, dan menebak kelas kata semuanya memakai DP. Rumus-rumusnya mirip: satu sel tabel dihitung dari beberapa sel tetangga.</p>
 <div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Longest Common Subsequence</b><span>L[i][j] = L[i−1][j−1]+1 atau maks(…)</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Levenshtein (edit distance)</b><span>D[i][j] = min(hapus, sisip, ganti)</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Relaksasi Floyd-Warshall (dan Bellman-Ford)</b><span>d[i][j] ← min(d[i][j], d[i][k] + d[k][j])</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Rekurens Viterbi</b><span>Vₜ(s) = maks V₍ₜ₋₁₎(s′)·a(s′,s)·b(s, oₜ)</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas tiga slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
 </section>
 <section class="slide" id="rx1a">
 <div class="kicker">Bedah Rumus 1/4 · Langkah 1: cara membaca</div>
@@ -329,6 +336,14 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th></th><th>B</th><th>D</th><th>C</th><th>A</th><th>B</th></tr><tr><td>A</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td></tr><tr><td>B</td><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td></tr><tr><td>C</td><td>1</td><td>1</td><td>2</td><td>2</td><td>2</td></tr><tr><td>B</td><td>1</td><td>1</td><td>2</td><td>2</td><td>3</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Panjang LCS = 3, salah satunya “BCB”.</div>
+</section>
+<section class="slide" id="rx1t">
+<div class="kicker">Bedah Rumus 1/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Longest Common Subsequence</h2>
+<div class="rxsoal"><b>Kasus:</b> Telusur balik tabel LCS (ABCB vs BDCAB) dari sel kanan bawah untuk mendapatkan string LCS-nya.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Mulai dari L[4][5]. Jika huruf cocok: ambil huruf itu dan bergerak diagonal. Jika tidak: pindah ke tetangga (atas/kiri) yang nilainya lebih besar. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>sel (i, j)</th><th>L[i][j]</th><th>bandingkan</th><th>langkah</th><th>LCS terkumpul</th></tr><tr><td>(4, 5)</td><td>3</td><td>B = B</td><td><b class='chg'>cocok → ambil B, ke diagonal</b></td><td>B</td></tr><tr><td>(3, 4)</td><td>2</td><td>C ≠ A</td><td>kiri (2) &gt; atas (1) → ke kiri</td><td>B</td></tr><tr><td>(3, 3)</td><td>2</td><td>C = C</td><td><b class='chg'>cocok → ambil C, ke diagonal</b></td><td>CB</td></tr><tr><td>(2, 2)</td><td>1</td><td>B ≠ D</td><td>kiri (1) &gt; atas (0) → ke kiri</td><td>CB</td></tr><tr><td>(2, 1)</td><td>1</td><td>B = B</td><td><b class='chg'>cocok → ambil B, ke diagonal</b></td><td>BCB</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> LCS = “BCB” (panjang 3), dibaca dari belakang ke depan.</div>
 </section>
 <section class="slide" id="rx1b">
 <div class="kicker">Bedah Rumus 1/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -368,6 +383,14 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Edit distance = 3: ganti k→s, ganti e→i, sisip g.</div>
 </section>
+<section class="slide" id="rx2t">
+<div class="kicker">Bedah Rumus 2/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Levenshtein (edit distance)</h2>
+<div class="rxsoal"><b>Kasus:</b> Ubah “kitten” menjadi “sitting” mengikuti operasi hasil telusur balik tabel edit distance.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu huruf diproses dari kiri. “sama” gratis (biaya 0); ganti/sisip/hapus berbiaya 1. Kolom string menunjukkan hasil setelah operasi. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>operasi</th><th>huruf</th><th>biaya</th><th>string sekarang</th><th>total biaya</th></tr><tr><td><b class='chg'>ganti</b></td><td>k → s</td><td>1</td><td>sitten</td><td><b class='chg'>1</b></td></tr><tr><td>sama</td><td>i = i</td><td>0</td><td>sitten</td><td>1</td></tr><tr><td>sama</td><td>t = t</td><td>0</td><td>sitten</td><td>1</td></tr><tr><td>sama</td><td>t = t</td><td>0</td><td>sitten</td><td>1</td></tr><tr><td><b class='chg'>ganti</b></td><td>e → i</td><td>1</td><td>sittin</td><td><b class='chg'>2</b></td></tr><tr><td>sama</td><td>n = n</td><td>0</td><td>sittin</td><td>2</td></tr><tr><td><b class='chg'>sisip</b></td><td>+ g</td><td>1</td><td>sitting</td><td><b class='chg'>3</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> 3 operasi: kitten → sitten → sittin → sitting.</div>
+</section>
 <section class="slide" id="rx2b">
 <div class="kicker">Bedah Rumus 2/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
 <h2 class="st">“Did you mean…?” dan pencocokan nama</h2>
@@ -405,6 +428,14 @@ table.rxtbl{width:100%;border-collapse:collapse;font-size:14.5px}
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th></th><th>A</th><th>B</th><th>C</th></tr><tr><td>A</td><td>0</td><td>4</td><td>5</td></tr><tr><td>B</td><td>4</td><td>0</td><td>1</td></tr><tr><td>C</td><td>5</td><td>1</td><td>0</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Jarak A → C turun dari 9 menjadi 5 (lewat B).</div>
+</section>
+<section class="slide" id="rx3t">
+<div class="kicker">Bedah Rumus 3/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Relaksasi Floyd-Warshall (dan Bellman-Ford)</h2>
+<div class="rxsoal"><b>Kasus:</b> Floyd-Warshall pada graf berarah 4 simpul: A→B 3, A→D 7, B→A 8, B→C 2, C→A 5, C→D 1, D→A 2.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu simpul perantara k. Untuk semua pasangan (i, j), cek apakah i → k → j lebih pendek. Kolom kanan = matriks setelah putaran k (baris A | B | C | D). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>perantara k</th><th>pembaruan d[i][j]</th><th>matriks sesudahnya (A | B | C | D)</th></tr><tr><td>A</td><td><b class='chg'>B→D: ∞ → 15; C→B: ∞ → 8; D→B: ∞ → 5</b></td><td>0 3 ∞ 7 | 8 0 2 15 | 5 8 0 1 | 2 5 ∞ 0</td></tr><tr><td>B</td><td><b class='chg'>A→C: ∞ → 5; D→C: ∞ → 7</b></td><td>0 3 5 7 | 8 0 2 15 | 5 8 0 1 | 2 5 7 0</td></tr><tr><td>C</td><td><b class='chg'>A→D: 7 → 6; B→A: 8 → 7; B→D: 15 → 3</b></td><td>0 3 5 6 | 7 0 2 3 | 5 8 0 1 | 2 5 7 0</td></tr><tr><td>D</td><td><b class='chg'>B→A: 7 → 5; C→A: 5 → 3; C→B: 8 → 6</b></td><td>0 3 5 6 | 5 0 2 3 | 3 6 0 1 | 2 5 7 0</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Setelah 4 putaran (V³ = 64 pengecekan) semua jarak terpendek antar pasangan diketahui, misalnya A → D = 6 lewat B dan C.</div>
 </section>
 <section class="slide" id="rx3b">
 <div class="kicker">Bedah Rumus 3/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
@@ -444,6 +475,14 @@ INF = float(<span class="ts">"inf"</span>)
 <div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>state</th><th>saya</th><th>makan</th><th>nasi</th></tr><tr><td>N</td><td>0,30</td><td>0,009</td><td>0,0538 ✓</td></tr><tr><td>V</td><td>0,04</td><td>0,168 ✓</td><td>0,0034</td></tr></table></div>
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Tag terbaik: saya/N, makan/V, nasi/N.</div>
+</section>
+<section class="slide" id="rx4t">
+<div class="kicker">Bedah Rumus 4/4 · Langkah 2b: jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Rekurens Viterbi</h2>
+<div class="rxsoal"><b>Kasus:</b> Viterbi “saya makan nasi” dengan state N (kata benda) dan V (kata kerja); parameter sama dengan slide hitung manual.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu sel V_t(s): bandingkan semua state sebelumnya (dikali transisi), ambil maksimum, lalu kali emisi. Kolom “dari” = pointer untuk telusur balik. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>t</th><th>kata</th><th>state</th><th>kandidat (V_{t−1}·a) lalu × emisi</th><th>dari</th><th>V_t(s)</th></tr><tr><td>1</td><td>saya</td><td>N</td><td>π(N)·b = 0,6·0,5</td><td>-</td><td><b class='chg'>0,3</b></td></tr><tr><td>1</td><td>saya</td><td>V</td><td>π(V)·b = 0,4·0,1</td><td>-</td><td><b class='chg'>0,04</b></td></tr><tr><td>2</td><td>makan</td><td>N</td><td>0,3·0,3 = 0,09 vs 0,04·0,8 = 0,032, × b = 0,1</td><td>N</td><td><b class='chg'>0,009</b></td></tr><tr><td>2</td><td>makan</td><td>V</td><td>0,3·0,7 = 0,21 vs 0,04·0,2 = 0,008, × b = 0,8</td><td>N</td><td><b class='chg'>0,168</b></td></tr><tr><td>3</td><td>nasi</td><td>N</td><td>0,009·0,3 = 0,0027 vs 0,168·0,8 = 0,1344, × b = 0,4</td><td>V</td><td><b class='chg'>0,05376</b></td></tr><tr><td>3</td><td>nasi</td><td>V</td><td>0,009·0,7 = 0,0063 vs 0,168·0,2 = 0,0336, × b = 0,1</td><td>V</td><td><b class='chg'>0,00336</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Telusur balik dari nilai terbesar di t = 3: saya/N → makan/V → nasi/N.</div>
 </section>
 <section class="slide" id="rx4b">
 <div class="kicker">Bedah Rumus 4/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
