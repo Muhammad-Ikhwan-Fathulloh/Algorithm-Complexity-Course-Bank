@@ -143,6 +143,25 @@ input[type=range]{accent-color:#2563eb;flex:1}
 </section>
 
 <!-- 2. 5W1H -->
+<!-- PETA LANGKAH -->
+<section class="slide" id="speta">
+  <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
+  <h2 class="st">Peta langkah: dari kode rekursif ke rekurens</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <div class="card"><b>1. Tulis T(n) dari kode</b><br><span class="tiny">Hitung berapa kali fungsi memanggil dirinya sendiri, seberapa kecil ukuran subsoalnya, dan berapa kerja di luar pemanggilan.</span></div>
+      <div class="card"><b>2. Pilih metode</b><br><span class="tiny">Recursion tree untuk melihat biaya tiap level, substitusi untuk menebak lalu membuktikan, atau Master Theorem jika bentuknya cocok.</span></div>
+      <div class="card"><b>3. Hitung a, b, dan d</b><br><span class="tiny">Untuk T(n) = aT(n/b) + Θ(nᵈ), bandingkan log_b(a) dengan d. Di sinilah tiga kasus ditentukan.</span></div>
+      <div class="card"><b>4. Terapkan kasus yang tepat</b><br><span class="tiny">Jika log_b(a) lebih besar, kerja ada di daun. Jika sama, tiap level sama besar. Jika lebih kecil, kerja ada di akar.</span></div>
+      <div class="card"><b>5. Verifikasi</b><br><span class="tiny">Hitung T(n) untuk beberapa nilai n secara numerik dan cek apakah rasionya terhadap fungsi kompleksitas stabil.</span></div>
+    </div>
+    <div class="stack">
+      <div class="analogy"><b>Kenapa penting:</b> Hampir semua algoritma Divide and Conquer (merge sort, binary search, Karatsuba) dianalisis lewat rekurens. Tanpa ini, kita tidak bisa membandingkan algoritma rekursif.</div>
+      <div class="note">Master Theorem tidak berlaku untuk semua rekurens. Jika subsoal berukuran tidak sama, pakai Akra-Bazzi atau recursion tree.</div>
+    </div>
+  </div>
+</section>
+
 <section class="slide" id="s2">
   <div class="kicker">KERANGKA TEORI · 5W1H</div>
   <h2 class="st">Rekurens - kenapa ada, untuk siapa, dan bagaimana memakainya</h2>
@@ -382,7 +401,7 @@ input[type=range]{accent-color:#2563eb;flex:1}
 </div></div>
 <div id="progress"></div>
 <div id="hud">
-  <div id="hud-left"><span id="pageno">1 / 11</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="hud-left"><span id="pageno">1 / 12</span><span>← → navigasi · F layar penuh</span></div>
   <div id="dots"></div>
   <div style="display:flex;gap:8px">
     <button class="navbtn" id="btnFs">⛶</button>

@@ -116,6 +116,25 @@ input[type=range]{accent-color:#2563eb;flex:1}
 </section>
 
 <!-- 2. PRINSIP D&C -->
+<!-- PETA LANGKAH -->
+<section class="slide" id="speta">
+  <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
+  <h2 class="st">Peta langkah: Divide, Conquer, Combine</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <div class="card"><b>1. Divide</b><br><span class="tiny">Bagi masalah menjadi bagian yang lebih kecil, biasanya dua bagian berukuran setengah.</span></div>
+      <div class="card"><b>2. Conquer</b><br><span class="tiny">Selesaikan tiap bagian secara rekursif. Berhenti ketika masalahnya sudah sangat kecil (base case).</span></div>
+      <div class="card"><b>3. Combine</b><br><span class="tiny">Gabungkan hasil bagian menjadi jawaban utuh. Biaya langkah ini menentukan total kompleksitas.</span></div>
+      <div class="card"><b>4. Tulis rekurensnya</b><br><span class="tiny">T(n) = 2T(n/2) + biaya combine. Lalu selesaikan dengan Master Theorem.</span></div>
+      <div class="card"><b>5. Cek syarat</b><br><span class="tiny">Binary search hanya benar jika data sudah terurut. Quick sort bergantung pada pemilihan pivot.</span></div>
+    </div>
+    <div class="stack">
+      <div class="analogy"><b>Kenapa penting:</b> Pola tiga langkah ini dipakai di merge sort, quick sort, binary search, dan Quickselect. Setelah paham polanya, algoritma baru akan terasa mirip.</div>
+      <div class="note">Quick sort Θ(n log n) hanya rata-rata. Pada input terburuk pivot yang buruk membuatnya O(n²), itulah alasan randomisasi dipakai.</div>
+    </div>
+  </div>
+</section>
+
 <section class="slide" id="s2">
   <div class="kicker">PRINSIP DIVIDE AND CONQUER</div>
   <h2 class="st">Tiga langkah: Divide → Conquer → Combine</h2>
@@ -362,7 +381,7 @@ def partition(A, lo, hi):
 </div></div>
 <div id="progress"></div>
 <div id="hud">
-  <div id="hud-left"><span id="pageno">1 / 10</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="hud-left"><span id="pageno">1 / 12</span><span>← → navigasi · F layar penuh</span></div>
   <div id="dots"></div>
   <div style="display:flex;gap:8px">
     <button class="navbtn" id="btnFs">⛶</button>

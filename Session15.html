@@ -92,6 +92,25 @@ input[type=range]{accent-color:#2563eb;flex:1}
 </section>
 
 <!-- 2. APROKSIMASI -->
+<!-- PETA LANGKAH -->
+<section class="slide" id="speta">
+  <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
+  <h2 class="st">Peta langkah: ketika solusi optimal terlalu mahal</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <div class="card"><b>1. Tentukan target</b><br><span class="tiny">Apakah cukup solusi yang dekat optimum (ρ-approximation), atau solusi yang dihitung dengan cepat dan kadang salah?</span></div>
+      <div class="card"><b>2. Pilih strategi</b><br><span class="tiny">Greedy, pembulatan LP, atau randomized. Setiap strategi punya jaminan dan biaya yang berbeda.</span></div>
+      <div class="card"><b>3. Buktikan rasio</b><br><span class="tiny">Tunjukkan bahwa hasil algoritma tidak lebih dari ρ kali optimum, dengan membandingkannya terhadap batas bawah.</span></div>
+      <div class="card"><b>4. Pilih jenis randomized</b><br><span class="tiny">Las Vegas selalu benar dengan waktu acak. Monte Carlo selalu cepat tetapi bisa salah dengan peluang kecil.</span></div>
+      <div class="card"><b>5. Skala besar</b><br><span class="tiny">Untuk pencarian mirip gunakan LSH atau HNSW. Untuk attention Transformer, FlashAttention mengurangi biaya memori.</span></div>
+    </div>
+    <div class="stack">
+      <div class="analogy"><b>Kenapa penting:</b> Banyak masalah nyata terlalu sulit untuk dipecahkan secara optimal. Aproksimasi dan randomisasi memberi jaminan yang jelas tanpa menunggu selamanya.</div>
+      <div class="note">Rasio aproksimasi adalah jaminan terburuk. Pada praktiknya hasilnya sering jauh lebih baik, tetapi tetap harus diuji secara empiris.</div>
+    </div>
+  </div>
+</section>
+
 <section class="slide" id="s2">
   <div class="kicker">BAGIAN 1 · ALGORITMA APROKSIMASI</div>
   <h2 class="st">ρ-approximation - solusi yang pasti tidak jauh dari optimal</h2>
@@ -294,7 +313,7 @@ def rand_quicksort(A):
 </div></div>
 <div id="progress"></div>
 <div id="hud">
-  <div id="hud-left"><span id="pageno">1 / 9</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="hud-left"><span id="pageno">1 / 10</span><span>← → navigasi · F layar penuh</span></div>
   <div id="dots"></div>
   <div style="display:flex;gap:8px">
     <button class="navbtn" id="btnFs">⛶</button>

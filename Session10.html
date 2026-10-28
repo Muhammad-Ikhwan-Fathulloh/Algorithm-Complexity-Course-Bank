@@ -95,6 +95,25 @@ input[type=range]{accent-color:#2563eb;flex:1}
 </section>
 
 <!-- 2. DUA PRINSIP DP -->
+<!-- PETA LANGKAH -->
+<section class="slide" id="speta">
+  <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
+  <h2 class="st">Peta langkah: cara merancang DP</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <div class="card"><b>1. Cek dua syarat</b><br><span class="tiny">Subproblem harus tumpang tindih (sama dihitung berulang) dan punya substruktur optimal (solusi besar tersusun dari solusi kecil).</span></div>
+      <div class="card"><b>2. Definisikan state</b><br><span class="tiny">Tentukan arti dp[i] atau dp[i][w] dengan kalimat yang jelas. Kesalahan di sini sering menjadi sumber bug.</span></div>
+      <div class="card"><b>3. Tulis rumus transisi</b><br><span class="tiny">Nyatakan dp[state] dari state yang lebih kecil. Pastikan setiap pilihan dicoba.</span></div>
+      <div class="card"><b>4. Tentukan base case dan urutan</b><br><span class="tiny">Isi kasus kecil dulu. Pada bottom-up, urutan pengisian harus menjamin nilai sudah tersedia.</span></div>
+      <div class="card"><b>5. Pilih implementasi</b><br><span class="tiny">Top-down (memoization) mudah ditulis. Bottom-up (tabel) lebih cepat dan bisa dioptimasi memorinya.</span></div>
+    </div>
+    <div class="stack">
+      <div class="analogy"><b>Kenapa penting:</b> DP mengubah pencarian eksponensial menjadi polinomial, asalkan subproblemnya sedikit. Knapsack 0/1 adalah contoh klasik: Θ(n·W) yang pseudo-polinomial.</div>
+      <div class="note">Θ(n·W) bergantung pada nilai kapasitas W, bukan jumlah bit. Jika W sangat besar, algoritma ini tetap lambat walaupun terlihat polinomial.</div>
+    </div>
+  </div>
+</section>
+
 <section class="slide" id="s2">
   <div class="kicker">PRINSIP DASAR</div>
   <h2 class="st">Dua syarat DP berlaku</h2>
@@ -281,7 +300,7 @@ def dp(i, w):
 </div></div>
 <div id="progress"></div>
 <div id="hud">
-  <div id="hud-left"><span id="pageno">1 / 8</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="hud-left"><span id="pageno">1 / 9</span><span>← → navigasi · F layar penuh</span></div>
   <div id="dots"></div>
   <div style="display:flex;gap:8px">
     <button class="navbtn" id="btnFs">⛶</button>

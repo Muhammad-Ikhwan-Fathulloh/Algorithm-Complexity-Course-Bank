@@ -88,6 +88,25 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
 </section>
 
 <!-- 2. P, NP, NPC, NPH -->
+<!-- PETA LANGKAH -->
+<section class="slide" id="speta">
+  <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
+  <h2 class="st">Peta langkah: memutuskan seberapa sulit suatu masalah</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <div class="card"><b>1. Tentukan kelasnya</b><br><span class="tiny">P: ada algoritma polinomial untuk menyelesaikannya. NP: solusinya bisa diverifikasi dalam waktu polinomial.</span></div>
+      <div class="card"><b>2. Buat reduksi</b><br><span class="tiny">Ubah masalah A menjadi masalah B dalam waktu polinomial. Jika jawaban B bisa diperoleh, jawaban A juga.</span></div>
+      <div class="card"><b>3. Gunakan reduksi untuk bukti sulit</b><br><span class="tiny">Jika B NP-complete dan A ≤ B, maka A juga sulit (kecuali P = NP).</span></div>
+      <div class="card"><b>4. Pilih pendekatan praktis</b><br><span class="tiny">Untuk SAT gunakan DPLL atau CDCL. Untuk inferensi aturan gunakan forward chaining dan Rete.</span></div>
+      <div class="card"><b>5. Terima batasnya</b><br><span class="tiny">Pada kasus terburuk masalah NP-complete tetap sulit. Kita harus menerima solusi yang tidak sempurna atau menerima waktu yang lama.</span></div>
+    </div>
+    <div class="stack">
+      <div class="analogy"><b>Kenapa penting:</b> Mengetahui bahwa masalah itu NP-complete mencegah kita membuang waktu mencari algoritma polinomial yang mungkin tidak ada. Ini menentukan pendekatan yang diambil.</div>
+      <div class="note">NP-complete tidak berarti tidak bisa dipecahkan. Banyak instance nyata dapat diselesaikan cepat oleh SAT solver modern.</div>
+    </div>
+  </div>
+</section>
+
 <section class="slide" id="s2">
   <div class="kicker">BAGIAN 1 · KELAS KOMPLEKSITAS</div>
   <h2 class="st">P, NP, NP-Complete, NP-Hard</h2>
@@ -275,7 +294,7 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
 </div></div>
 <div id="progress"></div>
 <div id="hud">
-  <div id="hud-left"><span id="pageno">1 / 8</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="hud-left"><span id="pageno">1 / 9</span><span>← → navigasi · F layar penuh</span></div>
   <div id="dots"></div>
   <div style="display:flex;gap:8px">
     <button class="navbtn" id="btnFs">⛶</button>

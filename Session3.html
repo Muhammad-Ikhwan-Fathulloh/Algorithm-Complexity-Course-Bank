@@ -146,6 +146,25 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
 </section>
 
 <!-- 2. AGENDA -->
+<!-- PETA LANGKAH -->
+<section class="slide" id="speta">
+  <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
+  <h2 class="st">Peta langkah: dari brute force ke pencarian pintar</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <div class="card"><b>1. Definisikan representasi solusi</b><br><span class="tiny">Tentukan bentuk satu kandidat solusi, misalnya urutan kota untuk TSP atau susunan ubin untuk 8-puzzle.</span></div>
+      <div class="card"><b>2. Enumerasi semua kandidat</b><br><span class="tiny">Buat setiap kandidat secara sistematis. Ini adalah baseline yang selalu benar tetapi lambat.</span></div>
+      <div class="card"><b>3. Hitung ruang pencarian</b><br><span class="tiny">Berapa banyak kandidat? n! untuk permutasi, bᵈ untuk pohon dengan cabang b dan kedalaman d.</span></div>
+      <div class="card"><b>4. Pilih strategi pencarian</b><br><span class="tiny">BFS menjamin solusi terpendek tetapi memakai memori besar. DFS dan IDDFS hemat memori.</span></div>
+      <div class="card"><b>5. Pangkas bila memungkinkan</b><br><span class="tiny">Kalau kandidat parsial sudah pasti gagal, buang cabangnya. Ini membuka jalan ke backtracking.</span></div>
+    </div>
+    <div class="stack">
+      <div class="analogy"><b>Kenapa penting:</b> Brute force adalah pembanding wajib. Dengan menghitung ruang pencarian, kita tahu kapan algoritma eksponensial sudah tidak bisa dipakai.</div>
+      <div class="note">Ruang keadaan besar itu nyata: TSP dengan 20 kota memiliki 19! urutan yang mungkin diperiksa.</div>
+    </div>
+  </div>
+</section>
+
 <section class="slide" id="s2">
   <div class="kicker">RENCANA HARI INI</div>
   <h2 class="st">Yang akan kita bahas</h2>
@@ -408,7 +427,7 @@ def bfs(start, goal_fn, expand_fn):
 </div></div>
 <div id="progress"></div>
 <div id="hud">
-  <div id="hud-left"><span id="pageno">1 / 11</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="hud-left"><span id="pageno">1 / 13</span><span>← → navigasi · F layar penuh</span></div>
   <div id="dots"></div>
   <div style="display:flex;gap:8px">
     <button class="navbtn" id="btnFs">⛶</button>

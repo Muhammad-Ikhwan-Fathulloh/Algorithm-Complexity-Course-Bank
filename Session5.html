@@ -84,7 +84,7 @@ input[type=range]{accent-color:#2563eb;flex:1}
 <section class="slide" id="s1">
   <div class="kicker">KOMPLEKSITAS ALGORITMA · PERTEMUAN 5</div>
   <h1>Divide and Conquer II</h1>
-  <p class="lead">Closest Pair, Karatsuba, Strassen, FFT - empat algoritma yang masing-masing memecahkan masalah yang semula dianggap butuh O(n²) atau O(n³), ternyata bisa diselesaikan lebih cepat dengan satu langkah ajaib: <b>kurangi satu submasalah rekursif</b>.</p>
+  <p class="lead">Closest Pair, Karatsuba, Strassen, FFT - empat contoh Divide and Conquer yang lebih cepat daripada cara naif. Kuncinya: <b>mengurangi jumlah submasalah rekursif</b> (Karatsuba, Strassen) atau <b>menggabungkan hasil bagian dengan biaya kecil</b> (Closest Pair, FFT).</p>
   <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · <a href="index.html" style="color:#2563eb;font-size:12px">← Daftar Materi</a></div>
 </section>
 
@@ -110,7 +110,7 @@ input[type=range]{accent-color:#2563eb;flex:1}
     <div class="stack">
       <p class="b">Diberikan n titik di bidang 2D, cari dua titik terdekat. Brute force cek semua pasangan: O(n²). D&C bisa Θ(n log n).</p>
       <div class="card soft" style="font-size:12px;line-height:1.75">
-        <b>Algoritma D&C:</b><br>
+        <b>Algoritma D&C (versi Θ(n log n)):</b><br>
         1. Urutkan titik berdasarkan koordinat-x<br>
         2. Bagi menjadi kiri dan kanan di garis tengah<br>
         3. Rekursif: δ_kiri = closest_pair(kiri), δ_kanan = closest_pair(kanan)<br>
@@ -118,8 +118,8 @@ input[type=range]{accent-color:#2563eb;flex:1}
         5. Combine: cari pasangan yang melintasi garis tengah dalam strip ±δ<br>
         6. <b>Kunci:</b> tiap titik di strip hanya perlu cek ≤ 7 tetangga terdekat!
       </div>
-      <div class="note"><b>Rekurens:</b> T(n) = 2T(n/2) + O(n) - step combine O(n) karena tiap titik cek max 7 tetangga. Master Theorem kasus 2 → <b>Θ(n log n)</b>.</div>
-      <div class="analogy"><b>Kenapa maks 7 tetangga?</b> Di kotak 2δ × δ, setiap dua titik berjarak ≥ δ (karena δ sudah minimum rekursif). Dalam kotak δ × δ paling banyak 4 titik muat → strip 2δ maks 8 titik → cek 7 tetangga per titik.</div>
+      <div class="note"><b>Rekurens:</b> T(n) = 2T(n/2) + O(n). Step combine O(n) jika strip sudah terurut menurut y (tiap titik cek ≤ 7 tetangga) → Master Theorem kasus 2 → <b>Θ(n log n)</b>. Versi sederhana yang mengurutkan ulang strip di setiap level hanya <b>O(n log² n)</b> - itulah yang ada di notebook.</div>
+      <div class="analogy"><b>Kenapa maks 7 tetangga?</b> Ambil persegi panjang δ × 2δ di sekitar garis tengah (δ di kiri, δ di kanan). Bagi jadi 8 kotak δ/2 × δ/2. Setiap kotak paling banyak 1 titik, karena dua titik di dalam satu kotak berjarak ≤ δ/√2 &lt; δ, dan δ adalah jarak minimum yang sudah diketahui. Jadi ada paling banyak 8 titik, sehingga tiap titik cukup dibandingkan dengan 7 tetangga berikutnya.</div>
     </div>
     <div class="sim">
       <div class="cap">Coba · perbandingan operasi brute force vs D&C</div>
@@ -165,9 +165,9 @@ input[type=range]{accent-color:#2563eb;flex:1}
     <div class="stack">
       <table class="tbl">
         <tr><th>n digit</th><th>Naif O(n²)</th><th>Karatsuba Θ(n^1.585)</th><th>Rasio</th></tr>
-        <tr><td>100</td><td>10.000</td><td>1.995</td><td>5×</td></tr>
-        <tr><td>1.000</td><td>1.000.000</td><td>63.096</td><td>16×</td></tr>
-        <tr><td>10.000</td><td>100.000.000</td><td>2.000.000</td><td>50×</td></tr>
+        <tr><td>100</td><td>10.000</td><td>1.479</td><td>≈7×</td></tr>
+        <tr><td>1.000</td><td>1.000.000</td><td>56.885</td><td>≈18×</td></tr>
+        <tr><td>10.000</td><td>100.000.000</td><td>2.187.762</td><td>≈46×</td></tr>
       </table>
       <div class="note"><b>Rekurens:</b> T(n) = 3T(n/2) + n. a=3, b=2, d=1. log₂3 ≈ 1.585 > 1 = d → <b>Kasus 1 Master Theorem → Θ(n^1.585)</b>. Python gunakan Karatsuba otomatis untuk bilangan besar (int built-in).</div>
       <div class="sim">
@@ -196,15 +196,15 @@ input[type=range]{accent-color:#2563eb;flex:1}
       </div>
       <div class="card" style="border-left:4px solid #7c3aed">
         <p class="b"><b>[Modern] AlphaTensor - DeepMind 2022</b></p>
-        <p class="tiny">RL menemukan cara kalikan matriks 4×4 dengan 47 perkalian (vs 49 Strassen). Rekurens: T(n) = 47T(n/4) + n² → log₄47 ≈ 2.778 → <b>Θ(n^2.778)</b>. Pertama kali Strassen dilampaui dalam 53 tahun. Dipublikasikan di Nature, Oktober 2022.</p>
+        <p class="tiny">RL menemukan cara kalikan matriks 4×4 dengan 47 perkalian (vs 49 untuk Strassen dua tingkat), <b>pada aritmetika modulo 2</b>. Rekurens: T(n) = 47T(n/4) + n² → log₄47 ≈ 2.777 → <b>Θ(n^2.777)</b>. Pertama kali Strassen dilampaui dalam 53 tahun. Dipublikasikan di Nature, Oktober 2022.</p>
       </div>
     </div>
     <div class="stack">
       <table class="tbl">
         <tr><th>Metode</th><th>Submasalah</th><th>Eksponen</th><th>n=1024</th></tr>
         <tr><td>Naif</td><td>8 × (n/2)³</td><td class="mono" style="color:#dc2626">n³</td><td>~10⁹</td></tr>
-        <tr><td>Strassen</td><td>7 × (n/2)^2.807</td><td class="mono" style="color:#2563eb">n^2.807</td><td>~4×10⁸</td></tr>
-        <tr><td>AlphaTensor</td><td>47 × (n/4)^2.778</td><td class="mono" style="color:#16a34a">n^2.778</td><td>~3×10⁸</td></tr>
+        <tr><td>Strassen</td><td>7 × (n/2)^2.807</td><td class="mono" style="color:#2563eb">n^2.807</td><td>~2,8×10⁸</td></tr>
+        <tr><td>AlphaTensor</td><td>47 × (n/4)^2.777</td><td class="mono" style="color:#16a34a">n^2.777</td><td>~2,3×10⁸</td></tr>
       </table>
       <div class="card" style="border-left:4px solid #16a34a">
         <p class="b"><b>[Modern] AlphaDev - DeepMind 2023</b></p>
@@ -258,11 +258,11 @@ input[type=range]{accent-color:#2563eb;flex:1}
   <div class="kicker">LATIHAN</div>
   <h2 class="st">Soal D&C II</h2>
   <div class="qlist">
-    <div class="q"><span class="qn">1</span><p>Jelaskan mengapa langkah "combine" Closest Pair hanya butuh memeriksa ≤ 7 tetangga per titik. Gambarkan kotak 2δ × δ dan buktikan mengapa paling banyak 8 titik bisa ada di dalamnya.</p></div>
+    <div class="q"><span class="qn">1</span><p>Jelaskan mengapa langkah "combine" Closest Pair hanya butuh memeriksa ≤ 7 tetangga per titik. Gambarkan persegi panjang δ × 2δ di sekitar garis tengah dan buktikan mengapa paling banyak 8 titik bisa ada di dalamnya.</p></div>
     <div class="q"><span class="qn">2</span><p>Karatsuba mengubah 4 perkalian menjadi 3. Tunjukkan bahwa ini cukup untuk menurunkan eksponen dari 2 ke log₂3 ≈ 1.585 menggunakan Master Theorem.</p></div>
     <div class="q"><span class="qn">3</span><p>Strassen menggunakan 7 perkalian submatriks. Mengapa eksponen turun dari 3 ke log₂7 ≈ 2.807? Apa yang terjadi kalau seseorang menemukan algoritma dengan hanya 6 perkalian?</p></div>
     <div class="q"><span class="qn">4</span><p>AlphaTensor menemukan 47 perkalian untuk matriks 4×4. Hitung eksponen kompleksitasnya (log₄47). Berapa perbaikannya dibanding Strassen untuk n = 4096?</p></div>
-    <div class="q"><span class="qn">5</span><p>Di Colab: implementasikan Karatsuba dan benchmark vs operator <code>*</code> Python bawaan untuk bilangan 200, 500, 1000 digit. Pada berapa digit Karatsuba mulai lebih cepat?</p></div>
+    <div class="q"><span class="qn">5</span><p>Di Colab: implementasikan Karatsuba dan benchmark untuk bilangan 200, 500, 1000 digit, terhadap (a) perkalian sekolah dengan dua loop dan (b) operator <code>*</code> Python bawaan. Pada digit berapa Karatsuba buatanmu mulai mengalahkan perkalian sekolah? Apakah ia mengalahkan operator bawaan?</p></div>
   </div>
 </section>
 
@@ -271,11 +271,11 @@ input[type=range]{accent-color:#2563eb;flex:1}
   <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
   <h2 class="st">Kunci D&C II</h2>
   <div class="qlist">
-    <div class="ans"><span class="qn">1</span><p>Dalam strip 2δ × δ, setiap dua titik harus berjarak ≥ δ (definisi δ = min dari kiri dan kanan). Bagi strip menjadi 4 kotak δ/2 × δ kiri dan 4 kotak kanan. Tiap kotak δ/2 × δ/2 maksimal 1 titik (karena diagonal = δ/√2 < δ). 8 kotak → 8 titik → cek 7 tetangga.</p></div>
+    <div class="ans"><span class="qn">1</span><p>δ = jarak terkecil yang ditemukan di sisi kiri atau kanan, jadi dua titik mana pun di sisi yang sama berjarak ≥ δ. Ambil persegi panjang δ × 2δ di sekitar garis tengah dan bagi menjadi 8 kotak δ/2 × δ/2. Diagonal tiap kotak = δ/√2 &lt; δ, jadi tiap kotak memuat paling banyak 1 titik. Maka ada paling banyak 8 titik di dalam area itu, dan titik ke-8 cukup dibandingkan dengan 7 titik lain.</p></div>
     <div class="ans"><span class="qn">2</span><p>T(n) = 3T(n/2) + n. a=3, b=2, d=1. log₂3 ≈ 1.585 > 1 = d → Kasus 1 Master Theorem → <b>Θ(n^log₂3) = Θ(n^1.585)</b>. Vs naif T(n)=4T(n/2)+n → log₂4=2 → Θ(n²). Selisih satu submasalah → eksponen turun dari 2 ke 1.585.</p></div>
-    <div class="ans"><span class="qn">3</span><p>T(n)=7T(n/2)+n². log₂7 ≈ 2.807 > 2 = d → Θ(n^2.807) vs naif Θ(n³). Kalau 6 perkalian: log₂6 ≈ 2.585 → Θ(n^2.585) - lebih cepat lagi. Sampai tulisan ini, batas terbaik yang diketahui adalah ~n^2.372.</p></div>
-    <div class="ans"><span class="qn">4</span><p>log₄47 = ln(47)/ln(4) ≈ 3.850/1.386 ≈ <b>2.778</b>. Untuk n=4096=4^6: Strassen ≈ n^2.807 ≈ 2.6×10⁸, AlphaTensor ≈ n^2.778 ≈ 2.0×10⁸ → sekitar <b>30% lebih sedikit operasi</b>.</p></div>
-    <div class="ans"><span class="qn">5</span><p>Python <code>int *</code> sudah pakai Karatsuba secara internal (di CPython, mulai ~70 digit). Implementasi murni Python overhead lebih besar dari C. Karatsuba manual Python biasanya mulai kompetitif di ~300-500 digit dibanding implementasi naif Python murni.</p></div>
+    <div class="ans"><span class="qn">3</span><p>T(n)=7T(n/2)+n². log₂7 ≈ 2.807 > 2 = d → Θ(n^2.807) vs naif Θ(n³). Jika ada cara dengan 6 perkalian untuk blok 2×2, eksponennya log₂6 ≈ 2.585 → Θ(n^2.585). Namun 7 untuk blok 2×2 sudah sangat sulit diperbaiki; kemajuan nyata datang dari blok yang lebih besar (seperti AlphaTensor). Sampai tulisan ini, batas terbaik yang diketahui untuk perkalian matriks umum adalah ~n^2.372.</p></div>
+    <div class="ans"><span class="qn">4</span><p>log₄47 = ln(47)/ln(4) ≈ 3.850/1.386 ≈ <b>2.777</b>. Untuk n=4096=4^6: Strassen ≈ 4096^2.807 ≈ 1,4×10¹⁰ dan AlphaTensor ≈ 4096^2.777 ≈ 1,1×10¹⁰ → sekitar <b>22% lebih sedikit operasi</b> (rasio 4096^0,03 ≈ 1,28). Selisih eksponennya kecil, tapi dampaknya terasa pada n besar.</p></div>
+    <div class="ans"><span class="qn">5</span><p>Perlu dicatat: operator <code>*</code> bawaan Python <b>sudah memakai Karatsuba</b> untuk bilangan besar (CPython mulai dari sekitar 70 limb 30-bit, kira-kira 630 digit desimal). Karena itu Karatsuba manual biasanya <b>tidak</b> lebih cepat dari operator bawaan - overhead rekursi Python lebih besar daripada implementasi C. Yang terlihat jelas adalah perbandingan dengan perkalian sekolah dua loop, dan titik potongnya bergantung mesin: ukur sendiri di Colab.</p></div>
   </div>
 </section>
 
@@ -332,7 +332,7 @@ slides.forEach((s,j)=>{const f=document.createElement('div');f.className='sfoot'
   chips.forEach(b=>b.onclick=()=>{chips.forEach(x=>x.classList.remove('active'));b.classList.add('active');
     const n=+b.dataset.n;const bf=n*(n-1)/2;const dc=Math.round(n*Math.log2(n)*7);
     const ratio=(bf/dc).toFixed(1);
-    $('#cpOut').innerHTML=`n = ${n.toLocaleString()} titik\n\nBrute Force O(n²):   ${bf.toLocaleString()} perbandingan jarak\nD&C Θ(n log n):      ${dc.toLocaleString()} perbandingan jarak (estimasi)\n\nRasio: D&C ${ratio}× lebih sedikit operasi\n\n${n>=10000?'⚠ Brute force tidak praktis - D&C wajib digunakan':'✓ Brute force masih bisa dipakai'}`});
+    $('#cpOut').innerHTML=`n = ${n.toLocaleString()} titik\n\nBrute Force O(n²):   ${bf.toLocaleString()} perbandingan jarak\nD&C Θ(n log n):      ${dc.toLocaleString()} perbandingan jarak (estimasi kasar, konstanta 7 hanya ilustrasi)\n\nRasio: D&C ${ratio}× lebih sedikit operasi\n\n${n>=10000?'⚠ Brute force tidak praktis - D&C wajib digunakan':'✓ Brute force masih bisa dipakai'}`});
   chips[0].click();
 })();
 /* Karatsuba slider */

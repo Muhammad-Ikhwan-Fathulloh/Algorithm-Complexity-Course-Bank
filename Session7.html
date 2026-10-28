@@ -92,6 +92,25 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
 </section>
 
 <!-- 2. PRINSIP GREEDY -->
+<!-- PETA LANGKAH -->
+<section class="slide" id="speta">
+  <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
+  <h2 class="st">Peta langkah: greedy dan cara membuktikannya</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <div class="card"><b>1. Tentukan pilihan lokal</b><br><span class="tiny">Pada setiap langkah, ambil pilihan yang paling menguntungkan saat ini, misalnya aktivitas yang selesai paling cepat.</span></div>
+      <div class="card"><b>2. Hipotesis: greedy optimal</b><br><span class="tiny">Tebak bahwa pilihan lokal selalu bisa dilanjutkan ke solusi global optimal.</span></div>
+      <div class="card"><b>3. Cari counterexample</b><br><span class="tiny">Coba cari satu kasus yang membuat greedy gagal. Ini cara tercepat mengetahui hipotesis itu salah.</span></div>
+      <div class="card"><b>4. Buktikan dengan exchange argument</b><br><span class="tiny">Tunjukkan bahwa solusi optimal mana pun bisa diubah menjadi solusi greedy tanpa memburuk.</span></div>
+      <div class="card"><b>5. Analisis biaya</b><br><span class="tiny">Biasanya langkahnya: urutkan dulu (O(n log n)), lalu pilih secara linear.</span></div>
+    </div>
+    <div class="stack">
+      <div class="analogy"><b>Kenapa penting:</b> Greedy sangat cepat dan sederhana, tetapi hanya benar jika dapat dibuktikan. Tanpa bukti, kita bisa mendapat jawaban yang kelihatan masuk akal tetapi salah.</div>
+      <div class="note">Pada decoding bahasa, greedy (pilih token paling mungkin) tidak selalu menghasilkan kalimat terbaik. Beam search sering lebih baik.</div>
+    </div>
+  </div>
+</section>
+
 <section class="slide" id="s2">
   <div class="kicker">PRINSIP GREEDY</div>
   <h2 class="st">Greedy: Pilihan lokal optimal → solusi global optimal?</h2>
@@ -270,7 +289,7 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
 </div></div>
 <div id="progress"></div>
 <div id="hud">
-  <div id="hud-left"><span id="pageno">1 / 9</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="hud-left"><span id="pageno">1 / 11</span><span>← → navigasi · F layar penuh</span></div>
   <div id="dots"></div>
   <div style="display:flex;gap:8px">
     <button class="navbtn" id="btnFs">⛶</button>

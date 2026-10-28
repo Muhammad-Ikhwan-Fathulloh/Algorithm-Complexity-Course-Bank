@@ -84,6 +84,25 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
 </section>
 
 <!-- 2. LCS -->
+<!-- PETA LANGKAH -->
+<section class="slide" id="speta">
+  <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
+  <h2 class="st">Peta langkah: DP pada sekuens dan graf</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <div class="card"><b>1. LCS dan Edit distance</b><br><span class="tiny">Definisikan dp[i][j] sebagai nilai untuk prefiks ke-i dan ke-j. Transisinya: cocok, sisip, hapus, atau ganti.</span></div>
+      <div class="card"><b>2. Rekonstruksi jawaban</b><br><span class="tiny">Simpan pilihan di setiap sel, lalu telusuri tabel dari pojok kanan bawah (backtrace) untuk mendapatkan sekuens.</span></div>
+      <div class="card"><b>3. Relaksasi jalur</b><br><span class="tiny">Bellman-Ford mengulang relaksasi semua sisi V−1 kali (O(VE)). Floyd-Warshall menghitung semua pasang sekaligus (O(V³)).</span></div>
+      <div class="card"><b>4. Viterbi</b><br><span class="tiny">Pada HMM, simpan probabilitas terbaik untuk tiap state di tiap waktu, lalu telusuri jalur terbaiknya.</span></div>
+      <div class="card"><b>5. Cek kompleksitas</b><br><span class="tiny">LCS dan Edit distance O(mn). Viterbi O(T·S²) untuk T langkah dan S state.</span></div>
+    </div>
+    <div class="stack">
+      <div class="analogy"><b>Kenapa penting:</b> Pola DP pada sekuens dipakai di diff file, spell checker, pengenalan suara, dan NLP. Dengan menguasai tabel DP, Anda bisa membaca banyak algoritma sekaligus.</div>
+      <div class="note">Tabel DP sering bisa dikecilkan memorinya: untuk LCS, cukup menyimpan dua baris saja jika jawaban panjangnya tidak perlu direkonstruksi.</div>
+    </div>
+  </div>
+</section>
+
 <section class="slide" id="s2">
   <div class="kicker">BAGIAN 1 · LCS</div>
   <h2 class="st">Longest Common Subsequence - O(mn)</h2>
@@ -271,7 +290,7 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
 </div></div>
 <div id="progress"></div>
 <div id="hud">
-  <div id="hud-left"><span id="pageno">1 / 8</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="hud-left"><span id="pageno">1 / 9</span><span>← → navigasi · F layar penuh</span></div>
   <div id="dots"></div>
   <div style="display:flex;gap:8px">
     <button class="navbtn" id="btnFs">⛶</button>

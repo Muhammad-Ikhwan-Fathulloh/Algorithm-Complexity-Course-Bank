@@ -92,6 +92,25 @@ canvas{border:1.5px solid #cbd5e1;border-radius:8px;cursor:pointer}
 </section>
 
 <!-- 2. MST: KRUSKAL & PRIM -->
+<!-- PETA LANGKAH -->
+<section class="slide" id="speta">
+  <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
+  <h2 class="st">Peta langkah: MST, shortest path, dan A*</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <div class="card"><b>1. Kruskal</b><br><span class="tiny">Urutkan semua sisi dari yang paling murah. Tambahkan sisi selama tidak membentuk siklus (pakai Union-Find).</span></div>
+      <div class="card"><b>2. Prim</b><br><span class="tiny">Mulai dari satu simpul, lalu selalu tambahkan sisi termurah yang menghubungkan ke simpul baru.</span></div>
+      <div class="card"><b>3. Dijkstra</b><br><span class="tiny">Relaksasi jarak tetangga dengan priority queue. Syaratnya: semua bobot sisi tidak negatif.</span></div>
+      <div class="card"><b>4. A*</b><br><span class="tiny">Tambahkan heuristik h(n) yang tidak melebih-lebihkan jarak sebenarnya (admissible). Eksplorasi jadi lebih terarah.</span></div>
+      <div class="card"><b>5. Bandingkan</b><br><span class="tiny">Hitung kompleksitas dan jumlah simpul yang dikunjungi. A* menang bila heuristiknya bagus.</span></div>
+    </div>
+    <div class="stack">
+      <div class="analogy"><b>Kenapa penting:</b> Pola ini dipakai di peta, routing jaringan, dan pathfinding game. Memahami kapan greedy pada graf benar akan membantu di materi selanjutnya.</div>
+      <div class="note">Heuristik harus admissible agar A* menjamin jalur optimal. Heuristik yang terlalu besar mempercepat tetapi bisa menghasilkan jalur yang salah.</div>
+    </div>
+  </div>
+</section>
+
 <section class="slide" id="s2">
   <div class="kicker">BAGIAN 1 · MINIMUM SPANNING TREE</div>
   <h2 class="st">Kruskal vs Prim - Dua cara greedy untuk MST</h2>
@@ -314,7 +333,7 @@ def astar(graph, start, goal, h):
 </div></div>
 <div id="progress"></div>
 <div id="hud">
-  <div id="hud-left"><span id="pageno">1 / 9</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="hud-left"><span id="pageno">1 / 11</span><span>← → navigasi · F layar penuh</span></div>
   <div id="dots"></div>
   <div style="display:flex;gap:8px">
     <button class="navbtn" id="btnFs">⛶</button>

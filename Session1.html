@@ -168,6 +168,25 @@ ol.agenda b{color:#0f172a}
 </section>
 
 <!-- ====== 2 · RENCANA ====== -->
+<!-- PETA LANGKAH -->
+<section class="slide" id="speta">
+  <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
+  <h2 class="st">Peta langkah: dari kode ke angka kompleksitas</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <div class="card"><b>1. Hitung operasi dasar</b><br><span class="tiny">Cari bagian kode yang paling sering dijalankan, misalnya isi loop, dan hitung berapa kali ia berjalan terhadap n.</span></div>
+      <div class="card"><b>2. Buang konstanta dan suku kecil</b><br><span class="tiny">3n² + 10n + 7 menjadi n². Yang diukur adalah laju pertumbuhan, bukan detik.</span></div>
+      <div class="card"><b>3. Pilih notasi yang tepat</b><br><span class="tiny">O untuk batas atas, Ω untuk batas bawah, Θ jika keduanya sama. Pilih sesuai janji yang ingin dibuat.</span></div>
+      <div class="card"><b>4. Tentukan kasus</b><br><span class="tiny">Terbaik, rata-rata, atau terburuk. Laporkan kasus yang relevan untuk input yang diharapkan.</span></div>
+      <div class="card"><b>5. Buktikan dengan definisi</b><br><span class="tiny">Cari konstanta c dan n₀ sehingga ketidaksamaan berlaku untuk semua n ≥ n₀.</span></div>
+    </div>
+    <div class="stack">
+      <div class="analogy"><b>Kenapa penting:</b> Notasi asimtotik adalah bahasa untuk membandingkan algoritma tanpa bergantung pada mesin atau bahasa pemrograman. Semua materi berikutnya memakainya.</div>
+      <div class="note">Ingat: Big-O bukan kecepatan nyata. Konstanta besar bisa membuat algoritma O(n) lebih lambat dari O(n²) untuk n kecil.</div>
+    </div>
+  </div>
+</section>
+
 <section class="slide" id="s2">
   <div class="kicker">RENCANA HARI INI</div>
   <h2 class="st">Yang akan kita bahas</h2>
@@ -974,7 +993,7 @@ d)  i = 1
 
 <div id="progress"></div>
 <div id="hud">
-  <div id="hud-left"><span id="pageno">1 / 33</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="hud-left"><span id="pageno">1 / 34</span><span>← → navigasi · F layar penuh</span></div>
   <div id="dots"></div>
   <div style="display:flex;gap:8px">
     <button class="navbtn" id="btnFs" title="Layar penuh (F)">⛶</button>

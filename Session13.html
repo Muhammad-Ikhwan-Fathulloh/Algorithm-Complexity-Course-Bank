@@ -84,6 +84,25 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
 </section>
 
 <!-- 2. PRINSIP B&B -->
+<!-- PETA LANGKAH -->
+<section class="slide" id="speta">
+  <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
+  <h2 class="st">Peta langkah: Branch and Bound</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <div class="card"><b>1. Branch</b><br><span class="tiny">Pecah masalah menjadi subproblem, misalnya dengan memutuskan apakah suatu item diambil atau tidak.</span></div>
+      <div class="card"><b>2. Bound</b><br><span class="tiny">Hitung batas untuk tiap cabang. Pada maksimasi, ini batas atas nilai yang mungkin dicapai cabang itu.</span></div>
+      <div class="card"><b>3. Prune</b><br><span class="tiny">Jika batas cabang tidak lebih baik dari solusi terbaik yang sudah ditemukan, buang cabang itu.</span></div>
+      <div class="card"><b>4. Perbarui solusi terbaik</b><br><span class="tiny">Setiap kali menemukan solusi lengkap yang lebih baik, simpan sebagai batas baru.</span></div>
+      <div class="card"><b>5. Bandingkan dengan backtracking</b><br><span class="tiny">Backtracking hanya memangkas cabang yang tidak valid. B&B juga memangkas cabang yang tidak mungkin lebih baik.</span></div>
+    </div>
+    <div class="stack">
+      <div class="analogy"><b>Kenapa penting:</b> B&B menjamin solusi optimal sambil memangkas sebanyak mungkin pencarian. Solver industri untuk logistik dan penjadwalan memakai prinsip ini.</div>
+      <div class="note">Kualitas batas menentukan kecepatan. Batas yang longgar membuat banyak cabang tidak terpangkas, dan B&B bisa tetap eksponensial.</div>
+    </div>
+  </div>
+</section>
+
 <section class="slide" id="s2">
   <div class="kicker">BAGIAN 1 · PRINSIP B&B</div>
   <h2 class="st">Branch = pecah masalah, Bound = hitung batas</h2>
@@ -222,7 +241,7 @@ def knapsack_bnb(weights, values, W):
 </div></div>
 <div id="progress"></div>
 <div id="hud">
-  <div id="hud-left"><span id="pageno">1 / 7</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="hud-left"><span id="pageno">1 / 8</span><span>← → navigasi · F layar penuh</span></div>
   <div id="dots"></div>
   <div style="display:flex;gap:8px">
     <button class="navbtn" id="btnFs">⛶</button>

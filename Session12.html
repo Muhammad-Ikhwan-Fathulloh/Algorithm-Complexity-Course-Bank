@@ -110,9 +110,9 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
         <p class="tiny">Tanpa pruning: O(k^n) di mana k = pilihan per langkah, n = kedalaman. Dengan pruning yang efektif: bisa jauh lebih kecil - tapi sulit dianalisis secara eksak. Worst case tetap eksponensial.</p>
       </div>
       <table class="tbl">
-        <tr><th>Masalah</th><th>Tanpa pruning</th><th>Dengan pruning (khas)</th></tr>
-        <tr><td>N-Queens (n=8)</td><td>8^8 = 16 juta</td><td>~2.000 node</td></tr>
-        <tr><td>Sudoku</td><td>9^81</td><td>~10.000 node</td></tr>
+        <tr><th>Masalah</th><th>Tanpa pruning (ruang pencarian)</th><th>Dengan pruning</th></tr>
+        <tr><td>N-Queens (n=8)</td><td>8^8 ≈ 16,7 juta penempatan</td><td>15.720 penempatan untuk mencari semua 92 solusi (cek kolom &amp; diagonal)</td></tr>
+        <tr><td>Sudoku</td><td>9^81 (sangat besar)</td><td>Jauh lebih sedikit, bergantung pada puzzle (lihat notebook)</td></tr>
         <tr><td>TSP (n=10)</td><td>10!</td><td>Jauh lebih sedikit</td></tr>
       </table>
       <div class="note">Pruning itu senjata utama backtracking. Semakin awal kita deteksi constraint violation, semakin banyak cabang yang bisa dipotong.</div>
@@ -209,11 +209,11 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
   <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
   <h2 class="st">Kunci Backtracking dan CSP</h2>
   <div class="qlist">
-    <div class="ans"><span class="qn">1</span><p>Brute force menghasilkan dan menguji semua kandidat. Backtracking membangun kandidat secara inkremental dan membuang (prune) kandidat parsial yang sudah pasti gagal. Contoh: N-Queens, setelah menaruh ratu di (1,1) dan (2,3), baris 3 kolom 1,3,2,4 semuanya diserang - seluruh cabang baris 3 langsung dibuang tanpa menjelajah.</p></div>
-    <div class="ans"><span class="qn">2</span><p>Solusi pertama 4-Queens: (1,3,0,2) atau (2,0,3,1). Dengan pruning kolom dan diagonal, biasanya ditemukan setelah ~8-12 node dikunjungi dari total 4! = 24 permutasi murni. Pruning membuang ~50-60% node.</p></div>
+    <div class="ans"><span class="qn">1</span><p>Brute force menghasilkan dan menguji semua kandidat. Backtracking membangun kandidat secara inkremental dan membuang (prune) kandidat parsial yang sudah pasti gagal. Contoh: N-Queens 4×4, ratu pertama di baris 0 kolom 0 dan ratu kedua di baris 1 kolom 2. Pada baris 2, kolom 0 dan 2 sudah terpakai, sedangkan kolom 1 dan 3 diserang diagonal. Tidak ada kolom aman, jadi cabang ini dipangkas tanpa menjelajah lebih dalam.</p></div>
+    <div class="ans"><span class="qn">2</span><p>Pencarian dengan urutan kolom 0 → 3 menemukan solusi pertama <b>kolom [1, 3, 0, 2]</b>, yaitu ratu di (baris 0, kolom 1), (1, 3), (2, 0), (3, 2). Dengan pruning kolom dan diagonal, pencarian mencoba 26 penempatan sebelum sampai di sana (termasuk yang langsung ditolak). Ada dua solusi untuk 4×4: [1,3,0,2] dan [2,0,3,1]. Sebagai pembanding, brute force menguji semua 4⁴ = 256 kombinasi kolom per baris, sedangkan permutasi tanpa kolom ganda hanya 4! = 24.</p></div>
     <div class="ans"><span class="qn">3</span><p>Sudoku 4×4: <b>X</b> = 16 sel (yang kosong). <b>D</b> = {1,2,3,4} untuk tiap sel. <b>C</b>: setiap baris (4), kolom (4), kotak 2×2 (4) harus berisi nilai berbeda = 12 constraint alldiff. Total variabel ≤ 16, domain size = 4.</p></div>
     <div class="ans"><span class="qn">4</span><p><b>Forward Checking</b>: propagasi 1 langkah ke depan, O(D) per assign. <b>AC-3</b>: propagasi penuh ke semua arc, O(ED³) sekali jalan. AC-3 lebih kuat (lebih banyak pruning), tapi lebih mahal per langkah. Trade-off: AC-3 sering worth it karena mengurangi backtrack jauh lebih banyak.</p></div>
-    <div class="ans"><span class="qn">5</span><p>Sudoku tanpa MRV: ribuan calls. Dengan MRV: ratusan calls (pilih sel yang paling sedikit kemungkinannya → paling cepat fail → prune lebih agresif). Empiris: MRV sering 10-100× lebih cepat untuk Sudoku.</p></div>
+    <div class="ans"><span class="qn">5</span><p>Angka pastinya bergantung pada puzzle dan implementasi, jadi ukur sendiri di notebook. Secara umum, MRV + forward checking menghasilkan node jauh lebih sedikit daripada urutan sel tetap (kiri ke kanan, atas ke bawah), karena sel dengan domain terkecil dipilih dulu sehingga kegagalan terdeteksi lebih awal. Laporkan tabel jumlah node untuk minimal 3 puzzle.</p></div>
   </div>
 </section>
 

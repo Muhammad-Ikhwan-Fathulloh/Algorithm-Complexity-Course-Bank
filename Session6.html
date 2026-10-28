@@ -94,6 +94,25 @@ kbd{background:#1e293b;color:#e2e8f0;border-radius:4px;padding:1px 6px;font-size
 </section>
 
 <!-- 2. HEAP -->
+<!-- PETA LANGKAH -->
+<section class="slide" id="speta">
+  <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
+  <h2 class="st">Peta langkah: memilih struktur data yang tepat</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <div class="card"><b>1. Lihat operasi yang sering</b><br><span class="tiny">Apakah lebih sering insert, search, atau mengambil nilai minimum? Pilih struktur yang optimal untuk operasi itu.</span></div>
+      <div class="card"><b>2. Bandingkan kompleksitas</b><br><span class="tiny">Heap untuk priority queue, hash table untuk akses rata-rata O(1), balanced BST untuk urutan dan O(log n) terjamin.</span></div>
+      <div class="card"><b>3. Perhatikan rata-rata vs terburuk</b><br><span class="tiny">Hash table O(1) hanya rata-rata. Dengan banyak collision, operasinya bisa menjadi O(n).</span></div>
+      <div class="card"><b>4. Gunakan amortisasi</b><br><span class="tiny">Beberapa operasi sesekali mahal, misalnya resize array. Analisis amortisasi menghitung biaya rata-rata serangkaian operasi.</span></div>
+      <div class="card"><b>5. Pertimbangkan memori</b><br><span class="tiny">Untuk data sangat besar, struktur probabilistik seperti Bloom filter menukar sedikit akurasi dengan memori yang jauh lebih kecil.</span></div>
+    </div>
+    <div class="stack">
+      <div class="analogy"><b>Kenapa penting:</b> Sering kali mengganti struktur data memberi perbaikan lebih besar daripada mengubah algoritma. Ini juga dasar bagi algoritma greedy dan Dijkstra di materi berikutnya.</div>
+      <div class="note">Jangan hanya melihat notasi Big-O. Perhatikan juga apakah itu rata-rata atau terburuk, dan berapa besar konstanta serta memorinya.</div>
+    </div>
+  </div>
+</section>
+
 <section class="slide" id="s2">
   <div class="kicker">BAGIAN 1 · HEAP</div>
   <h2 class="st">Heap - Struktur data untuk priority queue</h2>
@@ -313,7 +332,7 @@ def heapsort(arr):
 </div></div>
 <div id="progress"></div>
 <div id="hud">
-  <div id="hud-left"><span id="pageno">1 / 10</span><span>← → navigasi · F layar penuh</span></div>
+  <div id="hud-left"><span id="pageno">1 / 12</span><span>← → navigasi · F layar penuh</span></div>
   <div id="dots"></div>
   <div style="display:flex;gap:8px">
     <button class="navbtn" id="btnFs">⛶</button>
