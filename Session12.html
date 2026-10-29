@@ -122,6 +122,14 @@ table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
 .rxtrace td:first-child{color:#64748b;font-weight:700}
 b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
 .rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
+.rxg3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.rxwtrack{display:flex;gap:6px;flex:none}
+.rxwtrack span{font:800 12px/1 -apple-system,'Segoe UI',Arial,sans-serif;letter-spacing:.08em;padding:6px 10px;border-radius:20px;background:#f1f5f9;color:#94a3b8;border:2px solid #e2e8f0}
+.rxwtrack span.on{background:#2563eb;color:#fff;border-color:#2563eb}
+.rxtoc{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+.rxtocitem{display:flex;gap:10px;align-items:baseline;font-size:15px;line-height:1.4;color:#334155;border-bottom:1px dashed #e2e8f0;padding:3px 0}
+.rxg3.big .rxcard{padding:18px 20px}.rxg3.big .rxcard h3{font-size:20px;margin-bottom:10px}.rxg3.big .rxcard p{font-size:17px;line-height:1.65}
+.rxtocitem span{flex:none;min-width:26px;font:800 13px Consolas,monospace;color:#2563eb}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -136,7 +144,67 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · <a href="index.html" style="color:#2563eb;font-size:12px">← Daftar Materi</a></div>
 </section>
 
-<!-- 2. FRAMEWORK BACKTRACKING -->
+<section class="slide" id="rxdA" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A</div>
+<h1 class="title">Teori</h1>
+<p class="lead">Kita mulai dari dasar: 5W1H dipecah per slide (What, Why, Who, When, Where, How), lalu konsep inti dan cara membaca setiap rumus.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>WHAT - Apa itu backtracking dan CSP?</div><div class="rxtocitem"><span>2</span>WHY - Mengapa backtracking dibutuhkan?</div><div class="rxtocitem"><span>3</span>WHO - Siapa yang memakainya?</div><div class="rxtocitem"><span>4</span>WHEN - Kapan memakai backtracking?</div><div class="rxtocitem"><span>5</span>WHERE - Di mana dipakai?</div><div class="rxtocitem"><span>6</span>HOW - Bagaimana cara kerjanya?</div><div class="rxtocitem"><span>7</span>Backtracking = DFS dengan pruning</div><div class="rxtocitem"><span>8</span>Tiga rumus untuk memahami backtracking dan CSP</div><div class="rxtocitem"><span>9</span>Ukuran ruang pencarian N-Queens</div><div class="rxtocitem"><span>10</span>Uji konflik ratu</div><div class="rxtocitem"><span>11</span>Formalisme CSP dan ruang pencariannya</div></div>
+</section>
+
+<section class="slide" id="rxw1" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (1/6) - WHAT</div>
+<div class="rxwtrack"><span class="on">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHAT - Apa itu backtracking dan CSP?</h2>
+<p class="b">Backtracking = DFS yang membangun solusi sedikit demi sedikit dan <b>mundur</b> begitu melanggar batasan. CSP = cara formal menulis masalah sebagai variabel, domain, dan batasan.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Backtracking</h3><p>Coba pilihan, cek batasan, lanjut atau mundur.</p></div><div class="rxcard green"><h3>Pruning</h3><p>Cabang yang sudah pasti gagal tidak dijelajahi.</p></div><div class="rxcard yellow"><h3>CSP ⟨X, D, C⟩</h3><p>Variabel, domain nilai, dan batasan antar variabel.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> N-Queens: taruh ratu baris demi baris, mundur jika semua kolom bentrok.</div>
+</section>
+
+<section class="slide" id="rxw2" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (2/6) - WHY</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="on">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHY - Mengapa backtracking dibutuhkan?</h2>
+<p class="b">Karena banyak masalah tidak punya algoritma cepat, tetapi pruning membuat pencarian lengkap tetap praktis.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Ruang raksasa</h3><p>nⁿ atau dⁿ kemungkinan - mustahil dicoba semua.</p></div><div class="rxcard green"><h3>Pruning dini</h3><p>8-Queens: dari 16,7 juta penempatan menjadi ±2.000 simpul.</p></div><div class="rxcard yellow"><h3>Formalisme umum</h3><p>Begitu ditulis sebagai CSP, heuristik umum (MRV, AC-3) langsung bisa dipakai.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Sudoku sulit diselesaikan dalam milidetik dengan backtracking + forward checking.</div>
+</section>
+
+<section class="slide" id="rxw3" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (3/6) - WHO</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="on">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHO - Siapa yang memakainya?</h2>
+<p class="b">Siapa pun yang menyusun jadwal atau konfigurasi dengan banyak aturan.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Bagian akademik</h3><p>Penjadwalan kuliah dan ujian.</p></div><div class="rxcard green"><h3>Operasional</h3><p>Shift perawat, penugasan kru.</p></div><div class="rxcard yellow"><h3>Engineer produk</h3><p>Konfigurator produk (laptop, mobil) yang harus konsisten.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Kampus menyusun jadwal 60 mata kuliah tanpa bentrok dosen dan ruang dengan solver CSP.</div>
+</section>
+
+<section class="slide" id="rxw4" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (4/6) - WHEN</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="on">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHEN - Kapan memakai backtracking?</h2>
+<p class="b">Saat solusi dibangun langkah demi langkah dan batasan bisa dicek sebagian.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Kombinatorial dengan aturan</h3><p>Penempatan, pewarnaan, penjadwalan.</p></div><div class="rxcard green"><h3>Butuh semua solusi / satu solusi valid</h3><p>Bukan sekadar solusi “cukup bagus”.</p></div><div class="rxcard yellow"><h3>Ukuran sedang</h3><p>Untuk ukuran sangat besar, kombinasikan dengan heuristik atau solver.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Mewarnai peta 7 wilayah dengan 3 warna: forward checking menemukan solusi tanpa mundur.</div>
+</section>
+
+<section class="slide" id="rxw5" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (5/6) - WHERE</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="on">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHERE - Di mana dipakai?</h2>
+<p class="b">Contoh nyata:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Puzzle & game</h3><p>Sudoku, crossword, N-Queens.</p></div><div class="rxcard green"><h3>Penjadwalan</h3><p>Google OR-Tools CP-SAT, MiniZinc, python-constraint.</p></div><div class="rxcard yellow"><h3>Hardware & frekuensi</h3><p>Penempatan komponen PCB, alokasi frekuensi radio.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Alokasi frekuensi BTS: tetangga tidak boleh memakai frekuensi yang sama - pewarnaan graf.</div>
+</section>
+
+<section class="slide" id="rxw6" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (6/6) - HOW</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="on">HOW</span></div>
+<h2 class="st">HOW - Bagaimana cara kerjanya?</h2>
+<p class="b">Kerangka umum:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>1. Pilih variabel</h3><p>MRV: domain tersisa paling kecil dulu.</p></div><div class="rxcard green"><h3>2. Coba nilai & cek</h3><p>Uji batasan terhadap nilai yang sudah ditetapkan (O(1) dengan set).</p></div><div class="rxcard yellow"><h3>3. Propagasi atau mundur</h3><p>Forward checking/AC-3 memangkas domain; domain kosong → mundur.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Uji konflik ratu: c₁ = c₂ atau |r₁ − r₂| = |c₁ − c₂|.</div>
+</section>
+
 <section class="slide" id="s2">
   <div class="kicker">BAGIAN 1 · PRINSIP BACKTRACKING</div>
   <h2 class="st">Backtracking = DFS dengan pruning</h2>
@@ -172,7 +240,54 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• Tanpa pruning: O(kⁿ), dengan k = pilihan per langkah dan n = kedalaman.<br>• 8⁸ ≈ 16,7 juta: ruang pencarian 8-Queens jika setiap baris mencoba 8 kolom tanpa pemangkasan.</div>
 </section>
 
-<!-- 3. N-QUEENS -->
+<section class="slide" id="rx0" data-rx="1">
+<div class="kicker">Bagian A · Teori · Bedah Rumus · Backtracking dan CSP</div>
+<h2 class="st">Tiga rumus untuk memahami backtracking dan CSP</h2>
+<p class="b">Backtracking mencoba kemungkinan satu per satu dan mundur saat buntu. Rumus berikut membantu mengukur ruang pencarian, menulis uji konflik, dan memformalkan masalah sebagai CSP.</p>
+<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Ukuran ruang pencarian N-Queens</b><span>nⁿ → n! → (dengan pruning) jauh lebih kecil</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Uji konflik ratu</b><span>c₁ = c₂ atau |r₁ − r₂| = |c₁ − c₂|</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Formalisme CSP dan ruang pencariannya</b><span>⟨X, D, C⟩, ruang = Π|Dᵢ| = dⁿ</span></div></div></div>
+<div class="note"><b>Alur tiap rumus:</b> di <b>Teori</b> kita belajar <b>cara membaca</b> rumus dan arti tiap simbol. Di <b>Teknikal</b> rumus yang sama dikerjakan lewat <b>hitung manual</b>, <b>jejak step-by-step</b>, lalu <b>kode Python</b>. Di <b>Studi kasus nyata</b> (akhir slide) kita lihat pemakaiannya di proyek nyata.</div>
+</section>
+
+<section class="slide" id="rx1a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 1/3 - cara membaca</div>
+<h2 class="st">Ukuran ruang pencarian N-Queens</h2>
+<div class="fxbox">naif: <span class='hl'>n<sup>n</sup></span> &nbsp;→&nbsp; satu ratu per kolom: <span class='hb'>n!</span> &nbsp;→&nbsp; backtracking: simpul ≪ n!</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Cara naif mencoba n pangkat n penempatan. Jika satu ratu per baris dan setiap kolom berbeda, menjadi n faktorial. Dengan backtracking dan pruning, simpul yang dikunjungi jauh lebih sedikit dari n faktorial.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>nⁿ</h4><p class="">setiap ratu (satu per baris) boleh di kolom mana saja.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>n!</h4><p class="">tambahkan syarat kolom berbeda: pilihan berkurang n, n−1, n−2, ...</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>≪ (jauh lebih kecil)</h4><p class="">pruning diagonal memotong cabang sedini mungkin.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>n</td><td>ukuran papan dan banyaknya ratu</td></tr><tr><td>nⁿ</td><td>semua penempatan satu ratu per baris</td></tr><tr><td>n!</td><td>permutasi kolom</td></tr><tr><td>≪</td><td>“jauh lebih kecil dari”</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Setiap batasan yang dicek <b>sedini mungkin</b> memangkas seluruh subpohon di bawahnya. Itu sebabnya backtracking jauh lebih cepat daripada membangkitkan semua kandidat lalu mengecek di akhir.</div>
+</section>
+
+<section class="slide" id="rx2a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 2/3 - cara membaca</div>
+<h2 class="st">Uji konflik ratu</h2>
+<div class="fxbox">konflik(r₁,c₁, r₂,c₂) ⇔ <span class='hb'>c₁ = c₂</span> &nbsp;∨&nbsp; <span class='hl'>|r₁ − r₂| = |c₁ − c₂|</span> &nbsp;&nbsp; (diagonal: r − c dan r + c sama)</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Dua ratu berkonflik jika dan hanya jika kolomnya sama, atau selisih baris mutlaknya sama dengan selisih kolom mutlaknya. Untuk diagonal, nilai r kurang c atau r tambah c sama.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>∨ = “atau”</h4><p class="">salah satu kondisi cukup untuk konflik.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>|r₁ − r₂| = |c₁ − c₂|</h4><p class="">naik k baris dan geser k kolom = garis miring 45°.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>r − c konstan</h4><p class="">diagonal “\”; r + c konstan: diagonal “/”.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>(r, c)</td><td>baris dan kolom sebuah ratu</td></tr><tr><td>|·|</td><td>nilai mutlak</td></tr><tr><td>r − c</td><td>identitas diagonal turun</td></tr><tr><td>r + c</td><td>identitas diagonal naik</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Mengubah aturan geometri menjadi <b>persamaan sederhana</b> membuat uji konflik O(1) dengan himpunan (set) kolom dan diagonal yang sudah terisi.</div>
+</section>
+
+<section class="slide" id="rx3a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 3/3 - cara membaca</div>
+<h2 class="st">Formalisme CSP dan ruang pencariannya</h2>
+<div class="fxbox">CSP = ⟨ <span class='hb'>X</span>, <span class='hg'>D</span>, <span class='hl'>C</span> ⟩, &nbsp; ruang = Π<sub>i</sub> |D<sub>i</sub>| = d<sup>n</sup>; &nbsp; AC-3: O(e·d³)</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Sebuah CSP adalah tripel X, D, dan C. Ruang pencariannya adalah perkalian ukuran semua domain, yaitu d pangkat n. Algoritma AC-3 berjalan O e kali d pangkat tiga.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>X</h4><p class="">himpunan variabel: X₁..Xₙ.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>D</h4><p class="">domain tiap variabel: nilai yang boleh.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>C</h4><p class="">batasan (constraint) antar variabel.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Π (pi besar)</h4><p class="">perkalian berulang, seperti Σ untuk penjumlahan.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>n</td><td>banyaknya variabel</td></tr><tr><td>d</td><td>ukuran domain terbesar</td></tr><tr><td>e</td><td>banyaknya batasan biner (pasangan variabel)</td></tr><tr><td>AC-3</td><td>algoritma arc consistency untuk memangkas domain</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Begitu masalah ditulis sebagai ⟨X, D, C⟩, kita bisa memakai teknik umum: <b>MRV</b> (pilih variabel dengan domain tersisa paling kecil), <b>forward checking</b>, dan <b>AC-3</b> untuk menyusutkan domain sebelum mencari.</div>
+</section>
+
+<section class="slide" id="rxdB" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian B</div>
+<h1 class="title">Teknikal</h1>
+<p class="lead">Setelah teorinya jelas, kita masuk ke algoritma, kode, simulasi, hitung manual, dan jejak eksekusi langkah demi langkah.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>N-Queens - Tempatkan n ratu tanpa saling serang</div><div class="rxtocitem"><span>2</span>Constraint Satisfaction Problem - formalisme yang kuat</div><div class="rxtocitem"><span>3</span>Hitung manual: Ukuran ruang pencarian N-Queens</div><div class="rxtocitem"><span>4</span>Jejak langkah demi langkah: Ukuran ruang pencarian N-Queens</div><div class="rxtocitem"><span>5</span>Dari hitungan ke kode: Ukuran ruang pencarian N-Queens</div><div class="rxtocitem"><span>6</span>Hitung manual: Uji konflik ratu</div><div class="rxtocitem"><span>7</span>Jejak langkah demi langkah: Uji konflik ratu</div><div class="rxtocitem"><span>8</span>Dari hitungan ke kode: Uji konflik ratu</div><div class="rxtocitem"><span>9</span>Hitung manual: Formalisme CSP dan ruang pencariannya</div><div class="rxtocitem"><span>10</span>Jejak langkah demi langkah: Formalisme CSP dan ruang pencariannya</div><div class="rxtocitem"><span>11</span>Dari hitungan ke kode: Formalisme CSP dan ruang pencariannya</div></div>
+</section>
+
 <section class="slide" id="s3">
   <div class="kicker">BAGIAN 2 · N-QUEENS</div>
   <h2 class="st">N-Queens - Tempatkan n ratu tanpa saling serang</h2>
@@ -209,7 +324,6 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   </div>
 </section>
 
-<!-- 4. CSP -->
 <section class="slide" id="s4">
   <div class="kicker">BAGIAN 3 · CSP</div>
   <h2 class="st">Constraint Satisfaction Problem - formalisme yang kuat</h2>
@@ -245,27 +359,8 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• CSP = (X, D, C): X = variabel, D = domain nilai tiap variabel, C = constraint antar variabel.<br>• AC-3: O(ed³), dengan e = jumlah arc dan d = ukuran domain. Biaya propagasi konsistensi arc.</div>
 </section>
 
-<!-- 5. LATIHAN -->
-<!--RX-SLIDES-START-->
-<section class="slide" id="rx0">
-<div class="kicker">Bedah Rumus · Backtracking dan CSP</div>
-<h2 class="st">Tiga rumus untuk memahami backtracking dan CSP</h2>
-<p class="b">Backtracking mencoba kemungkinan satu per satu dan mundur saat buntu. Rumus berikut membantu mengukur ruang pencarian, menulis uji konflik, dan memformalkan masalah sebagai CSP.</p>
-<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Ukuran ruang pencarian N-Queens</b><span>nⁿ → n! → (dengan pruning) jauh lebih kecil</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Uji konflik ratu</b><span>c₁ = c₂ atau |r₁ − r₂| = |c₁ − c₂|</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Formalisme CSP dan ruang pencariannya</b><span>⟨X, D, C⟩, ruang = Π|Dᵢ| = dⁿ</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
-</section>
-<section class="slide" id="rx1a">
-<div class="kicker">Bedah Rumus 1/3 · Langkah 1: cara membaca</div>
-<h2 class="st">Ukuran ruang pencarian N-Queens</h2>
-<div class="fxbox">naif: <span class='hl'>n<sup>n</sup></span> &nbsp;→&nbsp; satu ratu per kolom: <span class='hb'>n!</span> &nbsp;→&nbsp; backtracking: simpul ≪ n!</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Cara naif mencoba n pangkat n penempatan. Jika satu ratu per baris dan setiap kolom berbeda, menjadi n faktorial. Dengan backtracking dan pruning, simpul yang dikunjungi jauh lebih sedikit dari n faktorial.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>nⁿ</h4><p class="">setiap ratu (satu per baris) boleh di kolom mana saja.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>n!</h4><p class="">tambahkan syarat kolom berbeda: pilihan berkurang n, n−1, n−2, ...</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>≪ (jauh lebih kecil)</h4><p class="">pruning diagonal memotong cabang sedini mungkin.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>n</td><td>ukuran papan dan banyaknya ratu</td></tr><tr><td>nⁿ</td><td>semua penempatan satu ratu per baris</td></tr><tr><td>n!</td><td>permutasi kolom</td></tr><tr><td>≪</td><td>“jauh lebih kecil dari”</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Setiap batasan yang dicek <b>sedini mungkin</b> memangkas seluruh subpohon di bawahnya. Itu sebabnya backtracking jauh lebih cepat daripada membangkitkan semua kandidat lalu mengecek di akhir.</div>
-</section>
-<section class="slide" id="rx1m">
-<div class="kicker">Bedah Rumus 1/3 · Langkah 2: hitung manual</div>
+<section class="slide" id="rx1m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/3 - hitung manual</div>
 <h2 class="st">Hitung manual: Ukuran ruang pencarian N-Queens</h2>
 <div class="rxsoal"><b>Soal:</b> Telusuri backtracking 4-Queens (satu ratu per baris, kolom 0–3) sampai solusi pertama.</div>
 <div class="cols c2">
@@ -274,19 +369,20 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Solusi pertama 4-Queens: ratu di kolom [1, 3, 0, 2] untuk baris 0–3.</div>
 </section>
-<section class="slide" id="rx1t">
-<div class="kicker">Bedah Rumus 1/3 · Langkah 2b: jejak step-by-step</div>
+
+<section class="slide" id="rx1t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/3 - jejak step-by-step</div>
 <h2 class="st">Jejak langkah demi langkah: Ukuran ruang pencarian N-Queens</h2>
 <div class="rxsoal"><b>Kasus:</b> Backtracking 4-Queens sampai solusi pertama. Array q = kolom ratu untuk baris 0, 1, 2, …</div>
 <div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu kunjungan ke sebuah baris papan. Kolom “dicoba”: ✗kolom = sekolom, ✗diag = sediagonal, ✓ = aman, ↩ = sudah dicoba lalu dibatalkan. Jika semua gagal → mundur ke baris sebelumnya. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
 <table class="rxtrace"><tr><th>#</th><th>q saat ini</th><th>baris</th><th>kolom dicoba</th><th>keputusan</th><th>q sesudahnya</th></tr><tr><td>1</td><td>[]</td><td>0</td><td><b class='chg'>0✓</b></td><td>taruh di kolom 0</td><td>[<b class='chg'>0</b>]</td></tr><tr><td>2</td><td>[0]</td><td>1</td><td>0✗kolom 1✗diag <b class='chg'>2✓</b></td><td>taruh di kolom 2</td><td>[0, <b class='chg'>2</b>]</td></tr><tr><td>3</td><td>[0, 2]</td><td>2</td><td>0✗kolom 1✗diag 2✗diag 3✗diag</td><td>semua kolom gagal → MUNDUR</td><td>[0]</td></tr><tr><td>4</td><td>[0]</td><td>1</td><td>2↩ <b class='chg'>3✓</b></td><td>taruh di kolom 3</td><td>[0, <b class='chg'>3</b>]</td></tr><tr><td>5</td><td>[0, 3]</td><td>2</td><td>0✗kolom <b class='chg'>1✓</b></td><td>taruh di kolom 1</td><td>[0, 3, <b class='chg'>1</b>]</td></tr><tr><td>6</td><td>[0, 3, 1]</td><td>3</td><td>0✗kolom 1✗diag 2✗diag 3✗diag</td><td>semua kolom gagal → MUNDUR</td><td>[0, 3]</td></tr><tr><td>7</td><td>[0, 3]</td><td>2</td><td>1↩ 2✗diag 3✗kolom</td><td>semua kolom gagal → MUNDUR</td><td>[0]</td></tr><tr><td>8</td><td>[0]</td><td>1</td><td>3↩</td><td>semua kolom gagal → MUNDUR</td><td>[]</td></tr><tr><td>9</td><td>[]</td><td>0</td><td>0↩ <b class='chg'>1✓</b></td><td>taruh di kolom 1</td><td>[<b class='chg'>1</b>]</td></tr><tr><td>10</td><td>[1]</td><td>1</td><td>0✗diag 1✗kolom 2✗diag <b class='chg'>3✓</b></td><td>taruh di kolom 3</td><td>[1, <b class='chg'>3</b>]</td></tr><tr><td>11</td><td>[1, 3]</td><td>2</td><td><b class='chg'>0✓</b></td><td>taruh di kolom 0</td><td>[1, 3, <b class='chg'>0</b>]</td></tr><tr><td>12</td><td>[1, 3, 0]</td><td>3</td><td>0✗kolom 1✗kolom <b class='chg'>2✓</b></td><td>taruh di kolom 2</td><td>[1, 3, 0, <b class='chg'>2</b>]</td></tr></table>
 <div class="rxhasil"><b>Hasil akhir jejak:</b> Solusi pertama q = [1, 3, 0, 2] setelah 4 kali mundur.</div>
 </section>
-<section class="slide" id="rx1b">
-<div class="kicker">Bedah Rumus 1/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
-<h2 class="st">Seberapa besar penghematan pruning?</h2>
-<div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Solver <b>Sudoku</b>, penjadwalan shift karyawan, dan penempatan komponen pada PCB memakai backtracking. Prinsip yang sama: tolak penempatan yang melanggar aturan segera, jangan tunggu semua sel terisi.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 8, nⁿ</h4><p class="">8⁸ = 16.777.216 penempatan.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>n!</h4><p class="">8! = 40.320 permutasi.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Backtracking</h4><p class="">2.057 simpul untuk menemukan SEMUA 92 solusi; solusi pertama sudah ketemu di simpul ke-114.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Pelajaran</h4><p class="">dibanding 8⁸, pruning dini menghemat sekitar 8.000×.</p></div></div></div></div></div>
+
+<section class="slide" id="rx1b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/3 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Ukuran ruang pencarian N-Queens</h2>
+<div class="cols c2l">
 <div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> math
 <span class="tk">def</span> hitung(n):
     sol = nodes = <span class="tn">0</span>
@@ -298,22 +394,16 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
             bt(r+<span class="tn">1</span>, cols|{c}, d1|{r-c}, d2|{r+c})
     bt(<span class="tn">0</span>, set(), set(), set()); <span class="tk">return</span> sol, nodes
 
-<span class="tk">print</span>(hitung(<span class="tn">8</span>), <span class="tn">8</span>**<span class="tn">8</span>, math.factorial(<span class="tn">8</span>))</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<span class="tk">print</span>(hitung(<span class="tn">8</span>), <span class="tn">8</span>**<span class="tn">8</span>, math.factorial(<span class="tn">8</span>))</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Solusi pertama 4-Queens: ratu di kolom [1, 3, 0, 2] untuk baris 0–3.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Solusi pertama q = [1, 3, 0, 2] setelah 4 kali mundur.</p></div>
 </div>
-<div class="analogy"><b>Bawa pulang:</b> Ruang pencarian: nⁿ → n! → jauh lebih kecil berkat pruning dini.</div>
-</section>
-<section class="slide" id="rx2a">
-<div class="kicker">Bedah Rumus 2/3 · Langkah 1: cara membaca</div>
-<h2 class="st">Uji konflik ratu</h2>
-<div class="fxbox">konflik(r₁,c₁, r₂,c₂) ⇔ <span class='hb'>c₁ = c₂</span> &nbsp;∨&nbsp; <span class='hl'>|r₁ − r₂| = |c₁ − c₂|</span> &nbsp;&nbsp; (diagonal: r − c dan r + c sama)</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Dua ratu berkonflik jika dan hanya jika kolomnya sama, atau selisih baris mutlaknya sama dengan selisih kolom mutlaknya. Untuk diagonal, nilai r kurang c atau r tambah c sama.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>∨ = “atau”</h4><p class="">salah satu kondisi cukup untuk konflik.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>|r₁ − r₂| = |c₁ − c₂|</h4><p class="">naik k baris dan geser k kolom = garis miring 45°.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>r − c konstan</h4><p class="">diagonal “\”; r + c konstan: diagonal “/”.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>(r, c)</td><td>baris dan kolom sebuah ratu</td></tr><tr><td>|·|</td><td>nilai mutlak</td></tr><tr><td>r − c</td><td>identitas diagonal turun</td></tr><tr><td>r + c</td><td>identitas diagonal naik</td></tr></table></div>
 </div>
-<div class="note"><b>Intuisinya:</b> Mengubah aturan geometri menjadi <b>persamaan sederhana</b> membuat uji konflik O(1) dengan himpunan (set) kolom dan diagonal yang sudah terisi.</div>
 </section>
-<section class="slide" id="rx2m">
-<div class="kicker">Bedah Rumus 2/3 · Langkah 2: hitung manual</div>
+
+<section class="slide" id="rx2m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/3 - hitung manual</div>
 <h2 class="st">Hitung manual: Uji konflik ratu</h2>
 <div class="rxsoal"><b>Soal:</b> Periksa apakah penempatan [1, 3, 0, 2] (baris 0–3) bebas konflik: cek semua 6 pasangan.</div>
 <div class="cols c2">
@@ -322,40 +412,35 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Tidak ada |Δr| = |Δc| dan tidak ada kolom sama → solusi valid.</div>
 </section>
-<section class="slide" id="rx2t">
-<div class="kicker">Bedah Rumus 2/3 · Langkah 2b: jejak step-by-step</div>
+
+<section class="slide" id="rx2t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/3 - jejak step-by-step</div>
 <h2 class="st">Jejak langkah demi langkah: Uji konflik ratu</h2>
 <div class="rxsoal"><b>Kasus:</b> Ratu sudah di (0,1), (1,3), (2,0). Cek setiap kolom di baris 3 terhadap ketiga ratu itu.</div>
 <div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu kandidat posisi. Bandingkan dengan setiap ratu yang sudah ada: kolom sama atau |Δr| = |Δc| berarti bentrok. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
 <table class="rxtrace"><tr><th>kandidat</th><th>cek terhadap ratu (0,1), (1,3), (2,0)</th><th>hasil</th><th>kunci diagonal</th></tr><tr><td>(3, 0)</td><td>(0,1): 3 ≠ 1 ✓ · (1,3): 2 ≠ 3 ✓ · (2,0): kolom sama ✗</td><td>bentrok</td><td>r−c = 3, r+c = 3</td></tr><tr><td>(3, 1)</td><td>(0,1): kolom sama ✗ · (1,3): |Δr| = 2 = |Δc| = 2 ✗ · (2,0): |Δr| = 1 = |Δc| = 1 ✗</td><td>bentrok</td><td>r−c = 2, r+c = 4</td></tr><tr><td>(3, 2)</td><td>(0,1): 3 ≠ 1 ✓ · (1,3): 2 ≠ 1 ✓ · (2,0): 1 ≠ 2 ✓</td><td><b class='chg'>AMAN</b></td><td>r−c = 1, r+c = 5</td></tr><tr><td>(3, 3)</td><td>(0,1): 3 ≠ 2 ✓ · (1,3): kolom sama ✗ · (2,0): 1 ≠ 3 ✓</td><td>bentrok</td><td>r−c = 0, r+c = 6</td></tr></table>
 <div class="rxhasil"><b>Hasil akhir jejak:</b> Hanya (3, 2) yang aman → solusi lengkap [1, 3, 0, 2]. Kunci r − c dan r + c-nya tidak dipakai ratu lain (−1, −2, 2 dan 1, 4, 2).</div>
 </section>
-<section class="slide" id="rx2b">
-<div class="kicker">Bedah Rumus 2/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
-<h2 class="st">Dari rumus menjadi pengecekan O(1)</h2>
-<div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Pola “kunci diagonal” r − c / r + c dipakai di game papan (catur, gomoku: cek garis lima), penempatan <b>menara BTS</b> atau kamera agar jangkauan tidak saling tumpang-tindih di grid, dan pemrograman kompetitif.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Ratu (2, 3) dan (5, 6)</h4><p class="">|2−5| = 3 = |3−6| → konflik (diagonal).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>r − c</h4><p class="">2−3 = −1 dan 5−6 = −1 → diagonal “\” yang sama.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ratu (1, 4) dan (3, 2)</h4><p class="">|1−3| = 2 = |4−2| → konflik; r + c = 5 dan 5.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Ratu (0, 0) dan (1, 2)</h4><p class="">1 ≠ 2 dan kolom beda → aman.</p></div></div></div></div></div>
+
+<section class="slide" id="rx2b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/3 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Uji konflik ratu</h2>
+<div class="cols c2l">
 <div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> konflik(a, b):
     (r1, c1), (r2, c2) = a, b
     <span class="tk">return</span> c1 == c2 <span class="tk">or</span> abs(r1 - r2) == abs(c1 - c2)
 
 <span class="tk">print</span>(konflik((<span class="tn">2</span>, <span class="tn">3</span>), (<span class="tn">5</span>, <span class="tn">6</span>)))   <span class="tc"># True  (diagonal)</span>
-<span class="tk">print</span>(konflik((<span class="tn">0</span>, <span class="tn">0</span>), (<span class="tn">1</span>, <span class="tn">2</span>)))   <span class="tc"># False (aman)</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<span class="tk">print</span>(konflik((<span class="tn">0</span>, <span class="tn">0</span>), (<span class="tn">1</span>, <span class="tn">2</span>)))   <span class="tc"># False (aman)</span></pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Tidak ada |Δr| = |Δc| dan tidak ada kolom sama → solusi valid.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Hanya (3, 2) yang aman → solusi lengkap [1, 3, 0, 2]. Kunci r − c dan r + c-nya tidak dipakai ratu lain (−1, −2, 2 dan 1, 4, 2).</p></div>
 </div>
-<div class="analogy"><b>Bawa pulang:</b> Diagonal = selisih baris sama dengan selisih kolom; simpan r − c dan r + c di set untuk cek O(1).</div>
-</section>
-<section class="slide" id="rx3a">
-<div class="kicker">Bedah Rumus 3/3 · Langkah 1: cara membaca</div>
-<h2 class="st">Formalisme CSP dan ruang pencariannya</h2>
-<div class="fxbox">CSP = ⟨ <span class='hb'>X</span>, <span class='hg'>D</span>, <span class='hl'>C</span> ⟩, &nbsp; ruang = Π<sub>i</sub> |D<sub>i</sub>| = d<sup>n</sup>; &nbsp; AC-3: O(e·d³)</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Sebuah CSP adalah tripel X, D, dan C. Ruang pencariannya adalah perkalian ukuran semua domain, yaitu d pangkat n. Algoritma AC-3 berjalan O e kali d pangkat tiga.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>X</h4><p class="">himpunan variabel: X₁..Xₙ.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>D</h4><p class="">domain tiap variabel: nilai yang boleh.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>C</h4><p class="">batasan (constraint) antar variabel.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Π (pi besar)</h4><p class="">perkalian berulang, seperti Σ untuk penjumlahan.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>n</td><td>banyaknya variabel</td></tr><tr><td>d</td><td>ukuran domain terbesar</td></tr><tr><td>e</td><td>banyaknya batasan biner (pasangan variabel)</td></tr><tr><td>AC-3</td><td>algoritma arc consistency untuk memangkas domain</td></tr></table></div>
 </div>
-<div class="note"><b>Intuisinya:</b> Begitu masalah ditulis sebagai ⟨X, D, C⟩, kita bisa memakai teknik umum: <b>MRV</b> (pilih variabel dengan domain tersisa paling kecil), <b>forward checking</b>, dan <b>AC-3</b> untuk menyusutkan domain sebelum mencari.</div>
 </section>
-<section class="slide" id="rx3m">
-<div class="kicker">Bedah Rumus 3/3 · Langkah 2: hitung manual</div>
+
+<section class="slide" id="rx3m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/3 - hitung manual</div>
 <h2 class="st">Hitung manual: Formalisme CSP dan ruang pencariannya</h2>
 <div class="rxsoal"><b>Soal:</b> Warnai peta WA, NT, SA, Q dengan {merah, hijau, biru}; tetangga harus beda warna. Pakai forward checking.</div>
 <div class="cols c2">
@@ -364,19 +449,20 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> WA merah, NT hijau, SA biru, Q merah - hanya 4 langkah dari 81 kemungkinan.</div>
 </section>
-<section class="slide" id="rx3t">
-<div class="kicker">Bedah Rumus 3/3 · Langkah 2b: jejak step-by-step</div>
+
+<section class="slide" id="rx3t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/3 - jejak step-by-step</div>
 <h2 class="st">Jejak langkah demi langkah: Formalisme CSP dan ruang pencariannya</h2>
 <div class="rxsoal"><b>Kasus:</b> Warnai peta Australia (7 wilayah) dengan M/H/B memakai forward checking, urutan WA, NT, SA, Q, NSW, V, T.</div>
 <div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu variabel diberi nilai pertama yang masih ada di domainnya, lalu nilai itu dihapus dari domain tetangga yang belum diwarnai. [x] = sudah diberi nilai. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
 <table class="rxtrace"><tr><th>penugasan</th><th>domain tetangga dipangkas</th><th>domain semua variabel sesudahnya</th></tr><tr><td>WA = <b class='chg'>M</b></td><td>NT, SA</td><td>WA:[M] NT:HB SA:HB Q:MHB NSW:MHB V:MHB T:MHB</td></tr><tr><td>NT = <b class='chg'>H</b></td><td>Q, SA</td><td>WA:[M] NT:[H] SA:B Q:MB NSW:MHB V:MHB T:MHB</td></tr><tr><td>SA = <b class='chg'>B</b></td><td>NSW, Q, V</td><td>WA:[M] NT:[H] SA:[B] Q:M NSW:MH V:MH T:MHB</td></tr><tr><td>Q = <b class='chg'>M</b></td><td>NSW</td><td>WA:[M] NT:[H] SA:[B] Q:[M] NSW:H V:MH T:MHB</td></tr><tr><td>NSW = <b class='chg'>H</b></td><td>V</td><td>WA:[M] NT:[H] SA:[B] Q:[M] NSW:[H] V:M T:MHB</td></tr><tr><td>V = <b class='chg'>M</b></td><td>-</td><td>WA:[M] NT:[H] SA:[B] Q:[M] NSW:[H] V:[M] T:MHB</td></tr><tr><td>T = <b class='chg'>M</b></td><td>-</td><td>WA:[M] NT:[H] SA:[B] Q:[M] NSW:[H] V:[M] T:[M]</td></tr></table>
 <div class="rxhasil"><b>Hasil akhir jejak:</b> Semua terwarnai tanpa mundur: WA=M, NT=H, SA=B, Q=M, NSW=H, V=M, T=M. Ruang 3⁷ = 2.187 tidak perlu dijelajahi.</div>
 </section>
-<section class="slide" id="rx3b">
-<div class="kicker">Bedah Rumus 3/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
-<h2 class="st">Penjadwalan kuliah di kampus</h2>
-<div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Penjadwalan kuliah/ujian, penugasan perawat rumah sakit, konfigurasi produk (mobil, laptop), dan pewarnaan peta frekuensi radio. Tools nyata: <b>Google OR-Tools CP-SAT</b>, MiniZinc, python-constraint.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>X</h4><p class="">60 mata kuliah.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>D</h4><p class="">40 slot (ruang × jam) per mata kuliah.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ruang</h4><p class="">40⁶⁰ ≈ 10⁹⁶ - lebih dari jumlah atom di alam semesta.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>C + AC-3 + MRV</h4><p class="">dosen sama tidak bentrok, kapasitas ruang, mahasiswa satu angkatan → domain menyusut drastis, solusi ditemukan dalam detik.</p></div></div></div></div></div>
+
+<section class="slide" id="rx3b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/3 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Formalisme CSP dan ruang pencariannya</h2>
+<div class="cols c2l">
 <div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tc"># Pewarnaan peta mini sebagai CSP</span>
 X = [<span class="ts">"WA"</span>, <span class="ts">"NT"</span>, <span class="ts">"SA"</span>, <span class="ts">"Q"</span>]
 D = {x: [<span class="ts">"merah"</span>, <span class="ts">"hijau"</span>, <span class="ts">"biru"</span>] <span class="tk">for</span> x <span class="tk">in</span> X}
@@ -388,11 +474,21 @@ C = [(<span class="ts">"WA"</span>,<span class="ts">"NT"</span>), (<span class="
     <span class="tk">for</span> val <span class="tk">in</span> D[x]:
         <span class="tk">if</span> all(asg.get(b <span class="tk">if</span> a == x <span class="tk">else</span> a) != val <span class="tk">for</span> a, b <span class="tk">in</span> C <span class="tk">if</span> x <span class="tk">in</span> (a, b)):
             <span class="tk">if</span> r := solve({**asg, x: val}): <span class="tk">return</span> r
-<span class="tk">print</span>(solve())</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<span class="tk">print</span>(solve())</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">WA merah, NT hijau, SA biru, Q merah - hanya 4 langkah dari 81 kemungkinan.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Semua terwarnai tanpa mundur: WA=M, NT=H, SA=B, Q=M, NSW=H, V=M, T=M. Ruang 3⁷ = 2.187 tidak perlu dijelajahi.</p></div>
 </div>
-<div class="analogy"><b>Bawa pulang:</b> Tulis masalah sebagai ⟨X, D, C⟩, lalu biarkan heuristik umum (MRV, forward checking, AC-3) memangkas ruang dⁿ.</div>
+</div>
 </section>
-<!--RX-SLIDES-END-->
+
+<section class="slide" id="rxdL" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian C</div>
+<h1 class="title">Latihan</h1>
+<p class="lead">Uji pemahaman teori dan teknikal sebelum melihat penerapannya di dunia nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Soal Backtracking dan CSP</div><div class="rxtocitem"><span>2</span>Kunci Backtracking dan CSP</div></div>
+</section>
+
 <section class="slide" id="s5">
   <div class="kicker">LATIHAN</div>
   <h2 class="st">Soal Backtracking dan CSP</h2>
@@ -405,7 +501,6 @@ C = [(<span class="ts">"WA"</span>,<span class="ts">"NT"</span>), (<span class="
   </div>
 </section>
 
-<!-- 6. KUNCI -->
 <section class="slide" id="s6">
   <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
   <h2 class="st">Kunci Backtracking dan CSP</h2>
@@ -418,7 +513,43 @@ C = [(<span class="ts">"WA"</span>,<span class="ts">"NT"</span>), (<span class="
   </div>
 </section>
 
-<!-- 7. PENUTUP -->
+<section class="slide" id="rxdD" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian D</div>
+<h1 class="title">Studi kasus nyata</h1>
+<p class="lead">Penutup materi: di mana semua teori dan teknik tadi dipakai di industri, AI, dan proyek nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Seberapa besar penghematan pruning?</div><div class="rxtocitem"><span>2</span>Dari rumus menjadi pengecekan O(1)</div><div class="rxtocitem"><span>3</span>Penjadwalan kuliah di kampus</div></div>
+</section>
+
+<section class="slide" id="rx1c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 1/3</div>
+<h2 class="st">Seberapa besar penghematan pruning?</h2>
+<div class="cols c2">
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Solver <b>Sudoku</b>, penjadwalan shift karyawan, dan penempatan komponen pada PCB memakai backtracking. Prinsip yang sama: tolak penempatan yang melanggar aturan segera, jangan tunggu semua sel terisi.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 8, nⁿ</h4><p class="">8⁸ = 16.777.216 penempatan.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>n!</h4><p class="">8! = 40.320 permutasi.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Backtracking</h4><p class="">2.057 simpul untuk menemukan SEMUA 92 solusi; solusi pertama sudah ketemu di simpul ke-114.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Pelajaran</h4><p class="">dibanding 8⁸, pruning dini menghemat sekitar 8.000×.</p></div></div></div></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Ruang pencarian: nⁿ → n! → jauh lebih kecil berkat pruning dini.</div>
+</section>
+
+<section class="slide" id="rx2c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 2/3</div>
+<h2 class="st">Dari rumus menjadi pengecekan O(1)</h2>
+<div class="cols c2">
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Pola “kunci diagonal” r − c / r + c dipakai di game papan (catur, gomoku: cek garis lima), penempatan <b>menara BTS</b> atau kamera agar jangkauan tidak saling tumpang-tindih di grid, dan pemrograman kompetitif.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Ratu (2, 3) dan (5, 6)</h4><p class="">|2−5| = 3 = |3−6| → konflik (diagonal).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>r − c</h4><p class="">2−3 = −1 dan 5−6 = −1 → diagonal “\” yang sama.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ratu (1, 4) dan (3, 2)</h4><p class="">|1−3| = 2 = |4−2| → konflik; r + c = 5 dan 5.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Ratu (0, 0) dan (1, 2)</h4><p class="">1 ≠ 2 dan kolom beda → aman.</p></div></div></div></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Diagonal = selisih baris sama dengan selisih kolom; simpan r − c dan r + c di set untuk cek O(1).</div>
+</section>
+
+<section class="slide" id="rx3c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 3/3</div>
+<h2 class="st">Penjadwalan kuliah di kampus</h2>
+<div class="cols c2">
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Penjadwalan kuliah/ujian, penugasan perawat rumah sakit, konfigurasi produk (mobil, laptop), dan pewarnaan peta frekuensi radio. Tools nyata: <b>Google OR-Tools CP-SAT</b>, MiniZinc, python-constraint.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>X</h4><p class="">60 mata kuliah.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>D</h4><p class="">40 slot (ruang × jam) per mata kuliah.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ruang</h4><p class="">40⁶⁰ ≈ 10⁹⁶ - lebih dari jumlah atom di alam semesta.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>C + AC-3 + MRV</h4><p class="">dosen sama tidak bentrok, kapasitas ruang, mahasiswa satu angkatan → domain menyusut drastis, solusi ditemukan dalam detik.</p></div></div></div></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Tulis masalah sebagai ⟨X, D, C⟩, lalu biarkan heuristik umum (MRV, forward checking, AC-3) memangkas ruang dⁿ.</div>
+</section>
+
 <section class="slide" id="s7" style="justify-content:center;align-items:center;text-align:center">
   <div class="kicker">PERTEMUAN 12 · SELESAI</div>
   <h2 class="st" style="font-size:30px;margin:10px 0">Prune early, prune often.<br>Itulah seni backtracking.</h2>

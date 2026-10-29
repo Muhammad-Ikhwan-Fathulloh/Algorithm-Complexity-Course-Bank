@@ -123,6 +123,14 @@ table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
 .rxtrace td:first-child{color:#64748b;font-weight:700}
 b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
 .rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
+.rxg3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.rxwtrack{display:flex;gap:6px;flex:none}
+.rxwtrack span{font:800 12px/1 -apple-system,'Segoe UI',Arial,sans-serif;letter-spacing:.08em;padding:6px 10px;border-radius:20px;background:#f1f5f9;color:#94a3b8;border:2px solid #e2e8f0}
+.rxwtrack span.on{background:#2563eb;color:#fff;border-color:#2563eb}
+.rxtoc{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+.rxtocitem{display:flex;gap:10px;align-items:baseline;font-size:15px;line-height:1.4;color:#334155;border-bottom:1px dashed #e2e8f0;padding:3px 0}
+.rxg3.big .rxcard{padding:18px 20px}.rxg3.big .rxcard h3{font-size:20px;margin-bottom:10px}.rxg3.big .rxcard p{font-size:17px;line-height:1.65}
+.rxtocitem span{flex:none;min-width:26px;font:800 13px Consolas,monospace;color:#2563eb}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -137,8 +145,6 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · <a href="index.html" style="color:#2563eb;font-size:12px">← Daftar Materi</a></div>
 </section>
 
-<!-- 2. P, NP, NPC, NPH -->
-<!-- PETA LANGKAH -->
 <section class="slide" id="speta">
   <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
   <h2 class="st">Peta langkah: memutuskan seberapa sulit suatu masalah</h2>
@@ -155,6 +161,67 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
       <div class="note">NP-complete tidak berarti tidak bisa dipecahkan. Banyak instance nyata dapat diselesaikan cepat oleh SAT solver modern.</div>
     </div>
   </div>
+</section>
+
+<section class="slide" id="rxdA" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A</div>
+<h1 class="title">Teori</h1>
+<p class="lead">Kita mulai dari dasar: 5W1H dipecah per slide (What, Why, Who, When, Where, How), lalu konsep inti dan cara membaca setiap rumus.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>WHAT - Apa itu teori kompleksitas (P, NP) dan SAT?</div><div class="rxtocitem"><span>2</span>WHY - Mengapa ini penting bagi engineer?</div><div class="rxtocitem"><span>3</span>WHO - Siapa yang memakainya?</div><div class="rxtocitem"><span>4</span>WHEN - Kapan konsep ini dipakai?</div><div class="rxtocitem"><span>5</span>WHERE - Di mana dipakai?</div><div class="rxtocitem"><span>6</span>HOW - Bagaimana cara berpikirnya?</div><div class="rxtocitem"><span>7</span>P, NP, NP-Complete, NP-Hard</div><div class="rxtocitem"><span>8</span>Reduksi: "Kalau bisa selesaikan B, bisa selesaikan A"</div><div class="rxtocitem"><span>9</span>Tiga rumus untuk membaca teori kompleksitas</div><div class="rxtocitem"><span>10</span>Definisi NP lewat verifier</div><div class="rxtocitem"><span>11</span>Reduksi polinomial</div><div class="rxtocitem"><span>12</span>Bentuk CNF dan ruang pencarian SAT</div></div>
+</section>
+
+<section class="slide" id="rxw1" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (1/6) - WHAT</div>
+<div class="rxwtrack"><span class="on">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHAT - Apa itu teori kompleksitas (P, NP) dan SAT?</h2>
+<p class="b">Cara mengelompokkan masalah menurut kesulitannya, serta alat untuk menangani masalah tersulit dalam praktik.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>P dan NP</h3><p>P = bisa diselesaikan cepat; NP = jawabannya bisa dicek cepat.</p></div><div class="rxcard green"><h3>NP-complete & reduksi</h3><p>Masalah tersulit di NP; dibuktikan lewat reduksi polinomial.</p></div><div class="rxcard yellow"><h3>SAT & inferensi</h3><p>SAT solver (DPLL/CDCL) dan forward chaining di sistem pakar.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Sudoku: mengecek isian cepat, mencari isiannya (versi umum) NP-complete.</div>
+</section>
+
+<section class="slide" id="rxw2" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (2/6) - WHY</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="on">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHY - Mengapa ini penting bagi engineer?</h2>
+<p class="b">Agar tidak membuang waktu mencari algoritma cepat yang (kemungkinan besar) tidak ada.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Tahu kapan berhenti</h3><p>Masalah NP-hard → pakai solver, aproksimasi, atau heuristik.</p></div><div class="rxcard green"><h3>Reduksi = alat praktis</h3><p>Terjemahkan masalah ke SAT/ILP yang sudah punya solver hebat.</p></div><div class="rxcard yellow"><h3>Keamanan</h3><p>Kriptografi bergantung pada masalah yang sulit dicari tetapi mudah dicek.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Daripada menulis algoritma penjadwalan sendiri, tim mereduksinya ke SAT dan memakai solver.</div>
+</section>
+
+<section class="slide" id="rxw3" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (3/6) - WHO</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="on">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHO - Siapa yang memakainya?</h2>
+<p class="b">Lebih banyak dari yang dikira:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Engineer verifikasi</h3><p>Verifikasi hardware dan software dengan SAT/SMT (Z3).</p></div><div class="rxcard green"><h3>Package manager</h3><p>Resolusi dependensi conda/mamba, zypper.</p></div><div class="rxcard yellow"><h3>AI & sistem pakar</h3><p>Inferensi aturan (forward chaining, Rete).</p></div></div>
+<div class="rxhow"><b>Contoh:</b> conda memakai SAT solver untuk mencari kombinasi versi paket yang kompatibel.</div>
+</section>
+
+<section class="slide" id="rxw4" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (4/6) - WHEN</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="on">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHEN - Kapan konsep ini dipakai?</h2>
+<p class="b">Saat menghadapi masalah kombinatorial baru:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Sebelum mencari algoritma</h3><p>Cek: apakah masalah ini mirip masalah NP-complete yang dikenal?</p></div><div class="rxcard green"><h3>Saat memilih alat</h3><p>NP-hard → solver/aproksimasi; P → cari algoritma polinomial.</p></div><div class="rxcard yellow"><h3>Saat membuktikan</h3><p>Reduksi dari masalah NP-complete untuk menunjukkan kesulitan.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Penugasan pengawas ujian tanpa bentrok mirip graph coloring → NP-hard → pakai solver.</div>
+</section>
+
+<section class="slide" id="rxw5" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (5/6) - WHERE</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="on">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHERE - Di mana dipakai?</h2>
+<p class="b">Contoh nyata:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Industri chip</h3><p>Intel/AMD memverifikasi desain dengan SAT.</p></div><div class="rxcard green"><h3>Software</h3><p>Symbolic execution, pengujian otomatis, resolusi dependensi.</p></div><div class="rxcard yellow"><h3>Keamanan & blockchain</h3><p>RSA, proof-of-work: sulit dicari, mudah diverifikasi.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Proof-of-work: menemukan nonce sulit, memverifikasinya cukup satu hash.</div>
+</section>
+
+<section class="slide" id="rxw6" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (6/6) - HOW</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="on">HOW</span></div>
+<h2 class="st">HOW - Bagaimana cara berpikirnya?</h2>
+<p class="b">Tiga alat utama:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Verifier</h3><p>Tunjukkan sertifikat bisa dicek dalam waktu polinomial → masalah di NP.</p></div><div class="rxcard green"><h3>Reduksi A ≤ₚ B</h3><p>Terjemahan polinomial yang menjaga jawaban ya/tidak.</p></div><div class="rxcard yellow"><h3>DPLL/CDCL</h3><p>Keputusan + unit propagation + belajar dari konflik.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> 3-coloring → CNF: setiap simpul satu warna, tetangga beda warna → beri ke SAT solver.</div>
 </section>
 
 <section class="slide" id="s2">
@@ -197,7 +264,6 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• P ⊆ NP: semua masalah yang bisa diselesaikan cepat juga bisa diverifikasi cepat.<br>• Pertanyaan terbuka: apakah P = NP? Jika ya, semua masalah NP bisa diselesaikan dalam waktu polinomial.<br>• Verifikasi polinomial: sertifikat jawaban diperiksa dalam waktu O(nᵏ) untuk suatu k.</div>
 </section>
 
-<!-- 3. REDUKSI & COOK-LEVIN -->
 <section class="slide" id="s3">
   <div class="kicker">BAGIAN 2 · REDUKSI POLINOMIAL</div>
   <h2 class="st">Reduksi: "Kalau bisa selesaikan B, bisa selesaikan A"</h2>
@@ -231,7 +297,54 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• A ≤ₚ B: ada transformasi polinomial dari instance A ke instance B.<br>• Jika B ∈ P dan A ≤ₚ B, maka A ∈ P. Jika A NP-hard dan A ≤ₚ B, maka B NP-hard.<br>• Arah panah penting: reduksi dari masalah yang diketahui sulit ke masalah yang ingin dibuktikan sulit.</div>
 </section>
 
-<!-- 4. SAT & DPLL -->
+<section class="slide" id="rx0" data-rx="1">
+<div class="kicker">Bagian A · Teori · Bedah Rumus · Teori Kompleksitas, SAT, dan Inferensi</div>
+<h2 class="st">Tiga rumus untuk membaca teori kompleksitas</h2>
+<p class="b">P, NP, reduksi, dan SAT sering terasa abstrak. Padahal ketiganya dipakai setiap kali engineer memutuskan: “cari algoritma cepat, atau serahkan ke solver?”</p>
+<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Definisi NP lewat verifier</b><span>x ∈ L ⇔ ∃y: V(x, y) = 1, |y| ≤ poly(|x|)</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Reduksi polinomial</b><span>A ≤ₚ B: x ∈ A ⇔ f(x) ∈ B</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Bentuk CNF dan ruang pencarian SAT</b><span>φ = ⋀ (⋁ literal), 2ⁿ assignment</span></div></div></div>
+<div class="note"><b>Alur tiap rumus:</b> di <b>Teori</b> kita belajar <b>cara membaca</b> rumus dan arti tiap simbol. Di <b>Teknikal</b> rumus yang sama dikerjakan lewat <b>hitung manual</b>, <b>jejak step-by-step</b>, lalu <b>kode Python</b>. Di <b>Studi kasus nyata</b> (akhir slide) kita lihat pemakaiannya di proyek nyata.</div>
+</section>
+
+<section class="slide" id="rx1a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 1/3 - cara membaca</div>
+<h2 class="st">Definisi NP lewat verifier</h2>
+<div class="fxbox">L ∈ NP ⇔ ∃ verifier <span class='hb'>V</span> waktu polinomial: &nbsp;x ∈ L ⇔ ∃ <span class='hl'>y</span>, |y| ≤ p(|x|), V(x, y) = 1</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Bahasa L termasuk NP jika dan hanya jika ada verifier V yang berjalan dalam waktu polinomial, sehingga x anggota L jika dan hanya jika ada sertifikat y yang panjangnya paling banyak polinomial dari panjang x dan V dari x dan y bernilai satu.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>x</h4><p class="">instance masalah (misalnya sebuah grid Sudoku).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>y = sertifikat</h4><p class="">“bukti” jawaban ya (misalnya isian lengkap Sudoku).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>V(x, y) = 1</h4><p class="">verifier mengecek bukti itu dengan cepat (polinomial).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Bukan “Non-Polynomial”</h4><p class="">NP = Nondeterministic Polynomial: mudah DICEK, belum tentu mudah DICARI.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>L</td><td>masalah keputusan (jawabannya ya/tidak)</td></tr><tr><td>V</td><td>algoritma pemeriksa (verifier)</td></tr><tr><td>y</td><td>sertifikat / saksi</td></tr><tr><td>p(·)</td><td>suatu polinomial</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> P = bisa <b>diselesaikan</b> cepat. NP = bisa <b>dicek</b> cepat jika diberi jawabannya. Pertanyaan P = NP bertanya: apakah setiap masalah yang mudah dicek juga mudah diselesaikan?</div>
+</section>
+
+<section class="slide" id="rx2a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 2/3 - cara membaca</div>
+<h2 class="st">Reduksi polinomial</h2>
+<div class="fxbox">A <span class='hl'>≤<sub>p</sub></span> B &nbsp;⇔&nbsp; ∃ f waktu polinomial: &nbsp;x ∈ A ⇔ <span class='hb'>f(x)</span> ∈ B</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“A dapat direduksi secara polinomial ke B, jika dan hanya jika ada fungsi f yang berjalan dalam waktu polinomial sehingga x adalah instance ya dari A jika dan hanya jika f dari x adalah instance ya dari B.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>≤ₚ dibaca “tidak lebih sulit dari”</h4><p class="">A ≤ₚ B: A paling sulit sama dengan B.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>f = penerjemah</h4><p class="">mengubah soal A menjadi soal B dengan cepat.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>⇔</h4><p class="">jawaban harus terjaga: ya tetap ya, tidak tetap tidak.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Arah penting</h4><p class="">untuk membuktikan B sulit, reduksikan masalah yang SUDAH diketahui sulit KE B.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>A, B</td><td>dua masalah keputusan</td></tr><tr><td>f</td><td>fungsi transformasi instance</td></tr><tr><td>≤ₚ</td><td>relasi reduksi polinomial</td></tr><tr><td>NP-hard</td><td>B NP-hard jika setiap masalah NP ≤ₚ B</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Reduksi adalah alat dua arah: jika B mudah, maka A juga mudah (pakai f lalu solver B). Jika A sulit, maka B juga sulit. Secara praktis: <b>terjemahkan masalah Anda ke masalah yang sudah punya solver hebat</b>.</div>
+</section>
+
+<section class="slide" id="rx3a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 3/3 - cara membaca</div>
+<h2 class="st">Bentuk CNF dan ruang pencarian SAT</h2>
+<div class="fxbox">φ = <span class='hl'>⋀</span><sub>j</sub> ( <span class='hb'>⋁</span><sub>i</sub> ℓ<sub>ij</sub> ), &nbsp; ℓ ∈ {x, ¬x}; &nbsp; brute force: <span class='hl'>2<sup>n</sup></span> assignment</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Formula phi adalah konjungsi, atau AND, dari klausa-klausa; setiap klausa adalah disjungsi, atau OR, dari literal. Literal adalah variabel x atau negasinya. Brute force mencoba dua pangkat n assignment.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>⋀ = AND besar</h4><p class="">semua klausa harus benar.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>⋁ = OR besar</h4><p class="">dalam satu klausa, cukup satu literal benar.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>ℓ (literal)</h4><p class="">variabel x atau negasinya ¬x.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>2ⁿ</h4><p class="">setiap variabel bisa True/False → 2ⁿ kemungkinan.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>φ</td><td>formula yang ingin dipenuhi (satisfiable?)</td></tr><tr><td>klausa</td><td>OR dari beberapa literal</td></tr><tr><td>n</td><td>banyaknya variabel</td></tr><tr><td>¬</td><td>negasi (NOT)</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> SAT adalah masalah NP-complete pertama (Cook-Levin). Teorinya 2ⁿ, tetapi solver CDCL modern memanfaatkan <b>struktur</b> instance nyata sehingga jutaan variabel bisa selesai.</div>
+</section>
+
+<section class="slide" id="rxdB" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian B</div>
+<h1 class="title">Teknikal</h1>
+<p class="lead">Setelah teorinya jelas, kita masuk ke algoritma, kode, simulasi, hitung manual, dan jejak eksekusi langkah demi langkah.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>DPLL dan CDCL - SAT solver modern</div><div class="rxtocitem"><span>2</span>DPLL dalam Python - unit propagation + branching</div><div class="rxtocitem"><span>3</span>Hitung manual: Definisi NP lewat verifier</div><div class="rxtocitem"><span>4</span>Jejak langkah demi langkah: Definisi NP lewat verifier</div><div class="rxtocitem"><span>5</span>Dari hitungan ke kode: Definisi NP lewat verifier</div><div class="rxtocitem"><span>6</span>Hitung manual: Reduksi polinomial</div><div class="rxtocitem"><span>7</span>Jejak langkah demi langkah: Reduksi polinomial</div><div class="rxtocitem"><span>8</span>Dari hitungan ke kode: Reduksi polinomial</div><div class="rxtocitem"><span>9</span>Hitung manual: Bentuk CNF dan ruang pencarian SAT</div><div class="rxtocitem"><span>10</span>Jejak langkah demi langkah: Bentuk CNF dan ruang pencarian SAT</div><div class="rxtocitem"><span>11</span>Dari hitungan ke kode: Bentuk CNF dan ruang pencarian SAT</div></div>
+</section>
+
 <section class="slide" id="s4">
   <div class="kicker">BAGIAN 3 · [MODERN] SAT SOLVER</div>
   <h2 class="st">DPLL dan CDCL - SAT solver modern</h2>
@@ -247,6 +360,7 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
       </div>
     </div>
 </section>
+
 <section class="slide" id="s4b">
   <div class="kicker">BAGIAN 3 · [MODERN] SAT SOLVER</div>
   <h2 class="st">DPLL dalam Python - unit propagation + branching</h2>
@@ -284,7 +398,160 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   </div>
 </section>
 
-<!-- 5. INFERENSI LOGIKA -->
+<section class="slide" id="rx1m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/3 - hitung manual</div>
+<h2 class="st">Hitung manual: Definisi NP lewat verifier</h2>
+<div class="rxsoal"><b>Soal:</b> Verifikasi isian Sudoku 4×4 berikut: [1 2 3 4], [3 4 1 2], [2 1 4 3], [4 3 2 1].</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Cek 4 baris</h4><p class="rxcalc">tiap baris berisi 1, 2, 3, 4 tepat sekali ✓</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Cek 4 kolom</h4><p class="rxcalc">kolom 1: 1, 3, 2, 4 ✓ … kolom 4: 4, 2, 3, 1 ✓</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Cek 4 kotak 2×2</h4><p class="rxcalc">kiri atas 1, 2, 3, 4 ✓ … kanan bawah 4, 3, 2, 1 ✓</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Hitung kerja verifier</h4><p class="rxcalc">12 grup × 4 sel = 48 pembacaan → O(n²), polinomial</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Bandingkan dengan mencari</h4><p class="rxcalc">k sel kosong → sampai 4ᵏ kombinasi dicoba</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th></th><th>k1</th><th>k2</th><th>k3</th><th>k4</th></tr><tr><td>b1</td><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr><td>b2</td><td>3</td><td>4</td><td>1</td><td>2</td></tr><tr><td>b3</td><td>2</td><td>1</td><td>4</td><td>3</td></tr><tr><td>b4</td><td>4</td><td>3</td><td>2</td><td>1</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Valid - dicek dalam 48 langkah. Mengecek mudah; mencari isiannya yang sulit.</div>
+</section>
+
+<section class="slide" id="rx1t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/3 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Definisi NP lewat verifier</h2>
+<div class="rxsoal"><b>Kasus:</b> Verifier Sudoku 4×4 bekerja grup demi grup pada isian [1 2 3 4 / 3 4 1 2 / 2 1 4 3 / 4 3 2 1].</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu grup (baris, kolom, atau kotak 2×2). Urutkan isinya; harus tepat 1 2 3 4. Kolom terakhir menghitung sel yang sudah dibaca. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>grup</th><th>isi</th><th>diurutkan</th><th>valid?</th><th>sel dibaca</th></tr><tr><td>baris 1</td><td>1 2 3 4</td><td>1 2 3 4</td><td>✓</td><td>4</td></tr><tr><td>baris 2</td><td>3 4 1 2</td><td>1 2 3 4</td><td>✓</td><td>8</td></tr><tr><td>baris 3</td><td>2 1 4 3</td><td>1 2 3 4</td><td>✓</td><td>12</td></tr><tr><td>baris 4</td><td>4 3 2 1</td><td>1 2 3 4</td><td>✓</td><td>16</td></tr><tr><td>kolom 1</td><td>1 3 2 4</td><td>1 2 3 4</td><td>✓</td><td>20</td></tr><tr><td>kolom 2</td><td>2 4 1 3</td><td>1 2 3 4</td><td>✓</td><td>24</td></tr><tr><td>kolom 3</td><td>3 1 4 2</td><td>1 2 3 4</td><td>✓</td><td>28</td></tr><tr><td>kolom 4</td><td>4 2 3 1</td><td>1 2 3 4</td><td>✓</td><td>32</td></tr><tr><td>kotak 1</td><td>1 2 3 4</td><td>1 2 3 4</td><td>✓</td><td>36</td></tr><tr><td>kotak 2</td><td>3 4 1 2</td><td>1 2 3 4</td><td>✓</td><td>40</td></tr><tr><td>kotak 3</td><td>2 1 4 3</td><td>1 2 3 4</td><td>✓</td><td>44</td></tr><tr><td>kotak 4</td><td>4 3 2 1</td><td>1 2 3 4</td><td>✓</td><td>48</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> 12 grup valid, 48 pembacaan sel → verifikasi selesai dalam waktu polinomial O(n²).</div>
+</section>
+
+<section class="slide" id="rx1b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/3 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Definisi NP lewat verifier</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> verifikasi_sudoku(g):          <span class="tc"># verifier polinomial</span>
+    ok = <span class="tk">lambda</span> xs: <span class="tk">sorted</span>(xs) == list(<span class="tk">range</span>(<span class="tn">1</span>, <span class="tn">10</span>))
+    rows = all(ok(r) <span class="tk">for</span> r <span class="tk">in</span> g)
+    cols = all(ok([g[r][c] <span class="tk">for</span> r <span class="tk">in</span> <span class="tk">range</span>(<span class="tn">9</span>)]) <span class="tk">for</span> c <span class="tk">in</span> <span class="tk">range</span>(<span class="tn">9</span>))
+    boxes = all(ok([g[r][c] <span class="tk">for</span> r <span class="tk">in</span> <span class="tk">range</span>(br, br+<span class="tn">3</span>) <span class="tk">for</span> c <span class="tk">in</span> <span class="tk">range</span>(bc, bc+<span class="tn">3</span>)])
+                <span class="tk">for</span> br <span class="tk">in</span> (<span class="tn">0</span>, <span class="tn">3</span>, <span class="tn">6</span>) <span class="tk">for</span> bc <span class="tk">in</span> (<span class="tn">0</span>, <span class="tn">3</span>, <span class="tn">6</span>))
+    <span class="tk">return</span> rows <span class="tk">and</span> cols <span class="tk">and</span> boxes</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Valid - dicek dalam 48 langkah. Mengecek mudah; mencari isiannya yang sulit.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>12 grup valid, 48 pembacaan sel → verifikasi selesai dalam waktu polinomial O(n²).</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rx2m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/3 - hitung manual</div>
+<h2 class="st">Hitung manual: Reduksi polinomial</h2>
+<div class="rxsoal"><b>Soal:</b> Reduksikan graf 2 simpul dengan 1 sisi (0–1) ke CNF untuk 3-coloring (variabel v·3 + c + 1).</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Nomori variabel</h4><p class="rxcalc">simpul 0: x₁, x₂, x₃ (merah, hijau, biru); simpul 1: x₄, x₅, x₆</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Minimal satu warna</h4><p class="rxcalc">[1, 2, 3] dan [4, 5, 6] → 2 klausa</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Paling banyak satu warna</h4><p class="rxcalc">[−1,−2] [−1,−3] [−2,−3] [−4,−5] [−4,−6] [−5,−6] → 6 klausa</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Tetangga beda warna</h4><p class="rxcalc">[−1,−4] [−2,−5] [−3,−6] → 3 klausa</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Hitung ukuran</h4><p class="rxcalc">n + n·C(k,2) + |E|·k = 2 + 6 + 3 = 11 klausa → polinomial</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>jenis klausa</th><th>rumus jumlah</th><th>jumlah</th></tr><tr><td>minimal satu</td><td>n</td><td>2</td></tr><tr><td>paling banyak satu</td><td>n·C(3,2)</td><td>6</td></tr><tr><td>tetangga beda</td><td>|E|·k</td><td>3</td></tr><tr><td>total</td><td></td><td>11</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> 11 klausa; satu solusi SAT misalnya x₁ = 1, x₅ = 1 → simpul 0 merah, simpul 1 hijau.</div>
+</section>
+
+<section class="slide" id="rx2t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/3 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Reduksi polinomial</h2>
+<div class="rxsoal"><b>Kasus:</b> Reduksi 3-coloring → SAT untuk segitiga (simpul 0, 1, 2; sisi 01, 12, 02). Variabel x = v·3 + c + 1 (c: 0 merah, 1 hijau, 2 biru).</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu kelompok klausa yang ditambahkan fungsi f. Kolom kanan = jumlah klausa kumulatif; ukurannya polinomial terhadap ukuran graf. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>bagian</th><th>klausa</th><th>jumlah</th><th>kumulatif</th></tr><tr><td>simpul 0: minimal satu warna</td><td>[1, 2, 3]</td><td>1</td><td>1</td></tr><tr><td>simpul 1: minimal satu warna</td><td>[4, 5, 6]</td><td>1</td><td>2</td></tr><tr><td>simpul 2: minimal satu warna</td><td>[7, 8, 9]</td><td>1</td><td>3</td></tr><tr><td>simpul 0: paling banyak satu</td><td>[-1, -2] [-1, -3] [-2, -3]</td><td>3</td><td>6</td></tr><tr><td>simpul 1: paling banyak satu</td><td>[-4, -5] [-4, -6] [-5, -6]</td><td>3</td><td>9</td></tr><tr><td>simpul 2: paling banyak satu</td><td>[-7, -8] [-7, -9] [-8, -9]</td><td>3</td><td>12</td></tr><tr><td>sisi (0,1): warna beda</td><td>[-1, -4] [-2, -5] [-3, -6]</td><td>3</td><td><b class='chg'>15</b></td></tr><tr><td>sisi (1,2): warna beda</td><td>[-4, -7] [-5, -8] [-6, -9]</td><td>3</td><td><b class='chg'>18</b></td></tr><tr><td>sisi (0,2): warna beda</td><td>[-1, -7] [-2, -8] [-3, -9]</td><td>3</td><td><b class='chg'>21</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> 21 klausa, 9 variabel. Contoh solusi: x₁, x₅, x₉ benar → simpul 0 merah, 1 hijau, 2 biru.</div>
+</section>
+
+<section class="slide" id="rx2b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/3 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Reduksi polinomial</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tc"># f: Graph 3-coloring  -&gt;  CNF (SAT)</span>
+<span class="tk">def</span> coloring_to_cnf(n, edges, k=<span class="tn">3</span>):
+    var = <span class="tk">lambda</span> v, c: v * k + c + <span class="tn">1</span>
+    cnf = [[var(v, c) <span class="tk">for</span> c <span class="tk">in</span> <span class="tk">range</span>(k)] <span class="tk">for</span> v <span class="tk">in</span> <span class="tk">range</span>(n)]      <span class="tc"># tiap simpul punya warna</span>
+    cnf += [[-var(v, a), -var(v, b)] <span class="tk">for</span> v <span class="tk">in</span> <span class="tk">range</span>(n)
+            <span class="tk">for</span> a <span class="tk">in</span> <span class="tk">range</span>(k) <span class="tk">for</span> b <span class="tk">in</span> <span class="tk">range</span>(a + <span class="tn">1</span>, k)]          <span class="tc"># paling banyak satu warna</span>
+    cnf += [[-var(u, c), -var(v, c)] <span class="tk">for</span> u, v <span class="tk">in</span> edges <span class="tk">for</span> c <span class="tk">in</span> <span class="tk">range</span>(k)]  <span class="tc"># tetangga beda</span>
+    <span class="tk">return</span> cnf</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">11 klausa; satu solusi SAT misalnya x₁ = 1, x₅ = 1 → simpul 0 merah, simpul 1 hijau.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>21 klausa, 9 variabel. Contoh solusi: x₁, x₅, x₉ benar → simpul 0 merah, 1 hijau, 2 biru.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rx3m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/3 - hitung manual</div>
+<h2 class="st">Hitung manual: Bentuk CNF dan ruang pencarian SAT</h2>
+<div class="rxsoal"><b>Soal:</b> Uji φ = (a1 ∨ a2) ∧ (¬a1 ∨ ¬a2) ∧ (¬a2 ∨ b1) ∧ (¬b1) dengan tabel kebenaran, lalu dengan unit propagation.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Brute force</h4><p class="rxcalc">2³ = 8 baris dicek satu per satu (tabel)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Unit propagation 1</h4><p class="rxcalc">klausa (¬b1) tinggal satu literal → b1 = F</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Unit propagation 2</h4><p class="rxcalc">(¬a2 ∨ b1) dengan b1 = F → a2 = F</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Unit propagation 3</h4><p class="rxcalc">(a1 ∨ a2) dengan a2 = F → a1 = T</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Cek</h4><p class="rxcalc">(¬a1 ∨ ¬a2) = F ∨ T = T ✓ → φ terpenuhi</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>a1 a2 b1</th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>φ</th></tr><tr><td>F F F</td><td>F</td><td>T</td><td>T</td><td>T</td><td>F</td></tr><tr><td>F T F</td><td>T</td><td>T</td><td>F</td><td>T</td><td>F</td></tr><tr><td>T F F</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T ✓</td></tr><tr><td>T F T</td><td>T</td><td>T</td><td>T</td><td>F</td><td>F</td></tr><tr><td>T T F</td><td>T</td><td>F</td><td>F</td><td>T</td><td>F</td></tr><tr><td>… 3 baris lain</td><td></td><td></td><td></td><td></td><td>F</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Satu-satunya solusi a1 = T, a2 = F, b1 = F; propagasi menemukannya dalam 3 langkah, bukan 8 baris.</div>
+</section>
+
+<section class="slide" id="rx3t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/3 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Bentuk CNF dan ruang pencarian SAT</h2>
+<div class="rxsoal"><b>Kasus:</b> DPLL pada φ = (x1∨x2)(¬x1∨x3)(¬x2∨x3)(¬x3∨x4)(¬x1∨¬x4)(x2∨¬x4).</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu aksi solver: keputusan (menebak nilai), propagasi (klausa tinggal satu literal memaksa nilai), konflik (semua literal salah → mundur). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>#</th><th>aksi</th><th>alasan</th><th>efek</th><th>assignment</th></tr><tr><td>1</td><td>keputusan</td><td>coba x1</td><td>x1 = T</td><td>x1=T</td></tr><tr><td>2</td><td>&nbsp;&nbsp;propagasi</td><td>(¬x1 ∨ x3) tinggal x3</td><td>x3 = T</td><td>x1=T x3=T</td></tr><tr><td>3</td><td>&nbsp;&nbsp;propagasi</td><td>(¬x3 ∨ x4) tinggal x4</td><td>x4 = T</td><td>x1=T x3=T x4=T</td></tr><tr><td>4</td><td>&nbsp;&nbsp;konflik</td><td>(¬x1 ∨ ¬x4) salah semua</td><td><b class='chg'>mundur</b></td><td>x1=T x3=T x4=T</td></tr><tr><td>5</td><td>keputusan</td><td>coba x1</td><td>x1 = F</td><td>x1=F</td></tr><tr><td>6</td><td>&nbsp;&nbsp;propagasi</td><td>(x1 ∨ x2) tinggal x2</td><td>x2 = T</td><td>x1=F x2=T</td></tr><tr><td>7</td><td>&nbsp;&nbsp;propagasi</td><td>(¬x2 ∨ x3) tinggal x3</td><td>x3 = T</td><td>x1=F x2=T x3=T</td></tr><tr><td>8</td><td>&nbsp;&nbsp;propagasi</td><td>(¬x3 ∨ x4) tinggal x4</td><td>x4 = T</td><td>x1=F x2=T x3=T x4=T</td></tr><tr><td>9</td><td>&nbsp;&nbsp;selesai</td><td>semua klausa benar</td><td><b class='chg'>SAT</b></td><td>x1=F x2=T x3=T x4=T</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Solusi: x1=F x2=T x3=T x4=T - ditemukan dalam 9 langkah, bukan mencoba 2⁴ = 16 kombinasi.</div>
+</section>
+
+<section class="slide" id="rx3b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/3 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Bentuk CNF dan ruang pencarian SAT</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> itertools
+cnf = [[<span class="tn">1</span>, <span class="tn">2</span>], [-<span class="tn">1</span>, -<span class="tn">2</span>], [-<span class="tn">2</span>, <span class="tn">3</span>], [-<span class="tn">3</span>]]     <span class="tc"># 1=a1, 2=a2, 3=b1</span>
+<span class="tk">def</span> brute_sat(cnf, n):
+    <span class="tk">for</span> bits <span class="tk">in</span> itertools.product([<span class="tk">False</span>, <span class="tk">True</span>], repeat=n):   <span class="tc"># 2^n</span>
+        val = <span class="tk">lambda</span> l: bits[abs(l)-<span class="tn">1</span>] <span class="tk">if</span> l &gt; <span class="tn">0</span> <span class="tk">else</span> <span class="tk">not</span> bits[abs(l)-<span class="tn">1</span>]
+        <span class="tk">if</span> all(any(val(l) <span class="tk">for</span> l <span class="tk">in</span> c) <span class="tk">for</span> c <span class="tk">in</span> cnf):
+            <span class="tk">return</span> bits
+<span class="tk">print</span>(brute_sat(cnf, <span class="tn">3</span>))   <span class="tc"># (True, False, False)</span></pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Satu-satunya solusi a1 = T, a2 = F, b1 = F; propagasi menemukannya dalam 3 langkah, bukan 8 baris.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Solusi: x1=F x2=T x3=T x4=T - ditemukan dalam 9 langkah, bukan mencoba 2⁴ = 16 kombinasi.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rxdL" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian C</div>
+<h1 class="title">Latihan</h1>
+<p class="lead">Uji pemahaman teori dan teknikal sebelum melihat penerapannya di dunia nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Soal Teori Kompleksitas, SAT, dan Inferensi</div><div class="rxtocitem"><span>2</span>Kunci Teori Kompleksitas</div></div>
+</section>
+
+<section class="slide" id="s6">
+  <div class="kicker">LATIHAN</div>
+  <h2 class="st">Soal Teori Kompleksitas, SAT, dan Inferensi</h2>
+  <div class="qlist">
+    <div class="q"><span class="qn">1</span><p>Jelaskan perbedaan P, NP, NP-Complete dengan analogi sendiri. Mengapa membuktikan sesuatu adalah NP-Complete itu penting secara praktis?</p></div>
+    <div class="q"><span class="qn">2</span><p>Tunjukkan bahwa 3-COLORING (mewarnai graf dengan 3 warna) adalah NP-Complete melalui reduksi dari 3-SAT. (Jelaskan ide utama reduksinya, tidak perlu bukti formal lengkap.)</p></div>
+    <div class="q"><span class="qn">3</span><p>Mengapa 2-SAT bisa diselesaikan dalam waktu polinomial padahal 3-SAT NP-Complete? Apa perbedaan struktural keduanya?</p></div>
+    <div class="q"><span class="qn">4</span><p>Forward chaining pada basis aturan Horn berjalan O(n). Berikan contoh konkret: sistem pakar diagnosa flu dengan 5 aturan dan 8 fakta. Trace bagaimana forward chaining berjalan.</p></div>
+    <div class="q"><span class="qn">5</span><p>Klasifikasikan masalah berikut: P, NP, NP-Complete, atau NP-Hard? (a) Mencari bilangan prima terbesar di bawah n (b) TSP decision version (c) Memverifikasi apakah array sudah terurut (d) Subset Sum.</p></div>
+  </div>
+</section>
+
+<section class="slide" id="s7">
+  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
+  <h2 class="st">Kunci Teori Kompleksitas</h2>
+  <div class="qlist">
+    <div class="ans"><span class="qn">1</span><p><b>P</b>: bisa dikerjakan cepat. <b>NP</b>: solusinya bisa dicek cepat. <b>NP-Complete</b>: paling sulit di NP, semua NP bisa direduksi ke sini. Praktisnya: kalau masalah NP-Complete, tidak ada harapan algoritma polinomial - gunakan aproksimasi, heuristik, atau solver khusus.</p></div>
+    <div class="ans"><span class="qn">2</span><p>Konstruksi: tiap variabel SAT → gadget segitiga (3 node: true/false/base). Tiap klausa SAT (x∨y∨z) → gadget yang tidak bisa diwarnai 3 warna kalau x,y,z semua false. Transformasi polinomial → 3-COLORING sesulit 3-SAT → NP-Complete.</p></div>
+    <div class="ans"><span class="qn">3</span><p>2-SAT: setiap klausa punya 2 literal → bisa dimodelkan sebagai implication graph. Cari SCC (Strongly Connected Component) dalam O(V+E). 3-SAT kehilangan struktur ini - tidak ada reduksi SCC yang analog. Penambahan satu literal per klausa mengubah kompleksitas secara dramatis.</p></div>
+    <div class="ans"><span class="qn">4</span><p>Aturan: "demam ∧ batuk → flu", "pilek → mungkin flu", dll. Fakta awal: {demam, batuk}. Forward chaining: rule 1 match → derive "flu". Setiap fakta baru masuk queue. Linear karena tiap fakta diproses sekali: O(aturan + fakta).</p></div>
+    <div class="ans"><span class="qn">5</span><p>(a) <b>P</b> - Sieve of Eratosthenes O(n log log n). (b) <b>NP-Complete</b> - Cook-Levin + reduksi dari Hamiltonian Cycle. (c) <b>P</b> - scan linear O(n). (d) <b>NP-Complete</b> - reduksi dari 3-SAT / langsung terbukti.</p></div>
+  </div>
+</section>
+
+<section class="slide" id="rxdD" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian D</div>
+<h1 class="title">Studi kasus nyata</h1>
+<p class="lead">Penutup materi: di mana semua teori dan teknik tadi dipakai di industri, AI, dan proyek nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Forward Chaining dan Rete - inferensi linear di sistem pakar</div><div class="rxtocitem"><span>2</span>Mengecek vs mencari: dari Sudoku sampai kriptografi</div><div class="rxtocitem"><span>3</span>Menerjemahkan masalah bisnis ke SAT/ILP</div><div class="rxtocitem"><span>4</span>Resolusi dependensi package manager</div></div>
+</section>
+
 <section class="slide" id="s5">
   <div class="kicker">BAGIAN 4 · [MODERN] INFERENSI LOGIKA</div>
   <h2 class="st">Forward Chaining dan Rete - inferensi linear di sistem pakar</h2>
@@ -317,173 +584,36 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• Klausa Horn: paling banyak satu literal positif, contohnya A ∧ B → C.<br>• Forward chaining: tiap aturan diproses sekali dengan bantuan penghitung, sehingga waktunya O(n) dengan n = ukuran basis aturan.<br>• Entailment umum (co-NP-complete) menjadi cepat hanya untuk klausa Horn.</div>
 </section>
 
-<!-- 6. LATIHAN -->
-<!--RX-SLIDES-START-->
-<section class="slide" id="rx0">
-<div class="kicker">Bedah Rumus · Teori Kompleksitas, SAT, dan Inferensi</div>
-<h2 class="st">Tiga rumus untuk membaca teori kompleksitas</h2>
-<p class="b">P, NP, reduksi, dan SAT sering terasa abstrak. Padahal ketiganya dipakai setiap kali engineer memutuskan: “cari algoritma cepat, atau serahkan ke solver?”</p>
-<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Definisi NP lewat verifier</b><span>x ∈ L ⇔ ∃y: V(x, y) = 1, |y| ≤ poly(|x|)</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Reduksi polinomial</b><span>A ≤ₚ B: x ∈ A ⇔ f(x) ∈ B</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Bentuk CNF dan ruang pencarian SAT</b><span>φ = ⋀ (⋁ literal), 2ⁿ assignment</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
-</section>
-<section class="slide" id="rx1a">
-<div class="kicker">Bedah Rumus 1/3 · Langkah 1: cara membaca</div>
-<h2 class="st">Definisi NP lewat verifier</h2>
-<div class="fxbox">L ∈ NP ⇔ ∃ verifier <span class='hb'>V</span> waktu polinomial: &nbsp;x ∈ L ⇔ ∃ <span class='hl'>y</span>, |y| ≤ p(|x|), V(x, y) = 1</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Bahasa L termasuk NP jika dan hanya jika ada verifier V yang berjalan dalam waktu polinomial, sehingga x anggota L jika dan hanya jika ada sertifikat y yang panjangnya paling banyak polinomial dari panjang x dan V dari x dan y bernilai satu.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>x</h4><p class="">instance masalah (misalnya sebuah grid Sudoku).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>y = sertifikat</h4><p class="">“bukti” jawaban ya (misalnya isian lengkap Sudoku).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>V(x, y) = 1</h4><p class="">verifier mengecek bukti itu dengan cepat (polinomial).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Bukan “Non-Polynomial”</h4><p class="">NP = Nondeterministic Polynomial: mudah DICEK, belum tentu mudah DICARI.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>L</td><td>masalah keputusan (jawabannya ya/tidak)</td></tr><tr><td>V</td><td>algoritma pemeriksa (verifier)</td></tr><tr><td>y</td><td>sertifikat / saksi</td></tr><tr><td>p(·)</td><td>suatu polinomial</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> P = bisa <b>diselesaikan</b> cepat. NP = bisa <b>dicek</b> cepat jika diberi jawabannya. Pertanyaan P = NP bertanya: apakah setiap masalah yang mudah dicek juga mudah diselesaikan?</div>
-</section>
-<section class="slide" id="rx1m">
-<div class="kicker">Bedah Rumus 1/3 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Definisi NP lewat verifier</h2>
-<div class="rxsoal"><b>Soal:</b> Verifikasi isian Sudoku 4×4 berikut: [1 2 3 4], [3 4 1 2], [2 1 4 3], [4 3 2 1].</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Cek 4 baris</h4><p class="rxcalc">tiap baris berisi 1, 2, 3, 4 tepat sekali ✓</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Cek 4 kolom</h4><p class="rxcalc">kolom 1: 1, 3, 2, 4 ✓ … kolom 4: 4, 2, 3, 1 ✓</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Cek 4 kotak 2×2</h4><p class="rxcalc">kiri atas 1, 2, 3, 4 ✓ … kanan bawah 4, 3, 2, 1 ✓</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Hitung kerja verifier</h4><p class="rxcalc">12 grup × 4 sel = 48 pembacaan → O(n²), polinomial</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Bandingkan dengan mencari</h4><p class="rxcalc">k sel kosong → sampai 4ᵏ kombinasi dicoba</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th></th><th>k1</th><th>k2</th><th>k3</th><th>k4</th></tr><tr><td>b1</td><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr><td>b2</td><td>3</td><td>4</td><td>1</td><td>2</td></tr><tr><td>b3</td><td>2</td><td>1</td><td>4</td><td>3</td></tr><tr><td>b4</td><td>4</td><td>3</td><td>2</td><td>1</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> Valid - dicek dalam 48 langkah. Mengecek mudah; mencari isiannya yang sulit.</div>
-</section>
-<section class="slide" id="rx1t">
-<div class="kicker">Bedah Rumus 1/3 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Definisi NP lewat verifier</h2>
-<div class="rxsoal"><b>Kasus:</b> Verifier Sudoku 4×4 bekerja grup demi grup pada isian [1 2 3 4 / 3 4 1 2 / 2 1 4 3 / 4 3 2 1].</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu grup (baris, kolom, atau kotak 2×2). Urutkan isinya; harus tepat 1 2 3 4. Kolom terakhir menghitung sel yang sudah dibaca. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>grup</th><th>isi</th><th>diurutkan</th><th>valid?</th><th>sel dibaca</th></tr><tr><td>baris 1</td><td>1 2 3 4</td><td>1 2 3 4</td><td>✓</td><td>4</td></tr><tr><td>baris 2</td><td>3 4 1 2</td><td>1 2 3 4</td><td>✓</td><td>8</td></tr><tr><td>baris 3</td><td>2 1 4 3</td><td>1 2 3 4</td><td>✓</td><td>12</td></tr><tr><td>baris 4</td><td>4 3 2 1</td><td>1 2 3 4</td><td>✓</td><td>16</td></tr><tr><td>kolom 1</td><td>1 3 2 4</td><td>1 2 3 4</td><td>✓</td><td>20</td></tr><tr><td>kolom 2</td><td>2 4 1 3</td><td>1 2 3 4</td><td>✓</td><td>24</td></tr><tr><td>kolom 3</td><td>3 1 4 2</td><td>1 2 3 4</td><td>✓</td><td>28</td></tr><tr><td>kolom 4</td><td>4 2 3 1</td><td>1 2 3 4</td><td>✓</td><td>32</td></tr><tr><td>kotak 1</td><td>1 2 3 4</td><td>1 2 3 4</td><td>✓</td><td>36</td></tr><tr><td>kotak 2</td><td>3 4 1 2</td><td>1 2 3 4</td><td>✓</td><td>40</td></tr><tr><td>kotak 3</td><td>2 1 4 3</td><td>1 2 3 4</td><td>✓</td><td>44</td></tr><tr><td>kotak 4</td><td>4 3 2 1</td><td>1 2 3 4</td><td>✓</td><td>48</td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> 12 grup valid, 48 pembacaan sel → verifikasi selesai dalam waktu polinomial O(n²).</div>
-</section>
-<section class="slide" id="rx1b">
-<div class="kicker">Bedah Rumus 1/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<section class="slide" id="rx1c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 1/3</div>
 <h2 class="st">Mengecek vs mencari: dari Sudoku sampai kriptografi</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>Kriptografi</b> bergantung pada masalah yang mudah dicek tetapi sulit dicari. <b>Blockchain proof-of-work</b> juga: menemukan nonce sulit, memverifikasinya cukup satu hash. Di sisi engineering, jika tugas Anda hanya “memvalidasi solusi”, itu biasanya mudah.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Sudoku 9×9</h4><p class="">cek isian: 81 sel × 3 aturan → instan.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Mencari isian</h4><p class="">bisa butuh pencarian besar; untuk n² × n² umum, NP-complete.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Faktorisasi</h4><p class="">cek p·q = N: satu perkalian.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Mencari p, q dari N 2048 bit</h4><p class="">belum ada algoritma klasik cepat - dasar keamanan RSA.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> verifikasi_sudoku(g):          <span class="tc"># verifier polinomial</span>
-    ok = <span class="tk">lambda</span> xs: <span class="tk">sorted</span>(xs) == list(<span class="tk">range</span>(<span class="tn">1</span>, <span class="tn">10</span>))
-    rows = all(ok(r) <span class="tk">for</span> r <span class="tk">in</span> g)
-    cols = all(ok([g[r][c] <span class="tk">for</span> r <span class="tk">in</span> <span class="tk">range</span>(<span class="tn">9</span>)]) <span class="tk">for</span> c <span class="tk">in</span> <span class="tk">range</span>(<span class="tn">9</span>))
-    boxes = all(ok([g[r][c] <span class="tk">for</span> r <span class="tk">in</span> <span class="tk">range</span>(br, br+<span class="tn">3</span>) <span class="tk">for</span> c <span class="tk">in</span> <span class="tk">range</span>(bc, bc+<span class="tn">3</span>)])
-                <span class="tk">for</span> br <span class="tk">in</span> (<span class="tn">0</span>, <span class="tn">3</span>, <span class="tn">6</span>) <span class="tk">for</span> bc <span class="tk">in</span> (<span class="tn">0</span>, <span class="tn">3</span>, <span class="tn">6</span>))
-    <span class="tk">return</span> rows <span class="tk">and</span> cols <span class="tk">and</span> boxes</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>Kriptografi</b> bergantung pada masalah yang mudah dicek tetapi sulit dicari. <b>Blockchain proof-of-work</b> juga: menemukan nonce sulit, memverifikasinya cukup satu hash. Di sisi engineering, jika tugas Anda hanya “memvalidasi solusi”, itu biasanya mudah.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Sudoku 9×9</h4><p class="">cek isian: 81 sel × 3 aturan → instan.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Mencari isian</h4><p class="">bisa butuh pencarian besar; untuk n² × n² umum, NP-complete.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Faktorisasi</h4><p class="">cek p·q = N: satu perkalian.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Mencari p, q dari N 2048 bit</h4><p class="">belum ada algoritma klasik cepat - dasar keamanan RSA.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> NP = mudah dicek. NP-complete = yang tersulit di NP. Belum ada yang tahu apakah mudah dicek berarti mudah dicari.</div>
 </section>
-<section class="slide" id="rx2a">
-<div class="kicker">Bedah Rumus 2/3 · Langkah 1: cara membaca</div>
-<h2 class="st">Reduksi polinomial</h2>
-<div class="fxbox">A <span class='hl'>≤<sub>p</sub></span> B &nbsp;⇔&nbsp; ∃ f waktu polinomial: &nbsp;x ∈ A ⇔ <span class='hb'>f(x)</span> ∈ B</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“A dapat direduksi secara polinomial ke B, jika dan hanya jika ada fungsi f yang berjalan dalam waktu polinomial sehingga x adalah instance ya dari A jika dan hanya jika f dari x adalah instance ya dari B.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>≤ₚ dibaca “tidak lebih sulit dari”</h4><p class="">A ≤ₚ B: A paling sulit sama dengan B.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>f = penerjemah</h4><p class="">mengubah soal A menjadi soal B dengan cepat.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>⇔</h4><p class="">jawaban harus terjaga: ya tetap ya, tidak tetap tidak.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Arah penting</h4><p class="">untuk membuktikan B sulit, reduksikan masalah yang SUDAH diketahui sulit KE B.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>A, B</td><td>dua masalah keputusan</td></tr><tr><td>f</td><td>fungsi transformasi instance</td></tr><tr><td>≤ₚ</td><td>relasi reduksi polinomial</td></tr><tr><td>NP-hard</td><td>B NP-hard jika setiap masalah NP ≤ₚ B</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Reduksi adalah alat dua arah: jika B mudah, maka A juga mudah (pakai f lalu solver B). Jika A sulit, maka B juga sulit. Secara praktis: <b>terjemahkan masalah Anda ke masalah yang sudah punya solver hebat</b>.</div>
-</section>
-<section class="slide" id="rx2m">
-<div class="kicker">Bedah Rumus 2/3 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Reduksi polinomial</h2>
-<div class="rxsoal"><b>Soal:</b> Reduksikan graf 2 simpul dengan 1 sisi (0–1) ke CNF untuk 3-coloring (variabel v·3 + c + 1).</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Nomori variabel</h4><p class="rxcalc">simpul 0: x₁, x₂, x₃ (merah, hijau, biru); simpul 1: x₄, x₅, x₆</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Minimal satu warna</h4><p class="rxcalc">[1, 2, 3] dan [4, 5, 6] → 2 klausa</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Paling banyak satu warna</h4><p class="rxcalc">[−1,−2] [−1,−3] [−2,−3] [−4,−5] [−4,−6] [−5,−6] → 6 klausa</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Tetangga beda warna</h4><p class="rxcalc">[−1,−4] [−2,−5] [−3,−6] → 3 klausa</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Hitung ukuran</h4><p class="rxcalc">n + n·C(k,2) + |E|·k = 2 + 6 + 3 = 11 klausa → polinomial</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>jenis klausa</th><th>rumus jumlah</th><th>jumlah</th></tr><tr><td>minimal satu</td><td>n</td><td>2</td></tr><tr><td>paling banyak satu</td><td>n·C(3,2)</td><td>6</td></tr><tr><td>tetangga beda</td><td>|E|·k</td><td>3</td></tr><tr><td>total</td><td></td><td>11</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> 11 klausa; satu solusi SAT misalnya x₁ = 1, x₅ = 1 → simpul 0 merah, simpul 1 hijau.</div>
-</section>
-<section class="slide" id="rx2t">
-<div class="kicker">Bedah Rumus 2/3 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Reduksi polinomial</h2>
-<div class="rxsoal"><b>Kasus:</b> Reduksi 3-coloring → SAT untuk segitiga (simpul 0, 1, 2; sisi 01, 12, 02). Variabel x = v·3 + c + 1 (c: 0 merah, 1 hijau, 2 biru).</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu kelompok klausa yang ditambahkan fungsi f. Kolom kanan = jumlah klausa kumulatif; ukurannya polinomial terhadap ukuran graf. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>bagian</th><th>klausa</th><th>jumlah</th><th>kumulatif</th></tr><tr><td>simpul 0: minimal satu warna</td><td>[1, 2, 3]</td><td>1</td><td>1</td></tr><tr><td>simpul 1: minimal satu warna</td><td>[4, 5, 6]</td><td>1</td><td>2</td></tr><tr><td>simpul 2: minimal satu warna</td><td>[7, 8, 9]</td><td>1</td><td>3</td></tr><tr><td>simpul 0: paling banyak satu</td><td>[-1, -2] [-1, -3] [-2, -3]</td><td>3</td><td>6</td></tr><tr><td>simpul 1: paling banyak satu</td><td>[-4, -5] [-4, -6] [-5, -6]</td><td>3</td><td>9</td></tr><tr><td>simpul 2: paling banyak satu</td><td>[-7, -8] [-7, -9] [-8, -9]</td><td>3</td><td>12</td></tr><tr><td>sisi (0,1): warna beda</td><td>[-1, -4] [-2, -5] [-3, -6]</td><td>3</td><td><b class='chg'>15</b></td></tr><tr><td>sisi (1,2): warna beda</td><td>[-4, -7] [-5, -8] [-6, -9]</td><td>3</td><td><b class='chg'>18</b></td></tr><tr><td>sisi (0,2): warna beda</td><td>[-1, -7] [-2, -8] [-3, -9]</td><td>3</td><td><b class='chg'>21</b></td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> 21 klausa, 9 variabel. Contoh solusi: x₁, x₅, x₉ benar → simpul 0 merah, 1 hijau, 2 biru.</div>
-</section>
-<section class="slide" id="rx2b">
-<div class="kicker">Bedah Rumus 2/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+
+<section class="slide" id="rx2c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 2/3</div>
 <h2 class="st">Menerjemahkan masalah bisnis ke SAT/ILP</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Banyak tim tidak menulis algoritma pencarian sendiri; mereka <b>mereduksi</b> masalahnya ke SAT, ILP, atau CP lalu memakai solver matang. Contoh: verifikasi hardware (Intel, AMD), konfigurasi paket Linux, dan penjadwalan pabrik.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Masalah</h4><p class="">menugaskan 30 pengawas ujian ke 50 ruang tanpa bentrok.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Reduksi</h4><p class="">variabel x_{p,r} = pengawas p di ruang r; aturan → klausa CNF.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ukuran f(x)</h4><p class="">30 × 50 = 1.500 variabel, ribuan klausa - polinomial.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Selesaikan</h4><p class="">berikan ke SAT solver; terjemahkan jawabannya kembali.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tc"># f: Graph 3-coloring  -&gt;  CNF (SAT)</span>
-<span class="tk">def</span> coloring_to_cnf(n, edges, k=<span class="tn">3</span>):
-    var = <span class="tk">lambda</span> v, c: v * k + c + <span class="tn">1</span>
-    cnf = [[var(v, c) <span class="tk">for</span> c <span class="tk">in</span> <span class="tk">range</span>(k)] <span class="tk">for</span> v <span class="tk">in</span> <span class="tk">range</span>(n)]      <span class="tc"># tiap simpul punya warna</span>
-    cnf += [[-var(v, a), -var(v, b)] <span class="tk">for</span> v <span class="tk">in</span> <span class="tk">range</span>(n)
-            <span class="tk">for</span> a <span class="tk">in</span> <span class="tk">range</span>(k) <span class="tk">for</span> b <span class="tk">in</span> <span class="tk">range</span>(a + <span class="tn">1</span>, k)]          <span class="tc"># paling banyak satu warna</span>
-    cnf += [[-var(u, c), -var(v, c)] <span class="tk">for</span> u, v <span class="tk">in</span> edges <span class="tk">for</span> c <span class="tk">in</span> <span class="tk">range</span>(k)]  <span class="tc"># tetangga beda</span>
-    <span class="tk">return</span> cnf</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Banyak tim tidak menulis algoritma pencarian sendiri; mereka <b>mereduksi</b> masalahnya ke SAT, ILP, atau CP lalu memakai solver matang. Contoh: verifikasi hardware (Intel, AMD), konfigurasi paket Linux, dan penjadwalan pabrik.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Masalah</h4><p class="">menugaskan 30 pengawas ujian ke 50 ruang tanpa bentrok.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Reduksi</h4><p class="">variabel x_{p,r} = pengawas p di ruang r; aturan → klausa CNF.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ukuran f(x)</h4><p class="">30 × 50 = 1.500 variabel, ribuan klausa - polinomial.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Selesaikan</h4><p class="">berikan ke SAT solver; terjemahkan jawabannya kembali.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Reduksi = penerjemah polinomial. Untuk praktik: terjemahkan masalah Anda ke solver yang sudah ada.</div>
 </section>
-<section class="slide" id="rx3a">
-<div class="kicker">Bedah Rumus 3/3 · Langkah 1: cara membaca</div>
-<h2 class="st">Bentuk CNF dan ruang pencarian SAT</h2>
-<div class="fxbox">φ = <span class='hl'>⋀</span><sub>j</sub> ( <span class='hb'>⋁</span><sub>i</sub> ℓ<sub>ij</sub> ), &nbsp; ℓ ∈ {x, ¬x}; &nbsp; brute force: <span class='hl'>2<sup>n</sup></span> assignment</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Formula phi adalah konjungsi, atau AND, dari klausa-klausa; setiap klausa adalah disjungsi, atau OR, dari literal. Literal adalah variabel x atau negasinya. Brute force mencoba dua pangkat n assignment.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>⋀ = AND besar</h4><p class="">semua klausa harus benar.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>⋁ = OR besar</h4><p class="">dalam satu klausa, cukup satu literal benar.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>ℓ (literal)</h4><p class="">variabel x atau negasinya ¬x.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>2ⁿ</h4><p class="">setiap variabel bisa True/False → 2ⁿ kemungkinan.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>φ</td><td>formula yang ingin dipenuhi (satisfiable?)</td></tr><tr><td>klausa</td><td>OR dari beberapa literal</td></tr><tr><td>n</td><td>banyaknya variabel</td></tr><tr><td>¬</td><td>negasi (NOT)</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> SAT adalah masalah NP-complete pertama (Cook-Levin). Teorinya 2ⁿ, tetapi solver CDCL modern memanfaatkan <b>struktur</b> instance nyata sehingga jutaan variabel bisa selesai.</div>
-</section>
-<section class="slide" id="rx3m">
-<div class="kicker">Bedah Rumus 3/3 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Bentuk CNF dan ruang pencarian SAT</h2>
-<div class="rxsoal"><b>Soal:</b> Uji φ = (a1 ∨ a2) ∧ (¬a1 ∨ ¬a2) ∧ (¬a2 ∨ b1) ∧ (¬b1) dengan tabel kebenaran, lalu dengan unit propagation.</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Brute force</h4><p class="rxcalc">2³ = 8 baris dicek satu per satu (tabel)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Unit propagation 1</h4><p class="rxcalc">klausa (¬b1) tinggal satu literal → b1 = F</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Unit propagation 2</h4><p class="rxcalc">(¬a2 ∨ b1) dengan b1 = F → a2 = F</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Unit propagation 3</h4><p class="rxcalc">(a1 ∨ a2) dengan a2 = F → a1 = T</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Cek</h4><p class="rxcalc">(¬a1 ∨ ¬a2) = F ∨ T = T ✓ → φ terpenuhi</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>a1 a2 b1</th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>φ</th></tr><tr><td>F F F</td><td>F</td><td>T</td><td>T</td><td>T</td><td>F</td></tr><tr><td>F T F</td><td>T</td><td>T</td><td>F</td><td>T</td><td>F</td></tr><tr><td>T F F</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T ✓</td></tr><tr><td>T F T</td><td>T</td><td>T</td><td>T</td><td>F</td><td>F</td></tr><tr><td>T T F</td><td>T</td><td>F</td><td>F</td><td>T</td><td>F</td></tr><tr><td>… 3 baris lain</td><td></td><td></td><td></td><td></td><td>F</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> Satu-satunya solusi a1 = T, a2 = F, b1 = F; propagasi menemukannya dalam 3 langkah, bukan 8 baris.</div>
-</section>
-<section class="slide" id="rx3t">
-<div class="kicker">Bedah Rumus 3/3 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Bentuk CNF dan ruang pencarian SAT</h2>
-<div class="rxsoal"><b>Kasus:</b> DPLL pada φ = (x1∨x2)(¬x1∨x3)(¬x2∨x3)(¬x3∨x4)(¬x1∨¬x4)(x2∨¬x4).</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu aksi solver: keputusan (menebak nilai), propagasi (klausa tinggal satu literal memaksa nilai), konflik (semua literal salah → mundur). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>#</th><th>aksi</th><th>alasan</th><th>efek</th><th>assignment</th></tr><tr><td>1</td><td>keputusan</td><td>coba x1</td><td>x1 = T</td><td>x1=T</td></tr><tr><td>2</td><td>&nbsp;&nbsp;propagasi</td><td>(¬x1 ∨ x3) tinggal x3</td><td>x3 = T</td><td>x1=T x3=T</td></tr><tr><td>3</td><td>&nbsp;&nbsp;propagasi</td><td>(¬x3 ∨ x4) tinggal x4</td><td>x4 = T</td><td>x1=T x3=T x4=T</td></tr><tr><td>4</td><td>&nbsp;&nbsp;konflik</td><td>(¬x1 ∨ ¬x4) salah semua</td><td><b class='chg'>mundur</b></td><td>x1=T x3=T x4=T</td></tr><tr><td>5</td><td>keputusan</td><td>coba x1</td><td>x1 = F</td><td>x1=F</td></tr><tr><td>6</td><td>&nbsp;&nbsp;propagasi</td><td>(x1 ∨ x2) tinggal x2</td><td>x2 = T</td><td>x1=F x2=T</td></tr><tr><td>7</td><td>&nbsp;&nbsp;propagasi</td><td>(¬x2 ∨ x3) tinggal x3</td><td>x3 = T</td><td>x1=F x2=T x3=T</td></tr><tr><td>8</td><td>&nbsp;&nbsp;propagasi</td><td>(¬x3 ∨ x4) tinggal x4</td><td>x4 = T</td><td>x1=F x2=T x3=T x4=T</td></tr><tr><td>9</td><td>&nbsp;&nbsp;selesai</td><td>semua klausa benar</td><td><b class='chg'>SAT</b></td><td>x1=F x2=T x3=T x4=T</td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> Solusi: x1=F x2=T x3=T x4=T - ditemukan dalam 9 langkah, bukan mencoba 2⁴ = 16 kombinasi.</div>
-</section>
-<section class="slide" id="rx3b">
-<div class="kicker">Bedah Rumus 3/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+
+<section class="slide" id="rx3c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 3/3</div>
 <h2 class="st">Resolusi dependensi package manager</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Package manager <b>conda/mamba (libsolv)</b>, <b>openSUSE zypper</b>, dan <b>Eclipse p2</b> memakai SAT solver untuk resolusi dependensi. Verifikasi chip, perencanaan AI, dan pengujian software (symbolic execution) juga memakai SAT/SMT solver seperti Z3.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Variabel</h4><p class="">a1 = install A v1, a2 = A v2, b1 = B v1.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Klausa</h4><p class="">(a1 ∨ a2) “A wajib”; (¬a1 ∨ ¬a2) “satu versi”.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ketergantungan</h4><p class="">(¬a2 ∨ b1) “A v2 butuh B v1”; (¬b1) “B v1 bentrok OS”.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Solusi</h4><p class="">b1 = F → a2 = F → a1 = T. Brute force 2³ = 8; solver cukup propagasi.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> itertools
-cnf = [[<span class="tn">1</span>, <span class="tn">2</span>], [-<span class="tn">1</span>, -<span class="tn">2</span>], [-<span class="tn">2</span>, <span class="tn">3</span>], [-<span class="tn">3</span>]]     <span class="tc"># 1=a1, 2=a2, 3=b1</span>
-<span class="tk">def</span> brute_sat(cnf, n):
-    <span class="tk">for</span> bits <span class="tk">in</span> itertools.product([<span class="tk">False</span>, <span class="tk">True</span>], repeat=n):   <span class="tc"># 2^n</span>
-        val = <span class="tk">lambda</span> l: bits[abs(l)-<span class="tn">1</span>] <span class="tk">if</span> l &gt; <span class="tn">0</span> <span class="tk">else</span> <span class="tk">not</span> bits[abs(l)-<span class="tn">1</span>]
-        <span class="tk">if</span> all(any(val(l) <span class="tk">for</span> l <span class="tk">in</span> c) <span class="tk">for</span> c <span class="tk">in</span> cnf):
-            <span class="tk">return</span> bits
-<span class="tk">print</span>(brute_sat(cnf, <span class="tn">3</span>))   <span class="tc"># (True, False, False)</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Package manager <b>conda/mamba (libsolv)</b>, <b>openSUSE zypper</b>, dan <b>Eclipse p2</b> memakai SAT solver untuk resolusi dependensi. Verifikasi chip, perencanaan AI, dan pengujian software (symbolic execution) juga memakai SAT/SMT solver seperti Z3.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Variabel</h4><p class="">a1 = install A v1, a2 = A v2, b1 = B v1.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Klausa</h4><p class="">(a1 ∨ a2) “A wajib”; (¬a1 ∨ ¬a2) “satu versi”.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ketergantungan</h4><p class="">(¬a2 ∨ b1) “A v2 butuh B v1”; (¬b1) “B v1 bentrok OS”.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Solusi</h4><p class="">b1 = F → a2 = F → a1 = T. Brute force 2³ = 8; solver cukup propagasi.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> CNF = AND dari OR. Secara teori 2ⁿ; di praktik solver CDCL menyelesaikan masalah industri raksasa.</div>
 </section>
-<!--RX-SLIDES-END-->
-<section class="slide" id="s6">
-  <div class="kicker">LATIHAN</div>
-  <h2 class="st">Soal Teori Kompleksitas, SAT, dan Inferensi</h2>
-  <div class="qlist">
-    <div class="q"><span class="qn">1</span><p>Jelaskan perbedaan P, NP, NP-Complete dengan analogi sendiri. Mengapa membuktikan sesuatu adalah NP-Complete itu penting secara praktis?</p></div>
-    <div class="q"><span class="qn">2</span><p>Tunjukkan bahwa 3-COLORING (mewarnai graf dengan 3 warna) adalah NP-Complete melalui reduksi dari 3-SAT. (Jelaskan ide utama reduksinya, tidak perlu bukti formal lengkap.)</p></div>
-    <div class="q"><span class="qn">3</span><p>Mengapa 2-SAT bisa diselesaikan dalam waktu polinomial padahal 3-SAT NP-Complete? Apa perbedaan struktural keduanya?</p></div>
-    <div class="q"><span class="qn">4</span><p>Forward chaining pada basis aturan Horn berjalan O(n). Berikan contoh konkret: sistem pakar diagnosa flu dengan 5 aturan dan 8 fakta. Trace bagaimana forward chaining berjalan.</p></div>
-    <div class="q"><span class="qn">5</span><p>Klasifikasikan masalah berikut: P, NP, NP-Complete, atau NP-Hard? (a) Mencari bilangan prima terbesar di bawah n (b) TSP decision version (c) Memverifikasi apakah array sudah terurut (d) Subset Sum.</p></div>
-  </div>
-</section>
 
-<!-- 7. KUNCI -->
-<section class="slide" id="s7">
-  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
-  <h2 class="st">Kunci Teori Kompleksitas</h2>
-  <div class="qlist">
-    <div class="ans"><span class="qn">1</span><p><b>P</b>: bisa dikerjakan cepat. <b>NP</b>: solusinya bisa dicek cepat. <b>NP-Complete</b>: paling sulit di NP, semua NP bisa direduksi ke sini. Praktisnya: kalau masalah NP-Complete, tidak ada harapan algoritma polinomial - gunakan aproksimasi, heuristik, atau solver khusus.</p></div>
-    <div class="ans"><span class="qn">2</span><p>Konstruksi: tiap variabel SAT → gadget segitiga (3 node: true/false/base). Tiap klausa SAT (x∨y∨z) → gadget yang tidak bisa diwarnai 3 warna kalau x,y,z semua false. Transformasi polinomial → 3-COLORING sesulit 3-SAT → NP-Complete.</p></div>
-    <div class="ans"><span class="qn">3</span><p>2-SAT: setiap klausa punya 2 literal → bisa dimodelkan sebagai implication graph. Cari SCC (Strongly Connected Component) dalam O(V+E). 3-SAT kehilangan struktur ini - tidak ada reduksi SCC yang analog. Penambahan satu literal per klausa mengubah kompleksitas secara dramatis.</p></div>
-    <div class="ans"><span class="qn">4</span><p>Aturan: "demam ∧ batuk → flu", "pilek → mungkin flu", dll. Fakta awal: {demam, batuk}. Forward chaining: rule 1 match → derive "flu". Setiap fakta baru masuk queue. Linear karena tiap fakta diproses sekali: O(aturan + fakta).</p></div>
-    <div class="ans"><span class="qn">5</span><p>(a) <b>P</b> - Sieve of Eratosthenes O(n log log n). (b) <b>NP-Complete</b> - Cook-Levin + reduksi dari Hamiltonian Cycle. (c) <b>P</b> - scan linear O(n). (d) <b>NP-Complete</b> - reduksi dari 3-SAT / langsung terbukti.</p></div>
-  </div>
-</section>
-
-<!-- 8. PENUTUP -->
 <section class="slide" id="s8" style="justify-content:center;align-items:center;text-align:center">
   <div class="kicker">PERTEMUAN 14 · SELESAI</div>
   <h2 class="st" style="font-size:30px;margin:10px 0">Beberapa masalah memang sulit -<br>dan itu bukan karena kita kurang pintar.</h2>

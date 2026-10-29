@@ -115,6 +115,14 @@ table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
 .rxtrace td:first-child{color:#64748b;font-weight:700}
 b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
 .rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
+.rxg3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.rxwtrack{display:flex;gap:6px;flex:none}
+.rxwtrack span{font:800 12px/1 -apple-system,'Segoe UI',Arial,sans-serif;letter-spacing:.08em;padding:6px 10px;border-radius:20px;background:#f1f5f9;color:#94a3b8;border:2px solid #e2e8f0}
+.rxwtrack span.on{background:#2563eb;color:#fff;border-color:#2563eb}
+.rxtoc{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+.rxtocitem{display:flex;gap:10px;align-items:baseline;font-size:15px;line-height:1.4;color:#334155;border-bottom:1px dashed #e2e8f0;padding:3px 0}
+.rxg3.big .rxcard{padding:18px 20px}.rxg3.big .rxcard h3{font-size:20px;margin-bottom:10px}.rxg3.big .rxcard p{font-size:17px;line-height:1.65}
+.rxtocitem span{flex:none;min-width:26px;font:800 13px Consolas,monospace;color:#2563eb}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -129,22 +137,6 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · <a href="index.html" style="color:#2563eb;font-size:12px">← Daftar Materi</a></div>
 </section>
 
-<!-- 5W1H -->
-<section class="slide" id="s5w1h">
-  <div class="kicker">KERANGKA TEORI · 5W1H - Struktur Data Efisien</div>
-  <h2 class="st">Kenapa materi ini ada, untuk siapa, dan bagaimana memakainya?</h2>
-  <div class="w5h1" style="margin-top:6px">
-    <div class="wcard what"><div class="wlabel">What - Apa?</div><p>Struktur data menentukan bagaimana data diorganisir sehingga operasi tertentu efisien. Heap untuk priority queue O(log n), Hash Table untuk lookup O(1) rata-rata, Balanced BST untuk operasi terurut O(log n), Bloom Filter untuk membership probabilistik O(k). Pilihan struktur data menentukan setengah kompleksitas algoritma.</p></div>
-    <div class="wcard why"><div class="wlabel">Why - Mengapa?</div><p>Algoritma terbaik pun bisa lambat jika struktur datanya salah. Dijkstra dengan array biasa O(V²) vs dengan min-heap O(E log V) - pada graf sparse itu bisa 1000× lebih cepat. Hash Table membuat operasi O(n) jadi O(1) rata-rata. Bloom Filter menghemat 90% memori untuk membership check di CDN dan database.</p></div>
-    <div class="wcard who"><div class="wlabel">Who - Siapa?</div><p>Backend developer (cache = hash table, event queue = heap), sistem engineer (database index = B-tree), ML engineer (priority beam search = heap), data engineer (approximate counting = Count-Min Sketch), security engineer (Bloom filter di firewall dan CDN), dan semua programmer yang butuh operasi efisien di skala produksi.</p></div>
-    <div class="wcard when"><div class="wlabel">When - Kapan?</div><p>Heap: perlu ambil min/max berulang (Dijkstra, Prim, task scheduler, K largest). Hash Table: lookup/insert/delete O(1) dan urutan tidak penting. BST: butuh terurut sekaligus efisien (range query, predecessor). Bloom Filter: memori terbatas dan false positive bisa ditoleransi - misal cek apakah URL sudah dikunjungi crawler.</p></div>
-    <div class="wcard where"><div class="wlabel">Where - Di mana?</div><p>Heap di Python: heapq, Java: PriorityQueue. Hash di Python: dict/set (O(1) avg). BST di Python: sortedcontainers.SortedList. Bloom Filter di: Redis, Cassandra, CDN edge servers, Bitcoin SPV. Count-Min Sketch di: streaming analytics, Cloudflare DDoS detection, network traffic monitoring secara real-time.</p></div>
-    <div class="wcard how"><div class="wlabel">How - Bagaimana?</div><p>Heap: array di mana parent ≤ children (min-heap). Insert = O(log n) sift-up, extract-min = O(log n) sift-down, build dari array = O(n) amortized. Hash: key → hash function → bucket, collision via chaining atau open addressing, load factor dijaga di bawah 0.75. Analisis amortized: dynamic array doubling - total cost n insert = O(n), per insert = O(1).</p></div>
-  </div>
-</section>
-
-<!-- 2. HEAP -->
-<!-- PETA LANGKAH -->
 <section class="slide" id="speta">
   <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
   <h2 class="st">Peta langkah: memilih struktur data yang tepat</h2>
@@ -163,99 +155,67 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   </div>
 </section>
 
-<section class="slide" id="s2">
-  <div class="kicker">BAGIAN 1 · HEAP</div>
-  <h2 class="st">Heap - Struktur data untuk priority queue</h2>
-  <div class="cols c2l">
-    <div class="stack">
-<pre class="pycode">import heapq
-# Min-Heap di Python
-h = []
-heapq.heappush(h, 5)   # O(log n)
-heapq.heappush(h, 2)
-heapq.heappush(h, 8)
-heapq.heapify([4,1,7,3])  # Build: O(n) !
-x = heapq.heappop(h)   # Extract-min O(log n)
-# Heap sort: O(n log n)
-def heapsort(arr):
-    h = arr[:]
-    heapq.heapify(h)   # O(n)
-    return [heapq.heappop(h)  # O(n log n)
-            for _ in range(len(h))]</pre>
-      <div class="note"><b>Build Heap O(n):</b> Walaupun terlihat seperti O(n log n), analisis amortized membuktikan heapify dari bawah ke atas hanya O(n). Ini bukan sihir - sebagian besar node ada di level bawah dengan sedikit pekerjaan.</div>
-    </div>
-    <div class="stack">
-      <table class="tbl">
-        <tr><th>Operasi</th><th>Min-Heap</th><th>Sorted Array</th></tr>
-        <tr><td>Insert</td><td class="mono" style="color:#16a34a">O(log n)</td><td class="mono" style="color:#dc2626">O(n)</td></tr>
-        <tr><td>Extract-min</td><td class="mono" style="color:#16a34a">O(log n)</td><td class="mono" style="color:#16a34a">O(1)</td></tr>
-        <tr><td>Find-min</td><td class="mono" style="color:#16a34a">O(1)</td><td class="mono" style="color:#16a34a">O(1)</td></tr>
-        <tr><td>Build</td><td class="mono" style="color:#16a34a">O(n)</td><td class="mono" style="color:#dc2626">O(n log n)</td></tr>
-      </table>
-      <div class="analogy"><b>Analogi:</b> Heap seperti turnamen tenis. Juara duduk di atas, pemenang babak pertama di bawahnya. Untuk temukan juara: lihat akar O(1). Untuk hapus juara: promosikan runner-up, atur ulang O(log n).</div>
-      <div class="card soft"><p class="b"><b>Digunakan di:</b> Dijkstra shortest path (priority queue), event simulation, OS scheduler, median finder (dua heap).</p></div>
-    </div>
-  </div>
+<section class="slide" id="rxdA" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A</div>
+<h1 class="title">Teori</h1>
+<p class="lead">Kita mulai dari dasar: 5W1H dipecah per slide (What, Why, Who, When, Where, How), lalu konsep inti dan cara membaca setiap rumus.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>WHAT - Apa itu struktur data efisien?</div><div class="rxtocitem"><span>2</span>WHY - Mengapa pemilihan struktur data penting?</div><div class="rxtocitem"><span>3</span>WHO - Siapa yang memakainya?</div><div class="rxtocitem"><span>4</span>WHEN - Kapan memakai struktur yang mana?</div><div class="rxtocitem"><span>5</span>WHERE - Di mana struktur data ini dipakai?</div><div class="rxtocitem"><span>6</span>HOW - Bagaimana memilih dan menganalisis struktur data?</div><div class="rxtocitem"><span>7</span>Amortized Analysis - biaya rata-rata serangkaian operasi</div><div class="rxtocitem"><span>8</span>Lima rumus di balik struktur data efisien</div><div class="rxtocitem"><span>9</span>Indeks heap dalam array</div><div class="rxtocitem"><span>10</span>Load factor hash table</div><div class="rxtocitem"><span>11</span>Tinggi AVL tree</div><div class="rxtocitem"><span>12</span>Amortized: dynamic array yang menggandakan diri</div><div class="rxtocitem"><span>13</span>Peluang false positive Bloom filter</div></div>
 </section>
 
-<!-- 3. HASH TABLE -->
-<section class="slide" id="s3">
-  <div class="kicker">BAGIAN 2 · HASH TABLE</div>
-  <h2 class="st">Hash Table - O(1) rata-rata untuk insert &amp; search</h2>
-  <div class="cols c2">
-    <div class="stack">
-      <p class="b">Hash table memetakan kunci ke indeks via fungsi hash h(k). Collision terjadi ketika h(k₁) = h(k₂) untuk k₁ ≠ k₂.</p>
-      <div class="card" style="border-left:4px solid #2563eb">
-        <p class="b"><b>Chaining:</b> tiap slot menyimpan linked list. Worst case O(n) jika semua ke slot yang sama.</p>
-      </div>
-      <div class="card" style="border-left:4px solid #7c3aed">
-        <p class="b"><b>Open Addressing:</b> probe slot berikutnya (linear, quadratic, double hashing). Load factor α &lt; 0.7 untuk performa baik.</p>
-      </div>
-      <div class="note"><b>Load factor α = n/m</b> (n=elemen, m=slot). Jika α &gt; 0.7–0.8, resize (double the table) - O(n) sekali, tapi amortized O(1).</div>
-    </div>
-    <div class="sim" style="flex:1">
-      <div class="cap">Simulasi Hash Table (size=7)</div>
-      <div style="display:flex;gap:6px;align-items:center">
-        <input id="htKey" type="text" placeholder="masukkan kunci" style="border:1.5px solid #bfdbfe;border-radius:6px;padding:5px 9px;font-size:12px;width:120px">
-        <button class="btn go" id="btnHtInsert">Insert</button>
-        <button class="btn ghost" id="btnHtReset">Reset</button>
-      </div>
-      <div style="display:flex;gap:5px;flex-wrap:wrap;margin:4px 0" id="htGrid"></div>
-      <div class="term" id="htLog" style="min-height:70px">Ketik kunci dan klik Insert...</div>
-    </div>
-  </div>
+<section class="slide" id="rxw1" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (1/6) - WHAT</div>
+<div class="rxwtrack"><span class="on">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHAT - Apa itu struktur data efisien?</h2>
+<p class="b">Cara menyusun data agar operasi yang paling sering dipakai menjadi murah.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Heap</h3><p>Ambil elemen terkecil/terbesar dalam O(log n).</p></div><div class="rxcard green"><h3>Hash table & BST seimbang</h3><p>Cari/sisip O(1) rata-rata, atau O(log n) terjamin dan terurut.</p></div><div class="rxcard yellow"><h3>Amortized & probabilistik</h3><p>Dynamic array O(1) amortized; Bloom filter hemat memori.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Antrian tiket helpdesk berprioritas: heap mengambil tiket paling mendesak dalam O(log n).</div>
 </section>
 
-<!-- 4. BALANCED BST -->
-<section class="slide" id="s4">
-  <div class="kicker">BAGIAN 3 · BALANCED BST</div>
-  <h2 class="st">Balanced BST - O(log n) terjamin untuk semua operasi</h2>
-  <div class="cols c2">
-    <div class="stack">
-      <table class="tbl">
-        <tr><th>Struktur</th><th>Insert</th><th>Search</th><th>Delete</th><th>Min/Max</th></tr>
-        <tr><td>Unbalanced BST</td><td>O(n) worst</td><td>O(n) worst</td><td>O(n)</td><td>O(n)</td></tr>
-        <tr><td>AVL Tree</td><td style="color:#16a34a">O(log n)</td><td style="color:#16a34a">O(log n)</td><td style="color:#16a34a">O(log n)</td><td style="color:#16a34a">O(log n)</td></tr>
-        <tr><td>Red-Black Tree</td><td style="color:#16a34a">O(log n)</td><td style="color:#16a34a">O(log n)</td><td style="color:#16a34a">O(log n)</td><td style="color:#16a34a">O(log n)</td></tr>
-        <tr><td>Python SortedList</td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td><td>O(1)</td></tr>
-      </table>
-      <div class="warn"><b>BST yang tidak seimbang:</b> Insert 1,2,3,4,5 secara berurutan → pohon degenerasi ke linked list! Semua operasi jadi O(n). AVL/Red-Black rebalance otomatis setelah setiap operasi.</div>
-    </div>
-    <div class="stack">
-      <div class="analogy"><b>Analogi AVL:</b> Seperti timbangan yang selalu disetarakan. Setiap kali satu sisi terlalu berat (tinggi selisih &gt;1), lakukan rotasi. Rotasi O(1), tapi terjamin pohon tetap O(log n) tinggi.</div>
-      <div class="card" style="border-left:4px solid #16a34a">
-        <p class="b"><b>AVL invariant:</b> Untuk setiap node, |tinggi(kiri) − tinggi(kanan)| ≤ 1. Tinggi maksimal = 1.44 log₂(n+2). Rotasi kiri/kanan/kiri-kanan/kanan-kiri.</p>
-      </div>
-      <div class="card soft">
-        <p class="b"><b>Python:</b> <code class="mono">from sortedcontainers import SortedList</code> - implementasi BST yang sangat cepat. <code class="mono">bisect</code> module untuk binary search pada list terurut.</p>
-      </div>
-    </div>
-  </div>
-  <!-- RUMUS -->
-  <div class="note"><b>Cara membaca rumus:</b><br>• O(log n) untuk AVL dan Red-Black: tinggi pohon dijaga sekitar log₂n, sehingga tiap operasi hanya menelusuri jalur itu.<br>• O(n) pada BST biasa: pohon bisa berubah menjadi daftar berantai, sehingga tinggi pohon menjadi n.</div>
+<section class="slide" id="rxw2" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (2/6) - WHY</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="on">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHY - Mengapa pemilihan struktur data penting?</h2>
+<p class="b">Algoritma yang sama bisa berbeda ribuan kali kecepatannya hanya karena struktur datanya.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>x in list vs x in set</h3><p>O(n) vs O(1) rata-rata.</p></div><div class="rxcard green"><h3>Dijkstra</h3><p>Dengan array O(V²); dengan heap O((V+E) log V).</p></div><div class="rxcard yellow"><h3>Memori</h3><p>Bloom filter 1,25 MB menggantikan daftar 1 juta username.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Cek duplikat 1 juta email: list ±5×10¹¹ perbandingan, set ±1 juta operasi.</div>
 </section>
 
-<!-- 5. AMORTIZED -->
+<section class="slide" id="rxw3" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (3/6) - WHO</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="on">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHO - Siapa yang memakainya?</h2>
+<p class="b">Setiap developer, karena struktur data ada di setiap bahasa.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Developer aplikasi</h3><p>Memilih list, dict, set, heapq sesuai kebutuhan.</p></div><div class="rxcard green"><h3>Database & systems engineer</h3><p>Indeks B-tree, hash index, LSM-tree, Bloom filter.</p></div><div class="rxcard yellow"><h3>Data engineer</h3><p>Sketch probabilistik untuk menghitung data streaming.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Engineer Redis memilih struktur internal (hash, skiplist) sesuai ukuran data.</div>
+</section>
+
+<section class="slide" id="rxw4" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (4/6) - WHEN</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="on">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHEN - Kapan memakai struktur yang mana?</h2>
+<p class="b">Mulai dari operasi yang paling sering:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Sering ambil min/maks</h3><p>Heap / priority queue.</p></div><div class="rxcard green"><h3>Sering cari berdasarkan kunci</h3><p>Hash table; jika butuh urutan atau range query → BST seimbang.</p></div><div class="rxcard yellow"><h3>Data sangat besar, boleh sedikit salah</h3><p>Bloom filter / Count-Min Sketch.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> “Transaksi antara jam 10 dan 11” → butuh range query → BST/B-tree, bukan hash.</div>
+</section>
+
+<section class="slide" id="rxw5" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (5/6) - WHERE</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="on">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHERE - Di mana struktur data ini dipakai?</h2>
+<p class="b">Di inti hampir semua perangkat lunak.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Bahasa pemrograman</h3><p>Python dict/set (hash), heapq, list (dynamic array).</p></div><div class="rxcard green"><h3>Database</h3><p>B-tree index, hash join, Bloom filter di Cassandra/RocksDB.</p></div><div class="rxcard yellow"><h3>OS & jaringan</h3><p>Scheduler (heap/red-black tree), tabel routing, cache.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Linux CFS scheduler menyimpan proses di red-black tree untuk memilih proses berikutnya.</div>
+</section>
+
+<section class="slide" id="rxw6" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (6/6) - HOW</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="on">HOW</span></div>
+<h2 class="st">HOW - Bagaimana memilih dan menganalisis struktur data?</h2>
+<p class="b">Tiga langkah:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>1. Daftar operasi</h3><p>Insert, delete, search, min, range - mana yang paling sering?</p></div><div class="rxcard green"><h3>2. Bandingkan biaya</h3><p>Lihat tabel kompleksitas tiap struktur (rata-rata, terburuk, amortized).</p></div><div class="rxcard yellow"><h3>3. Perhatikan syarat</h3><p>Load factor hash, keseimbangan pohon, peluang false positive.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Butuh antrian prioritas + update prioritas sering → heap dengan lazy deletion.</div>
+</section>
+
 <section class="slide" id="s5">
   <div class="kicker">BAGIAN 4 · ANALISIS AMORTIZED</div>
   <h2 class="st">Amortized Analysis - biaya rata-rata serangkaian operasi</h2>
@@ -296,7 +256,414 @@ def heapsort(arr):
   <div class="note"><b>Cara membaca rumus:</b><br>• Biaya amortisasi = total biaya serangkaian operasi ÷ jumlah operasi.<br>• Pada append: biaya satu operasi bisa O(n) saat resize, tetapi total n operasi tetap O(n), sehingga rata-rata O(1).</div>
 </section>
 
-<!-- 6. BLOOM FILTER & CMS -->
+<section class="slide" id="rx0" data-rx="1">
+<div class="kicker">Bagian A · Teori · Bedah Rumus · Struktur Data Efisien</div>
+<h2 class="st">Lima rumus di balik struktur data efisien</h2>
+<p class="b">Heap, hash table, BST seimbang, dynamic array, dan Bloom filter dipakai setiap hari oleh bahasa pemrograman dan database. Rumus-rumus berikut menjelaskan mengapa mereka cepat dan kapan mereka melambat.</p>
+<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Indeks heap dalam array</b><span>parent = ⌊(i−1)/2⌋, anak = 2i+1, 2i+2</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Load factor hash table</b><span>α = n/m, probe ≈ 1/(1−α)</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Tinggi AVL tree</b><span>h ≤ 1,44·log₂(n+2)</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Amortized: dynamic array yang menggandakan diri</b><span>n + (1+2+4+…+n) ≤ 3n → O(1) amortized</span></div></div><div class="rxitem"><div class="qn">5</div><div><b>Peluang false positive Bloom filter</b><span>p ≈ (1 − e^(−kn/m))ᵏ</span></div></div></div>
+<div class="note"><b>Alur tiap rumus:</b> di <b>Teori</b> kita belajar <b>cara membaca</b> rumus dan arti tiap simbol. Di <b>Teknikal</b> rumus yang sama dikerjakan lewat <b>hitung manual</b>, <b>jejak step-by-step</b>, lalu <b>kode Python</b>. Di <b>Studi kasus nyata</b> (akhir slide) kita lihat pemakaiannya di proyek nyata.</div>
+</section>
+
+<section class="slide" id="rx1a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 1/5 - cara membaca</div>
+<h2 class="st">Indeks heap dalam array</h2>
+<div class="fxbox">parent(i) = <span class='hl'>⌊(i − 1)/2⌋</span>, &nbsp; left(i) = <span class='hb'>2i + 1</span>, &nbsp; right(i) = <span class='hb'>2i + 2</span>, &nbsp; tinggi = ⌊log<sub>2</sub> n⌋</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Induk dari indeks i adalah lantai dari i kurang satu dibagi dua. Anak kiri adalah dua i tambah satu, anak kanan dua i tambah dua. Tinggi heap adalah lantai log dua n.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Pohon disimpan di array</h4><p class="">tidak perlu pointer; posisi menentukan hubungan.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Indeks mulai dari 0</h4><p class="">akar di a[0]; anak-anaknya di a[1] dan a[2].</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Tinggi ⌊log₂ n⌋</h4><p class="">pohon lengkap → push/pop paling banyak naik/turun sebanyak tinggi ini.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>i</td><td>indeks simpul di array (0-based)</td></tr><tr><td>⌊(i−1)/2⌋</td><td>indeks induk</td></tr><tr><td>2i+1, 2i+2</td><td>indeks anak kiri dan kanan</td></tr><tr><td>⌊log₂ n⌋</td><td>tinggi → biaya push/pop O(log n)</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Karena heap selalu <b>pohon biner lengkap</b>, ia bisa dipadatkan ke array tanpa lubang, dan tingginya dijamin logaritmik.</div>
+</section>
+
+<section class="slide" id="rx2a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 2/5 - cara membaca</div>
+<h2 class="st">Load factor hash table</h2>
+<div class="fxbox"><span class='hl'>α</span> = n / m; &nbsp; chaining: 1 + α/2 (sukses); &nbsp; open addressing: <span class='hb'>1/(1 − α)</span> (gagal)</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Alfa sama dengan n dibagi m. Pada chaining, pencarian sukses rata-rata butuh satu tambah alfa per dua pemeriksaan. Pada open addressing, pencarian gagal rata-rata butuh satu dibagi satu kurang alfa pemeriksaan.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>α (alfa) = keterisian</h4><p class="">perbandingan banyaknya data dengan banyaknya slot.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Chaining</h4><p class="">tiap slot berisi daftar; rata-rata panjang daftar = α.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Open addressing</h4><p class="">kalau slot penuh, cari slot lain; makin penuh, makin jauh mencari: 1/(1−α).</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>n</td><td>banyaknya kunci yang disimpan</td></tr><tr><td>m</td><td>banyaknya slot (bucket)</td></tr><tr><td>α</td><td>load factor</td></tr><tr><td>probe</td><td>satu kali memeriksa slot</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> O(1) pada hash table adalah <b>janji bersyarat</b>: hanya berlaku bila α dijaga kecil. Saat α → 1, 1/(1−α) meledak.</div>
+</section>
+
+<section class="slide" id="rx3a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 3/5 - cara membaca</div>
+<h2 class="st">Tinggi AVL tree</h2>
+<div class="fxbox">h<sub>AVL</sub> &lt; <span class='hl'>1,44</span>·log<sub>2</sub>(n + 2), &nbsp;&nbsp; syarat: |h(kiri) − h(kanan)| ≤ <span class='hb'>1</span> di setiap simpul</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Tinggi pohon AVL kurang dari satu koma empat empat kali log dua dari n tambah dua, dengan syarat selisih tinggi subpohon kiri dan kanan di setiap simpul paling banyak satu.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Balance factor</h4><p class="">h(kiri) − h(kanan) harus −1, 0, atau +1.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Pohon AVL tersempit</h4><p class="">jumlah simpulnya mengikuti pola Fibonacci → tinggi ≈ log_φ n.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>1,44 = 1/log₂ φ</h4><p class="">AVL paling buruk hanya 44% lebih tinggi dari pohon sempurna.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>h</td><td>tinggi pohon (jumlah sisi akar → daun terdalam)</td></tr><tr><td>n</td><td>banyaknya kunci</td></tr><tr><td>1,44</td><td>konstanta dari rasio emas φ</td></tr><tr><td>|·| ≤ 1</td><td>aturan keseimbangan AVL</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> BST biasa bisa berubah menjadi “daftar berantai” setinggi n jika data masuk terurut. Aturan keseimbangan + rotasi <b>menjamin tinggi logaritmik</b>, jadi search/insert/delete selalu O(log n).</div>
+</section>
+
+<section class="slide" id="rx4a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 4/5 - cara membaca</div>
+<h2 class="st">Amortized: dynamic array yang menggandakan diri</h2>
+<div class="fxbox">Total biaya n append = <span class='hb'>n</span> + (1 + 2 + 4 + … + n) &lt; n + <span class='hl'>2n</span> = 3n &nbsp;⇒&nbsp; <span class='hl'>3n / n = O(1)</span> per append</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Total biaya n kali append sama dengan n ditambah satu tambah dua tambah empat sampai n, yang kurang dari n tambah dua n, yaitu tiga n. Dibagi n, setiap append rata-rata O satu.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n</h4><p class="">biaya menulis setiap elemen sekali.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>1 + 2 + 4 + … + n</h4><p class="">biaya menyalin seluruh isi setiap kali kapasitas penuh dan digandakan.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Deret geometri &lt; 2n</h4><p class="">jumlah semua penyalinan tidak pernah melebihi dua kali ukuran akhir.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>n</td><td>banyaknya operasi append</td></tr><tr><td>2ᵏ</td><td>kapasitas setelah penggandaan ke-k</td></tr><tr><td>3n</td><td>batas atas biaya total</td></tr><tr><td>amortized</td><td>biaya rata-rata per operasi dalam rangkaian terburuk</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Sesekali ada append mahal (menyalin semua), tetapi karena kapasitas <b>digandakan</b>, kejadian mahal itu makin jarang. Dirata-rata, setiap append murah. Jika kapasitas hanya ditambah konstan (+10), totalnya justru Θ(n²).</div>
+</section>
+
+<section class="slide" id="rx5a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 5/5 - cara membaca</div>
+<h2 class="st">Peluang false positive Bloom filter</h2>
+<div class="fxbox">p ≈ ( 1 − e<sup>−<span class='hl'>k</span>n/<span class='hb'>m</span></sup> )<sup><span class='hl'>k</span></sup>, &nbsp;&nbsp; k<sub>optimal</sub> = (m/n)·ln 2</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Peluang false positive kira-kira sama dengan satu dikurangi e pangkat minus k n per m, semuanya dipangkatkan k. Banyaknya fungsi hash optimal adalah m per n dikali ln dua.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>e^(−kn/m)</h4><p class="">peluang satu bit tertentu MASIH 0 setelah n item dimasukkan dengan k hash.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>1 − e^(−kn/m)</h4><p class="">peluang bit itu sudah 1.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>pangkat k</h4><p class="">false positive terjadi bila KESEMUA k bit yang dicek kebetulan sudah 1.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>m</td><td>banyaknya bit dalam filter</td></tr><tr><td>n</td><td>banyaknya item yang dimasukkan</td></tr><tr><td>k</td><td>banyaknya fungsi hash</td></tr><tr><td>p</td><td>peluang “mungkin ada” padahal tidak ada</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Bloom filter menjawab “<b>pasti tidak ada</b>” atau “<b>mungkin ada</b>”. Dengan sekitar 10 bit per item, p ≈ 1% - jauh lebih hemat daripada menyimpan itemnya.</div>
+</section>
+
+<section class="slide" id="rxdB" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian B</div>
+<h1 class="title">Teknikal</h1>
+<p class="lead">Setelah teorinya jelas, kita masuk ke algoritma, kode, simulasi, hitung manual, dan jejak eksekusi langkah demi langkah.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Heap - Struktur data untuk priority queue</div><div class="rxtocitem"><span>2</span>Hash Table - O(1) rata-rata untuk insert &amp; search</div><div class="rxtocitem"><span>3</span>Balanced BST - O(log n) terjamin untuk semua operasi</div><div class="rxtocitem"><span>4</span>Lihat efek load factor pada collision rate</div><div class="rxtocitem"><span>5</span>Hitung manual: Indeks heap dalam array</div><div class="rxtocitem"><span>6</span>Jejak langkah demi langkah: Indeks heap dalam array</div><div class="rxtocitem"><span>7</span>Dari hitungan ke kode: Indeks heap dalam array</div><div class="rxtocitem"><span>8</span>Hitung manual: Load factor hash table</div><div class="rxtocitem"><span>9</span>Jejak langkah demi langkah: Load factor hash table</div><div class="rxtocitem"><span>10</span>Dari hitungan ke kode: Load factor hash table</div><div class="rxtocitem"><span>11</span>Hitung manual: Tinggi AVL tree</div><div class="rxtocitem"><span>12</span>Jejak langkah demi langkah: Tinggi AVL tree</div><div class="rxtocitem"><span>13</span>Dari hitungan ke kode: Tinggi AVL tree</div><div class="rxtocitem"><span>14</span>Hitung manual: Amortized: dynamic array yang menggandakan diri</div><div class="rxtocitem"><span>15</span>Jejak langkah demi langkah: Amortized: dynamic array yang menggandakan diri</div><div class="rxtocitem"><span>16</span>Dari hitungan ke kode: Amortized: dynamic array yang menggandakan diri</div><div class="rxtocitem"><span>17</span>Hitung manual: Peluang false positive Bloom filter</div><div class="rxtocitem"><span>18</span>Jejak langkah demi langkah: Peluang false positive Bloom filter</div><div class="rxtocitem"><span>19</span>Dari hitungan ke kode: Peluang false positive Bloom filter</div></div>
+</section>
+
+<section class="slide" id="s2">
+  <div class="kicker">BAGIAN 1 · HEAP</div>
+  <h2 class="st">Heap - Struktur data untuk priority queue</h2>
+  <div class="cols c2l">
+    <div class="stack">
+<pre class="pycode">import heapq
+# Min-Heap di Python
+h = []
+heapq.heappush(h, 5)   # O(log n)
+heapq.heappush(h, 2)
+heapq.heappush(h, 8)
+heapq.heapify([4,1,7,3])  # Build: O(n) !
+x = heapq.heappop(h)   # Extract-min O(log n)
+# Heap sort: O(n log n)
+def heapsort(arr):
+    h = arr[:]
+    heapq.heapify(h)   # O(n)
+    return [heapq.heappop(h)  # O(n log n)
+            for _ in range(len(h))]</pre>
+      <div class="note"><b>Build Heap O(n):</b> Walaupun terlihat seperti O(n log n), analisis amortized membuktikan heapify dari bawah ke atas hanya O(n). Ini bukan sihir - sebagian besar node ada di level bawah dengan sedikit pekerjaan.</div>
+    </div>
+    <div class="stack">
+      <table class="tbl">
+        <tr><th>Operasi</th><th>Min-Heap</th><th>Sorted Array</th></tr>
+        <tr><td>Insert</td><td class="mono" style="color:#16a34a">O(log n)</td><td class="mono" style="color:#dc2626">O(n)</td></tr>
+        <tr><td>Extract-min</td><td class="mono" style="color:#16a34a">O(log n)</td><td class="mono" style="color:#16a34a">O(1)</td></tr>
+        <tr><td>Find-min</td><td class="mono" style="color:#16a34a">O(1)</td><td class="mono" style="color:#16a34a">O(1)</td></tr>
+        <tr><td>Build</td><td class="mono" style="color:#16a34a">O(n)</td><td class="mono" style="color:#dc2626">O(n log n)</td></tr>
+      </table>
+      <div class="analogy"><b>Analogi:</b> Heap seperti turnamen tenis. Juara duduk di atas, pemenang babak pertama di bawahnya. Untuk temukan juara: lihat akar O(1). Untuk hapus juara: promosikan runner-up, atur ulang O(log n).</div>
+      <div class="card soft"><p class="b"><b>Digunakan di:</b> Dijkstra shortest path (priority queue), event simulation, OS scheduler, median finder (dua heap).</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s3">
+  <div class="kicker">BAGIAN 2 · HASH TABLE</div>
+  <h2 class="st">Hash Table - O(1) rata-rata untuk insert &amp; search</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b">Hash table memetakan kunci ke indeks via fungsi hash h(k). Collision terjadi ketika h(k₁) = h(k₂) untuk k₁ ≠ k₂.</p>
+      <div class="card" style="border-left:4px solid #2563eb">
+        <p class="b"><b>Chaining:</b> tiap slot menyimpan linked list. Worst case O(n) jika semua ke slot yang sama.</p>
+      </div>
+      <div class="card" style="border-left:4px solid #7c3aed">
+        <p class="b"><b>Open Addressing:</b> probe slot berikutnya (linear, quadratic, double hashing). Load factor α &lt; 0.7 untuk performa baik.</p>
+      </div>
+      <div class="note"><b>Load factor α = n/m</b> (n=elemen, m=slot). Jika α &gt; 0.7–0.8, resize (double the table) - O(n) sekali, tapi amortized O(1).</div>
+    </div>
+    <div class="sim" style="flex:1">
+      <div class="cap">Simulasi Hash Table (size=7)</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <input id="htKey" type="text" placeholder="masukkan kunci" style="border:1.5px solid #bfdbfe;border-radius:6px;padding:5px 9px;font-size:12px;width:120px">
+        <button class="btn go" id="btnHtInsert">Insert</button>
+        <button class="btn ghost" id="btnHtReset">Reset</button>
+      </div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin:4px 0" id="htGrid"></div>
+      <div class="term" id="htLog" style="min-height:70px">Ketik kunci dan klik Insert...</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s4">
+  <div class="kicker">BAGIAN 3 · BALANCED BST</div>
+  <h2 class="st">Balanced BST - O(log n) terjamin untuk semua operasi</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <table class="tbl">
+        <tr><th>Struktur</th><th>Insert</th><th>Search</th><th>Delete</th><th>Min/Max</th></tr>
+        <tr><td>Unbalanced BST</td><td>O(n) worst</td><td>O(n) worst</td><td>O(n)</td><td>O(n)</td></tr>
+        <tr><td>AVL Tree</td><td style="color:#16a34a">O(log n)</td><td style="color:#16a34a">O(log n)</td><td style="color:#16a34a">O(log n)</td><td style="color:#16a34a">O(log n)</td></tr>
+        <tr><td>Red-Black Tree</td><td style="color:#16a34a">O(log n)</td><td style="color:#16a34a">O(log n)</td><td style="color:#16a34a">O(log n)</td><td style="color:#16a34a">O(log n)</td></tr>
+        <tr><td>Python SortedList</td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td><td>O(1)</td></tr>
+      </table>
+      <div class="warn"><b>BST yang tidak seimbang:</b> Insert 1,2,3,4,5 secara berurutan → pohon degenerasi ke linked list! Semua operasi jadi O(n). AVL/Red-Black rebalance otomatis setelah setiap operasi.</div>
+    </div>
+    <div class="stack">
+      <div class="analogy"><b>Analogi AVL:</b> Seperti timbangan yang selalu disetarakan. Setiap kali satu sisi terlalu berat (tinggi selisih &gt;1), lakukan rotasi. Rotasi O(1), tapi terjamin pohon tetap O(log n) tinggi.</div>
+      <div class="card" style="border-left:4px solid #16a34a">
+        <p class="b"><b>AVL invariant:</b> Untuk setiap node, |tinggi(kiri) − tinggi(kanan)| ≤ 1. Tinggi maksimal = 1.44 log₂(n+2). Rotasi kiri/kanan/kiri-kanan/kanan-kiri.</p>
+      </div>
+      <div class="card soft">
+        <p class="b"><b>Python:</b> <code class="mono">from sortedcontainers import SortedList</code> - implementasi BST yang sangat cepat. <code class="mono">bisect</code> module untuk binary search pada list terurut.</p>
+      </div>
+    </div>
+  </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• O(log n) untuk AVL dan Red-Black: tinggi pohon dijaga sekitar log₂n, sehingga tiap operasi hanya menelusuri jalur itu.<br>• O(n) pada BST biasa: pohon bisa berubah menjadi daftar berantai, sehingga tinggi pohon menjadi n.</div>
+</section>
+
+<section class="slide" id="s7">
+  <div class="kicker">INTERAKTIF · HASH TABLE COLLISION</div>
+  <h2 class="st">Lihat efek load factor pada collision rate</h2>
+  <div class="cols c2">
+    <div class="sim" style="flex:1">
+      <div class="cap">Simulasi Hash Table Collision</div>
+      <label style="font-size:12px;color:#334155">Jumlah elemen: <input type="range" id="rN" min="1" max="20" value="5" style="width:140px"> <span id="vN">5</span></label>
+      <label style="font-size:12px;color:#334155">Ukuran tabel: <input type="range" id="rM" min="5" max="20" value="10" style="width:140px"> <span id="vM">10</span></label>
+      <button class="btn go" id="btnSimHash">Simulasikan</button>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin:4px 0" id="htSimGrid"></div>
+      <div class="term" id="htSimLog" style="min-height:60px"></div>
+    </div>
+    <div class="stack">
+      <div class="note"><b>Load factor α = n/m.</b> Semakin tinggi α, semakin besar probabilitas collision. Untuk chaining: E[panjang chain] = α. Untuk open addressing: butuh α &lt; 1 agar ada slot kosong.</div>
+      <div class="analogy"><b>Birthday paradox:</b> Dengan m=365 hari dan n=23 orang, P(collision) &gt; 50%! Hash table menghadapi masalah yang sama. Solusi: tabel lebih besar atau hash function yang baik.</div>
+      <div class="card soft"><p class="b"><b>Aturan praktis:</b> Python dict mulai resize saat load factor &gt; 0.67. Java HashMap threshold 0.75. Redis hash table 1.0 (chaining).</p></div>
+    </div>
+  </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• α = n/m: load factor, yaitu jumlah elemen dibagi ukuran tabel.<br>• Chaining: rata-rata panjang rantai = α. Semakin besar α, semakin lambat pencarian.<br>• Open addressing: butuh α < 1 agar masih ada slot kosong.</div>
+</section>
+
+<section class="slide" id="rx1m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/5 - hitung manual</div>
+<h2 class="st">Hitung manual: Indeks heap dalam array</h2>
+<div class="rxsoal"><b>Soal:</b> Masukkan 5, 3, 8, 1 ke min-heap kosong, lalu lakukan satu pop.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>push 5, push 3</h4><p class="rxcalc">[5, 3] → i = 1, parent ⌊0/2⌋ = 0 (5) → 3 &lt; 5 tukar → [3, 5]</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>push 8</h4><p class="rxcalc">[3, 5, 8] → parent indeks 0 (3) → 8 &gt; 3, aman</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>push 1</h4><p class="rxcalc">[3, 5, 8, 1] → i = 3, parent ⌊2/2⌋ = 1 (5) tukar → [3, 1, 8, 5]</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Naik lagi</h4><p class="rxcalc">i = 1, parent 0 (3) tukar → [1, 3, 8, 5]</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>pop</h4><p class="rxcalc">ambil 1, pindahkan 5 ke akar → [5, 3, 8] → anak 3 lebih kecil, tukar → [3, 5, 8]</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>operasi</th><th>array heap</th><th>tukar</th></tr><tr><td>push 5</td><td>[5]</td><td>0</td></tr><tr><td>push 3</td><td>[3, 5]</td><td>1</td></tr><tr><td>push 8</td><td>[3, 5, 8]</td><td>0</td></tr><tr><td>push 1</td><td>[1, 3, 8, 5]</td><td>2</td></tr><tr><td>pop → 1</td><td>[3, 5, 8]</td><td>1</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Setiap push/pop paling banyak ⌊log₂ n⌋ tukar; pop pertama mengembalikan 1.</div>
+</section>
+
+<section class="slide" id="rx1t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/5 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Indeks heap dalam array</h2>
+<div class="rxsoal"><b>Kasus:</b> Min-heap: push 5, 3, 8, 1, 9, 2 lalu pop dua kali.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Push: taruh di ujung array, lalu naik (tukar dengan parent ⌊(i−1)/2⌋) selama lebih kecil. Pop: ambil akar, pindah elemen terakhir ke akar, lalu turun ke anak terkecil (2i+1, 2i+2). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>operasi</th><th>pertukaran</th><th>array heap sesudahnya</th></tr><tr><td>push 5</td><td>-</td><td>[<b class='chg'>5</b>]</td></tr><tr><td>push 3</td><td>3↔5</td><td>[<b class='chg'>3</b>, 5]</td></tr><tr><td>push 8</td><td>-</td><td>[3, 5, <b class='chg'>8</b>]</td></tr><tr><td>push 1</td><td>1↔5, 1↔3</td><td>[<b class='chg'>1</b>, 3, 8, 5]</td></tr><tr><td>push 9</td><td>-</td><td>[1, 3, 8, 5, <b class='chg'>9</b>]</td></tr><tr><td>push 2</td><td>2↔8</td><td>[1, 3, <b class='chg'>2</b>, 5, 9, 8]</td></tr><tr><td>pop → <b class='chg'>1</b></td><td>8↔2</td><td>[2, 3, 8, 5, 9]</td></tr><tr><td>pop → <b class='chg'>2</b></td><td>9↔3, 9↔5</td><td>[3, 5, 8, 9]</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Pop mengeluarkan 1 lalu 2 - selalu yang terkecil; tiap operasi paling banyak ⌊log₂ n⌋ tukar.</div>
+</section>
+
+<section class="slide" id="rx1b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/5 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Indeks heap dalam array</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> heapq
+tiket = []
+heapq.heappush(tiket, (<span class="tn">2</span>, <span class="ts">"lupa password"</span>))
+heapq.heappush(tiket, (<span class="tn">1</span>, <span class="ts">"server down"</span>))     <span class="tc"># prioritas 1 = paling penting</span>
+heapq.heappush(tiket, (<span class="tn">3</span>, <span class="ts">"ganti foto profil"</span>))
+<span class="tk">print</span>(heapq.heappop(tiket))   <span class="tc"># (1, 'server down')</span>
+<span class="tk">print</span>(heapq.nlargest(<span class="tn">2</span>, [<span class="tn">5</span>, <span class="tn">1</span>, <span class="tn">9</span>, <span class="tn">3</span>]))   <span class="tc"># top-k: [9, 5]</span></pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Setiap push/pop paling banyak ⌊log₂ n⌋ tukar; pop pertama mengembalikan 1.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Pop mengeluarkan 1 lalu 2 - selalu yang terkecil; tiap operasi paling banyak ⌊log₂ n⌋ tukar.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rx2m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/5 - hitung manual</div>
+<h2 class="st">Hitung manual: Load factor hash table</h2>
+<div class="rxsoal"><b>Soal:</b> Tabel m = 8 slot, h(k) = k mod 8, linear probing. Masukkan 10, 18, 26, 3.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>10</h4><p class="rxcalc">10 mod 8 = 2 → slot 2 kosong (1 probe)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>18</h4><p class="rxcalc">18 mod 8 = 2 penuh → coba 3 kosong (2 probe)</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>26</h4><p class="rxcalc">26 mod 8 = 2 penuh → 3 penuh → 4 kosong (3 probe)</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>3</h4><p class="rxcalc">3 mod 8 = 3 penuh → 4 penuh → 5 kosong (3 probe)</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Load factor</h4><p class="rxcalc">α = 4/8 = 0,5 → rumus pencarian gagal 1/(1 − 0,5) = 2 probe</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>kunci</th><th>h(k)</th><th>slot akhir</th><th>probe</th></tr><tr><td>10</td><td>2</td><td>2</td><td>1</td></tr><tr><td>18</td><td>2</td><td>3</td><td>2</td></tr><tr><td>26</td><td>2</td><td>4</td><td>3</td></tr><tr><td>3</td><td>3</td><td>5</td><td>3</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Rata-rata 2,25 probe per insert pada α = 0,5; makin penuh, makin panjang antriannya.</div>
+</section>
+
+<section class="slide" id="rx2t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/5 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Load factor hash table</h2>
+<div class="rxsoal"><b>Kasus:</b> Hash table m = 8, h(k) = k mod 8, linear probing. Masukkan 10, 18, 26, 3, 11, 4.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu insert. Kolom “slot dicoba” memperlihatkan probe berurutan sampai slot kosong. Perhatikan probe makin panjang saat α naik. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>kunci</th><th>h(k)</th><th>slot dicoba</th><th>probe</th><th>isi tabel (slot 0–7)</th><th>α</th></tr><tr><td>10</td><td>10 mod 8 = 2</td><td><b class='chg'>2</b></td><td>1</td><td>[· · 10 · · · · ·]</td><td>1/8 = 0,125</td></tr><tr><td>18</td><td>18 mod 8 = 2</td><td>2 → <b class='chg'>3</b></td><td>2</td><td>[· · 10 18 · · · ·]</td><td>2/8 = 0,250</td></tr><tr><td>26</td><td>26 mod 8 = 2</td><td>2 → 3 → <b class='chg'>4</b></td><td>3</td><td>[· · 10 18 26 · · ·]</td><td>3/8 = 0,375</td></tr><tr><td>3</td><td>3 mod 8 = 3</td><td>3 → 4 → <b class='chg'>5</b></td><td>3</td><td>[· · 10 18 26 3 · ·]</td><td>4/8 = 0,500</td></tr><tr><td>11</td><td>11 mod 8 = 3</td><td>3 → 4 → 5 → <b class='chg'>6</b></td><td>4</td><td>[· · 10 18 26 3 11 ·]</td><td>5/8 = 0,625</td></tr><tr><td>4</td><td>4 mod 8 = 4</td><td>4 → 5 → 6 → <b class='chg'>7</b></td><td>4</td><td>[· · 10 18 26 3 11 4]</td><td>6/8 = 0,750</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Probe naik dari 1 menjadi 4 seiring tabel makin penuh; rumus 1/(1−α) untuk α = 0,75 juga memberi 4.</div>
+</section>
+
+<section class="slide" id="rx2b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/5 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Load factor hash table</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> probe_gagal(alpha):
+    <span class="tk">return</span> <span class="tn">1</span> / (<span class="tn">1</span> - alpha)
+
+<span class="tk">for</span> a <span class="tk">in</span> (<span class="tn">0.5</span>, <span class="tn">0.66</span>, <span class="tn">0.75</span>, <span class="tn">0.9</span>, <span class="tn">0.99</span>):
+    <span class="tk">print</span>(f<span class="ts">"alpha={a:&lt;5} probe~{probe_gagal(a):.1f}"</span>)</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Rata-rata 2,25 probe per insert pada α = 0,5; makin penuh, makin panjang antriannya.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Probe naik dari 1 menjadi 4 seiring tabel makin penuh; rumus 1/(1−α) untuk α = 0,75 juga memberi 4.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rx3m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/5 - hitung manual</div>
+<h2 class="st">Hitung manual: Tinggi AVL tree</h2>
+<div class="rxsoal"><b>Soal:</b> Masukkan 1, 2, 3 ke AVL tree. Kapan perlu rotasi, dan berapa batas tinggi untuk n = 7?</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Insert 1, 2</h4><p class="rxcalc">1 → kanan 2. BF(1) = 0 − 1 = −1 (masih boleh)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Insert 3</h4><p class="rxcalc">1 → 2 → 3 (rantai). BF(1) = 0 − 2 = −2 ✗ melanggar</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Rotasi kiri di 1</h4><p class="rxcalc">2 menjadi akar, 1 anak kiri, 3 anak kanan → semua BF = 0</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Tinggi</h4><p class="rxcalc">turun dari 2 menjadi 1</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Batas n = 7</h4><p class="rxcalc">1,44·log₂(7+2) = 1,44 × 3,17 ≈ 4,6 → tinggi ≤ 4 (sempurna: 2)</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>simpul</th><th>h kiri</th><th>h kanan</th><th>BF</th><th>sebelum rotasi</th></tr><tr><td>1</td><td>−1</td><td>1</td><td>−2</td><td>✗</td></tr><tr><td>2</td><td>−1</td><td>0</td><td>−1</td><td>ok</td></tr><tr><td>3</td><td>−1</td><td>−1</td><td>0</td><td>ok</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Satu rotasi kiri mengubah rantai 1-2-3 menjadi pohon seimbang dengan akar 2.</div>
+</section>
+
+<section class="slide" id="rx3t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/5 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Tinggi AVL tree</h2>
+<div class="rxsoal"><b>Kasus:</b> AVL: insert 10, 20, 30, 40, 50, 25 dan perbaiki keseimbangan setiap kali BF melanggar.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Notasi x(kiri, kanan); · = kosong. BF = tinggi kiri − tinggi kanan. Begitu ada |BF| = 2, lakukan rotasi pada simpul terbawah yang melanggar. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>operasi</th><th>pohon sesudah insert</th><th>balance factor</th><th>perbaikan</th></tr><tr><td>insert 10</td><td>10</td><td>semua 0</td><td>-</td></tr><tr><td>insert 20</td><td>10(·, 20)</td><td>BF(10) = −1</td><td>-</td></tr><tr><td>insert 30</td><td>10(·, 20(·, 30))</td><td><b class='chg'>BF(10) = −2</b></td><td>rotasi kiri di 10 → 20(10, 30)</td></tr><tr><td>insert 40</td><td>20(10, 30(·, 40))</td><td>BF(20) = −1, BF(30) = −1</td><td>-</td></tr><tr><td>insert 50</td><td>20(10, 30(·, 40(·, 50)))</td><td><b class='chg'>BF(30) = −2</b></td><td>rotasi kiri di 30 → 20(10, 40(30, 50))</td></tr><tr><td>insert 25</td><td>20(10, 40(30(25, ·), 50))</td><td><b class='chg'>BF(20) = −2, BF(40) = +1</b></td><td>kasus kanan-kiri: rotasi kanan di 40, lalu kiri di 20</td></tr><tr><td>hasil</td><td>30(20(10, 25), 40(·, 50))</td><td>semua |BF| ≤ 1</td><td>tinggi 2 untuk 6 kunci</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Tanpa rotasi, data terurut akan membentuk rantai setinggi 5; AVL menjaganya setinggi 2.</div>
+</section>
+
+<section class="slide" id="rx3b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/5 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Tinggi AVL tree</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> math
+<span class="tk">def</span> tinggi_maks_avl(n):
+    <span class="tk">return</span> <span class="tn">1.44</span> * math.log2(n + <span class="tn">2</span>)
+
+<span class="tk">for</span> n <span class="tk">in</span> (1_000, 1_000_000, 1_000_000_000):
+    <span class="tk">print</span>(n, round(math.log2(n)), round(tinggi_maks_avl(n)))</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Satu rotasi kiri mengubah rantai 1-2-3 menjadi pohon seimbang dengan akar 2.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Tanpa rotasi, data terurut akan membentuk rantai setinggi 5; AVL menjaganya setinggi 2.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rx4m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/5 - hitung manual</div>
+<h2 class="st">Hitung manual: Amortized: dynamic array yang menggandakan diri</h2>
+<div class="rxsoal"><b>Soal:</b> Hitung biaya total 8 kali append pada array dinamis yang kapasitasnya digandakan (mulai kapasitas 1).</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>append 1</h4><p class="rxcalc">tulis 1 → total 1</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>append 2 (penuh)</h4><p class="rxcalc">kapasitas 2, salin 1 + tulis 1 → total 3</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>append 3 (penuh)</h4><p class="rxcalc">kapasitas 4, salin 2 + tulis 1 → total 6; append 4 → total 7</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>append 5 (penuh)</h4><p class="rxcalc">kapasitas 8, salin 4 + tulis 1 → total 12; append 6, 7, 8 → total 15</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Rata-rata</h4><p class="rxcalc">15 / 8 ≈ 1,9 operasi per append ≤ 3</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>append ke-</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr><tr><td>salin</td><td>0</td><td>1</td><td>2</td><td>0</td><td>4</td><td>0</td><td>0</td><td>0</td></tr><tr><td>total</td><td>1</td><td>3</td><td>6</td><td>7</td><td>12</td><td>13</td><td>14</td><td>15</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Total 15 ≤ 3n = 24 → O(1) amortized per append.</div>
+</section>
+
+<section class="slide" id="rx4t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/5 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Amortized: dynamic array yang menggandakan diri</h2>
+<div class="rxsoal"><b>Kasus:</b> Array dinamis berkapasitas awal 1, digandakan saat penuh. Lakukan 9 kali append.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu append. Biaya = salin (saat penuh) + 1 tulis. Kolom terakhir = biaya rata-rata sejauh ini; tidak pernah melewati 3. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>append</th><th>kapasitas</th><th>kondisi</th><th>salin</th><th>kapasitas baru</th><th>biaya</th><th>total</th><th>rata-rata</th></tr><tr><td>1</td><td>1</td><td>-</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1,00</td></tr><tr><td>2</td><td>1</td><td>penuh → ×2</td><td>1</td><td>2</td><td>2</td><td><b class='chg'>3</b></td><td>1,50</td></tr><tr><td>3</td><td>2</td><td>penuh → ×2</td><td>2</td><td>4</td><td>3</td><td><b class='chg'>6</b></td><td>2,00</td></tr><tr><td>4</td><td>4</td><td>-</td><td>0</td><td>4</td><td>1</td><td>7</td><td>1,75</td></tr><tr><td>5</td><td>4</td><td>penuh → ×2</td><td>4</td><td>8</td><td>5</td><td><b class='chg'>12</b></td><td>2,40</td></tr><tr><td>6</td><td>8</td><td>-</td><td>0</td><td>8</td><td>1</td><td>13</td><td>2,17</td></tr><tr><td>7</td><td>8</td><td>-</td><td>0</td><td>8</td><td>1</td><td>14</td><td>2,00</td></tr><tr><td>8</td><td>8</td><td>-</td><td>0</td><td>8</td><td>1</td><td>15</td><td>1,88</td></tr><tr><td>9</td><td>8</td><td>penuh → ×2</td><td>8</td><td>16</td><td>9</td><td><b class='chg'>24</b></td><td>2,67</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> 9 append = 24 operasi ≤ 3·9 = 27 → O(1) amortized.</div>
+</section>
+
+<section class="slide" id="rx4b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/5 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Amortized: dynamic array yang menggandakan diri</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> sys
+a, last = [], <span class="tn">0</span>
+<span class="tk">for</span> i <span class="tk">in</span> <span class="tk">range</span>(<span class="tn">64</span>):
+    a.append(i)
+    size = sys.getsizeof(a)
+    <span class="tk">if</span> size != last:                 <span class="tc"># kapasitas baru dialokasikan</span>
+        <span class="tk">print</span>(f<span class="ts">"len={len(a):&gt;2} bytes={size}"</span>)
+        last = size</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Total 15 ≤ 3n = 24 → O(1) amortized per append.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>9 append = 24 operasi ≤ 3·9 = 27 → O(1) amortized.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rx5m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 5/5 - hitung manual</div>
+<h2 class="st">Hitung manual: Peluang false positive Bloom filter</h2>
+<div class="rxsoal"><b>Soal:</b> Bloom filter m = 10 bit, k = 2 hash: h₁(x) = x mod 10, h₂(x) = 3x mod 10. Masukkan 7 dan 12, lalu cek 17 dan 5.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Masukkan 7</h4><p class="rxcalc">h₁ = 7, h₂ = 21 mod 10 = 1 → nyalakan bit 1 dan 7</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Masukkan 12</h4><p class="rxcalc">h₁ = 2, h₂ = 36 mod 10 = 6 → nyalakan bit 2 dan 6</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Cek 17</h4><p class="rxcalc">h₁ = 7 (1), h₂ = 51 mod 10 = 1 (1) → “mungkin ada” padahal TIDAK → false positive</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Cek 5</h4><p class="rxcalc">h₁ = 5 (0) → “pasti tidak ada”</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Rumus</h4><p class="rxcalc">p ≈ (1 − e^(−2·2/10))² = (1 − 0,670)² ≈ 0,109 ≈ 11%</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>bit</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th></tr><tr><td>nilai</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> 17 menjadi false positive; peluang teoretisnya ±11% untuk filter sekecil ini.</div>
+</section>
+
+<section class="slide" id="rx5t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 5/5 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Peluang false positive Bloom filter</h2>
+<div class="rxsoal"><b>Kasus:</b> Bloom filter 10 bit, h₁(x) = x mod 10, h₂(x) = 3x mod 10. Insert 7, 12, 25; cek 17, 5, 30.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Insert menyalakan bit h₁ dan h₂. Cek: jika salah satu bit 0 → pasti tidak ada; jika semua 1 → mungkin ada. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>operasi</th><th>bit h₁, h₂</th><th>bit 0…9 sesudahnya</th><th>jawaban</th></tr><tr><td>insert 7</td><td>7, 1</td><td>0100000100</td><td>-</td></tr><tr><td>insert 12</td><td>2, 6</td><td>0110001100</td><td>-</td></tr><tr><td>insert 25</td><td>5, 5</td><td>0110011100</td><td>-</td></tr><tr><td>cek 17</td><td>7, 1</td><td>0110011100</td><td><b class='chg'>mungkin ada (false positive!)</b></td></tr><tr><td>cek 5</td><td>5, 5</td><td>0110011100</td><td><b class='chg'>mungkin ada (false positive!)</b></td></tr><tr><td>cek 30</td><td>0, 0</td><td>0110011100</td><td>pasti tidak ada</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> 17 dan 5 terjawab “mungkin ada” padahal tidak pernah dimasukkan - itulah false positive; 30 terjawab benar “pasti tidak ada”.</div>
+</section>
+
+<section class="slide" id="rx5b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 5/5 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Peluang false positive Bloom filter</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> math
+<span class="tk">def</span> bloom_fp(m, n, k):
+    <span class="tk">return</span> (<span class="tn">1</span> - math.exp(-k * n / m)) ** k
+
+m, n = 10_000_000, 1_000_000
+k = round(m / n * math.log(<span class="tn">2</span>))
+<span class="tk">print</span>(k, f<span class="ts">"{bloom_fp(m, n, k):.4f}"</span>)   <span class="tc"># 7 0.0082</span></pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">17 menjadi false positive; peluang teoretisnya ±11% untuk filter sekecil ini.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>17 dan 5 terjawab “mungkin ada” padahal tidak pernah dimasukkan - itulah false positive; 30 terjawab benar “pasti tidak ada”.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rxdL" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian C</div>
+<h1 class="title">Latihan</h1>
+<p class="lead">Uji pemahaman teori dan teknikal sebelum melihat penerapannya di dunia nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Soal Struktur Data Efisien</div><div class="rxtocitem"><span>2</span>Kunci Struktur Data Efisien</div></div>
+</section>
+
+<section class="slide" id="s8">
+  <div class="kicker">LATIHAN</div>
+  <h2 class="st">Soal Struktur Data Efisien</h2>
+  <div class="qlist">
+    <div class="q"><span class="qn">1</span><p>Jelaskan mengapa build heap dari array acak hanya O(n), bukan O(n log n). Berikan argumen berdasarkan jumlah pekerjaan di tiap level pohon.</p></div>
+    <div class="q"><span class="qn">2</span><p>Sebuah hash table berukuran m=7 menerima kunci "alice", "bob", "carol" dengan h(k)=len(k) mod 7. Hitung indeks masing-masing. Apakah ada collision? Bagaimana menanganinya dengan chaining?</p></div>
+    <div class="q"><span class="qn">3</span><p>Mengapa Python list.append() O(1) amortized meskipun sesekali O(n)? Hitung total biaya untuk n=8 append mulai dari kapasitas 1, dan tunjukkan biaya rata-ratanya.</p></div>
+    <div class="q"><span class="qn">4</span><p>Bloom filter dengan m=20 bit dan k=3 hash functions menyimpan 5 elemen. Estimasi false positive rate-nya. Apa trade-off antara ukuran m dan false positive rate?</p></div>
+    <div class="q"><span class="qn">5</span><p>Kapan lebih baik menggunakan Balanced BST dibanding Hash Table? Berikan 2 kasus konkret di mana BST lebih cocok dan jelaskan alasannya.</p></div>
+  </div>
+</section>
+
+<section class="slide" id="s9">
+  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
+  <h2 class="st">Kunci Struktur Data Efisien</h2>
+  <div class="qlist">
+    <div class="ans"><span class="qn">1</span><p>Node di level h (dari bawah) butuh sift-down max h langkah. Jumlah node level h = n/2^h. Total = Σ h·n/2^h = n·Σ h/2^h = n·2 = O(n). Sebagian besar node di level bawah dengan sedikit pekerjaan mengimbangi node atas.</p></div>
+    <div class="ans"><span class="qn">2</span><p>"alice" (5 huruf): 5 mod 7 = 5. "bob" (3): 3 mod 7 = 3. "carol" (5): 5 mod 7 = 5 → <b>collision!</b> Chaining: slot 5 berisi linked list ["alice", "carol"]. Search "carol": hash→5, traverse list hingga ketemu.</p></div>
+    <div class="ans"><span class="qn">3</span><p>Resize di n=1,2,4,8: copy 1+2+4+8=15 elemen. Total cost 8 append + 15 copy = 23. Per operasi: 23/8 ≈ 2.9 = O(1). Formula: total cost ≤ 3n → amortized O(1) per append.</p></div>
+    <div class="ans"><span class="qn">4</span><p>FP rate ≈ (1−e^(−3×5/20))^3 = (1−e^(−0.75))^3 ≈ (0.528)^3 ≈ 0.147 ≈ 14.7%. Semakin besar m: FP rate turun, tapi space naik. Trade-off: sesuaikan berdasarkan toleransi false positive yang bisa diterima.</p></div>
+    <div class="ans"><span class="qn">5</span><p><b>BST lebih baik:</b> (1) Perlu urutan data - BST support in-order traversal O(n), hash table tidak. (2) Perlu range query (semua key antara A dan B) - BST O(log n + k) di mana k=hasil, hash table O(n). Hash table unggul untuk random access O(1).</p></div>
+  </div>
+</section>
+
+<section class="slide" id="rxdD" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian D</div>
+<h1 class="title">Studi kasus nyata</h1>
+<p class="lead">Penutup materi: di mana semua teori dan teknik tadi dipakai di industri, AI, dan proyek nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Struktur Probabilistik - Space-efficient untuk Big Data</div><div class="rxtocitem"><span>2</span>Antrian prioritas tiket layanan pelanggan</div><div class="rxtocitem"><span>3</span>Kapan Python dict melakukan resize</div><div class="rxtocitem"><span>4</span>Indeks terurut di database dan bahasa pemrograman</div><div class="rxtocitem"><span>5</span>Mengapa list.append di Python cepat</div><div class="rxtocitem"><span>6</span>Mengecek username sudah dipakai tanpa query database</div></div>
+</section>
+
 <section class="slide" id="s6">
   <div class="kicker">MODERN · BLOOM FILTER &amp; COUNT-MIN SKETCH</div>
   <h2 class="st">Struktur Probabilistik - Space-efficient untuk Big Data</h2>
@@ -327,278 +694,56 @@ def heapsort(arr):
   <div class="note"><b>Cara membaca rumus:</b><br>• O(k): setiap insert dan query menyentuh k bit (k = jumlah fungsi hash).<br>• O(m): ruang yang dipakai, dengan m = ukuran array bit.<br>• Probabilitas false positive ≈ (1 − e^(−kn/m))ᵏ, dengan n = jumlah elemen yang dimasukkan.</div>
 </section>
 
-<!-- 7. SIMULATOR HASH TABLE -->
-<section class="slide" id="s7">
-  <div class="kicker">INTERAKTIF · HASH TABLE COLLISION</div>
-  <h2 class="st">Lihat efek load factor pada collision rate</h2>
-  <div class="cols c2">
-    <div class="sim" style="flex:1">
-      <div class="cap">Simulasi Hash Table Collision</div>
-      <label style="font-size:12px;color:#334155">Jumlah elemen: <input type="range" id="rN" min="1" max="20" value="5" style="width:140px"> <span id="vN">5</span></label>
-      <label style="font-size:12px;color:#334155">Ukuran tabel: <input type="range" id="rM" min="5" max="20" value="10" style="width:140px"> <span id="vM">10</span></label>
-      <button class="btn go" id="btnSimHash">Simulasikan</button>
-      <div style="display:flex;gap:5px;flex-wrap:wrap;margin:4px 0" id="htSimGrid"></div>
-      <div class="term" id="htSimLog" style="min-height:60px"></div>
-    </div>
-    <div class="stack">
-      <div class="note"><b>Load factor α = n/m.</b> Semakin tinggi α, semakin besar probabilitas collision. Untuk chaining: E[panjang chain] = α. Untuk open addressing: butuh α &lt; 1 agar ada slot kosong.</div>
-      <div class="analogy"><b>Birthday paradox:</b> Dengan m=365 hari dan n=23 orang, P(collision) &gt; 50%! Hash table menghadapi masalah yang sama. Solusi: tabel lebih besar atau hash function yang baik.</div>
-      <div class="card soft"><p class="b"><b>Aturan praktis:</b> Python dict mulai resize saat load factor &gt; 0.67. Java HashMap threshold 0.75. Redis hash table 1.0 (chaining).</p></div>
-    </div>
-  </div>
-  <!-- RUMUS -->
-  <div class="note"><b>Cara membaca rumus:</b><br>• α = n/m: load factor, yaitu jumlah elemen dibagi ukuran tabel.<br>• Chaining: rata-rata panjang rantai = α. Semakin besar α, semakin lambat pencarian.<br>• Open addressing: butuh α < 1 agar masih ada slot kosong.</div>
-</section>
-
-<!-- 8. LATIHAN -->
-<!--RX-SLIDES-START-->
-<section class="slide" id="rx0">
-<div class="kicker">Bedah Rumus · Struktur Data Efisien</div>
-<h2 class="st">Lima rumus di balik struktur data efisien</h2>
-<p class="b">Heap, hash table, BST seimbang, dynamic array, dan Bloom filter dipakai setiap hari oleh bahasa pemrograman dan database. Rumus-rumus berikut menjelaskan mengapa mereka cepat dan kapan mereka melambat.</p>
-<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Indeks heap dalam array</b><span>parent = ⌊(i−1)/2⌋, anak = 2i+1, 2i+2</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Load factor hash table</b><span>α = n/m, probe ≈ 1/(1−α)</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Tinggi AVL tree</b><span>h ≤ 1,44·log₂(n+2)</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Amortized: dynamic array yang menggandakan diri</b><span>n + (1+2+4+…+n) ≤ 3n → O(1) amortized</span></div></div><div class="rxitem"><div class="qn">5</div><div><b>Peluang false positive Bloom filter</b><span>p ≈ (1 − e^(−kn/m))ᵏ</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
-</section>
-<section class="slide" id="rx1a">
-<div class="kicker">Bedah Rumus 1/5 · Langkah 1: cara membaca</div>
-<h2 class="st">Indeks heap dalam array</h2>
-<div class="fxbox">parent(i) = <span class='hl'>⌊(i − 1)/2⌋</span>, &nbsp; left(i) = <span class='hb'>2i + 1</span>, &nbsp; right(i) = <span class='hb'>2i + 2</span>, &nbsp; tinggi = ⌊log<sub>2</sub> n⌋</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Induk dari indeks i adalah lantai dari i kurang satu dibagi dua. Anak kiri adalah dua i tambah satu, anak kanan dua i tambah dua. Tinggi heap adalah lantai log dua n.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Pohon disimpan di array</h4><p class="">tidak perlu pointer; posisi menentukan hubungan.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Indeks mulai dari 0</h4><p class="">akar di a[0]; anak-anaknya di a[1] dan a[2].</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Tinggi ⌊log₂ n⌋</h4><p class="">pohon lengkap → push/pop paling banyak naik/turun sebanyak tinggi ini.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>i</td><td>indeks simpul di array (0-based)</td></tr><tr><td>⌊(i−1)/2⌋</td><td>indeks induk</td></tr><tr><td>2i+1, 2i+2</td><td>indeks anak kiri dan kanan</td></tr><tr><td>⌊log₂ n⌋</td><td>tinggi → biaya push/pop O(log n)</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Karena heap selalu <b>pohon biner lengkap</b>, ia bisa dipadatkan ke array tanpa lubang, dan tingginya dijamin logaritmik.</div>
-</section>
-<section class="slide" id="rx1m">
-<div class="kicker">Bedah Rumus 1/5 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Indeks heap dalam array</h2>
-<div class="rxsoal"><b>Soal:</b> Masukkan 5, 3, 8, 1 ke min-heap kosong, lalu lakukan satu pop.</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>push 5, push 3</h4><p class="rxcalc">[5, 3] → i = 1, parent ⌊0/2⌋ = 0 (5) → 3 &lt; 5 tukar → [3, 5]</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>push 8</h4><p class="rxcalc">[3, 5, 8] → parent indeks 0 (3) → 8 &gt; 3, aman</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>push 1</h4><p class="rxcalc">[3, 5, 8, 1] → i = 3, parent ⌊2/2⌋ = 1 (5) tukar → [3, 1, 8, 5]</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Naik lagi</h4><p class="rxcalc">i = 1, parent 0 (3) tukar → [1, 3, 8, 5]</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>pop</h4><p class="rxcalc">ambil 1, pindahkan 5 ke akar → [5, 3, 8] → anak 3 lebih kecil, tukar → [3, 5, 8]</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>operasi</th><th>array heap</th><th>tukar</th></tr><tr><td>push 5</td><td>[5]</td><td>0</td></tr><tr><td>push 3</td><td>[3, 5]</td><td>1</td></tr><tr><td>push 8</td><td>[3, 5, 8]</td><td>0</td></tr><tr><td>push 1</td><td>[1, 3, 8, 5]</td><td>2</td></tr><tr><td>pop → 1</td><td>[3, 5, 8]</td><td>1</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> Setiap push/pop paling banyak ⌊log₂ n⌋ tukar; pop pertama mengembalikan 1.</div>
-</section>
-<section class="slide" id="rx1t">
-<div class="kicker">Bedah Rumus 1/5 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Indeks heap dalam array</h2>
-<div class="rxsoal"><b>Kasus:</b> Min-heap: push 5, 3, 8, 1, 9, 2 lalu pop dua kali.</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Push: taruh di ujung array, lalu naik (tukar dengan parent ⌊(i−1)/2⌋) selama lebih kecil. Pop: ambil akar, pindah elemen terakhir ke akar, lalu turun ke anak terkecil (2i+1, 2i+2). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>operasi</th><th>pertukaran</th><th>array heap sesudahnya</th></tr><tr><td>push 5</td><td>-</td><td>[<b class='chg'>5</b>]</td></tr><tr><td>push 3</td><td>3↔5</td><td>[<b class='chg'>3</b>, 5]</td></tr><tr><td>push 8</td><td>-</td><td>[3, 5, <b class='chg'>8</b>]</td></tr><tr><td>push 1</td><td>1↔5, 1↔3</td><td>[<b class='chg'>1</b>, 3, 8, 5]</td></tr><tr><td>push 9</td><td>-</td><td>[1, 3, 8, 5, <b class='chg'>9</b>]</td></tr><tr><td>push 2</td><td>2↔8</td><td>[1, 3, <b class='chg'>2</b>, 5, 9, 8]</td></tr><tr><td>pop → <b class='chg'>1</b></td><td>8↔2</td><td>[2, 3, 8, 5, 9]</td></tr><tr><td>pop → <b class='chg'>2</b></td><td>9↔3, 9↔5</td><td>[3, 5, 8, 9]</td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> Pop mengeluarkan 1 lalu 2 - selalu yang terkecil; tiap operasi paling banyak ⌊log₂ n⌋ tukar.</div>
-</section>
-<section class="slide" id="rx1b">
-<div class="kicker">Bedah Rumus 1/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<section class="slide" id="rx1c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 1/5</div>
 <h2 class="st">Antrian prioritas tiket layanan pelanggan</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Sistem helpdesk mengambil tiket dengan prioritas tertinggi lebih dulu; scheduler OS memilih proses berikutnya; Dijkstra memilih simpul terdekat. Semua memakai heap. Python menyediakan <i>heapq</i> yang memakai rumus indeks persis seperti ini.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Array</h4><p class="">[1, 3, 2, 7, 5] (min-heap).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Induk dari indeks 4 (nilai 5)</h4><p class="">⌊(4−1)/2⌋ = 1 → nilai 3 ✓ (3 ≤ 5).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Anak dari indeks 1</h4><p class="">2·1+1 = 3 (nilai 7), 2·1+2 = 4 (nilai 5).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>n = 1 juta tiket</h4><p class="">tinggi ⌊19,9⌋ = 19 → push/pop ≤ 19 pertukaran.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> heapq
-tiket = []
-heapq.heappush(tiket, (<span class="tn">2</span>, <span class="ts">"lupa password"</span>))
-heapq.heappush(tiket, (<span class="tn">1</span>, <span class="ts">"server down"</span>))     <span class="tc"># prioritas 1 = paling penting</span>
-heapq.heappush(tiket, (<span class="tn">3</span>, <span class="ts">"ganti foto profil"</span>))
-<span class="tk">print</span>(heapq.heappop(tiket))   <span class="tc"># (1, 'server down')</span>
-<span class="tk">print</span>(heapq.nlargest(<span class="tn">2</span>, [<span class="tn">5</span>, <span class="tn">1</span>, <span class="tn">9</span>, <span class="tn">3</span>]))   <span class="tc"># top-k: [9, 5]</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Sistem helpdesk mengambil tiket dengan prioritas tertinggi lebih dulu; scheduler OS memilih proses berikutnya; Dijkstra memilih simpul terdekat. Semua memakai heap. Python menyediakan <i>heapq</i> yang memakai rumus indeks persis seperti ini.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Array</h4><p class="">[1, 3, 2, 7, 5] (min-heap).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Induk dari indeks 4 (nilai 5)</h4><p class="">⌊(4−1)/2⌋ = 1 → nilai 3 ✓ (3 ≤ 5).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Anak dari indeks 1</h4><p class="">2·1+1 = 3 (nilai 7), 2·1+2 = 4 (nilai 5).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>n = 1 juta tiket</h4><p class="">tinggi ⌊19,9⌋ = 19 → push/pop ≤ 19 pertukaran.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Heap = pohon lengkap dalam array. Rumus indeks sederhana + tinggi log n = antrian prioritas O(log n).</div>
 </section>
-<section class="slide" id="rx2a">
-<div class="kicker">Bedah Rumus 2/5 · Langkah 1: cara membaca</div>
-<h2 class="st">Load factor hash table</h2>
-<div class="fxbox"><span class='hl'>α</span> = n / m; &nbsp; chaining: 1 + α/2 (sukses); &nbsp; open addressing: <span class='hb'>1/(1 − α)</span> (gagal)</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Alfa sama dengan n dibagi m. Pada chaining, pencarian sukses rata-rata butuh satu tambah alfa per dua pemeriksaan. Pada open addressing, pencarian gagal rata-rata butuh satu dibagi satu kurang alfa pemeriksaan.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>α (alfa) = keterisian</h4><p class="">perbandingan banyaknya data dengan banyaknya slot.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Chaining</h4><p class="">tiap slot berisi daftar; rata-rata panjang daftar = α.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Open addressing</h4><p class="">kalau slot penuh, cari slot lain; makin penuh, makin jauh mencari: 1/(1−α).</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>n</td><td>banyaknya kunci yang disimpan</td></tr><tr><td>m</td><td>banyaknya slot (bucket)</td></tr><tr><td>α</td><td>load factor</td></tr><tr><td>probe</td><td>satu kali memeriksa slot</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> O(1) pada hash table adalah <b>janji bersyarat</b>: hanya berlaku bila α dijaga kecil. Saat α → 1, 1/(1−α) meledak.</div>
-</section>
-<section class="slide" id="rx2m">
-<div class="kicker">Bedah Rumus 2/5 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Load factor hash table</h2>
-<div class="rxsoal"><b>Soal:</b> Tabel m = 8 slot, h(k) = k mod 8, linear probing. Masukkan 10, 18, 26, 3.</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>10</h4><p class="rxcalc">10 mod 8 = 2 → slot 2 kosong (1 probe)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>18</h4><p class="rxcalc">18 mod 8 = 2 penuh → coba 3 kosong (2 probe)</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>26</h4><p class="rxcalc">26 mod 8 = 2 penuh → 3 penuh → 4 kosong (3 probe)</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>3</h4><p class="rxcalc">3 mod 8 = 3 penuh → 4 penuh → 5 kosong (3 probe)</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Load factor</h4><p class="rxcalc">α = 4/8 = 0,5 → rumus pencarian gagal 1/(1 − 0,5) = 2 probe</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>kunci</th><th>h(k)</th><th>slot akhir</th><th>probe</th></tr><tr><td>10</td><td>2</td><td>2</td><td>1</td></tr><tr><td>18</td><td>2</td><td>3</td><td>2</td></tr><tr><td>26</td><td>2</td><td>4</td><td>3</td></tr><tr><td>3</td><td>3</td><td>5</td><td>3</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> Rata-rata 2,25 probe per insert pada α = 0,5; makin penuh, makin panjang antriannya.</div>
-</section>
-<section class="slide" id="rx2t">
-<div class="kicker">Bedah Rumus 2/5 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Load factor hash table</h2>
-<div class="rxsoal"><b>Kasus:</b> Hash table m = 8, h(k) = k mod 8, linear probing. Masukkan 10, 18, 26, 3, 11, 4.</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu insert. Kolom “slot dicoba” memperlihatkan probe berurutan sampai slot kosong. Perhatikan probe makin panjang saat α naik. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>kunci</th><th>h(k)</th><th>slot dicoba</th><th>probe</th><th>isi tabel (slot 0–7)</th><th>α</th></tr><tr><td>10</td><td>10 mod 8 = 2</td><td><b class='chg'>2</b></td><td>1</td><td>[· · 10 · · · · ·]</td><td>1/8 = 0,125</td></tr><tr><td>18</td><td>18 mod 8 = 2</td><td>2 → <b class='chg'>3</b></td><td>2</td><td>[· · 10 18 · · · ·]</td><td>2/8 = 0,250</td></tr><tr><td>26</td><td>26 mod 8 = 2</td><td>2 → 3 → <b class='chg'>4</b></td><td>3</td><td>[· · 10 18 26 · · ·]</td><td>3/8 = 0,375</td></tr><tr><td>3</td><td>3 mod 8 = 3</td><td>3 → 4 → <b class='chg'>5</b></td><td>3</td><td>[· · 10 18 26 3 · ·]</td><td>4/8 = 0,500</td></tr><tr><td>11</td><td>11 mod 8 = 3</td><td>3 → 4 → 5 → <b class='chg'>6</b></td><td>4</td><td>[· · 10 18 26 3 11 ·]</td><td>5/8 = 0,625</td></tr><tr><td>4</td><td>4 mod 8 = 4</td><td>4 → 5 → 6 → <b class='chg'>7</b></td><td>4</td><td>[· · 10 18 26 3 11 4]</td><td>6/8 = 0,750</td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> Probe naik dari 1 menjadi 4 seiring tabel makin penuh; rumus 1/(1−α) untuk α = 0,75 juga memberi 4.</div>
-</section>
-<section class="slide" id="rx2b">
-<div class="kicker">Bedah Rumus 2/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+
+<section class="slide" id="rx2c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 2/5</div>
 <h2 class="st">Kapan Python dict melakukan resize</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>Python dict</b> memperbesar tabel saat terisi sekitar 2/3; <b>Java HashMap</b> saat α &gt; 0,75. Redis juga melakukan rehash bertahap. Rumus 1/(1−α) adalah alasan angka-angka ambang itu dipilih.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>α = 0,5</h4><p class="">open addressing gagal: 1/(1−0,5) = 2 probe.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>α = 0,75</h4><p class="">4 probe.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>α = 0,9</h4><p class="">10 probe.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>α = 0,99</h4><p class="">100 probe - hash table terasa seperti list.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> probe_gagal(alpha):
-    <span class="tk">return</span> <span class="tn">1</span> / (<span class="tn">1</span> - alpha)
-
-<span class="tk">for</span> a <span class="tk">in</span> (<span class="tn">0.5</span>, <span class="tn">0.66</span>, <span class="tn">0.75</span>, <span class="tn">0.9</span>, <span class="tn">0.99</span>):
-    <span class="tk">print</span>(f<span class="ts">"alpha={a:&lt;5} probe~{probe_gagal(a):.1f}"</span>)</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>Python dict</b> memperbesar tabel saat terisi sekitar 2/3; <b>Java HashMap</b> saat α &gt; 0,75. Redis juga melakukan rehash bertahap. Rumus 1/(1−α) adalah alasan angka-angka ambang itu dipilih.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>α = 0,5</h4><p class="">open addressing gagal: 1/(1−0,5) = 2 probe.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>α = 0,75</h4><p class="">4 probe.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>α = 0,9</h4><p class="">10 probe.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>α = 0,99</h4><p class="">100 probe - hash table terasa seperti list.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Hash table cepat hanya jika α kecil. Itulah kenapa bahasa pemrograman membesarkan tabel sebelum penuh.</div>
 </section>
-<section class="slide" id="rx3a">
-<div class="kicker">Bedah Rumus 3/5 · Langkah 1: cara membaca</div>
-<h2 class="st">Tinggi AVL tree</h2>
-<div class="fxbox">h<sub>AVL</sub> &lt; <span class='hl'>1,44</span>·log<sub>2</sub>(n + 2), &nbsp;&nbsp; syarat: |h(kiri) − h(kanan)| ≤ <span class='hb'>1</span> di setiap simpul</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Tinggi pohon AVL kurang dari satu koma empat empat kali log dua dari n tambah dua, dengan syarat selisih tinggi subpohon kiri dan kanan di setiap simpul paling banyak satu.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Balance factor</h4><p class="">h(kiri) − h(kanan) harus −1, 0, atau +1.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Pohon AVL tersempit</h4><p class="">jumlah simpulnya mengikuti pola Fibonacci → tinggi ≈ log_φ n.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>1,44 = 1/log₂ φ</h4><p class="">AVL paling buruk hanya 44% lebih tinggi dari pohon sempurna.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>h</td><td>tinggi pohon (jumlah sisi akar → daun terdalam)</td></tr><tr><td>n</td><td>banyaknya kunci</td></tr><tr><td>1,44</td><td>konstanta dari rasio emas φ</td></tr><tr><td>|·| ≤ 1</td><td>aturan keseimbangan AVL</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> BST biasa bisa berubah menjadi “daftar berantai” setinggi n jika data masuk terurut. Aturan keseimbangan + rotasi <b>menjamin tinggi logaritmik</b>, jadi search/insert/delete selalu O(log n).</div>
-</section>
-<section class="slide" id="rx3m">
-<div class="kicker">Bedah Rumus 3/5 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Tinggi AVL tree</h2>
-<div class="rxsoal"><b>Soal:</b> Masukkan 1, 2, 3 ke AVL tree. Kapan perlu rotasi, dan berapa batas tinggi untuk n = 7?</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Insert 1, 2</h4><p class="rxcalc">1 → kanan 2. BF(1) = 0 − 1 = −1 (masih boleh)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Insert 3</h4><p class="rxcalc">1 → 2 → 3 (rantai). BF(1) = 0 − 2 = −2 ✗ melanggar</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Rotasi kiri di 1</h4><p class="rxcalc">2 menjadi akar, 1 anak kiri, 3 anak kanan → semua BF = 0</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Tinggi</h4><p class="rxcalc">turun dari 2 menjadi 1</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Batas n = 7</h4><p class="rxcalc">1,44·log₂(7+2) = 1,44 × 3,17 ≈ 4,6 → tinggi ≤ 4 (sempurna: 2)</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>simpul</th><th>h kiri</th><th>h kanan</th><th>BF</th><th>sebelum rotasi</th></tr><tr><td>1</td><td>−1</td><td>1</td><td>−2</td><td>✗</td></tr><tr><td>2</td><td>−1</td><td>0</td><td>−1</td><td>ok</td></tr><tr><td>3</td><td>−1</td><td>−1</td><td>0</td><td>ok</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> Satu rotasi kiri mengubah rantai 1-2-3 menjadi pohon seimbang dengan akar 2.</div>
-</section>
-<section class="slide" id="rx3t">
-<div class="kicker">Bedah Rumus 3/5 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Tinggi AVL tree</h2>
-<div class="rxsoal"><b>Kasus:</b> AVL: insert 10, 20, 30, 40, 50, 25 dan perbaiki keseimbangan setiap kali BF melanggar.</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Notasi x(kiri, kanan); · = kosong. BF = tinggi kiri − tinggi kanan. Begitu ada |BF| = 2, lakukan rotasi pada simpul terbawah yang melanggar. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>operasi</th><th>pohon sesudah insert</th><th>balance factor</th><th>perbaikan</th></tr><tr><td>insert 10</td><td>10</td><td>semua 0</td><td>-</td></tr><tr><td>insert 20</td><td>10(·, 20)</td><td>BF(10) = −1</td><td>-</td></tr><tr><td>insert 30</td><td>10(·, 20(·, 30))</td><td><b class='chg'>BF(10) = −2</b></td><td>rotasi kiri di 10 → 20(10, 30)</td></tr><tr><td>insert 40</td><td>20(10, 30(·, 40))</td><td>BF(20) = −1, BF(30) = −1</td><td>-</td></tr><tr><td>insert 50</td><td>20(10, 30(·, 40(·, 50)))</td><td><b class='chg'>BF(30) = −2</b></td><td>rotasi kiri di 30 → 20(10, 40(30, 50))</td></tr><tr><td>insert 25</td><td>20(10, 40(30(25, ·), 50))</td><td><b class='chg'>BF(20) = −2, BF(40) = +1</b></td><td>kasus kanan-kiri: rotasi kanan di 40, lalu kiri di 20</td></tr><tr><td>hasil</td><td>30(20(10, 25), 40(·, 50))</td><td>semua |BF| ≤ 1</td><td>tinggi 2 untuk 6 kunci</td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> Tanpa rotasi, data terurut akan membentuk rantai setinggi 5; AVL menjaganya setinggi 2.</div>
-</section>
-<section class="slide" id="rx3b">
-<div class="kicker">Bedah Rumus 3/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+
+<section class="slide" id="rx3c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 3/5</div>
 <h2 class="st">Indeks terurut di database dan bahasa pemrograman</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>Java TreeMap</b>, <b>C++ std::map</b>, dan Linux CFS scheduler memakai red-black tree; database memakai keluarga B-tree. Ketika butuh data terurut + range query (“semua transaksi antara jam 10 dan 11”), hash table tidak bisa, BST seimbang bisa.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 1 juta</h4><p class="">pohon sempurna: ~20 level; AVL terburuk &lt; 1,44 × 20 ≈ 29 level.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>BST tanpa penyeimbang</h4><p class="">insert 1, 2, 3, ..., 10⁶ → tinggi 10⁶.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Pencarian</h4><p class="">≤ 29 perbandingan vs sampai 1 juta.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Red-black tree</h4><p class="">batasnya h ≤ 2·log₂(n+1) - sedikit lebih tinggi, rotasi lebih jarang.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> math
-<span class="tk">def</span> tinggi_maks_avl(n):
-    <span class="tk">return</span> <span class="tn">1.44</span> * math.log2(n + <span class="tn">2</span>)
-
-<span class="tk">for</span> n <span class="tk">in</span> (1_000, 1_000_000, 1_000_000_000):
-    <span class="tk">print</span>(n, round(math.log2(n)), round(tinggi_maks_avl(n)))</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>Java TreeMap</b>, <b>C++ std::map</b>, dan Linux CFS scheduler memakai red-black tree; database memakai keluarga B-tree. Ketika butuh data terurut + range query (“semua transaksi antara jam 10 dan 11”), hash table tidak bisa, BST seimbang bisa.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 1 juta</h4><p class="">pohon sempurna: ~20 level; AVL terburuk &lt; 1,44 × 20 ≈ 29 level.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>BST tanpa penyeimbang</h4><p class="">insert 1, 2, 3, ..., 10⁶ → tinggi 10⁶.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Pencarian</h4><p class="">≤ 29 perbandingan vs sampai 1 juta.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Red-black tree</h4><p class="">batasnya h ≤ 2·log₂(n+1) - sedikit lebih tinggi, rotasi lebih jarang.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Keseimbangan ⇒ tinggi O(log n) ⇒ semua operasi O(log n), apa pun urutan datanya.</div>
 </section>
-<section class="slide" id="rx4a">
-<div class="kicker">Bedah Rumus 4/5 · Langkah 1: cara membaca</div>
-<h2 class="st">Amortized: dynamic array yang menggandakan diri</h2>
-<div class="fxbox">Total biaya n append = <span class='hb'>n</span> + (1 + 2 + 4 + … + n) &lt; n + <span class='hl'>2n</span> = 3n &nbsp;⇒&nbsp; <span class='hl'>3n / n = O(1)</span> per append</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Total biaya n kali append sama dengan n ditambah satu tambah dua tambah empat sampai n, yang kurang dari n tambah dua n, yaitu tiga n. Dibagi n, setiap append rata-rata O satu.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n</h4><p class="">biaya menulis setiap elemen sekali.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>1 + 2 + 4 + … + n</h4><p class="">biaya menyalin seluruh isi setiap kali kapasitas penuh dan digandakan.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Deret geometri &lt; 2n</h4><p class="">jumlah semua penyalinan tidak pernah melebihi dua kali ukuran akhir.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>n</td><td>banyaknya operasi append</td></tr><tr><td>2ᵏ</td><td>kapasitas setelah penggandaan ke-k</td></tr><tr><td>3n</td><td>batas atas biaya total</td></tr><tr><td>amortized</td><td>biaya rata-rata per operasi dalam rangkaian terburuk</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Sesekali ada append mahal (menyalin semua), tetapi karena kapasitas <b>digandakan</b>, kejadian mahal itu makin jarang. Dirata-rata, setiap append murah. Jika kapasitas hanya ditambah konstan (+10), totalnya justru Θ(n²).</div>
-</section>
-<section class="slide" id="rx4m">
-<div class="kicker">Bedah Rumus 4/5 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Amortized: dynamic array yang menggandakan diri</h2>
-<div class="rxsoal"><b>Soal:</b> Hitung biaya total 8 kali append pada array dinamis yang kapasitasnya digandakan (mulai kapasitas 1).</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>append 1</h4><p class="rxcalc">tulis 1 → total 1</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>append 2 (penuh)</h4><p class="rxcalc">kapasitas 2, salin 1 + tulis 1 → total 3</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>append 3 (penuh)</h4><p class="rxcalc">kapasitas 4, salin 2 + tulis 1 → total 6; append 4 → total 7</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>append 5 (penuh)</h4><p class="rxcalc">kapasitas 8, salin 4 + tulis 1 → total 12; append 6, 7, 8 → total 15</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Rata-rata</h4><p class="rxcalc">15 / 8 ≈ 1,9 operasi per append ≤ 3</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>append ke-</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr><tr><td>salin</td><td>0</td><td>1</td><td>2</td><td>0</td><td>4</td><td>0</td><td>0</td><td>0</td></tr><tr><td>total</td><td>1</td><td>3</td><td>6</td><td>7</td><td>12</td><td>13</td><td>14</td><td>15</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> Total 15 ≤ 3n = 24 → O(1) amortized per append.</div>
-</section>
-<section class="slide" id="rx4t">
-<div class="kicker">Bedah Rumus 4/5 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Amortized: dynamic array yang menggandakan diri</h2>
-<div class="rxsoal"><b>Kasus:</b> Array dinamis berkapasitas awal 1, digandakan saat penuh. Lakukan 9 kali append.</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu append. Biaya = salin (saat penuh) + 1 tulis. Kolom terakhir = biaya rata-rata sejauh ini; tidak pernah melewati 3. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>append</th><th>kapasitas</th><th>kondisi</th><th>salin</th><th>kapasitas baru</th><th>biaya</th><th>total</th><th>rata-rata</th></tr><tr><td>1</td><td>1</td><td>-</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1,00</td></tr><tr><td>2</td><td>1</td><td>penuh → ×2</td><td>1</td><td>2</td><td>2</td><td><b class='chg'>3</b></td><td>1,50</td></tr><tr><td>3</td><td>2</td><td>penuh → ×2</td><td>2</td><td>4</td><td>3</td><td><b class='chg'>6</b></td><td>2,00</td></tr><tr><td>4</td><td>4</td><td>-</td><td>0</td><td>4</td><td>1</td><td>7</td><td>1,75</td></tr><tr><td>5</td><td>4</td><td>penuh → ×2</td><td>4</td><td>8</td><td>5</td><td><b class='chg'>12</b></td><td>2,40</td></tr><tr><td>6</td><td>8</td><td>-</td><td>0</td><td>8</td><td>1</td><td>13</td><td>2,17</td></tr><tr><td>7</td><td>8</td><td>-</td><td>0</td><td>8</td><td>1</td><td>14</td><td>2,00</td></tr><tr><td>8</td><td>8</td><td>-</td><td>0</td><td>8</td><td>1</td><td>15</td><td>1,88</td></tr><tr><td>9</td><td>8</td><td>penuh → ×2</td><td>8</td><td>16</td><td>9</td><td><b class='chg'>24</b></td><td>2,67</td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> 9 append = 24 operasi ≤ 3·9 = 27 → O(1) amortized.</div>
-</section>
-<section class="slide" id="rx4b">
-<div class="kicker">Bedah Rumus 4/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+
+<section class="slide" id="rx4c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 4/5</div>
 <h2 class="st">Mengapa list.append di Python cepat</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>Python list</b>, <b>Java ArrayList</b>, <b>C++ vector</b>, dan <b>Go slice</b> semuanya menumbuhkan kapasitas secara geometris (×1,125 sampai ×2). Saat membangun hasil query 1 juta baris dengan append, rumus ini menjamin waktunya linear.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 16 append</h4><p class="">penyalinan saat kapasitas 1, 2, 4, 8 → 1+2+4+8 = 15.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Total</h4><p class="">16 tulis + 15 salin = 31 &lt; 3 × 16 = 48 ✓</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Rata-rata</h4><p class="">31/16 ≈ 1,9 operasi per append.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Jika +1 tiap penuh</h4><p class="">1 + 2 + ... + 15 = 120 salinan → Θ(n²).</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> sys
-a, last = [], <span class="tn">0</span>
-<span class="tk">for</span> i <span class="tk">in</span> <span class="tk">range</span>(<span class="tn">64</span>):
-    a.append(i)
-    size = sys.getsizeof(a)
-    <span class="tk">if</span> size != last:                 <span class="tc"># kapasitas baru dialokasikan</span>
-        <span class="tk">print</span>(f<span class="ts">"len={len(a):&gt;2} bytes={size}"</span>)
-        last = size</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>Python list</b>, <b>Java ArrayList</b>, <b>C++ vector</b>, dan <b>Go slice</b> semuanya menumbuhkan kapasitas secara geometris (×1,125 sampai ×2). Saat membangun hasil query 1 juta baris dengan append, rumus ini menjamin waktunya linear.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 16 append</h4><p class="">penyalinan saat kapasitas 1, 2, 4, 8 → 1+2+4+8 = 15.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Total</h4><p class="">16 tulis + 15 salin = 31 &lt; 3 × 16 = 48 ✓</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Rata-rata</h4><p class="">31/16 ≈ 1,9 operasi per append.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Jika +1 tiap penuh</h4><p class="">1 + 2 + ... + 15 = 120 salinan → Θ(n²).</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Tumbuh secara geometris (×2), bukan aritmetis (+k). Biaya mahal yang jarang = murah bila dirata-rata.</div>
 </section>
-<section class="slide" id="rx5a">
-<div class="kicker">Bedah Rumus 5/5 · Langkah 1: cara membaca</div>
-<h2 class="st">Peluang false positive Bloom filter</h2>
-<div class="fxbox">p ≈ ( 1 − e<sup>−<span class='hl'>k</span>n/<span class='hb'>m</span></sup> )<sup><span class='hl'>k</span></sup>, &nbsp;&nbsp; k<sub>optimal</sub> = (m/n)·ln 2</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Peluang false positive kira-kira sama dengan satu dikurangi e pangkat minus k n per m, semuanya dipangkatkan k. Banyaknya fungsi hash optimal adalah m per n dikali ln dua.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>e^(−kn/m)</h4><p class="">peluang satu bit tertentu MASIH 0 setelah n item dimasukkan dengan k hash.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>1 − e^(−kn/m)</h4><p class="">peluang bit itu sudah 1.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>pangkat k</h4><p class="">false positive terjadi bila KESEMUA k bit yang dicek kebetulan sudah 1.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>m</td><td>banyaknya bit dalam filter</td></tr><tr><td>n</td><td>banyaknya item yang dimasukkan</td></tr><tr><td>k</td><td>banyaknya fungsi hash</td></tr><tr><td>p</td><td>peluang “mungkin ada” padahal tidak ada</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Bloom filter menjawab “<b>pasti tidak ada</b>” atau “<b>mungkin ada</b>”. Dengan sekitar 10 bit per item, p ≈ 1% - jauh lebih hemat daripada menyimpan itemnya.</div>
-</section>
-<section class="slide" id="rx5m">
-<div class="kicker">Bedah Rumus 5/5 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Peluang false positive Bloom filter</h2>
-<div class="rxsoal"><b>Soal:</b> Bloom filter m = 10 bit, k = 2 hash: h₁(x) = x mod 10, h₂(x) = 3x mod 10. Masukkan 7 dan 12, lalu cek 17 dan 5.</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Masukkan 7</h4><p class="rxcalc">h₁ = 7, h₂ = 21 mod 10 = 1 → nyalakan bit 1 dan 7</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Masukkan 12</h4><p class="rxcalc">h₁ = 2, h₂ = 36 mod 10 = 6 → nyalakan bit 2 dan 6</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Cek 17</h4><p class="rxcalc">h₁ = 7 (1), h₂ = 51 mod 10 = 1 (1) → “mungkin ada” padahal TIDAK → false positive</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Cek 5</h4><p class="rxcalc">h₁ = 5 (0) → “pasti tidak ada”</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Rumus</h4><p class="rxcalc">p ≈ (1 − e^(−2·2/10))² = (1 − 0,670)² ≈ 0,109 ≈ 11%</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>bit</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th></tr><tr><td>nilai</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> 17 menjadi false positive; peluang teoretisnya ±11% untuk filter sekecil ini.</div>
-</section>
-<section class="slide" id="rx5t">
-<div class="kicker">Bedah Rumus 5/5 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Peluang false positive Bloom filter</h2>
-<div class="rxsoal"><b>Kasus:</b> Bloom filter 10 bit, h₁(x) = x mod 10, h₂(x) = 3x mod 10. Insert 7, 12, 25; cek 17, 5, 30.</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Insert menyalakan bit h₁ dan h₂. Cek: jika salah satu bit 0 → pasti tidak ada; jika semua 1 → mungkin ada. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>operasi</th><th>bit h₁, h₂</th><th>bit 0…9 sesudahnya</th><th>jawaban</th></tr><tr><td>insert 7</td><td>7, 1</td><td>0100000100</td><td>-</td></tr><tr><td>insert 12</td><td>2, 6</td><td>0110001100</td><td>-</td></tr><tr><td>insert 25</td><td>5, 5</td><td>0110011100</td><td>-</td></tr><tr><td>cek 17</td><td>7, 1</td><td>0110011100</td><td><b class='chg'>mungkin ada (false positive!)</b></td></tr><tr><td>cek 5</td><td>5, 5</td><td>0110011100</td><td><b class='chg'>mungkin ada (false positive!)</b></td></tr><tr><td>cek 30</td><td>0, 0</td><td>0110011100</td><td>pasti tidak ada</td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> 17 dan 5 terjawab “mungkin ada” padahal tidak pernah dimasukkan - itulah false positive; 30 terjawab benar “pasti tidak ada”.</div>
-</section>
-<section class="slide" id="rx5b">
-<div class="kicker">Bedah Rumus 5/5 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+
+<section class="slide" id="rx5c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 5/5</div>
 <h2 class="st">Mengecek username sudah dipakai tanpa query database</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>Google Chrome</b> (dulu) memakai Bloom filter untuk daftar URL berbahaya; <b>Cassandra</b>, <b>HBase</b>, dan <b>RocksDB</b> memakainya untuk menghindari membaca disk bila kunci pasti tidak ada; <b>Medium</b> memakainya untuk tidak merekomendasikan artikel yang sudah dibaca.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 1 juta username, m = 10 juta bit (1,25 MB)</h4><p class="">m/n = 10.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>k optimal</h4><p class="">10 × 0,693 ≈ 7 fungsi hash.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>p</h4><p class="">(1 − e^(−7/10))⁷ ≈ (0,503)⁷ ≈ 0,8%.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Hasil</h4><p class="">99% pengecekan “belum dipakai” dijawab tanpa menyentuh database.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> math
-<span class="tk">def</span> bloom_fp(m, n, k):
-    <span class="tk">return</span> (<span class="tn">1</span> - math.exp(-k * n / m)) ** k
-
-m, n = 10_000_000, 1_000_000
-k = round(m / n * math.log(<span class="tn">2</span>))
-<span class="tk">print</span>(k, f<span class="ts">"{bloom_fp(m, n, k):.4f}"</span>)   <span class="tc"># 7 0.0082</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>Google Chrome</b> (dulu) memakai Bloom filter untuk daftar URL berbahaya; <b>Cassandra</b>, <b>HBase</b>, dan <b>RocksDB</b> memakainya untuk menghindari membaca disk bila kunci pasti tidak ada; <b>Medium</b> memakainya untuk tidak merekomendasikan artikel yang sudah dibaca.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 1 juta username, m = 10 juta bit (1,25 MB)</h4><p class="">m/n = 10.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>k optimal</h4><p class="">10 × 0,693 ≈ 7 fungsi hash.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>p</h4><p class="">(1 − e^(−7/10))⁷ ≈ (0,503)⁷ ≈ 0,8%.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Hasil</h4><p class="">99% pengecekan “belum dipakai” dijawab tanpa menyentuh database.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Ingin cek keanggotaan super hemat memori dan boleh sedikit salah “positif”? Bloom filter + rumus p untuk memilih m dan k.</div>
 </section>
-<!--RX-SLIDES-END-->
-<section class="slide" id="s8">
-  <div class="kicker">LATIHAN</div>
-  <h2 class="st">Soal Struktur Data Efisien</h2>
-  <div class="qlist">
-    <div class="q"><span class="qn">1</span><p>Jelaskan mengapa build heap dari array acak hanya O(n), bukan O(n log n). Berikan argumen berdasarkan jumlah pekerjaan di tiap level pohon.</p></div>
-    <div class="q"><span class="qn">2</span><p>Sebuah hash table berukuran m=7 menerima kunci "alice", "bob", "carol" dengan h(k)=len(k) mod 7. Hitung indeks masing-masing. Apakah ada collision? Bagaimana menanganinya dengan chaining?</p></div>
-    <div class="q"><span class="qn">3</span><p>Mengapa Python list.append() O(1) amortized meskipun sesekali O(n)? Hitung total biaya untuk n=8 append mulai dari kapasitas 1, dan tunjukkan biaya rata-ratanya.</p></div>
-    <div class="q"><span class="qn">4</span><p>Bloom filter dengan m=20 bit dan k=3 hash functions menyimpan 5 elemen. Estimasi false positive rate-nya. Apa trade-off antara ukuran m dan false positive rate?</p></div>
-    <div class="q"><span class="qn">5</span><p>Kapan lebih baik menggunakan Balanced BST dibanding Hash Table? Berikan 2 kasus konkret di mana BST lebih cocok dan jelaskan alasannya.</p></div>
-  </div>
-</section>
 
-<!-- 9. KUNCI -->
-<section class="slide" id="s9">
-  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
-  <h2 class="st">Kunci Struktur Data Efisien</h2>
-  <div class="qlist">
-    <div class="ans"><span class="qn">1</span><p>Node di level h (dari bawah) butuh sift-down max h langkah. Jumlah node level h = n/2^h. Total = Σ h·n/2^h = n·Σ h/2^h = n·2 = O(n). Sebagian besar node di level bawah dengan sedikit pekerjaan mengimbangi node atas.</p></div>
-    <div class="ans"><span class="qn">2</span><p>"alice" (5 huruf): 5 mod 7 = 5. "bob" (3): 3 mod 7 = 3. "carol" (5): 5 mod 7 = 5 → <b>collision!</b> Chaining: slot 5 berisi linked list ["alice", "carol"]. Search "carol": hash→5, traverse list hingga ketemu.</p></div>
-    <div class="ans"><span class="qn">3</span><p>Resize di n=1,2,4,8: copy 1+2+4+8=15 elemen. Total cost 8 append + 15 copy = 23. Per operasi: 23/8 ≈ 2.9 = O(1). Formula: total cost ≤ 3n → amortized O(1) per append.</p></div>
-    <div class="ans"><span class="qn">4</span><p>FP rate ≈ (1−e^(−3×5/20))^3 = (1−e^(−0.75))^3 ≈ (0.528)^3 ≈ 0.147 ≈ 14.7%. Semakin besar m: FP rate turun, tapi space naik. Trade-off: sesuaikan berdasarkan toleransi false positive yang bisa diterima.</p></div>
-    <div class="ans"><span class="qn">5</span><p><b>BST lebih baik:</b> (1) Perlu urutan data - BST support in-order traversal O(n), hash table tidak. (2) Perlu range query (semua key antara A dan B) - BST O(log n + k) di mana k=hasil, hash table O(n). Hash table unggul untuk random access O(1).</p></div>
-  </div>
-</section>
-
-<!-- 10. PENUTUP -->
 <section class="slide" id="s10" style="justify-content:center;align-items:center;text-align:center">
   <div class="kicker">PERTEMUAN 6 · SELESAI</div>
   <h2 class="st" style="font-size:30px;margin:10px 0">Struktur data yang tepat<br>bisa mengubah O(n) jadi O(log n).</h2>

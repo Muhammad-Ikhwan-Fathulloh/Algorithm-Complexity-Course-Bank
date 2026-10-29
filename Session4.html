@@ -136,6 +136,14 @@ table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
 .rxtrace td:first-child{color:#64748b;font-weight:700}
 b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
 .rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
+.rxg3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.rxwtrack{display:flex;gap:6px;flex:none}
+.rxwtrack span{font:800 12px/1 -apple-system,'Segoe UI',Arial,sans-serif;letter-spacing:.08em;padding:6px 10px;border-radius:20px;background:#f1f5f9;color:#94a3b8;border:2px solid #e2e8f0}
+.rxwtrack span.on{background:#2563eb;color:#fff;border-color:#2563eb}
+.rxtoc{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+.rxtocitem{display:flex;gap:10px;align-items:baseline;font-size:15px;line-height:1.4;color:#334155;border-bottom:1px dashed #e2e8f0;padding:3px 0}
+.rxg3.big .rxcard{padding:18px 20px}.rxg3.big .rxcard h3{font-size:20px;margin-bottom:10px}.rxg3.big .rxcard p{font-size:17px;line-height:1.65}
+.rxtocitem span{flex:none;min-width:26px;font:800 13px Consolas,monospace;color:#2563eb}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -151,22 +159,6 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · <a href="index.html" style="color:#2563eb;font-size:12px">← Daftar Materi</a></div>
 </section>
 
-<!-- 5W1H -->
-<section class="slide" id="s5w1h">
-  <div class="kicker">KERANGKA TEORI · 5W1H - Divide and Conquer I</div>
-  <h2 class="st">Kenapa materi ini ada, untuk siapa, dan bagaimana memakainya?</h2>
-  <div class="w5h1" style="margin-top:6px">
-    <div class="wcard what"><div class="wlabel">What - Apa?</div><p>D&C = pecah masalah ukuran n menjadi a submasalah ukuran n/b, selesaikan rekursif, gabungkan hasilnya. Merge Sort, Quick Sort, Binary Search, Quickselect adalah empat algoritma D&C paling penting - semuanya dipakai setiap hari di industri tanpa kita sadari.</p></div>
-    <div class="wcard why"><div class="wlabel">Why - Mengapa?</div><p>Sorting naif O(n²) tidak cukup untuk n = 10 juta. D&C membawa sorting ke Θ(n log n) - batas teoritis comparison-based sorting. Binary Search membawa pencarian dari O(n) ke O(log n). Ini perbedaan antara detik dan jam untuk data skala industri nyata.</p></div>
-    <div class="wcard who"><div class="wlabel">Who - Siapa?</div><p>Semua programmer - Python list.sort() pakai Timsort (turunan Merge Sort). Database index pakai B-tree (D&C). Interview teknikal hampir selalu tanya cara kerja sorting. Tidak ada jalan keluar dari materi ini untuk siapapun yang menulis kode profesional.</p></div>
-    <div class="wcard when"><div class="wlabel">When - Kapan?</div><p>Merge Sort: butuh sort stabil atau garansi O(n log n) worst case. Quick Sort: butuh in-place dan data acak. Binary Search: data terurut dan butuh cari cepat - dari dictionary lookup hingga git bisect. Quickselect: cari median atau percentile ke-k tanpa sort penuh, rata-rata Θ(n) vs Θ(n log n) sort-then-pick.</p></div>
-    <div class="wcard where"><div class="wlabel">Where - Di mana?</div><p>Merge Sort di: Python sorted(), Java Arrays.sort(Object[]), external sort file besar. Quick Sort di: C++ std::sort, database internal. Binary Search di: database index lookup, git bisect, numpy searchsorted. Quickselect di: NumPy percentile, statistik deskriptif, data science pipeline harian.</p></div>
-    <div class="wcard how"><div class="wlabel">How - Bagaimana?</div><p>Tiga langkah: (1) Divide - belah input (tengah untuk Merge Sort, pivot untuk Quick Sort). (2) Conquer - rekursif ke submasalah, base case saat n=1. (3) Combine - Merge Sort: gabungkan dua sorted array O(n). Quick Sort: tidak perlu combine karena partisi sudah in-place. Analisis kompleksitas via Master Theorem.</p></div>
-  </div>
-</section>
-
-<!-- 2. PRINSIP D&C -->
-<!-- PETA LANGKAH -->
 <section class="slide" id="speta">
   <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
   <h2 class="st">Peta langkah: Divide, Conquer, Combine</h2>
@@ -183,6 +175,67 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
       <div class="note">Quick sort Θ(n log n) hanya rata-rata. Pada input terburuk pivot yang buruk membuatnya O(n²), itulah alasan randomisasi dipakai.</div>
     </div>
   </div>
+</section>
+
+<section class="slide" id="rxdA" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A</div>
+<h1 class="title">Teori</h1>
+<p class="lead">Kita mulai dari dasar: 5W1H dipecah per slide (What, Why, Who, When, Where, How), lalu konsep inti dan cara membaca setiap rumus.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>WHAT - Apa itu Divide and Conquer?</div><div class="rxtocitem"><span>2</span>WHY - Mengapa Divide and Conquer penting?</div><div class="rxtocitem"><span>3</span>WHO - Siapa yang memakai Divide and Conquer?</div><div class="rxtocitem"><span>4</span>WHEN - Kapan D&C cocok dipakai?</div><div class="rxtocitem"><span>5</span>WHERE - Di mana D&C dipakai?</div><div class="rxtocitem"><span>6</span>HOW - Bagaimana merancang algoritma D&C?</div><div class="rxtocitem"><span>7</span>Tiga langkah: Divide → Conquer → Combine</div><div class="rxtocitem"><span>8</span>Empat rumus Divide and Conquer dasar</div><div class="rxtocitem"><span>9</span>Banyaknya perbandingan merge sort</div><div class="rxtocitem"><span>10</span>Quicksort: rata-rata vs terburuk</div><div class="rxtocitem"><span>11</span>Binary search: langkah dan titik tengah</div><div class="rxtocitem"><span>12</span>Quickselect: mencari elemen ke-k</div></div>
+</section>
+
+<section class="slide" id="rxw1" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (1/6) - WHAT</div>
+<div class="rxwtrack"><span class="on">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHAT - Apa itu Divide and Conquer?</h2>
+<p class="b">Paradigma yang memecah masalah menjadi subsoal sejenis yang lebih kecil, menyelesaikannya secara rekursif, lalu menggabungkan hasilnya.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Divide</h3><p>Belah input (misalnya di tengah array atau di sekitar pivot).</p></div><div class="rxcard green"><h3>Conquer</h3><p>Selesaikan tiap bagian secara rekursif; bagian kecil diselesaikan langsung.</p></div><div class="rxcard yellow"><h3>Combine</h3><p>Gabungkan jawaban bagian menjadi jawaban utuh (merge, atau tidak perlu sama sekali).</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Merge sort: belah dua → urutkan tiap separuh → gabungkan dua daftar terurut.</div>
+</section>
+
+<section class="slide" id="rxw2" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (2/6) - WHY</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="on">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHY - Mengapa Divide and Conquer penting?</h2>
+<p class="b">Karena memecah masalah sering menurunkan orde secara drastis.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>n² → n log n</h3><p>Sorting naif kuadratik; merge sort dan quicksort n log n.</p></div><div class="rxcard green"><h3>n → log n</h3><p>Binary search hanya butuh ±20 langkah untuk 1 juta data.</p></div><div class="rxcard yellow"><h3>Mudah diparalelkan</h3><p>Subsoal independen bisa dikerjakan di core/mesin berbeda.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Mengurutkan 1 juta data: insertion sort ±5×10¹¹ langkah, merge sort ±2×10⁷ langkah.</div>
+</section>
+
+<section class="slide" id="rxw3" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (3/6) - WHO</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="on">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHO - Siapa yang memakai Divide and Conquer?</h2>
+<p class="b">Hampir setiap programmer - sering tanpa sadar.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Pengguna library</h3><p>Setiap sort() dan bisect() di bahasa pemrograman memakai D&C.</p></div><div class="rxcard green"><h3>Database engineer</h3><p>External merge sort untuk ORDER BY pada data lebih besar dari RAM.</p></div><div class="rxcard yellow"><h3>Data engineer</h3><p>Pola MapReduce/Spark: bagi data, proses paralel, gabungkan.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Spark mengurutkan terabyte data dengan memecahnya ke ratusan mesin lalu menggabungkan hasilnya.</div>
+</section>
+
+<section class="slide" id="rxw4" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (4/6) - WHEN</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="on">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHEN - Kapan D&C cocok dipakai?</h2>
+<p class="b">Saat masalah bisa dipecah menjadi subsoal sejenis yang <b>independen</b>.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Data terurut</h3><p>Binary search butuh data terurut atau kondisi monoton.</p></div><div class="rxcard green"><h3>Butuh jaminan</h3><p>Merge sort ketika worst case harus n log n dan butuh stable.</p></div><div class="rxcard yellow"><h3>Butuh satu peringkat</h3><p>Quickselect ketika hanya perlu median/persentil, bukan urutan lengkap.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Mencari p95 latensi dari 10 juta request: quickselect, bukan sort penuh.</div>
+</section>
+
+<section class="slide" id="rxw5" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (5/6) - WHERE</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="on">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHERE - Di mana D&C dipakai?</h2>
+<p class="b">Di inti banyak sistem yang kita pakai setiap hari.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Bahasa pemrograman</h3><p>Timsort (Python, Java), introsort (C++ std::sort).</p></div><div class="rxcard green"><h3>Version control & debugging</h3><p>git bisect: binary search pada riwayat commit.</p></div><div class="rxcard yellow"><h3>Analitik</h3><p>numpy.partition / percentile memakai introselect.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> git bisect menemukan commit penyebab bug dari 1.000 commit dalam ±10 langkah.</div>
+</section>
+
+<section class="slide" id="rxw6" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (6/6) - HOW</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="on">HOW</span></div>
+<h2 class="st">HOW - Bagaimana merancang algoritma D&C?</h2>
+<p class="b">Ikuti empat pertanyaan:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>1. Bagaimana membagi?</h3><p>Di tengah (merge sort, binary search) atau di sekitar pivot (quicksort).</p></div><div class="rxcard green"><h3>2. Apa kasus dasarnya?</h3><p>Ukuran 0 atau 1 biasanya langsung selesai.</p></div><div class="rxcard yellow"><h3>3. Bagaimana menggabung & berapa biayanya?</h3><p>Tulis rekurensnya, lalu selesaikan dengan Master Theorem.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Binary search: bagi di mid, buang separuh, tanpa combine → T(n) = T(n/2) + 1 = Θ(log n).</div>
 </section>
 
 <section class="slide" id="s2">
@@ -217,7 +270,65 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• T(n) = a·T(n/b) + f(n): a = jumlah submasalah, n/b = ukuran tiap submasalah, f(n) = biaya divide dan combine.<br>• Rumus ini dibaca langsung oleh Master Theorem untuk menentukan kompleksitasnya.</div>
 </section>
 
-<!-- 3. MERGE SORT -->
+<section class="slide" id="rx0" data-rx="1">
+<div class="kicker">Bagian A · Teori · Bedah Rumus · Divide and Conquer I</div>
+<h2 class="st">Empat rumus Divide and Conquer dasar</h2>
+<p class="b">Merge sort, quick sort, binary search, dan quickselect sama-sama memecah masalah, tetapi rumus biayanya sangat berbeda. Membaca rumusnya dengan benar membantu memilih algoritma yang tepat.</p>
+<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Banyaknya perbandingan merge sort</b><span>C(n) ≤ n⌈log₂ n⌉</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Quicksort: rata-rata vs terburuk</b><span>≈ 1,39·n log₂ n  vs  n²/2</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Binary search: langkah dan titik tengah</b><span>⌊log₂ n⌋ + 1 langkah; mid = lo + (hi−lo)//2</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Quickselect: mencari elemen ke-k</b><span>T(n) = T(n/2) + n → Θ(n)</span></div></div></div>
+<div class="note"><b>Alur tiap rumus:</b> di <b>Teori</b> kita belajar <b>cara membaca</b> rumus dan arti tiap simbol. Di <b>Teknikal</b> rumus yang sama dikerjakan lewat <b>hitung manual</b>, <b>jejak step-by-step</b>, lalu <b>kode Python</b>. Di <b>Studi kasus nyata</b> (akhir slide) kita lihat pemakaiannya di proyek nyata.</div>
+</section>
+
+<section class="slide" id="rx1a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 1/4 - cara membaca</div>
+<h2 class="st">Banyaknya perbandingan merge sort</h2>
+<div class="fxbox">C(n) = 2·C(n/2) + (n − 1) &nbsp;⇒&nbsp; C(n) ≤ n·<span class='hl'>⌈log<sub>2</sub> n⌉</span></div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“C dari n sama dengan dua kali C dari n per dua ditambah n kurang satu, sehingga C dari n paling banyak n kali langit-langit log dua n.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>C(n)</h4><p class="">banyaknya perbandingan untuk mengurutkan n elemen.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>n − 1</h4><p class="">merge dua daftar terurut berukuran total n butuh paling banyak n − 1 perbandingan.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>⌈ ⌉ = ceiling</h4><p class="">bulatkan ke atas: ⌈log₂ 1000⌉ = 10.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>C(n)</td><td>jumlah perbandingan (worst case)</td></tr><tr><td>2·C(n/2)</td><td>mengurutkan dua separuh</td></tr><tr><td>n − 1</td><td>biaya merge</td></tr><tr><td>⌈log₂ n⌉</td><td>banyaknya level penggabungan</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Merge sort tidak peduli isi data: selalu dibelah tepat di tengah. Karena itu <b>batasnya terjamin</b>, tidak ada kasus buruk tersembunyi.</div>
+</section>
+
+<section class="slide" id="rx2a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 2/4 - cara membaca</div>
+<h2 class="st">Quicksort: rata-rata vs terburuk</h2>
+<div class="fxbox">Rata-rata: <span class='hg'>2n·ln n ≈ 1,39·n log<sub>2</sub> n</span> &nbsp;&nbsp;|&nbsp;&nbsp; Terburuk: <span class='hl'>T(n) = T(n−1) + n = Θ(n²)</span></div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Rata-rata quicksort butuh dua n kali log natural n perbandingan, kira-kira satu koma tiga sembilan n log dua n. Kasus terburuknya T dari n sama dengan T dari n kurang satu tambah n, Theta n kuadrat.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>ln = log natural</h4><p class="">ln n = log₂ n × 0,693 → 2 ln n ≈ 1,39 log₂ n.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Rata-rata</h4><p class="">pivot acak rata-rata membagi data cukup seimbang.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Terburuk</h4><p class="">pivot selalu elemen terkecil/terbesar → satu sisi kosong.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>ln n</td><td>logaritma natural (basis e ≈ 2,718)</td></tr><tr><td>1,39</td><td>konstanta: quicksort ~39% lebih banyak perbandingan dari batas ideal</td></tr><tr><td>T(n−1)</td><td>sisi partisi yang hanya berkurang 1</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Walau perbandingannya sedikit lebih banyak dari merge sort, quicksort bekerja <b>in-place dan ramah cache</b>, jadi biasanya lebih cepat di praktik - asalkan pivotnya tidak sial.</div>
+</section>
+
+<section class="slide" id="rx3a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 3/4 - cara membaca</div>
+<h2 class="st">Binary search: langkah dan titik tengah</h2>
+<div class="fxbox">langkah<sub>maks</sub> = <span class='hl'>⌊log<sub>2</sub> n⌋ + 1</span>, &nbsp;&nbsp; mid = <span class='hb'>lo + ⌊(hi − lo)/2⌋</span></div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Langkah maksimal adalah lantai log dua n ditambah satu. Indeks tengah adalah lo ditambah lantai dari hi kurang lo dibagi dua.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>⌊log₂ n⌋ + 1</h4><p class="">berapa kali ruang [lo, hi] bisa dibelah sampai tersisa satu elemen.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Kenapa bukan (lo+hi)/2?</h4><p class="">di Java/C, lo + hi bisa melebihi batas int (overflow).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>lo + (hi − lo)/2</h4><p class="">nilainya sama, tetapi tidak pernah overflow.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>lo, hi</td><td>batas kiri dan kanan ruang pencarian</td></tr><tr><td>mid</td><td>indeks yang dicek di langkah ini</td></tr><tr><td>⌊x⌋</td><td>pembulatan ke bawah</td></tr><tr><td>n</td><td>jumlah elemen terurut</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Setiap perbandingan membuang separuh kandidat. Syarat mutlaknya: <b>data harus terurut</b> (atau fungsi kondisinya monoton).</div>
+</section>
+
+<section class="slide" id="rx4a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 4/4 - cara membaca</div>
+<h2 class="st">Quickselect: mencari elemen ke-k</h2>
+<div class="fxbox">T(n) = T(n/<span class='hl'>2</span>) + <span class='hb'>n</span> = n + n/2 + n/4 + … ≤ <span class='hl'>2n</span> = Θ(n)</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“T dari n sama dengan T dari n per dua ditambah n, yaitu n tambah n per dua tambah n per empat dan seterusnya, paling banyak dua n, Theta n.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Satu panggilan rekursif saja</h4><p class="">beda dengan quicksort: hanya sisi yang berisi elemen ke-k yang diteruskan.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Deret geometri</h4><p class="">1 + ½ + ¼ + ... = 2.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Rata-rata</h4><p class="">dengan pivot acak, ukuran sisi yang diteruskan rata-rata sekitar ¾n → tetap Θ(n).</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>k</td><td>peringkat yang dicari (k=n/2 → median)</td></tr><tr><td>T(n/2)</td><td>rekursi hanya ke satu sisi</td></tr><tr><td>+ n</td><td>biaya partisi</td></tr><tr><td>2n</td><td>jumlah deret geometri</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Mengurutkan semua data hanya untuk mengambil satu elemen itu boros. Quickselect <b>membuang sisi yang tidak relevan</b>, sehingga totalnya linear.</div>
+</section>
+
+<section class="slide" id="rxdB" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian B</div>
+<h1 class="title">Teknikal</h1>
+<p class="lead">Setelah teorinya jelas, kita masuk ke algoritma, kode, simulasi, hitung manual, dan jejak eksekusi langkah demi langkah.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Merge Sort - Θ(n log n) terjamin</div><div class="rxtocitem"><span>2</span>Quick Sort - Θ(n log n) rata-rata, O(n²) terburuk</div><div class="rxtocitem"><span>3</span>Binary Search - Θ(log n) dengan syarat: data terurut</div><div class="rxtocitem"><span>4</span>Quickselect - Cari elemen ke-k tanpa sort penuh</div><div class="rxtocitem"><span>5</span>Merge Sort vs Quick Sort - mana yang lebih baik?</div><div class="rxtocitem"><span>6</span>Hitung manual: Banyaknya perbandingan merge sort</div><div class="rxtocitem"><span>7</span>Jejak langkah demi langkah: Banyaknya perbandingan merge sort</div><div class="rxtocitem"><span>8</span>Dari hitungan ke kode: Banyaknya perbandingan merge sort</div><div class="rxtocitem"><span>9</span>Hitung manual: Quicksort: rata-rata vs terburuk</div><div class="rxtocitem"><span>10</span>Jejak langkah demi langkah: Quicksort: rata-rata vs terburuk</div><div class="rxtocitem"><span>11</span>Dari hitungan ke kode: Quicksort: rata-rata vs terburuk</div><div class="rxtocitem"><span>12</span>Hitung manual: Binary search: langkah dan titik tengah</div><div class="rxtocitem"><span>13</span>Jejak langkah demi langkah: Binary search: langkah dan titik tengah</div><div class="rxtocitem"><span>14</span>Dari hitungan ke kode: Binary search: langkah dan titik tengah</div><div class="rxtocitem"><span>15</span>Hitung manual: Quickselect: mencari elemen ke-k</div><div class="rxtocitem"><span>16</span>Jejak langkah demi langkah: Quickselect: mencari elemen ke-k</div><div class="rxtocitem"><span>17</span>Dari hitungan ke kode: Quickselect: mencari elemen ke-k</div></div>
+</section>
+
 <section class="slide" id="s3">
   <div class="kicker">BAGIAN 1 · MERGE SORT</div>
   <h2 class="st">Merge Sort - Θ(n log n) terjamin</h2>
@@ -255,7 +366,6 @@ def merge(L, R):              # O(n)
   <div class="note"><b>Cara membaca rumus:</b><br>• Merge sort: T(n) = 2T(n/2) + Θ(n). Dua bagian setengah ukuran, lalu merge dengan biaya linear.<br>• Hasilnya Θ(n log n) pada semua kasus, karena pembagian selalu sama besar.</div>
 </section>
 
-<!-- 4. QUICK SORT -->
 <section class="slide" id="s4">
   <div class="kicker">BAGIAN 2 · QUICK SORT</div>
   <h2 class="st">Quick Sort - Θ(n log n) rata-rata, O(n²) terburuk</h2>
@@ -295,7 +405,6 @@ def partition(A, lo, hi):
   <div class="note"><b>Cara membaca rumus:</b><br>• Kasus terburuk: T(n) = T(n−1) + n. Pivot selalu memisahkan 0 dan n−1 elemen.<br>• Menjumlahkan: n + (n−1) + … + 1 = n(n+1)/2 = Θ(n²).</div>
 </section>
 
-<!-- 5. BINARY SEARCH -->
 <section class="slide" id="s5">
   <div class="kicker">BAGIAN 3 · BINARY SEARCH</div>
   <h2 class="st">Binary Search - Θ(log n) dengan syarat: data terurut</h2>
@@ -332,7 +441,6 @@ def partition(A, lo, hi):
   <div class="note"><b>Cara membaca rumus:</b><br>• T(n) = T(n/2) + 1: tiap langkah membuang setengah data dan hanya melakukan 1 perbandingan.<br>• Master Theorem kasus 2 dengan a = 1, b = 2, d = 0 → Θ(log n).<br>• log₂100.000 ≈ 17, artinya cukup 17 langkah untuk 100 ribu data.</div>
 </section>
 
-<!-- 6. QUICKSELECT -->
 <section class="slide" id="s6">
   <div class="kicker">BAGIAN 4 · QUICKSELECT</div>
   <h2 class="st">Quickselect - Cari elemen ke-k tanpa sort penuh</h2>
@@ -368,7 +476,6 @@ def partition(A, lo, hi):
   <div class="note"><b>Cara membaca rumus:</b><br>• Dengan pivot rata-rata: T(n) = T(n/2) + n. Biaya partisi n, lalu hanya satu sisi yang dilanjutkan.<br>• Deret n + n/2 + n/4 + … ≤ 2n, sehingga totalnya Θ(n).</div>
 </section>
 
-<!-- 7. MERGE vs QUICK -->
 <section class="slide" id="s7">
   <div class="kicker">PERBANDINGAN</div>
   <h2 class="st">Merge Sort vs Quick Sort - mana yang lebih baik?</h2>
@@ -403,27 +510,8 @@ def partition(A, lo, hi):
   <div class="note"><b>Cara membaca rumus:</b><br>• Θ(n log n) dan Θ(n²) adalah kompleksitas waktu dalam kasus terburuk dan rata-rata.<br>• O(n) dan O(log n) adalah memori tambahan yang dibutuhkan algoritma.</div>
 </section>
 
-<!-- 8. LATIHAN -->
-<!--RX-SLIDES-START-->
-<section class="slide" id="rx0">
-<div class="kicker">Bedah Rumus · Divide and Conquer I</div>
-<h2 class="st">Empat rumus Divide and Conquer dasar</h2>
-<p class="b">Merge sort, quick sort, binary search, dan quickselect sama-sama memecah masalah, tetapi rumus biayanya sangat berbeda. Membaca rumusnya dengan benar membantu memilih algoritma yang tepat.</p>
-<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Banyaknya perbandingan merge sort</b><span>C(n) ≤ n⌈log₂ n⌉</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Quicksort: rata-rata vs terburuk</b><span>≈ 1,39·n log₂ n  vs  n²/2</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Binary search: langkah dan titik tengah</b><span>⌊log₂ n⌋ + 1 langkah; mid = lo + (hi−lo)//2</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Quickselect: mencari elemen ke-k</b><span>T(n) = T(n/2) + n → Θ(n)</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
-</section>
-<section class="slide" id="rx1a">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Banyaknya perbandingan merge sort</h2>
-<div class="fxbox">C(n) = 2·C(n/2) + (n − 1) &nbsp;⇒&nbsp; C(n) ≤ n·<span class='hl'>⌈log<sub>2</sub> n⌉</span></div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“C dari n sama dengan dua kali C dari n per dua ditambah n kurang satu, sehingga C dari n paling banyak n kali langit-langit log dua n.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>C(n)</h4><p class="">banyaknya perbandingan untuk mengurutkan n elemen.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>n − 1</h4><p class="">merge dua daftar terurut berukuran total n butuh paling banyak n − 1 perbandingan.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>⌈ ⌉ = ceiling</h4><p class="">bulatkan ke atas: ⌈log₂ 1000⌉ = 10.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>C(n)</td><td>jumlah perbandingan (worst case)</td></tr><tr><td>2·C(n/2)</td><td>mengurutkan dua separuh</td></tr><tr><td>n − 1</td><td>biaya merge</td></tr><tr><td>⌈log₂ n⌉</td><td>banyaknya level penggabungan</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Merge sort tidak peduli isi data: selalu dibelah tepat di tengah. Karena itu <b>batasnya terjamin</b>, tidak ada kasus buruk tersembunyi.</div>
-</section>
-<section class="slide" id="rx1m">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 2: hitung manual</div>
+<section class="slide" id="rx1m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/4 - hitung manual</div>
 <h2 class="st">Hitung manual: Banyaknya perbandingan merge sort</h2>
 <div class="rxsoal"><b>Soal:</b> Hitung banyaknya perbandingan merge sort untuk [5, 2, 4, 7, 1, 3, 2, 6].</div>
 <div class="cols c2">
@@ -432,19 +520,20 @@ def partition(A, lo, hi):
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> 17 perbandingan → [1, 2, 2, 3, 4, 5, 6, 7].</div>
 </section>
-<section class="slide" id="rx1t">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 2b: jejak step-by-step</div>
+
+<section class="slide" id="rx1t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/4 - jejak step-by-step</div>
 <h2 class="st">Jejak langkah demi langkah: Banyaknya perbandingan merge sort</h2>
 <div class="rxsoal"><b>Kasus:</b> Langkah merge: gabungkan [2, 4, 5, 7] dan [1, 2, 3, 6] dengan dua penunjuk i dan j.</div>
 <div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu perbandingan. Elemen yang diambil disorot dan ditambahkan ke ujung output. Jika sama, ambil kiri (stable). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
 <table class="rxtrace"><tr><th>#</th><th>kiri</th><th>kanan</th><th>perbandingan</th><th>output</th></tr><tr><td>1</td><td>[2, 4, 5, 7]</td><td>[<b class='chg'>1</b>, 2, 3, 6]</td><td>2 &gt; 1 → ambil kanan</td><td>[<b class='chg'>1</b>]</td></tr><tr><td>2</td><td>[<b class='chg'>2</b>, 4, 5, 7]</td><td>[1, 2, 3, 6]</td><td>2 ≤ 2 → ambil kiri</td><td>[1, <b class='chg'>2</b>]</td></tr><tr><td>3</td><td>[2, 4, 5, 7]</td><td>[1, <b class='chg'>2</b>, 3, 6]</td><td>4 &gt; 2 → ambil kanan</td><td>[1, 2, <b class='chg'>2</b>]</td></tr><tr><td>4</td><td>[2, 4, 5, 7]</td><td>[1, 2, <b class='chg'>3</b>, 6]</td><td>4 &gt; 3 → ambil kanan</td><td>[1, 2, 2, <b class='chg'>3</b>]</td></tr><tr><td>5</td><td>[2, <b class='chg'>4</b>, 5, 7]</td><td>[1, 2, 3, 6]</td><td>4 ≤ 6 → ambil kiri</td><td>[1, 2, 2, 3, <b class='chg'>4</b>]</td></tr><tr><td>6</td><td>[2, 4, <b class='chg'>5</b>, 7]</td><td>[1, 2, 3, 6]</td><td>5 ≤ 6 → ambil kiri</td><td>[1, 2, 2, 3, 4, <b class='chg'>5</b>]</td></tr><tr><td>7</td><td>[2, 4, 5, 7]</td><td>[1, 2, 3, <b class='chg'>6</b>]</td><td>7 &gt; 6 → ambil kanan</td><td>[1, 2, 2, 3, 4, 5, <b class='chg'>6</b>]</td></tr><tr><td>-</td><td></td><td></td><td>sisa [7] disalin tanpa perbandingan</td><td>[1, 2, 2, 3, 4, 5, 6, 7]</td></tr></table>
 <div class="rxhasil"><b>Hasil akhir jejak:</b> 7 perbandingan (≤ n − 1 = 7) untuk menggabungkan 8 elemen.</div>
 </section>
-<section class="slide" id="rx1b">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
-<h2 class="st">Mengurutkan 1 juta transaksi</h2>
-<div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>Timsort</b> (sort bawaan Python dan Java untuk objek) adalah turunan merge sort. Batas n log n yang stabil dan terjamin membuatnya cocok untuk mengurutkan data transaksi yang harus <i>stable</i> - urutan transaksi dengan tanggal sama tidak berubah.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 8</h4><p class="">≤ 8 × 3 = 24 perbandingan (hitungan persis: 17).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>n = 1.000</h4><p class="">≤ 1.000 × 10 = 10.000 perbandingan.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>n = 1.000.000</h4><p class="">≤ 10⁶ × 20 = 2×10⁷ perbandingan.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Bandingkan</h4><p class="">insertion sort ≈ n²/2 = 5×10¹¹ - 25.000× lebih banyak.</p></div></div></div></div></div>
+
+<section class="slide" id="rx1b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Banyaknya perbandingan merge sort</h2>
+<div class="cols c2l">
 <div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> merge_sort(a):
     <span class="tk">if</span> <span class="tk">len</span>(a) &lt;= <span class="tn">1</span>: <span class="tk">return</span> a
     m = <span class="tk">len</span>(a) // <span class="tn">2</span>
@@ -453,22 +542,16 @@ def partition(A, lo, hi):
     <span class="tk">while</span> i &lt; <span class="tk">len</span>(L) <span class="tk">and</span> j &lt; <span class="tk">len</span>(R):
         <span class="tk">if</span> L[i] &lt;= R[j]: out.append(L[i]); i += <span class="tn">1</span>
         <span class="tk">else</span>:            out.append(R[j]); j += <span class="tn">1</span>
-    <span class="tk">return</span> out + L[i:] + R[j:]</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+    <span class="tk">return</span> out + L[i:] + R[j:]</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">17 perbandingan → [1, 2, 2, 3, 4, 5, 6, 7].</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>7 perbandingan (≤ n − 1 = 7) untuk menggabungkan 8 elemen.</p></div>
 </div>
-<div class="analogy"><b>Bawa pulang:</b> Merge sort = n log n dijamin dan stable. Harganya: memori tambahan Θ(n).</div>
-</section>
-<section class="slide" id="rx2a">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Quicksort: rata-rata vs terburuk</h2>
-<div class="fxbox">Rata-rata: <span class='hg'>2n·ln n ≈ 1,39·n log<sub>2</sub> n</span> &nbsp;&nbsp;|&nbsp;&nbsp; Terburuk: <span class='hl'>T(n) = T(n−1) + n = Θ(n²)</span></div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Rata-rata quicksort butuh dua n kali log natural n perbandingan, kira-kira satu koma tiga sembilan n log dua n. Kasus terburuknya T dari n sama dengan T dari n kurang satu tambah n, Theta n kuadrat.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>ln = log natural</h4><p class="">ln n = log₂ n × 0,693 → 2 ln n ≈ 1,39 log₂ n.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Rata-rata</h4><p class="">pivot acak rata-rata membagi data cukup seimbang.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Terburuk</h4><p class="">pivot selalu elemen terkecil/terbesar → satu sisi kosong.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>ln n</td><td>logaritma natural (basis e ≈ 2,718)</td></tr><tr><td>1,39</td><td>konstanta: quicksort ~39% lebih banyak perbandingan dari batas ideal</td></tr><tr><td>T(n−1)</td><td>sisi partisi yang hanya berkurang 1</td></tr></table></div>
 </div>
-<div class="note"><b>Intuisinya:</b> Walau perbandingannya sedikit lebih banyak dari merge sort, quicksort bekerja <b>in-place dan ramah cache</b>, jadi biasanya lebih cepat di praktik - asalkan pivotnya tidak sial.</div>
 </section>
-<section class="slide" id="rx2m">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 2: hitung manual</div>
+
+<section class="slide" id="rx2m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/4 - hitung manual</div>
 <h2 class="st">Hitung manual: Quicksort: rata-rata vs terburuk</h2>
 <div class="rxsoal"><b>Soal:</b> Bandingkan perbandingan quicksort (pivot = elemen pertama) pada [3, 1, 4, 5, 2] dan pada [1, 2, 3, 4, 5].</div>
 <div class="cols c2">
@@ -477,19 +560,20 @@ def partition(A, lo, hi):
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Data acak 6 vs terurut 10 perbandingan; untuk n = 1.000 bedanya ±36×.</div>
 </section>
-<section class="slide" id="rx2t">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 2b: jejak step-by-step</div>
+
+<section class="slide" id="rx2t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/4 - jejak step-by-step</div>
 <h2 class="st">Jejak langkah demi langkah: Quicksort: rata-rata vs terburuk</h2>
 <div class="rxsoal"><b>Kasus:</b> Quicksort [4, 7, 2, 6, 1, 5, 3] dengan pivot = elemen pertama.</div>
 <div class="rxhow"><b>Cara membaca jejak:</b> Pivot disorot. Setiap baris = satu partisi: elemen &lt; pivot ke kiri, &gt; pivot ke kanan. Indentasi = kedalaman rekursi. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
 <table class="rxtrace"><tr><th>#</th><th>subarray</th><th>pivot</th><th>kiri</th><th>sama</th><th>kanan</th><th>perbandingan</th></tr><tr><td>1</td><td>[<b class='chg'>4</b>, 7, 2, 6, 1, 5, 3]</td><td>4</td><td>[2, 1, 3]</td><td>[4]</td><td>[7, 6, 5]</td><td>6</td></tr><tr><td>2</td><td>&nbsp;&nbsp;[<b class='chg'>2</b>, 1, 3]</td><td>2</td><td>[1]</td><td>[2]</td><td>[3]</td><td>2</td></tr><tr><td>3</td><td>&nbsp;&nbsp;[<b class='chg'>7</b>, 6, 5]</td><td>7</td><td>[6, 5]</td><td>[7]</td><td>[]</td><td>2</td></tr><tr><td>4</td><td>&nbsp;&nbsp;&nbsp;&nbsp;[<b class='chg'>6</b>, 5]</td><td>6</td><td>[5]</td><td>[6]</td><td>[]</td><td>1</td></tr></table>
 <div class="rxhasil"><b>Hasil akhir jejak:</b> Hasil [1, 2, 3, 4, 5, 6, 7] dengan total 11 perbandingan (data acak → pembagian cukup seimbang).</div>
 </section>
-<section class="slide" id="rx2b">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
-<h2 class="st">Serangan input terurut dan solusinya</h2>
-<div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Penyerang bisa <b>menyusun input secara sengaja</b> agar algoritma jatuh ke kasus terburuk (<i>algorithmic complexity attack</i>; contoh terkenal: hashDoS 2011 dan “McIlroy killer” untuk quicksort). Karena itu <i>std::sort</i> C++ memakai introsort: quicksort biasa, tetapi beralih ke heapsort bila kedalaman rekursi melebihi 2·log₂ n.</p></div></div>
+
+<section class="slide" id="rx2b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Quicksort: rata-rata vs terburuk</h2>
+<div class="cols c2l">
 <div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> random
 <span class="tk">def</span> quicksort(a):
     <span class="tk">if</span> <span class="tk">len</span>(a) &lt;= <span class="tn">1</span>: <span class="tk">return</span> a
@@ -497,22 +581,16 @@ def partition(A, lo, hi):
     kiri  = [x <span class="tk">for</span> x <span class="tk">in</span> a <span class="tk">if</span> x &lt; p]
     sama  = [x <span class="tk">for</span> x <span class="tk">in</span> a <span class="tk">if</span> x == p]
     kanan = [x <span class="tk">for</span> x <span class="tk">in</span> a <span class="tk">if</span> x &gt; p]
-    <span class="tk">return</span> quicksort(kiri) + sama + quicksort(kanan)</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+    <span class="tk">return</span> quicksort(kiri) + sama + quicksort(kanan)</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Data acak 6 vs terurut 10 perbandingan; untuk n = 1.000 bedanya ±36×.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Hasil [1, 2, 3, 4, 5, 6, 7] dengan total 11 perbandingan (data acak → pembagian cukup seimbang).</p></div>
 </div>
-<div class="analogy"><b>Bawa pulang:</b> Quicksort cepat rata-rata, tetapi jangan pernah memakai pivot tetap pada data yang mungkin sudah terurut.</div>
-</section>
-<section class="slide" id="rx3a">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Binary search: langkah dan titik tengah</h2>
-<div class="fxbox">langkah<sub>maks</sub> = <span class='hl'>⌊log<sub>2</sub> n⌋ + 1</span>, &nbsp;&nbsp; mid = <span class='hb'>lo + ⌊(hi − lo)/2⌋</span></div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Langkah maksimal adalah lantai log dua n ditambah satu. Indeks tengah adalah lo ditambah lantai dari hi kurang lo dibagi dua.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>⌊log₂ n⌋ + 1</h4><p class="">berapa kali ruang [lo, hi] bisa dibelah sampai tersisa satu elemen.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Kenapa bukan (lo+hi)/2?</h4><p class="">di Java/C, lo + hi bisa melebihi batas int (overflow).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>lo + (hi − lo)/2</h4><p class="">nilainya sama, tetapi tidak pernah overflow.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>lo, hi</td><td>batas kiri dan kanan ruang pencarian</td></tr><tr><td>mid</td><td>indeks yang dicek di langkah ini</td></tr><tr><td>⌊x⌋</td><td>pembulatan ke bawah</td></tr><tr><td>n</td><td>jumlah elemen terurut</td></tr></table></div>
 </div>
-<div class="note"><b>Intuisinya:</b> Setiap perbandingan membuang separuh kandidat. Syarat mutlaknya: <b>data harus terurut</b> (atau fungsi kondisinya monoton).</div>
 </section>
-<section class="slide" id="rx3m">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 2: hitung manual</div>
+
+<section class="slide" id="rx3m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/4 - hitung manual</div>
 <h2 class="st">Hitung manual: Binary search: langkah dan titik tengah</h2>
 <div class="rxsoal"><b>Soal:</b> Cari x = 66 di [3, 8, 15, 21, 30, 42, 57, 66, 71, 90] dengan binary search.</div>
 <div class="cols c2">
@@ -521,19 +599,20 @@ def partition(A, lo, hi):
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Ketemu di indeks 7 dalam 2 langkah (maksimum 4).</div>
 </section>
-<section class="slide" id="rx3t">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 2b: jejak step-by-step</div>
+
+<section class="slide" id="rx3t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/4 - jejak step-by-step</div>
 <h2 class="st">Jejak langkah demi langkah: Binary search: langkah dan titik tengah</h2>
 <div class="rxsoal"><b>Kasus:</b> Binary search di a = [3, 8, 15, 21, 30, 42, 57, 66, 71, 90] untuk x = 66 (ada) dan x = 5 (tidak ada).</div>
 <div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu iterasi while. Hitung mid dengan rumus lo + (hi − lo)//2, bandingkan a[mid], lalu geser lo atau hi. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
 <table class="rxtrace"><tr><th>x</th><th>lo</th><th>hi</th><th>mid</th><th>a[mid]</th><th>aksi</th></tr><tr><td>66</td><td>0</td><td>9</td><td>0 + (9−0)//2 = 4</td><td>30</td><td>30 &lt; 66 → lo = 5</td></tr><tr><td>66</td><td>5</td><td>9</td><td>5 + (9−5)//2 = 7</td><td>66</td><td><b class='chg'>ketemu</b></td></tr><tr><td>5</td><td>0</td><td>9</td><td>0 + (9−0)//2 = 4</td><td>30</td><td>30 &gt; 5 → hi = 3</td></tr><tr><td>5</td><td>0</td><td>3</td><td>0 + (3−0)//2 = 1</td><td>8</td><td>8 &gt; 5 → hi = 0</td></tr><tr><td>5</td><td>0</td><td>0</td><td>0 + (0−0)//2 = 0</td><td>3</td><td>3 &lt; 5 → lo = 1</td></tr><tr><td>5</td><td>1</td><td>0</td><td>-</td><td>-</td><td><b class='chg'>lo &gt; hi → tidak ada</b></td></tr></table>
 <div class="rxhasil"><b>Hasil akhir jejak:</b> x = 66 ketemu di iterasi ke-2; x = 5 dipastikan tidak ada setelah 3 iterasi (maks 4).</div>
 </section>
-<section class="slide" id="rx3b">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
-<h2 class="st">Mencari versi aplikasi yang membuat crash</h2>
-<div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Selain mencari di array, binary search dipakai pada <b>jawaban</b>: “berapa kapasitas server minimum agar semua request selesai &lt; 1 detik?” Jika kondisinya monoton, kita bisa binary search pada nilai kapasitas. Teknik ini disebut <i>binary search on the answer</i>.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 1.000.000 versi</h4><p class="">⌊19,93⌋ + 1 = 20 langkah.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Langkah 1</h4><p class="">lo=0, hi=999.999 → mid = 499.999.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Langkah 2 (crash di kanan)</h4><p class="">lo=500.000 → mid = 500.000 + 249.999 = 749.999.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Bug terkenal</h4><p class="">Java Arrays.binarySearch pernah memakai (lo+hi)/2 dan rusak untuk array &gt; 2³⁰ elemen (2006).</p></div></div></div></div></div>
+
+<section class="slide" id="rx3b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Binary search: langkah dan titik tengah</h2>
+<div class="cols c2l">
 <div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> binary_search(a, x):
     lo, hi = <span class="tn">0</span>, <span class="tk">len</span>(a) - <span class="tn">1</span>
     <span class="tk">while</span> lo &lt;= hi:
@@ -541,22 +620,16 @@ def partition(A, lo, hi):
         <span class="tk">if</span> a[mid] == x: <span class="tk">return</span> mid
         <span class="tk">if</span> a[mid] &lt; x:  lo = mid + <span class="tn">1</span>
         <span class="tk">else</span>:           hi = mid - <span class="tn">1</span>
-    <span class="tk">return</span> -<span class="tn">1</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+    <span class="tk">return</span> -<span class="tn">1</span></pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Ketemu di indeks 7 dalam 2 langkah (maksimum 4).</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>x = 66 ketemu di iterasi ke-2; x = 5 dipastikan tidak ada setelah 3 iterasi (maks 4).</p></div>
 </div>
-<div class="analogy"><b>Bawa pulang:</b> log₂ n langkah, data wajib terurut, dan tulis mid = lo + (hi − lo)//2.</div>
-</section>
-<section class="slide" id="rx4a">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Quickselect: mencari elemen ke-k</h2>
-<div class="fxbox">T(n) = T(n/<span class='hl'>2</span>) + <span class='hb'>n</span> = n + n/2 + n/4 + … ≤ <span class='hl'>2n</span> = Θ(n)</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“T dari n sama dengan T dari n per dua ditambah n, yaitu n tambah n per dua tambah n per empat dan seterusnya, paling banyak dua n, Theta n.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Satu panggilan rekursif saja</h4><p class="">beda dengan quicksort: hanya sisi yang berisi elemen ke-k yang diteruskan.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Deret geometri</h4><p class="">1 + ½ + ¼ + ... = 2.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Rata-rata</h4><p class="">dengan pivot acak, ukuran sisi yang diteruskan rata-rata sekitar ¾n → tetap Θ(n).</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>k</td><td>peringkat yang dicari (k=n/2 → median)</td></tr><tr><td>T(n/2)</td><td>rekursi hanya ke satu sisi</td></tr><tr><td>+ n</td><td>biaya partisi</td></tr><tr><td>2n</td><td>jumlah deret geometri</td></tr></table></div>
 </div>
-<div class="note"><b>Intuisinya:</b> Mengurutkan semua data hanya untuk mengambil satu elemen itu boros. Quickselect <b>membuang sisi yang tidak relevan</b>, sehingga totalnya linear.</div>
 </section>
-<section class="slide" id="rx4m">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 2: hitung manual</div>
+
+<section class="slide" id="rx4m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/4 - hitung manual</div>
 <h2 class="st">Hitung manual: Quickselect: mencari elemen ke-k</h2>
 <div class="rxsoal"><b>Soal:</b> Cari elemen terkecil ke-k = 3 (0-based) dari [7, 2, 9, 4, 1, 8, 3] dengan quickselect (pivot = elemen pertama).</div>
 <div class="cols c2">
@@ -565,19 +638,20 @@ def partition(A, lo, hi):
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Elemen terkecil ke-3 (0-based) = 4, ditemukan tanpa mengurutkan semua data.</div>
 </section>
-<section class="slide" id="rx4t">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 2b: jejak step-by-step</div>
+
+<section class="slide" id="rx4t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/4 - jejak step-by-step</div>
 <h2 class="st">Jejak langkah demi langkah: Quickselect: mencari elemen ke-k</h2>
 <div class="rxsoal"><b>Kasus:</b> Quickselect: cari elemen terkecil ke-3 (0-based) dari [7, 2, 9, 4, 1, 8, 3], pivot = elemen pertama.</div>
 <div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu partisi. Berbeda dari quicksort, hanya SATU sisi yang diteruskan, sehingga ukuran data mengecil tiap baris. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
 <table class="rxtrace"><tr><th>#</th><th>data</th><th>k</th><th>pivot</th><th>kiri</th><th>kanan</th><th>keputusan</th></tr><tr><td>1</td><td>[<b class='chg'>7</b>, 2, 9, 4, 1, 8, 3]</td><td>3</td><td>7</td><td>[2, 4, 1, 3]</td><td>[9, 8]</td><td>k = 3 &lt; |kiri| = 4 → cari di kiri</td></tr><tr><td>2</td><td>[<b class='chg'>2</b>, 4, 1, 3]</td><td>3</td><td>2</td><td>[1]</td><td>[4, 3]</td><td>k ≥ 2 → cari di kanan, k = 3 − 2 = 1</td></tr><tr><td>3</td><td>[<b class='chg'>4</b>, 3]</td><td>1</td><td>4</td><td>[3]</td><td>[]</td><td><b class='chg'>k = 1 jatuh di pivot → jawab 4</b></td></tr></table>
 <div class="rxhasil"><b>Hasil akhir jejak:</b> Jawaban 4 setelah 3 partisi (memindai 7 + 4 + 2 = 13 elemen).</div>
 </section>
-<section class="slide" id="rx4b">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
-<h2 class="st">Menghitung latensi p95 di monitoring</h2>
-<div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Dashboard observability (Prometheus, Datadog) menampilkan <b>p50/p95/p99 latensi</b>. Di Python, <i>numpy.partition</i> dan <i>numpy.percentile</i> memakai introselect (keluarga quickselect) - bukan sort penuh.</p></div></div>
+
+<section class="slide" id="rx4b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Quickselect: mencari elemen ke-k</h2>
+<div class="cols c2l">
 <div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> random
 <span class="tk">def</span> quickselect(a, k):              <span class="tc"># elemen terkecil ke-k (0-based)</span>
     p = random.choice(a)
@@ -586,11 +660,21 @@ def partition(A, lo, hi):
     <span class="tk">if</span> k &lt; <span class="tk">len</span>(kiri):               <span class="tk">return</span> quickselect(kiri, k)
     <span class="tk">if</span> k &lt; <span class="tk">len</span>(kiri) + <span class="tk">len</span>(sama):   <span class="tk">return</span> p
     kanan = [x <span class="tk">for</span> x <span class="tk">in</span> a <span class="tk">if</span> x &gt; p]
-    <span class="tk">return</span> quickselect(kanan, k - <span class="tk">len</span>(kiri) - <span class="tk">len</span>(sama))</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+    <span class="tk">return</span> quickselect(kanan, k - <span class="tk">len</span>(kiri) - <span class="tk">len</span>(sama))</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Elemen terkecil ke-3 (0-based) = 4, ditemukan tanpa mengurutkan semua data.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Jawaban 4 setelah 3 partisi (memindai 7 + 4 + 2 = 13 elemen).</p></div>
 </div>
-<div class="analogy"><b>Bawa pulang:</b> Butuh satu peringkat (median, p95)? Jangan sort - pakai quickselect, Θ(n).</div>
+</div>
 </section>
-<!--RX-SLIDES-END-->
+
+<section class="slide" id="rxdL" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian C</div>
+<h1 class="title">Latihan</h1>
+<p class="lead">Uji pemahaman teori dan teknikal sebelum melihat penerapannya di dunia nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Soal Divide and Conquer I</div><div class="rxtocitem"><span>2</span>Kunci Divide and Conquer I</div></div>
+</section>
+
 <section class="slide" id="s8">
   <div class="kicker">LATIHAN</div>
   <h2 class="st">Soal Divide and Conquer I</h2>
@@ -603,7 +687,6 @@ def partition(A, lo, hi):
   </div>
 </section>
 
-<!-- 9. KUNCI -->
 <section class="slide" id="s9">
   <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
   <h2 class="st">Kunci Divide and Conquer I</h2>
@@ -616,7 +699,53 @@ def partition(A, lo, hi):
   </div>
 </section>
 
-<!-- 10. PENUTUP -->
+<section class="slide" id="rxdD" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian D</div>
+<h1 class="title">Studi kasus nyata</h1>
+<p class="lead">Penutup materi: di mana semua teori dan teknik tadi dipakai di industri, AI, dan proyek nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Mengurutkan 1 juta transaksi</div><div class="rxtocitem"><span>2</span>Serangan input terurut dan solusinya</div><div class="rxtocitem"><span>3</span>Mencari versi aplikasi yang membuat crash</div><div class="rxtocitem"><span>4</span>Menghitung latensi p95 di monitoring</div></div>
+</section>
+
+<section class="slide" id="rx1c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 1/4</div>
+<h2 class="st">Mengurutkan 1 juta transaksi</h2>
+<div class="cols c2">
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>Timsort</b> (sort bawaan Python dan Java untuk objek) adalah turunan merge sort. Batas n log n yang stabil dan terjamin membuatnya cocok untuk mengurutkan data transaksi yang harus <i>stable</i> - urutan transaksi dengan tanggal sama tidak berubah.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 8</h4><p class="">≤ 8 × 3 = 24 perbandingan (hitungan persis: 17).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>n = 1.000</h4><p class="">≤ 1.000 × 10 = 10.000 perbandingan.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>n = 1.000.000</h4><p class="">≤ 10⁶ × 20 = 2×10⁷ perbandingan.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Bandingkan</h4><p class="">insertion sort ≈ n²/2 = 5×10¹¹ - 25.000× lebih banyak.</p></div></div></div></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Merge sort = n log n dijamin dan stable. Harganya: memori tambahan Θ(n).</div>
+</section>
+
+<section class="slide" id="rx2c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 2/4</div>
+<h2 class="st">Serangan input terurut dan solusinya</h2>
+<div class="cols c2">
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Penyerang bisa <b>menyusun input secara sengaja</b> agar algoritma jatuh ke kasus terburuk (<i>algorithmic complexity attack</i>; contoh terkenal: hashDoS 2011 dan “McIlroy killer” untuk quicksort). Karena itu <i>std::sort</i> C++ memakai introsort: quicksort biasa, tetapi beralih ke heapsort bila kedalaman rekursi melebihi 2·log₂ n.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 10⁶, pivot acak</h4><p class="">≈ 1,39 × 10⁶ × 20 ≈ 2,8×10⁷ perbandingan.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>n = 10⁶, data terurut, pivot = elemen pertama</h4><p class="">≈ 5×10¹¹ perbandingan.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Rasio</h4><p class="">≈ 18.000× lebih lambat.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Solusi</h4><p class="">pivot acak / median-of-three / introsort.</p></div></div></div></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Quicksort cepat rata-rata, tetapi jangan pernah memakai pivot tetap pada data yang mungkin sudah terurut.</div>
+</section>
+
+<section class="slide" id="rx3c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 3/4</div>
+<h2 class="st">Mencari versi aplikasi yang membuat crash</h2>
+<div class="cols c2">
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Selain mencari di array, binary search dipakai pada <b>jawaban</b>: “berapa kapasitas server minimum agar semua request selesai &lt; 1 detik?” Jika kondisinya monoton, kita bisa binary search pada nilai kapasitas. Teknik ini disebut <i>binary search on the answer</i>.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 1.000.000 versi</h4><p class="">⌊19,93⌋ + 1 = 20 langkah.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Langkah 1</h4><p class="">lo=0, hi=999.999 → mid = 499.999.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Langkah 2 (crash di kanan)</h4><p class="">lo=500.000 → mid = 500.000 + 249.999 = 749.999.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Bug terkenal</h4><p class="">Java Arrays.binarySearch pernah memakai (lo+hi)/2 dan rusak untuk array &gt; 2³⁰ elemen (2006).</p></div></div></div></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> log₂ n langkah, data wajib terurut, dan tulis mid = lo + (hi − lo)//2.</div>
+</section>
+
+<section class="slide" id="rx4c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 4/4</div>
+<h2 class="st">Menghitung latensi p95 di monitoring</h2>
+<div class="cols c2">
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Dashboard observability (Prometheus, Datadog) menampilkan <b>p50/p95/p99 latensi</b>. Di Python, <i>numpy.partition</i> dan <i>numpy.percentile</i> memakai introselect (keluarga quickselect) - bukan sort penuh.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Data</h4><p class="">10 juta catatan latensi request per jam.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Sort penuh</h4><p class="">≈ 10⁷ × 23 ≈ 2,3×10⁸ operasi.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Quickselect k = 0,95n</h4><p class="">≈ 2 × 10⁷ operasi rata-rata.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Hasil</h4><p class="">~10× lebih cepat untuk satu persentil.</p></div></div></div></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Butuh satu peringkat (median, p95)? Jangan sort - pakai quickselect, Θ(n).</div>
+</section>
+
 <section class="slide" id="s10" style="justify-content:center;align-items:center;text-align:center">
   <div class="kicker">PERTEMUAN 4 · SELESAI</div>
   <h2 class="st" style="font-size:30px;margin:10px 0">Belah dua, selesaikan,<br>gabungkan - sederhana tapi kuat.</h2>

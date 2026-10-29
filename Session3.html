@@ -142,6 +142,14 @@ table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
 .rxtrace td:first-child{color:#64748b;font-weight:700}
 b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
 .rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
+.rxg3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.rxwtrack{display:flex;gap:6px;flex:none}
+.rxwtrack span{font:800 12px/1 -apple-system,'Segoe UI',Arial,sans-serif;letter-spacing:.08em;padding:6px 10px;border-radius:20px;background:#f1f5f9;color:#94a3b8;border:2px solid #e2e8f0}
+.rxwtrack span.on{background:#2563eb;color:#fff;border-color:#2563eb}
+.rxtoc{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+.rxtocitem{display:flex;gap:10px;align-items:baseline;font-size:15px;line-height:1.4;color:#334155;border-bottom:1px dashed #e2e8f0;padding:3px 0}
+.rxg3.big .rxcard{padding:18px 20px}.rxg3.big .rxcard h3{font-size:20px;margin-bottom:10px}.rxg3.big .rxcard p{font-size:17px;line-height:1.65}
+.rxtocitem span{flex:none;min-width:26px;font:800 13px Consolas,monospace;color:#2563eb}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -181,22 +189,6 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · <a href="index.html" style="color:#2563eb;font-size:12px">← Daftar Materi</a></div>
 </section>
 
-<!-- 5W1H -->
-<section class="slide" id="s5w1h">
-  <div class="kicker">KERANGKA TEORI · 5W1H - Brute Force dan Pencarian Ruang Keadaan</div>
-  <h2 class="st">Kenapa materi ini ada, untuk siapa, dan bagaimana memakainya?</h2>
-  <div class="w5h1" style="margin-top:6px">
-    <div class="wcard what"><div class="wlabel">What - Apa?</div><p>Brute force = coba semua kemungkinan secara sistematis, pilih yang terbaik. Pencarian ruang keadaan = modelkan masalah sebagai graf state→goal, lalu cari jalur dengan BFS/DFS/IDDFS. Keduanya adalah fondasi sebelum teknik lebih canggih (greedy, DP, heuristik) diperkenalkan.</p></div>
-    <div class="wcard why"><div class="wlabel">Why - Mengapa?</div><p>Setiap algoritma canggih butuh baseline yang jelas dan pasti benar. Brute force adalah baseline tersebut. Pencarian ruang keadaan adalah cara formal memecahkan masalah AI - perencanaan, game-playing, puzzle - semuanya bermula dari framework ini sebelum A* dan MCTS dikembangkan.</p></div>
-    <div class="wcard who"><div class="wlabel">Who - Siapa?</div><p>Programmer yang baru mulai menyelesaikan masalah baru (brute force dulu sebagai verifikasi), peneliti AI yang merancang agent berbasis search, developer game yang butuh pathfinding, dan kandidat coding interview yang harus tahu kapan brute force cukup vs kapan perlu dioptimasi.</p></div>
-    <div class="wcard when"><div class="wlabel">When - Kapan?</div><p>Brute force: saat n sangat kecil (n ≤ 15), butuh verifikasi solusi, atau sebagai langkah pertama sebelum optimasi. BFS: cari jalur terpendek di graf unweighted. DFS: topological sort, cycle detection. IDDFS: saat butuh optimalitas BFS dengan memori DFS.</p></div>
-    <div class="wcard where"><div class="wlabel">Where - Di mana?</div><p>Brute force di: testing, kriptografi (key exhaustion), small-n optimization. BFS di: web crawling, social network shortest hop. DFS di: maze generation, compiler dependency resolution. IDDFS di: chess engine, puzzle solver AI. Semua dipakai langsung di library python-constraint, OpenAI Gym, dan game engine.</p></div>
-    <div class="wcard how"><div class="wlabel">How - Bagaimana?</div><p>Brute force: generate semua kandidat → evaluasi → simpan terbaik. BFS: antrian FIFO, jelajah level per level, O(b^d) waktu + memori. DFS: stack LIFO, depth-first, O(b·d) memori. IDDFS: ulangi DFS dengan batas kedalaman naik 0,1,2,... - waktu O(b^d) memori O(b·d) seperti DFS, optimalitas seperti BFS.</p></div>
-  </div>
-</section>
-
-<!-- 2. AGENDA -->
-<!-- PETA LANGKAH -->
 <section class="slide" id="speta">
   <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
   <h2 class="st">Peta langkah: dari brute force ke pencarian pintar</h2>
@@ -236,7 +228,67 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   </div>
 </section>
 
-<!-- 3. BRUTE FORCE -->
+<section class="slide" id="rxdA" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A</div>
+<h1 class="title">Teori</h1>
+<p class="lead">Kita mulai dari dasar: 5W1H dipecah per slide (What, Why, Who, When, Where, How), lalu konsep inti dan cara membaca setiap rumus.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>WHAT - Apa itu brute force dan pencarian ruang keadaan?</div><div class="rxtocitem"><span>2</span>WHY - Mengapa brute force masih dipelajari?</div><div class="rxtocitem"><span>3</span>WHO - Siapa yang memakainya?</div><div class="rxtocitem"><span>4</span>WHEN - Kapan brute force dan BFS/DFS tepat dipakai?</div><div class="rxtocitem"><span>5</span>WHERE - Di mana dipakai di dunia nyata?</div><div class="rxtocitem"><span>6</span>HOW - Bagaimana cara kerjanya?</div><div class="rxtocitem"><span>7</span>Coba semua, pilih yang terbaik</div><div class="rxtocitem"><span>8</span>Ruang keadaan: graf dari semua konfigurasi</div><div class="rxtocitem"><span>9</span>Empat rumus untuk mengukur ledakan ruang pencarian</div><div class="rxtocitem"><span>10</span>Banyaknya rute TSP</div><div class="rxtocitem"><span>11</span>Banyaknya subset: 2ⁿ</div><div class="rxtocitem"><span>12</span>Jumlah simpul yang dikunjungi BFS</div><div class="rxtocitem"><span>13</span>Overhead IDDFS</div></div>
+</section>
+
+<section class="slide" id="rxw1" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (1/6) - WHAT</div>
+<div class="rxwtrack"><span class="on">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHAT - Apa itu brute force dan pencarian ruang keadaan?</h2>
+<p class="b">Brute force = mencoba <b>semua kemungkinan</b> secara sistematis lalu memilih yang terbaik. Pencarian ruang keadaan = memodelkan masalah sebagai graf state → goal, lalu menelusurinya.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Brute force</h3><p>Bangkitkan semua kandidat (permutasi, subset), evaluasi, simpan terbaik.</p></div><div class="rxcard green"><h3>Ruang keadaan</h3><p>State = konfigurasi; aksi = sisi graf; goal = state tujuan.</p></div><div class="rxcard yellow"><h3>Strategi buta</h3><p>BFS (lapis demi lapis), DFS (masuk sedalam mungkin), IDDFS (gabungan keduanya).</p></div></div>
+<div class="rxhow"><b>Contoh:</b> 8-puzzle: setiap susunan ubin adalah state; geser ubin kosong = aksi; susunan terurut = goal.</div>
+</section>
+
+<section class="slide" id="rxw2" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (2/6) - WHY</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="on">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHY - Mengapa brute force masih dipelajari?</h2>
+<p class="b">Karena brute force adalah <b>baseline yang pasti benar</b>, dan pencarian ruang keadaan adalah kerangka dasar AI klasik.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Pembanding</h3><p>Algoritma canggih diuji kebenarannya dengan membandingkan hasilnya ke brute force.</p></div><div class="rxcard green"><h3>Batas realistis</h3><p>Menghitung ledakan n! atau 2ⁿ menunjukkan kapan harus berhenti dan mencari cara lain.</p></div><div class="rxcard yellow"><h3>Fondasi AI</h3><p>Perencanaan, game, puzzle: semuanya dimulai dari BFS/DFS sebelum A* dan MCTS.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Solusi greedy rute kurir diuji pada 8 titik dengan brute force (2.520 rute) untuk memastikan selisihnya kecil.</div>
+</section>
+
+<section class="slide" id="rxw3" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (3/6) - WHO</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="on">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHO - Siapa yang memakainya?</h2>
+<p class="b">Mulai dari pemula sampai peneliti AI.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Programmer</h3><p>Menulis solusi brute force dulu sebagai verifikasi sebelum optimasi.</p></div><div class="rxcard green"><h3>Developer game & robotik</h3><p>Pathfinding, AI musuh, dan perencanaan gerak.</p></div><div class="rxcard yellow"><h3>Peneliti AI</h3><p>Merancang agen pencarian untuk puzzle, perencanaan, dan pembuktian.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Tim kompetisi pemrograman menulis brute force untuk n ≤ 10 sebagai “jawaban kunci” saat menguji solusi cepat.</div>
+</section>
+
+<section class="slide" id="rxw4" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (4/6) - WHEN</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="on">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHEN - Kapan brute force dan BFS/DFS tepat dipakai?</h2>
+<p class="b">Saat ukuran masalah kecil atau saat butuh jaminan.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>n kecil</h3><p>Permutasi aman sampai ±10–11, subset sampai ±25.</p></div><div class="rxcard green"><h3>Butuh jalur terpendek (tanpa bobot)</h3><p>BFS menjamin jumlah langkah minimum.</p></div><div class="rxcard yellow"><h3>Memori terbatas</h3><p>DFS/IDDFS ketika antrian BFS terlalu besar untuk RAM.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Mencari jumlah langkah minimum kuda catur dari a1 ke h8: BFS di graf 64 petak.</div>
+</section>
+
+<section class="slide" id="rxw5" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (5/6) - WHERE</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="on">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHERE - Di mana dipakai di dunia nyata?</h2>
+<p class="b">Lebih sering dari yang dikira.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Keamanan</h3><p>Menguji kekuatan password (brute force kunci) dan fuzzing.</p></div><div class="rxcard green"><h3>Web & jejaring sosial</h3><p>Web crawler (BFS), “derajat koneksi” LinkedIn.</p></div><div class="rxcard yellow"><h3>Game & solver</h3><p>Mesin catur (iterative deepening), solver Sudoku dan Rubik.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Panjang password 8 karakter huruf kecil = 26⁸ ≈ 2×10¹¹ kemungkinan - dasar aturan “minimal 12 karakter”.</div>
+</section>
+
+<section class="slide" id="rxw6" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (6/6) - HOW</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="on">HOW</span></div>
+<h2 class="st">HOW - Bagaimana cara kerjanya?</h2>
+<p class="b">Tiga pola dasar:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Brute force</h3><p>generate semua kandidat → evaluasi → simpan terbaik.</p></div><div class="rxcard green"><h3>BFS</h3><p>antrian FIFO, jelajah level per level; waktu dan memori O(bᵈ).</p></div><div class="rxcard yellow"><h3>DFS / IDDFS</h3><p>stack LIFO; IDDFS mengulang DFS dengan batas kedalaman 0, 1, 2, … - memori O(b·d).</p></div></div>
+<div class="rxhow"><b>Contoh:</b> BFS dari A: ambil A, masukkan B dan C; ambil B, masukkan D dan E; … sampai goal diambil dari antrian.</div>
+</section>
+
 <section class="slide" id="s3">
   <div class="kicker">BAGIAN A · PRINSIP BRUTE FORCE</div>
   <h2 class="st">Coba semua, pilih yang terbaik</h2>
@@ -272,41 +324,6 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• O(10ⁿ): untuk gembok n digit ada 10ⁿ kombinasi, sehingga brute force mencoba sebanyak itu.<br>• Eksponensial berarti tiap digit tambahan mengalikan jumlah percobaan dengan 10.</div>
 </section>
 
-<!-- 4. TSP -->
-<section class="slide" id="s4">
-  <div class="kicker">BAGIAN A · TSP BRUTE FORCE</div>
-  <h2 class="st">Travelling Salesman Problem - O((n−1)!)</h2>
-  <div class="cols c2l">
-    <div class="stack">
-      <p class="b">Diberikan n kota, cari rute terpendek yang mengunjungi semua kota tepat sekali dan kembali ke asal. Solusi brute force: coba <b>semua permutasi</b> kota (kecuali kota awal yang dikunci).</p>
-      <div class="card soft mono" style="font-size:12.5px;line-height:1.85">
-        Jumlah rute = (n−1)!<br>
-        n=5 → 24 rute&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= cepat<br>
-        n=10 → 362.880 rute&nbsp;&nbsp;= masih OK<br>
-        n=15 → 87 miliar rute = hitungan menit<br>
-        n=20 → 1.2×10¹⁷ rute&nbsp;≈ 3.800 tahun
-      </div>
-      <div class="warn"><b>n naik 1, biaya × n.</b> Ini bukan O(n²) atau O(2ⁿ) - ini O(n!). Faktorial tumbuh lebih cepat dari eksponensial. Solusi eksaknya jadi mustahil untuk n ≥ 20.</div>
-    </div>
-    <div class="sim">
-      <div class="cap">Coba sendiri · ekstrapolasi waktu TSP</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap" id="tspChips">
-        <button class="chipbtn" data-n="5">n=5</button>
-        <button class="chipbtn" data-n="8">n=8</button>
-        <button class="chipbtn" data-n="10">n=10</button>
-        <button class="chipbtn" data-n="12">n=12</button>
-        <button class="chipbtn" data-n="15">n=15</button>
-        <button class="chipbtn" data-n="20">n=20</button>
-      </div>
-      <div id="tspOut" class="term" style="min-height:140px">Pilih n di atas…</div>
-      <p class="tiny">Diasumsikan 1 miliar permutasi/detik (komputer modern). Angka sebenarnya bergantung hardware - tapi orde besarnya benar.</p>
-    </div>
-  </div>
-  <!-- RUMUS -->
-  <div class="note"><b>Cara membaca rumus:</b><br>• (n−1)!: jumlah rute TSP jika satu kota dikunci sebagai titik awal, lalu sisanya diurutkan (permutasi).<br>• Contoh: n = 5 → 4! = 24 rute. n = 20 → 19! ≈ 1,2×10¹⁷ rute.<br>• Faktorial tumbuh lebih cepat daripada eksponensial, sehingga n yang besar tidak bisa dihitung secara eksak.</div>
-</section>
-
-<!-- 5. STATE SPACE -->
 <section class="slide" id="s5">
   <div class="kicker">BAGIAN B · PENCARIAN RUANG KEADAAN</div>
   <h2 class="st">Ruang keadaan: graf dari semua konfigurasi</h2>
@@ -346,7 +363,98 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• 9! = 362.880: jumlah keadaan unik pada 8-puzzle (9 ubin, termasuk ubin kosong).<br>• Jumlah state adalah ukuran ruang pencarian yang harus dijelajahi dalam worst case.</div>
 </section>
 
-<!-- 6. BFS -->
+<section class="slide" id="rx0" data-rx="1">
+<div class="kicker">Bagian A · Teori · Bedah Rumus · Brute Force dan Pencarian Ruang Keadaan</div>
+<h2 class="st">Empat rumus untuk mengukur ledakan ruang pencarian</h2>
+<p class="b">Brute force dan pencarian buta gagal bukan karena kodenya salah, tetapi karena jumlah kemungkinannya meledak. Rumus berikut membantu menghitung ledakan itu sebelum menekan tombol Run.</p>
+<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Banyaknya rute TSP</b><span>(n−1)!/2 rute unik</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Banyaknya subset: 2ⁿ</b><span>|P(S)| = 2ⁿ</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Jumlah simpul yang dikunjungi BFS</b><span>1 + b + b² + … + bᵈ = O(bᵈ)</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Overhead IDDFS</b><span>Σ (d−i+1)·bⁱ ≈ bᵈ·(b/(b−1))²</span></div></div></div>
+<div class="note"><b>Alur tiap rumus:</b> di <b>Teori</b> kita belajar <b>cara membaca</b> rumus dan arti tiap simbol. Di <b>Teknikal</b> rumus yang sama dikerjakan lewat <b>hitung manual</b>, <b>jejak step-by-step</b>, lalu <b>kode Python</b>. Di <b>Studi kasus nyata</b> (akhir slide) kita lihat pemakaiannya di proyek nyata.</div>
+</section>
+
+<section class="slide" id="rx1a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 1/4 - cara membaca</div>
+<h2 class="st">Banyaknya rute TSP</h2>
+<div class="fxbox">Rute unik = <span class='hl'>(n − 1)!</span> / <span class='hb'>2</span>, &nbsp;&nbsp; n! = n·(n−1)·(n−2)·…·2·1</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Banyaknya rute unik sama dengan n kurang satu faktorial dibagi dua. n faktorial adalah n kali n kurang satu kali n kurang dua sampai satu.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Tanda seru = faktorial</h4><p class="">5! = 5·4·3·2·1 = 120.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Kenapa (n−1)?</h4><p class="">kota awal ditetapkan (rute melingkar, titik mulai tidak mengubah tur).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Kenapa dibagi 2?</h4><p class="">A→B→C→A sama panjangnya dengan A→C→B→A (arah sebaliknya).</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>n</td><td>banyaknya kota/titik</td></tr><tr><td>!</td><td>faktorial: perkalian semua bilangan 1..n</td></tr><tr><td>÷ 2</td><td>menghapus rute yang hanya berbeda arah</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Faktorial tumbuh <b>lebih cepat dari eksponensial</b>. Menambah satu kota mengalikan jumlah rute dengan n. 20 kota sudah lebih dari 6×10¹⁶ rute.</div>
+</section>
+
+<section class="slide" id="rx2a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 2/4 - cara membaca</div>
+<h2 class="st">Banyaknya subset: 2ⁿ</h2>
+<div class="fxbox">|<span class='hb'>𝒫</span>(S)| = <span class='hl'>2</span><sup>n</sup> &nbsp;&nbsp;(tiap elemen: <span class='hg'>ambil</span> atau <span class='hl'>tidak</span>)</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Banyaknya anggota himpunan kuasa dari S sama dengan dua pangkat n, karena setiap elemen punya dua pilihan: diambil atau tidak.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>𝒫(S) = himpunan kuasa</h4><p class="">kumpulan SEMUA subset dari S, termasuk himpunan kosong dan S sendiri.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>|·| = kardinalitas</h4><p class="">banyaknya anggota.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Aturan perkalian</h4><p class="">2 × 2 × ... × 2 (n kali) = 2ⁿ.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>S</td><td>himpunan berisi n elemen</td></tr><tr><td>𝒫(S)</td><td>power set / himpunan kuasa</td></tr><tr><td>2ⁿ</td><td>banyaknya cara memilih subset</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Setiap elemen adalah <b>saklar on/off</b>. n saklar = 2ⁿ kombinasi. 30 elemen sudah lebih dari 1 miliar subset.</div>
+</section>
+
+<section class="slide" id="rx3a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 3/4 - cara membaca</div>
+<h2 class="st">Jumlah simpul yang dikunjungi BFS</h2>
+<div class="fxbox">N(b, d) = 1 + <span class='hl'>b</span> + <span class='hl'>b</span><sup>2</sup> + … + <span class='hl'>b</span><sup><span class='hb'>d</span></sup> = (b<sup>d+1</sup> − 1)/(b − 1) = O(b<sup>d</sup>)</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“N dari b dan d sama dengan satu tambah b tambah b kuadrat sampai b pangkat d, sama dengan b pangkat d tambah satu kurang satu, dibagi b kurang satu, yaitu Big-O b pangkat d.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Satu suku = satu level</h4><p class="">level 0 ada 1 simpul, level 1 ada b, level 2 ada b², dan seterusnya.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Deret geometri</h4><p class="">jumlahnya punya bentuk tertutup (bᵈ⁺¹ − 1)/(b − 1).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Suku terakhir dominan</h4><p class="">level terdalam berisi hampir semua simpul → O(bᵈ).</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>b</td><td>branching factor: rata-rata banyaknya tetangga/aksi</td></tr><tr><td>d</td><td>kedalaman solusi terdangkal</td></tr><tr><td>N</td><td>total simpul yang dibangkitkan BFS</td></tr><tr><td>O(bᵈ)</td><td>juga besar memori BFS (antrian)</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> BFS menjelajah lapis demi lapis. Karena setiap lapis b kali lebih besar dari sebelumnya, <b>lapisan terakhir saja sudah mendominasi</b> - dan semuanya harus disimpan di antrian.</div>
+</section>
+
+<section class="slide" id="rx4a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 4/4 - cara membaca</div>
+<h2 class="st">Overhead IDDFS</h2>
+<div class="fxbox">N<sub>IDDFS</sub> = Σ<sub>i=0</sub><sup>d</sup> <span class='hl'>(d − i + 1)</span>·b<sup>i</sup> &nbsp;≈&nbsp; b<sup>d</sup> · <span class='hb'>(b/(b−1))²</span></div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Jumlah simpul IDDFS adalah sigma dari i sama dengan nol sampai d, dari d kurang i tambah satu kali b pangkat i, yang kira-kira sama dengan b pangkat d kali b per b kurang satu, dikuadratkan.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>(d − i + 1)</h4><p class="">simpul di level i diulang sebanyak ini: sekali per iterasi kedalaman ≥ i.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>bⁱ</h4><p class="">banyaknya simpul di level i.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Faktor (b/(b−1))²</h4><p class="">untuk b = 10, faktornya ≈ 1,23 → hanya ~23% kerja ekstra.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>i</td><td>level dalam pohon</td></tr><tr><td>d − i + 1</td><td>berapa kali level i dikunjungi ulang</td></tr><tr><td>bⁱ</td><td>simpul pada level i</td></tr><tr><td>(b/(b−1))²</td><td>konstanta overhead; mendekati 1 bila b besar</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Level dangkal memang diulang berkali-kali, tetapi level dangkal itu <b>kecil</b>. Hampir semua kerja ada di level terdalam yang hanya dikunjungi sekali. Hasilnya: memori DFS O(bd) dengan waktu hampir sama dengan BFS.</div>
+</section>
+
+<section class="slide" id="rxdB" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian B</div>
+<h1 class="title">Teknikal</h1>
+<p class="lead">Setelah teorinya jelas, kita masuk ke algoritma, kode, simulasi, hitung manual, dan jejak eksekusi langkah demi langkah.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Travelling Salesman Problem - O((n−1)!)</div><div class="rxtocitem"><span>2</span>BFS - jaminan solusi terpendek, memori O(b^d)</div><div class="rxtocitem"><span>3</span>DFS hemat memori - IDDFS ambil yang terbaik</div><div class="rxtocitem"><span>4</span>Hitung manual: Banyaknya rute TSP</div><div class="rxtocitem"><span>5</span>Jejak langkah demi langkah: Banyaknya rute TSP</div><div class="rxtocitem"><span>6</span>Dari hitungan ke kode: Banyaknya rute TSP</div><div class="rxtocitem"><span>7</span>Hitung manual: Banyaknya subset: 2ⁿ</div><div class="rxtocitem"><span>8</span>Jejak langkah demi langkah: Banyaknya subset: 2ⁿ</div><div class="rxtocitem"><span>9</span>Dari hitungan ke kode: Banyaknya subset: 2ⁿ</div><div class="rxtocitem"><span>10</span>Hitung manual: Jumlah simpul yang dikunjungi BFS</div><div class="rxtocitem"><span>11</span>Jejak langkah demi langkah: Jumlah simpul yang dikunjungi BFS</div><div class="rxtocitem"><span>12</span>Dari hitungan ke kode: Jumlah simpul yang dikunjungi BFS</div><div class="rxtocitem"><span>13</span>Hitung manual: Overhead IDDFS</div><div class="rxtocitem"><span>14</span>Jejak langkah demi langkah: Overhead IDDFS</div><div class="rxtocitem"><span>15</span>Dari hitungan ke kode: Overhead IDDFS</div></div>
+</section>
+
+<section class="slide" id="s4">
+  <div class="kicker">BAGIAN A · TSP BRUTE FORCE</div>
+  <h2 class="st">Travelling Salesman Problem - O((n−1)!)</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <p class="b">Diberikan n kota, cari rute terpendek yang mengunjungi semua kota tepat sekali dan kembali ke asal. Solusi brute force: coba <b>semua permutasi</b> kota (kecuali kota awal yang dikunci).</p>
+      <div class="card soft mono" style="font-size:12.5px;line-height:1.85">
+        Jumlah rute = (n−1)!<br>
+        n=5 → 24 rute&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= cepat<br>
+        n=10 → 362.880 rute&nbsp;&nbsp;= masih OK<br>
+        n=15 → 87 miliar rute = hitungan menit<br>
+        n=20 → 1.2×10¹⁷ rute&nbsp;≈ 3.800 tahun
+      </div>
+      <div class="warn"><b>n naik 1, biaya × n.</b> Ini bukan O(n²) atau O(2ⁿ) - ini O(n!). Faktorial tumbuh lebih cepat dari eksponensial. Solusi eksaknya jadi mustahil untuk n ≥ 20.</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · ekstrapolasi waktu TSP</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap" id="tspChips">
+        <button class="chipbtn" data-n="5">n=5</button>
+        <button class="chipbtn" data-n="8">n=8</button>
+        <button class="chipbtn" data-n="10">n=10</button>
+        <button class="chipbtn" data-n="12">n=12</button>
+        <button class="chipbtn" data-n="15">n=15</button>
+        <button class="chipbtn" data-n="20">n=20</button>
+      </div>
+      <div id="tspOut" class="term" style="min-height:140px">Pilih n di atas…</div>
+      <p class="tiny">Diasumsikan 1 miliar permutasi/detik (komputer modern). Angka sebenarnya bergantung hardware - tapi orde besarnya benar.</p>
+    </div>
+  </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• (n−1)!: jumlah rute TSP jika satu kota dikunci sebagai titik awal, lalu sisanya diurutkan (permutasi).<br>• Contoh: n = 5 → 4! = 24 rute. n = 20 → 19! ≈ 1,2×10¹⁷ rute.<br>• Faktorial tumbuh lebih cepat daripada eksponensial, sehingga n yang besar tidak bisa dihitung secara eksak.</div>
+</section>
+
 <section class="slide" id="s6">
   <div class="kicker">BAGIAN B · BFS</div>
   <h2 class="st">BFS - jaminan solusi terpendek, memori O(b^d)</h2>
@@ -384,7 +492,6 @@ def bfs(start, goal_fn, expand_fn):
   <div class="note"><b>Cara membaca rumus:</b><br>• O(b^d) waktu dan memori: b = faktor cabang (branching factor), d = kedalaman solusi terdangkal.<br>• Contoh: b = 3 dan d = 20 → 3²⁰ ≈ 3,5 miliar entry yang harus disimpan.<br>• BFS selalu menemukan solusi terpendek karena level diperiksa satu per satu.</div>
 </section>
 
-<!-- 7. DFS & IDDFS -->
 <section class="slide" id="s7">
   <div class="kicker">BAGIAN B · DFS DAN IDDFS</div>
   <h2 class="st">DFS hemat memori - IDDFS ambil yang terbaik</h2>
@@ -414,7 +521,192 @@ def bfs(start, goal_fn, expand_fn):
   <div class="note"><b>Cara membaca rumus:</b><br>• DFS: waktu O(bᵐ), memori O(b·m). m = kedalaman maksimum pohon.<br>• IDDFS: waktu O(bᵈ), memori O(b·d). Pada tiap iterasi kedalaman dibatasi lalu dinaikkan 1.<br>• Keuntungannya: memori kecil seperti DFS, tetapi tetap optimal seperti BFS.</div>
 </section>
 
-<!-- 8. MODERN AI -->
+<section class="slide" id="rx1m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/4 - hitung manual</div>
+<h2 class="st">Hitung manual: Banyaknya rute TSP</h2>
+<div class="rxsoal"><b>Soal:</b> Kurir harus mengunjungi 5 alamat (A–E) lalu kembali. Berapa rute unik?</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Tetapkan titik awal</h4><p class="rxcalc">mulai dari A (tur melingkar, titik awal tidak mengubah rute)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Urutkan sisanya</h4><p class="rxcalc">B, C, D, E bisa disusun 4! = 4·3·2·1 = 24 cara</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Buang rute kebalikan</h4><p class="rxcalc">A-B-C-D-E-A sama panjang dengan A-E-D-C-B-A → 24 / 2</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Hasil</h4><p class="rxcalc">12 rute unik</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>10 alamat</h4><p class="rxcalc">9! / 2 = 362.880 / 2 = 181.440</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>n</th><th>(n−1)!</th><th>rute unik</th></tr><tr><td>4</td><td>6</td><td>3</td></tr><tr><td>5</td><td>24</td><td>12</td></tr><tr><td>6</td><td>120</td><td>60</td></tr><tr><td>10</td><td>362.880</td><td>181.440</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> 5 alamat → 12 rute; 10 alamat → 181.440 rute.</div>
+</section>
+
+<section class="slide" id="rx1t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/4 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Banyaknya rute TSP</h2>
+<div class="rxsoal"><b>Kasus:</b> Brute force TSP 5 kota (A–E): coba ke-12 rute unik, catat yang terpendek.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu rute lengkap. Jumlahkan jarak tiap ruas, lalu perbarui “terbaik” jika lebih pendek (disorot). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>#</th><th>rute</th><th>jarak per ruas</th><th>total</th><th>terbaik sejauh ini</th></tr><tr><td>1</td><td>A-B-C-D-E-A</td><td>2 + 6 + 8 + 6 + 7</td><td>29</td><td><b class='chg'>terbaik = 29</b></td></tr><tr><td>2</td><td>A-B-C-E-D-A</td><td>2 + 6 + 5 + 6 + 10</td><td>29</td><td>terbaik = 29</td></tr><tr><td>3</td><td>A-B-D-C-E-A</td><td>2 + 4 + 8 + 5 + 7</td><td>26</td><td><b class='chg'>terbaik = 26</b></td></tr><tr><td>4</td><td>A-B-D-E-C-A</td><td>2 + 4 + 6 + 5 + 9</td><td>26</td><td>terbaik = 26</td></tr><tr><td>5</td><td>A-B-E-C-D-A</td><td>2 + 3 + 5 + 8 + 10</td><td>28</td><td>terbaik = 26</td></tr><tr><td>6</td><td>A-B-E-D-C-A</td><td>2 + 3 + 6 + 8 + 9</td><td>28</td><td>terbaik = 26</td></tr><tr><td>7</td><td>A-C-B-D-E-A</td><td>9 + 6 + 4 + 6 + 7</td><td>32</td><td>terbaik = 26</td></tr><tr><td>8</td><td>A-C-B-E-D-A</td><td>9 + 6 + 3 + 6 + 10</td><td>34</td><td>terbaik = 26</td></tr><tr><td>9</td><td>A-C-D-B-E-A</td><td>9 + 8 + 4 + 3 + 7</td><td>31</td><td>terbaik = 26</td></tr><tr><td>10</td><td>A-C-E-B-D-A</td><td>9 + 5 + 3 + 4 + 10</td><td>31</td><td>terbaik = 26</td></tr><tr><td>11</td><td>A-D-B-C-E-A</td><td>10 + 4 + 6 + 5 + 7</td><td>32</td><td>terbaik = 26</td></tr><tr><td>12</td><td>A-D-C-B-E-A</td><td>10 + 8 + 6 + 3 + 7</td><td>34</td><td>terbaik = 26</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Rute terpendek A-B-D-C-E-A dengan panjang 26, setelah mencoba semua 12 = 4!/2 rute.</div>
+</section>
+
+<section class="slide" id="rx1b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Banyaknya rute TSP</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> math
+<span class="tk">def</span> rute_unik(n):
+    <span class="tk">return</span> math.factorial(n - <span class="tn">1</span>) // <span class="tn">2</span>
+
+<span class="tk">for</span> n <span class="tk">in</span> (<span class="tn">5</span>, <span class="tn">10</span>, <span class="tn">15</span>, <span class="tn">20</span>):
+    <span class="tk">print</span>(n, f<span class="ts">"{rute_unik(n):,}"</span>)</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">5 alamat → 12 rute; 10 alamat → 181.440 rute.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Rute terpendek A-B-D-C-E-A dengan panjang 26, setelah mencoba semua 12 = 4!/2 rute.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rx2m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/4 - hitung manual</div>
+<h2 class="st">Hitung manual: Banyaknya subset: 2ⁿ</h2>
+<div class="rxsoal"><b>Soal:</b> Daftarkan semua subset dari {kopi, roti, susu} memakai bilangan biner.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Hitung dulu</h4><p class="rxcalc">3 elemen → 2³ = 8 subset</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Beri bit</h4><p class="rxcalc">bit 0 = kopi, bit 1 = roti, bit 2 = susu</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Hitung 0 sampai 7 dalam biner</h4><p class="rxcalc">000, 001, 010, …, 111</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Bit 1 = diambil</h4><p class="rxcalc">contoh 101 → bit 0 dan bit 2 → {kopi, susu}</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>mask</th><th>biner</th><th>subset</th></tr><tr><td>0</td><td>000</td><td>{ }</td></tr><tr><td>1</td><td>001</td><td>{kopi}</td></tr><tr><td>2</td><td>010</td><td>{roti}</td></tr><tr><td>3</td><td>011</td><td>{kopi, roti}</td></tr><tr><td>4</td><td>100</td><td>{susu}</td></tr><tr><td>5</td><td>101</td><td>{kopi, susu}</td></tr><tr><td>6</td><td>110</td><td>{roti, susu}</td></tr><tr><td>7</td><td>111</td><td>{kopi, roti, susu}</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Tepat 8 = 2³ subset, termasuk himpunan kosong.</div>
+</section>
+
+<section class="slide" id="rx2t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/4 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Banyaknya subset: 2ⁿ</h2>
+<div class="rxsoal"><b>Kasus:</b> Belanja dengan uang Rp14 rb: kopi 5 rb, roti 8 rb, susu 6 rb. Coba semua 2³ subset, cari total terbesar yang muat.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Bit 0 = kopi, bit 1 = roti, bit 2 = susu. Setiap baris = satu subset; kolom terakhir menyimpan jawaban terbaik sejauh ini. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>mask</th><th>biner</th><th>subset</th><th>total</th><th>≤ 14 rb?</th><th>terbaik</th></tr><tr><td>0</td><td>000</td><td>{}</td><td>0 rb</td><td>✓</td><td>{ } = 0</td></tr><tr><td>1</td><td>001</td><td>{kopi}</td><td>5 rb</td><td>✓</td><td><b class='chg'>{kopi} = 5</b></td></tr><tr><td>2</td><td>010</td><td>{roti}</td><td>8 rb</td><td>✓</td><td><b class='chg'>{roti} = 8</b></td></tr><tr><td>3</td><td>011</td><td>{kopi, roti}</td><td>13 rb</td><td>✓</td><td><b class='chg'>{kopi, roti} = 13</b></td></tr><tr><td>4</td><td>100</td><td>{susu}</td><td>6 rb</td><td>✓</td><td>{kopi, roti} = 13</td></tr><tr><td>5</td><td>101</td><td>{kopi, susu}</td><td>11 rb</td><td>✓</td><td>{kopi, roti} = 13</td></tr><tr><td>6</td><td>110</td><td>{roti, susu}</td><td>14 rb</td><td>✓</td><td><b class='chg'>{roti, susu} = 14</b></td></tr><tr><td>7</td><td>111</td><td>{kopi, roti, susu}</td><td>19 rb</td><td>✗ lebih</td><td>{roti, susu} = 14</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Jawaban: {roti, susu} senilai 14 rb, setelah mengecek 8 subset.</div>
+</section>
+
+<section class="slide" id="rx2b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Banyaknya subset: 2ⁿ</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> semua_subset(items):
+    n = <span class="tk">len</span>(items)
+    <span class="tk">for</span> mask <span class="tk">in</span> <span class="tk">range</span>(<span class="tn">1</span> &lt;&lt; n):           <span class="tc"># 0 .. 2^n - 1</span>
+        <span class="tk">yield</span> [items[i] <span class="tk">for</span> i <span class="tk">in</span> <span class="tk">range</span>(n) <span class="tk">if</span> mask &gt;&gt; i &amp; <span class="tn">1</span>]
+
+<span class="tk">print</span>(list(semua_subset([<span class="ts">"kopi"</span>, <span class="ts">"roti"</span>, <span class="ts">"susu"</span>])))  <span class="tc"># 8 subset</span></pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Tepat 8 = 2³ subset, termasuk himpunan kosong.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Jawaban: {roti, susu} senilai 14 rb, setelah mengecek 8 subset.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rx3m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/4 - hitung manual</div>
+<h2 class="st">Hitung manual: Jumlah simpul yang dikunjungi BFS</h2>
+<div class="rxsoal"><b>Soal:</b> BFS dengan b = 3 tetangga per simpul, solusi di kedalaman d = 3. Berapa simpul yang dibangkitkan?</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Per level</h4><p class="rxcalc">level 0: 1, level 1: 3, level 2: 9, level 3: 27</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Jumlahkan</h4><p class="rxcalc">1 + 3 + 9 + 27 = 40</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Cek rumus</h4><p class="rxcalc">(b^(d+1) − 1)/(b − 1) = (81 − 1)/2 = 40  ✓</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Porsi level terakhir</h4><p class="rxcalc">27 / 40 ≈ 68% simpul ada di level terdalam</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>level</th><th>0</th><th>1</th><th>2</th><th>3</th><th>total</th></tr><tr><td>simpul</td><td>1</td><td>3</td><td>9</td><td>27</td><td>40</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> 40 simpul; untuk b = 200, d = 2 → 1 + 200 + 40.000 = 40.201.</div>
+</section>
+
+<section class="slide" id="rx3t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/4 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Jumlah simpul yang dikunjungi BFS</h2>
+<div class="rxsoal"><b>Kasus:</b> BFS dari A mencari F pada pohon A→{B, C}, B→{D, E}, C→{F, G} (b = 2).</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu simpul diambil dari DEPAN antrian. Tetangga baru dimasukkan ke BELAKANG. Antrian adalah memori BFS. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>langkah</th><th>ambil</th><th>tetangga baru</th><th>antrian sesudahnya</th><th>dibangkitkan</th><th></th></tr><tr><td>1</td><td><b class='chg'>A</b></td><td>B, C</td><td>[B, C]</td><td>3</td><td></td></tr><tr><td>2</td><td><b class='chg'>B</b></td><td>D, E</td><td>[C, D, E]</td><td>5</td><td></td></tr><tr><td>3</td><td><b class='chg'>C</b></td><td>F, G</td><td>[D, E, F, G]</td><td>7</td><td></td></tr><tr><td>4</td><td><b class='chg'>D</b></td><td>-</td><td>[E, F, G]</td><td>7</td><td></td></tr><tr><td>5</td><td><b class='chg'>E</b></td><td>-</td><td>[F, G]</td><td>7</td><td></td></tr><tr><td>6</td><td><b class='chg'>F</b></td><td>-</td><td>[G]</td><td>7</td><td>TUJUAN!</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> F ditemukan setelah 6 pengambilan; seluruh level 2 (D, E, F, G) sempat disimpan di antrian → memori O(bᵈ).</div>
+</section>
+
+<section class="slide" id="rx3b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Jumlah simpul yang dikunjungi BFS</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> simpul_bfs(b, d):
+    <span class="tk">return</span> (b ** (d + <span class="tn">1</span>) - <span class="tn">1</span>) // (b - <span class="tn">1</span>)
+
+<span class="tk">for</span> d <span class="tk">in</span> <span class="tk">range</span>(<span class="tn">1</span>, <span class="tn">5</span>):
+    <span class="tk">print</span>(d, f<span class="ts">"{simpul_bfs(200, d):,}"</span>)</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">40 simpul; untuk b = 200, d = 2 → 1 + 200 + 40.000 = 40.201.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>F ditemukan setelah 6 pengambilan; seluruh level 2 (D, E, F, G) sempat disimpan di antrian → memori O(bᵈ).</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rx4m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/4 - hitung manual</div>
+<h2 class="st">Hitung manual: Overhead IDDFS</h2>
+<div class="rxsoal"><b>Soal:</b> IDDFS dengan b = 10 sampai kedalaman d = 3. Hitung total simpul dan bandingkan dengan BFS.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Iterasi batas 0</h4><p class="rxcalc">1 simpul</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Iterasi batas 1</h4><p class="rxcalc">1 + 10 = 11</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Iterasi batas 2</h4><p class="rxcalc">1 + 10 + 100 = 111</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Iterasi batas 3</h4><p class="rxcalc">1 + 10 + 100 + 1.000 = 1.111</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Total IDDFS</h4><p class="rxcalc">1 + 11 + 111 + 1.111 = 1.234 (= 4·1 + 3·10 + 2·100 + 1·1.000)</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th></th><th>IDDFS</th><th>BFS</th></tr><tr><td>simpul</td><td>1.234</td><td>1.111</td></tr><tr><td>rasio</td><td>1,11×</td><td>1×</td></tr><tr><td>memori</td><td>≈ b·d = 30</td><td>≈ 1.000</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Hanya 11% lebih banyak simpul dari BFS, tetapi memorinya jauh lebih kecil.</div>
+</section>
+
+<section class="slide" id="rx4t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/4 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Overhead IDDFS</h2>
+<div class="rxsoal"><b>Kasus:</b> IDDFS dari A mencari F pada pohon yang sama (b = 2): batas kedalaman 0, 1, 2.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu iterasi DFS penuh dengan batas kedalaman tertentu. Level atas dikunjungi ulang, tetapi memorinya hanya satu jalur. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>batas</th><th>urutan kunjungan</th><th>simpul iterasi ini</th><th>kumulatif</th><th>status</th></tr><tr><td>0</td><td>A</td><td>1</td><td>1</td><td>belum</td></tr><tr><td>1</td><td>A → B → C</td><td>3</td><td>4</td><td>belum</td></tr><tr><td>2</td><td>A → B → D → E → C → F</td><td>7</td><td>11</td><td><b class='chg'>ketemu F</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Ketemu di iterasi batas 2; level dangkal diulang, tetapi totalnya hanya sedikit di atas BFS.</div>
+</section>
+
+<section class="slide" id="rx4b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Overhead IDDFS</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> iddfs_nodes(b, d):
+    <span class="tk">return</span> <span class="tk">sum</span>((d - i + <span class="tn">1</span>) * b**i <span class="tk">for</span> i <span class="tk">in</span> <span class="tk">range</span>(d + <span class="tn">1</span>))
+
+<span class="tk">def</span> bfs_nodes(b, d):
+    <span class="tk">return</span> <span class="tk">sum</span>(b**i <span class="tk">for</span> i <span class="tk">in</span> <span class="tk">range</span>(d + <span class="tn">1</span>))
+
+<span class="tk">print</span>(iddfs_nodes(<span class="tn">10</span>, <span class="tn">5</span>), bfs_nodes(<span class="tn">10</span>, <span class="tn">5</span>))  <span class="tc"># 123456 111111</span></pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Hanya 11% lebih banyak simpul dari BFS, tetapi memorinya jauh lebih kecil.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Ketemu di iterasi batas 2; level dangkal diulang, tetapi totalnya hanya sedikit di atas BFS.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rxdL" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian C</div>
+<h1 class="title">Latihan</h1>
+<p class="lead">Uji pemahaman teori dan teknikal sebelum melihat penerapannya di dunia nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Soal brute force dan pencarian</div><div class="rxtocitem"><span>2</span>Kunci brute force dan pencarian</div></div>
+</section>
+
+<section class="slide" id="s9">
+  <div class="kicker">LATIHAN</div>
+  <h2 class="st">Soal brute force dan pencarian</h2>
+  <div class="qlist">
+    <div class="q"><span class="qn">1</span><p>TSP brute force untuk n=8 kota memerlukan berapa rute yang diperiksa? Berapa lama kalau tiap rute butuh 1 μs untuk dievaluasi?</p></div>
+    <div class="q"><span class="qn">2</span><p>Jelaskan perbedaan antara BFS dan DFS dalam hal <b>memori</b>, <b>optimalitas</b>, dan <b>kelengkapan</b>. Mana yang lebih cocok untuk mencari solusi terpendek dalam labirin terbatas?</p></div>
+    <div class="q"><span class="qn">3</span><p>Sebuah robot punya 4 operator per state (branching factor b=4) dan solusi ada di kedalaman d=6. Berapa node yang dijelajahi BFS dalam kasus terburuk? Berapa memori yang dibutuhkan jika tiap node = 100 byte?</p></div>
+    <div class="q"><span class="qn">4</span><p>Kenapa IDDFS disebut "terbaik dari dua dunia"? Jelaskan mengapa pengulangan kerja level-level sebelumnya secara asimtotik tidak signifikan.</p></div>
+    <div class="q"><span class="qn">5</span><p>Di Colab: implementasikan BFS dan DFS untuk 8-puzzle (konfigurasi awal <code>(1,2,3,4,0,6,7,5,8)</code> → goal <code>(1,2,3,4,5,6,7,8,0)</code>). Bandingkan jumlah node yang diekspansi.</p></div>
+  </div>
+</section>
+
+<section class="slide" id="s10">
+  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
+  <h2 class="st">Kunci brute force dan pencarian</h2>
+  <div class="qlist">
+    <div class="ans"><span class="qn">1</span><p>(n−1)! = 7! = 5.040 rute. Pada 1 μs per rute → 5.040 μs ≈ <b>5 milidetik</b>. Untuk n=15: (14)! ≈ 87 miliar → ≈ 24 jam. Untuk n=20: ≈ 3.800 tahun.</p></div>
+    <div class="ans"><span class="qn">2</span><p><b>Memori:</b> BFS O(b^d), DFS O(b·d). <b>Optimalitas:</b> BFS ✓ (jika cost seragam), DFS ✗. <b>Kelengkapan:</b> BFS ✓, DFS ✗ (bisa loop). Untuk labirin terbatas: <b>BFS</b> - karena menjamin solusi terpendek.</p></div>
+    <div class="ans"><span class="qn">3</span><p>Node yang dijelajahi BFS: 1+4+16+64+256+1024+4096 = <b>5.461 node</b> (total Σ 4^i dari i=0 ke 6). Memori: 5.461 × 100 byte ≈ <b>546 KB</b>. Masih sangat ringan untuk kasus ini.</p></div>
+    <div class="ans"><span class="qn">4</span><p>IDDFS punya optimalitas dan kelengkapan BFS (O(b^d)) dengan memori DFS (O(b·d)). Pengulangan level-k mengunjungi O(b^k) node, tapi mayoritas kerja ada di level d → total = O(b^d · d/(d-1)) ≈ O(b^d). Faktor konstan b/(b-1) diabaikan asimtotik.</p></div>
+    <div class="ans"><span class="qn">5</span><p>BFS untuk konfigurasi sederhana itu ekspansi ~20–100 node. DFS tanpa pembatas kedalaman bisa jauh lebih banyak karena tidak optimal. Perhatikan set <code>seen</code> - tanpa itu BFS tidak pernah selesai di state space yang berputar.</p></div>
+  </div>
+</section>
+
+<section class="slide" id="rxdD" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian D</div>
+<h1 class="title">Studi kasus nyata</h1>
+<p class="lead">Penutup materi: di mana semua teori dan teknik tadi dipakai di industri, AI, dan proyek nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Brute force ruang keadaan di sistem AI nyata</div><div class="rxtocitem"><span>2</span>Merencanakan rute kurir paket</div><div class="rxtocitem"><span>3</span>Memilih paket promo / fitur model ML</div><div class="rxtocitem"><span>4</span>“Derajat koneksi” di jejaring sosial</div><div class="rxtocitem"><span>5</span>Mesin catur dengan batas waktu</div></div>
+</section>
+
 <section class="slide" id="s8">
   <div class="kicker">BAGIAN B · [MODERN] PENCARIAN DI AI</div>
   <h2 class="st">Brute force ruang keadaan di sistem AI nyata</h2>
@@ -449,210 +741,46 @@ def bfs(start, goal_fn, expand_fn):
   <div class="note"><b>Cara membaca rumus:</b><br>• h(n): estimasi jarak dari simpul n ke goal, dipakai untuk memandu pencarian (A*).<br>• b^d: ukuran pencarian buta yang bisa 'meledak' jika b dan d besar.<br>• Pemangkasan (pruning) mengurangi jumlah cabang yang benar-benar dijelajahi.</div>
 </section>
 
-<!-- 9. LATIHAN -->
-<!--RX-SLIDES-START-->
-<section class="slide" id="rx0">
-<div class="kicker">Bedah Rumus · Brute Force dan Pencarian Ruang Keadaan</div>
-<h2 class="st">Empat rumus untuk mengukur ledakan ruang pencarian</h2>
-<p class="b">Brute force dan pencarian buta gagal bukan karena kodenya salah, tetapi karena jumlah kemungkinannya meledak. Rumus berikut membantu menghitung ledakan itu sebelum menekan tombol Run.</p>
-<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Banyaknya rute TSP</b><span>(n−1)!/2 rute unik</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Banyaknya subset: 2ⁿ</b><span>|P(S)| = 2ⁿ</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Jumlah simpul yang dikunjungi BFS</b><span>1 + b + b² + … + bᵈ = O(bᵈ)</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Overhead IDDFS</b><span>Σ (d−i+1)·bⁱ ≈ bᵈ·(b/(b−1))²</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
-</section>
-<section class="slide" id="rx1a">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Banyaknya rute TSP</h2>
-<div class="fxbox">Rute unik = <span class='hl'>(n − 1)!</span> / <span class='hb'>2</span>, &nbsp;&nbsp; n! = n·(n−1)·(n−2)·…·2·1</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Banyaknya rute unik sama dengan n kurang satu faktorial dibagi dua. n faktorial adalah n kali n kurang satu kali n kurang dua sampai satu.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Tanda seru = faktorial</h4><p class="">5! = 5·4·3·2·1 = 120.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Kenapa (n−1)?</h4><p class="">kota awal ditetapkan (rute melingkar, titik mulai tidak mengubah tur).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Kenapa dibagi 2?</h4><p class="">A→B→C→A sama panjangnya dengan A→C→B→A (arah sebaliknya).</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>n</td><td>banyaknya kota/titik</td></tr><tr><td>!</td><td>faktorial: perkalian semua bilangan 1..n</td></tr><tr><td>÷ 2</td><td>menghapus rute yang hanya berbeda arah</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Faktorial tumbuh <b>lebih cepat dari eksponensial</b>. Menambah satu kota mengalikan jumlah rute dengan n. 20 kota sudah lebih dari 6×10¹⁶ rute.</div>
-</section>
-<section class="slide" id="rx1m">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Banyaknya rute TSP</h2>
-<div class="rxsoal"><b>Soal:</b> Kurir harus mengunjungi 5 alamat (A–E) lalu kembali. Berapa rute unik?</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Tetapkan titik awal</h4><p class="rxcalc">mulai dari A (tur melingkar, titik awal tidak mengubah rute)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Urutkan sisanya</h4><p class="rxcalc">B, C, D, E bisa disusun 4! = 4·3·2·1 = 24 cara</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Buang rute kebalikan</h4><p class="rxcalc">A-B-C-D-E-A sama panjang dengan A-E-D-C-B-A → 24 / 2</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Hasil</h4><p class="rxcalc">12 rute unik</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>10 alamat</h4><p class="rxcalc">9! / 2 = 362.880 / 2 = 181.440</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>n</th><th>(n−1)!</th><th>rute unik</th></tr><tr><td>4</td><td>6</td><td>3</td></tr><tr><td>5</td><td>24</td><td>12</td></tr><tr><td>6</td><td>120</td><td>60</td></tr><tr><td>10</td><td>362.880</td><td>181.440</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> 5 alamat → 12 rute; 10 alamat → 181.440 rute.</div>
-</section>
-<section class="slide" id="rx1t">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Banyaknya rute TSP</h2>
-<div class="rxsoal"><b>Kasus:</b> Brute force TSP 5 kota (A–E): coba ke-12 rute unik, catat yang terpendek.</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu rute lengkap. Jumlahkan jarak tiap ruas, lalu perbarui “terbaik” jika lebih pendek (disorot). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>#</th><th>rute</th><th>jarak per ruas</th><th>total</th><th>terbaik sejauh ini</th></tr><tr><td>1</td><td>A-B-C-D-E-A</td><td>2 + 6 + 8 + 6 + 7</td><td>29</td><td><b class='chg'>terbaik = 29</b></td></tr><tr><td>2</td><td>A-B-C-E-D-A</td><td>2 + 6 + 5 + 6 + 10</td><td>29</td><td>terbaik = 29</td></tr><tr><td>3</td><td>A-B-D-C-E-A</td><td>2 + 4 + 8 + 5 + 7</td><td>26</td><td><b class='chg'>terbaik = 26</b></td></tr><tr><td>4</td><td>A-B-D-E-C-A</td><td>2 + 4 + 6 + 5 + 9</td><td>26</td><td>terbaik = 26</td></tr><tr><td>5</td><td>A-B-E-C-D-A</td><td>2 + 3 + 5 + 8 + 10</td><td>28</td><td>terbaik = 26</td></tr><tr><td>6</td><td>A-B-E-D-C-A</td><td>2 + 3 + 6 + 8 + 9</td><td>28</td><td>terbaik = 26</td></tr><tr><td>7</td><td>A-C-B-D-E-A</td><td>9 + 6 + 4 + 6 + 7</td><td>32</td><td>terbaik = 26</td></tr><tr><td>8</td><td>A-C-B-E-D-A</td><td>9 + 6 + 3 + 6 + 10</td><td>34</td><td>terbaik = 26</td></tr><tr><td>9</td><td>A-C-D-B-E-A</td><td>9 + 8 + 4 + 3 + 7</td><td>31</td><td>terbaik = 26</td></tr><tr><td>10</td><td>A-C-E-B-D-A</td><td>9 + 5 + 3 + 4 + 10</td><td>31</td><td>terbaik = 26</td></tr><tr><td>11</td><td>A-D-B-C-E-A</td><td>10 + 4 + 6 + 5 + 7</td><td>32</td><td>terbaik = 26</td></tr><tr><td>12</td><td>A-D-C-B-E-A</td><td>10 + 8 + 6 + 3 + 7</td><td>34</td><td>terbaik = 26</td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> Rute terpendek A-B-D-C-E-A dengan panjang 26, setelah mencoba semua 12 = 4!/2 rute.</div>
-</section>
-<section class="slide" id="rx1b">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<section class="slide" id="rx1c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 1/4</div>
 <h2 class="st">Merencanakan rute kurir paket</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Aplikasi logistik (misalnya pengiriman e-commerce) hanya memakai brute force untuk ≤ 10 titik. Di atas itu dipakai heuristik/solver seperti <b>Google OR-Tools</b> yang menghasilkan rute bagus dalam hitungan detik. Rumus ini adalah dasar keputusan “kapan berhenti brute force”.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>5 alamat</h4><p class="">4!/2 = 12 rute - bisa dicek manual.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>10 alamat</h4><p class="">9!/2 = 181.440 rute - brute force masih &lt; 1 detik.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>15 alamat</h4><p class="">14!/2 ≈ 4,4×10¹⁰ - sekitar setengah hari.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>20 alamat</h4><p class="">19!/2 ≈ 6×10¹⁶ - ribuan tahun.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> math
-<span class="tk">def</span> rute_unik(n):
-    <span class="tk">return</span> math.factorial(n - <span class="tn">1</span>) // <span class="tn">2</span>
-
-<span class="tk">for</span> n <span class="tk">in</span> (<span class="tn">5</span>, <span class="tn">10</span>, <span class="tn">15</span>, <span class="tn">20</span>):
-    <span class="tk">print</span>(n, f<span class="ts">"{rute_unik(n):,}"</span>)</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Aplikasi logistik (misalnya pengiriman e-commerce) hanya memakai brute force untuk ≤ 10 titik. Di atas itu dipakai heuristik/solver seperti <b>Google OR-Tools</b> yang menghasilkan rute bagus dalam hitungan detik. Rumus ini adalah dasar keputusan “kapan berhenti brute force”.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>5 alamat</h4><p class="">4!/2 = 12 rute - bisa dicek manual.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>10 alamat</h4><p class="">9!/2 = 181.440 rute - brute force masih &lt; 1 detik.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>15 alamat</h4><p class="">14!/2 ≈ 4,4×10¹⁰ - sekitar setengah hari.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>20 alamat</h4><p class="">19!/2 ≈ 6×10¹⁶ - ribuan tahun.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Setiap brute force berbasis permutasi bernilai (n−1)! - aman hanya untuk n kecil (sekitar ≤ 10–11).</div>
 </section>
-<section class="slide" id="rx2a">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Banyaknya subset: 2ⁿ</h2>
-<div class="fxbox">|<span class='hb'>𝒫</span>(S)| = <span class='hl'>2</span><sup>n</sup> &nbsp;&nbsp;(tiap elemen: <span class='hg'>ambil</span> atau <span class='hl'>tidak</span>)</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Banyaknya anggota himpunan kuasa dari S sama dengan dua pangkat n, karena setiap elemen punya dua pilihan: diambil atau tidak.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>𝒫(S) = himpunan kuasa</h4><p class="">kumpulan SEMUA subset dari S, termasuk himpunan kosong dan S sendiri.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>|·| = kardinalitas</h4><p class="">banyaknya anggota.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Aturan perkalian</h4><p class="">2 × 2 × ... × 2 (n kali) = 2ⁿ.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>S</td><td>himpunan berisi n elemen</td></tr><tr><td>𝒫(S)</td><td>power set / himpunan kuasa</td></tr><tr><td>2ⁿ</td><td>banyaknya cara memilih subset</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Setiap elemen adalah <b>saklar on/off</b>. n saklar = 2ⁿ kombinasi. 30 elemen sudah lebih dari 1 miliar subset.</div>
-</section>
-<section class="slide" id="rx2m">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Banyaknya subset: 2ⁿ</h2>
-<div class="rxsoal"><b>Soal:</b> Daftarkan semua subset dari {kopi, roti, susu} memakai bilangan biner.</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Hitung dulu</h4><p class="rxcalc">3 elemen → 2³ = 8 subset</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Beri bit</h4><p class="rxcalc">bit 0 = kopi, bit 1 = roti, bit 2 = susu</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Hitung 0 sampai 7 dalam biner</h4><p class="rxcalc">000, 001, 010, …, 111</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Bit 1 = diambil</h4><p class="rxcalc">contoh 101 → bit 0 dan bit 2 → {kopi, susu}</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>mask</th><th>biner</th><th>subset</th></tr><tr><td>0</td><td>000</td><td>{ }</td></tr><tr><td>1</td><td>001</td><td>{kopi}</td></tr><tr><td>2</td><td>010</td><td>{roti}</td></tr><tr><td>3</td><td>011</td><td>{kopi, roti}</td></tr><tr><td>4</td><td>100</td><td>{susu}</td></tr><tr><td>5</td><td>101</td><td>{kopi, susu}</td></tr><tr><td>6</td><td>110</td><td>{roti, susu}</td></tr><tr><td>7</td><td>111</td><td>{kopi, roti, susu}</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> Tepat 8 = 2³ subset, termasuk himpunan kosong.</div>
-</section>
-<section class="slide" id="rx2t">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Banyaknya subset: 2ⁿ</h2>
-<div class="rxsoal"><b>Kasus:</b> Belanja dengan uang Rp14 rb: kopi 5 rb, roti 8 rb, susu 6 rb. Coba semua 2³ subset, cari total terbesar yang muat.</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Bit 0 = kopi, bit 1 = roti, bit 2 = susu. Setiap baris = satu subset; kolom terakhir menyimpan jawaban terbaik sejauh ini. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>mask</th><th>biner</th><th>subset</th><th>total</th><th>≤ 14 rb?</th><th>terbaik</th></tr><tr><td>0</td><td>000</td><td>{}</td><td>0 rb</td><td>✓</td><td>{ } = 0</td></tr><tr><td>1</td><td>001</td><td>{kopi}</td><td>5 rb</td><td>✓</td><td><b class='chg'>{kopi} = 5</b></td></tr><tr><td>2</td><td>010</td><td>{roti}</td><td>8 rb</td><td>✓</td><td><b class='chg'>{roti} = 8</b></td></tr><tr><td>3</td><td>011</td><td>{kopi, roti}</td><td>13 rb</td><td>✓</td><td><b class='chg'>{kopi, roti} = 13</b></td></tr><tr><td>4</td><td>100</td><td>{susu}</td><td>6 rb</td><td>✓</td><td>{kopi, roti} = 13</td></tr><tr><td>5</td><td>101</td><td>{kopi, susu}</td><td>11 rb</td><td>✓</td><td>{kopi, roti} = 13</td></tr><tr><td>6</td><td>110</td><td>{roti, susu}</td><td>14 rb</td><td>✓</td><td><b class='chg'>{roti, susu} = 14</b></td></tr><tr><td>7</td><td>111</td><td>{kopi, roti, susu}</td><td>19 rb</td><td>✗ lebih</td><td>{roti, susu} = 14</td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> Jawaban: {roti, susu} senilai 14 rb, setelah mengecek 8 subset.</div>
-</section>
-<section class="slide" id="rx2b">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+
+<section class="slide" id="rx2c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 2/4</div>
 <h2 class="st">Memilih paket promo / fitur model ML</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>Feature selection</b> di machine learning: memilih subset terbaik dari 50 fitur berarti 2⁵⁰ model - mustahil. Karena itu dipakai pendekatan greedy (forward selection) atau regularisasi L1. Rumus 2ⁿ menjelaskan mengapa pencarian lengkap tidak dilakukan.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>4 produk</h4><p class="">2⁴ = 16 kemungkinan bundle.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>20 produk</h4><p class="">2²⁰ ≈ 1 juta - masih bisa dicoba semua.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>40 produk</h4><p class="">2⁴⁰ ≈ 10¹² - terlalu banyak.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Representasi</h4><p class="">bilangan biner 0..2ⁿ−1; bit ke-i = 1 artinya elemen ke-i diambil.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> semua_subset(items):
-    n = <span class="tk">len</span>(items)
-    <span class="tk">for</span> mask <span class="tk">in</span> <span class="tk">range</span>(<span class="tn">1</span> &lt;&lt; n):           <span class="tc"># 0 .. 2^n - 1</span>
-        <span class="tk">yield</span> [items[i] <span class="tk">for</span> i <span class="tk">in</span> <span class="tk">range</span>(n) <span class="tk">if</span> mask &gt;&gt; i &amp; <span class="tn">1</span>]
-
-<span class="tk">print</span>(list(semua_subset([<span class="ts">"kopi"</span>, <span class="ts">"roti"</span>, <span class="ts">"susu"</span>])))  <span class="tc"># 8 subset</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>Feature selection</b> di machine learning: memilih subset terbaik dari 50 fitur berarti 2⁵⁰ model - mustahil. Karena itu dipakai pendekatan greedy (forward selection) atau regularisasi L1. Rumus 2ⁿ menjelaskan mengapa pencarian lengkap tidak dilakukan.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>4 produk</h4><p class="">2⁴ = 16 kemungkinan bundle.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>20 produk</h4><p class="">2²⁰ ≈ 1 juta - masih bisa dicoba semua.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>40 produk</h4><p class="">2⁴⁰ ≈ 10¹² - terlalu banyak.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Representasi</h4><p class="">bilangan biner 0..2ⁿ−1; bit ke-i = 1 artinya elemen ke-i diambil.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Pilih-atau-tidak untuk setiap elemen = 2ⁿ. Brute force subset hanya realistis sampai sekitar n = 25.</div>
 </section>
-<section class="slide" id="rx3a">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Jumlah simpul yang dikunjungi BFS</h2>
-<div class="fxbox">N(b, d) = 1 + <span class='hl'>b</span> + <span class='hl'>b</span><sup>2</sup> + … + <span class='hl'>b</span><sup><span class='hb'>d</span></sup> = (b<sup>d+1</sup> − 1)/(b − 1) = O(b<sup>d</sup>)</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“N dari b dan d sama dengan satu tambah b tambah b kuadrat sampai b pangkat d, sama dengan b pangkat d tambah satu kurang satu, dibagi b kurang satu, yaitu Big-O b pangkat d.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Satu suku = satu level</h4><p class="">level 0 ada 1 simpul, level 1 ada b, level 2 ada b², dan seterusnya.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Deret geometri</h4><p class="">jumlahnya punya bentuk tertutup (bᵈ⁺¹ − 1)/(b − 1).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Suku terakhir dominan</h4><p class="">level terdalam berisi hampir semua simpul → O(bᵈ).</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>b</td><td>branching factor: rata-rata banyaknya tetangga/aksi</td></tr><tr><td>d</td><td>kedalaman solusi terdangkal</td></tr><tr><td>N</td><td>total simpul yang dibangkitkan BFS</td></tr><tr><td>O(bᵈ)</td><td>juga besar memori BFS (antrian)</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> BFS menjelajah lapis demi lapis. Karena setiap lapis b kali lebih besar dari sebelumnya, <b>lapisan terakhir saja sudah mendominasi</b> - dan semuanya harus disimpan di antrian.</div>
-</section>
-<section class="slide" id="rx3m">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Jumlah simpul yang dikunjungi BFS</h2>
-<div class="rxsoal"><b>Soal:</b> BFS dengan b = 3 tetangga per simpul, solusi di kedalaman d = 3. Berapa simpul yang dibangkitkan?</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Per level</h4><p class="rxcalc">level 0: 1, level 1: 3, level 2: 9, level 3: 27</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Jumlahkan</h4><p class="rxcalc">1 + 3 + 9 + 27 = 40</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Cek rumus</h4><p class="rxcalc">(b^(d+1) − 1)/(b − 1) = (81 − 1)/2 = 40  ✓</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Porsi level terakhir</h4><p class="rxcalc">27 / 40 ≈ 68% simpul ada di level terdalam</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>level</th><th>0</th><th>1</th><th>2</th><th>3</th><th>total</th></tr><tr><td>simpul</td><td>1</td><td>3</td><td>9</td><td>27</td><td>40</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> 40 simpul; untuk b = 200, d = 2 → 1 + 200 + 40.000 = 40.201.</div>
-</section>
-<section class="slide" id="rx3t">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Jumlah simpul yang dikunjungi BFS</h2>
-<div class="rxsoal"><b>Kasus:</b> BFS dari A mencari F pada pohon A→{B, C}, B→{D, E}, C→{F, G} (b = 2).</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu simpul diambil dari DEPAN antrian. Tetangga baru dimasukkan ke BELAKANG. Antrian adalah memori BFS. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>langkah</th><th>ambil</th><th>tetangga baru</th><th>antrian sesudahnya</th><th>dibangkitkan</th><th></th></tr><tr><td>1</td><td><b class='chg'>A</b></td><td>B, C</td><td>[B, C]</td><td>3</td><td></td></tr><tr><td>2</td><td><b class='chg'>B</b></td><td>D, E</td><td>[C, D, E]</td><td>5</td><td></td></tr><tr><td>3</td><td><b class='chg'>C</b></td><td>F, G</td><td>[D, E, F, G]</td><td>7</td><td></td></tr><tr><td>4</td><td><b class='chg'>D</b></td><td>-</td><td>[E, F, G]</td><td>7</td><td></td></tr><tr><td>5</td><td><b class='chg'>E</b></td><td>-</td><td>[F, G]</td><td>7</td><td></td></tr><tr><td>6</td><td><b class='chg'>F</b></td><td>-</td><td>[G]</td><td>7</td><td>TUJUAN!</td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> F ditemukan setelah 6 pengambilan; seluruh level 2 (D, E, F, G) sempat disimpan di antrian → memori O(bᵈ).</div>
-</section>
-<section class="slide" id="rx3b">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+
+<section class="slide" id="rx3c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 3/4</div>
 <h2 class="st">“Derajat koneksi” di jejaring sosial</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>LinkedIn menampilkan koneksi “2nd” dan “3rd” tetapi berhenti di sana: rumus b<sup>d</sup> menunjukkan bahwa d = 4 berarti menelusuri hampir seluruh jaringan. Solver puzzle (8-puzzle, Rubik) juga memakai rumus ini untuk memperkirakan memori sebelum memilih BFS atau IDDFS.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>b = 200 teman, d = 1</h4><p class="">200 orang.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>d = 2</h4><p class="">1 + 200 + 40.000 ≈ 40 ribu orang.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>d = 3</h4><p class="">≈ 8 juta orang.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>d = 4</h4><p class="">≈ 1,6 miliar - hampir seluruh pengguna.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> simpul_bfs(b, d):
-    <span class="tk">return</span> (b ** (d + <span class="tn">1</span>) - <span class="tn">1</span>) // (b - <span class="tn">1</span>)
-
-<span class="tk">for</span> d <span class="tk">in</span> <span class="tk">range</span>(<span class="tn">1</span>, <span class="tn">5</span>):
-    <span class="tk">print</span>(d, f<span class="ts">"{simpul_bfs(200, d):,}"</span>)</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>LinkedIn menampilkan koneksi “2nd” dan “3rd” tetapi berhenti di sana: rumus b<sup>d</sup> menunjukkan bahwa d = 4 berarti menelusuri hampir seluruh jaringan. Solver puzzle (8-puzzle, Rubik) juga memakai rumus ini untuk memperkirakan memori sebelum memilih BFS atau IDDFS.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>b = 200 teman, d = 1</h4><p class="">200 orang.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>d = 2</h4><p class="">1 + 200 + 40.000 ≈ 40 ribu orang.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>d = 3</h4><p class="">≈ 8 juta orang.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>d = 4</h4><p class="">≈ 1,6 miliar - hampir seluruh pengguna.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Biaya BFS = O(bᵈ) waktu DAN memori. Kedalaman naik satu → biaya ×b.</div>
 </section>
-<section class="slide" id="rx4a">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Overhead IDDFS</h2>
-<div class="fxbox">N<sub>IDDFS</sub> = Σ<sub>i=0</sub><sup>d</sup> <span class='hl'>(d − i + 1)</span>·b<sup>i</sup> &nbsp;≈&nbsp; b<sup>d</sup> · <span class='hb'>(b/(b−1))²</span></div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Jumlah simpul IDDFS adalah sigma dari i sama dengan nol sampai d, dari d kurang i tambah satu kali b pangkat i, yang kira-kira sama dengan b pangkat d kali b per b kurang satu, dikuadratkan.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>(d − i + 1)</h4><p class="">simpul di level i diulang sebanyak ini: sekali per iterasi kedalaman ≥ i.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>bⁱ</h4><p class="">banyaknya simpul di level i.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Faktor (b/(b−1))²</h4><p class="">untuk b = 10, faktornya ≈ 1,23 → hanya ~23% kerja ekstra.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>i</td><td>level dalam pohon</td></tr><tr><td>d − i + 1</td><td>berapa kali level i dikunjungi ulang</td></tr><tr><td>bⁱ</td><td>simpul pada level i</td></tr><tr><td>(b/(b−1))²</td><td>konstanta overhead; mendekati 1 bila b besar</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Level dangkal memang diulang berkali-kali, tetapi level dangkal itu <b>kecil</b>. Hampir semua kerja ada di level terdalam yang hanya dikunjungi sekali. Hasilnya: memori DFS O(bd) dengan waktu hampir sama dengan BFS.</div>
-</section>
-<section class="slide" id="rx4m">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Overhead IDDFS</h2>
-<div class="rxsoal"><b>Soal:</b> IDDFS dengan b = 10 sampai kedalaman d = 3. Hitung total simpul dan bandingkan dengan BFS.</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Iterasi batas 0</h4><p class="rxcalc">1 simpul</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Iterasi batas 1</h4><p class="rxcalc">1 + 10 = 11</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Iterasi batas 2</h4><p class="rxcalc">1 + 10 + 100 = 111</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Iterasi batas 3</h4><p class="rxcalc">1 + 10 + 100 + 1.000 = 1.111</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Total IDDFS</h4><p class="rxcalc">1 + 11 + 111 + 1.111 = 1.234 (= 4·1 + 3·10 + 2·100 + 1·1.000)</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th></th><th>IDDFS</th><th>BFS</th></tr><tr><td>simpul</td><td>1.234</td><td>1.111</td></tr><tr><td>rasio</td><td>1,11×</td><td>1×</td></tr><tr><td>memori</td><td>≈ b·d = 30</td><td>≈ 1.000</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> Hanya 11% lebih banyak simpul dari BFS, tetapi memorinya jauh lebih kecil.</div>
-</section>
-<section class="slide" id="rx4t">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Overhead IDDFS</h2>
-<div class="rxsoal"><b>Kasus:</b> IDDFS dari A mencari F pada pohon yang sama (b = 2): batas kedalaman 0, 1, 2.</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu iterasi DFS penuh dengan batas kedalaman tertentu. Level atas dikunjungi ulang, tetapi memorinya hanya satu jalur. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>batas</th><th>urutan kunjungan</th><th>simpul iterasi ini</th><th>kumulatif</th><th>status</th></tr><tr><td>0</td><td>A</td><td>1</td><td>1</td><td>belum</td></tr><tr><td>1</td><td>A → B → C</td><td>3</td><td>4</td><td>belum</td></tr><tr><td>2</td><td>A → B → D → E → C → F</td><td>7</td><td>11</td><td><b class='chg'>ketemu F</b></td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> Ketemu di iterasi batas 2; level dangkal diulang, tetapi totalnya hanya sedikit di atas BFS.</div>
-</section>
-<section class="slide" id="rx4b">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+
+<section class="slide" id="rx4c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 4/4</div>
 <h2 class="st">Mesin catur dengan batas waktu</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Mesin catur seperti <b>Stockfish</b> memakai iterative deepening: cari kedalaman 1, 2, 3, ... sampai waktu habis, lalu ambil langkah terbaik dari iterasi terakhir yang selesai. Overhead kecil dalam rumus inilah yang membuat strategi “selalu punya jawaban” itu murah.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>b = 10, d = 5</h4><p class="">BFS: 111.111 simpul.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>IDDFS</h4><p class="">6·1 + 5·10 + 4·100 + 3·1.000 + 2·10⁴ + 1·10⁵ = 123.456 simpul.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Overhead</h4><p class="">123.456 / 111.111 ≈ 1,11 → hanya 11% lebih lambat.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Memori</h4><p class="">BFS menyimpan ~10⁵ simpul; IDDFS hanya ~b·d = 50.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> iddfs_nodes(b, d):
-    <span class="tk">return</span> <span class="tk">sum</span>((d - i + <span class="tn">1</span>) * b**i <span class="tk">for</span> i <span class="tk">in</span> <span class="tk">range</span>(d + <span class="tn">1</span>))
-
-<span class="tk">def</span> bfs_nodes(b, d):
-    <span class="tk">return</span> <span class="tk">sum</span>(b**i <span class="tk">for</span> i <span class="tk">in</span> <span class="tk">range</span>(d + <span class="tn">1</span>))
-
-<span class="tk">print</span>(iddfs_nodes(<span class="tn">10</span>, <span class="tn">5</span>), bfs_nodes(<span class="tn">10</span>, <span class="tn">5</span>))  <span class="tc"># 123456 111111</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Mesin catur seperti <b>Stockfish</b> memakai iterative deepening: cari kedalaman 1, 2, 3, ... sampai waktu habis, lalu ambil langkah terbaik dari iterasi terakhir yang selesai. Overhead kecil dalam rumus inilah yang membuat strategi “selalu punya jawaban” itu murah.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>b = 10, d = 5</h4><p class="">BFS: 111.111 simpul.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>IDDFS</h4><p class="">6·1 + 5·10 + 4·100 + 3·1.000 + 2·10⁴ + 1·10⁵ = 123.456 simpul.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Overhead</h4><p class="">123.456 / 111.111 ≈ 1,11 → hanya 11% lebih lambat.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Memori</h4><p class="">BFS menyimpan ~10⁵ simpul; IDDFS hanya ~b·d = 50.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Mengulang level dangkal itu murah karena level terdalam mendominasi. IDDFS = memori DFS + kelengkapan BFS.</div>
 </section>
-<!--RX-SLIDES-END-->
-<section class="slide" id="s9">
-  <div class="kicker">LATIHAN</div>
-  <h2 class="st">Soal brute force dan pencarian</h2>
-  <div class="qlist">
-    <div class="q"><span class="qn">1</span><p>TSP brute force untuk n=8 kota memerlukan berapa rute yang diperiksa? Berapa lama kalau tiap rute butuh 1 μs untuk dievaluasi?</p></div>
-    <div class="q"><span class="qn">2</span><p>Jelaskan perbedaan antara BFS dan DFS dalam hal <b>memori</b>, <b>optimalitas</b>, dan <b>kelengkapan</b>. Mana yang lebih cocok untuk mencari solusi terpendek dalam labirin terbatas?</p></div>
-    <div class="q"><span class="qn">3</span><p>Sebuah robot punya 4 operator per state (branching factor b=4) dan solusi ada di kedalaman d=6. Berapa node yang dijelajahi BFS dalam kasus terburuk? Berapa memori yang dibutuhkan jika tiap node = 100 byte?</p></div>
-    <div class="q"><span class="qn">4</span><p>Kenapa IDDFS disebut "terbaik dari dua dunia"? Jelaskan mengapa pengulangan kerja level-level sebelumnya secara asimtotik tidak signifikan.</p></div>
-    <div class="q"><span class="qn">5</span><p>Di Colab: implementasikan BFS dan DFS untuk 8-puzzle (konfigurasi awal <code>(1,2,3,4,0,6,7,5,8)</code> → goal <code>(1,2,3,4,5,6,7,8,0)</code>). Bandingkan jumlah node yang diekspansi.</p></div>
-  </div>
-</section>
 
-<!-- 10. KUNCI -->
-<section class="slide" id="s10">
-  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
-  <h2 class="st">Kunci brute force dan pencarian</h2>
-  <div class="qlist">
-    <div class="ans"><span class="qn">1</span><p>(n−1)! = 7! = 5.040 rute. Pada 1 μs per rute → 5.040 μs ≈ <b>5 milidetik</b>. Untuk n=15: (14)! ≈ 87 miliar → ≈ 24 jam. Untuk n=20: ≈ 3.800 tahun.</p></div>
-    <div class="ans"><span class="qn">2</span><p><b>Memori:</b> BFS O(b^d), DFS O(b·d). <b>Optimalitas:</b> BFS ✓ (jika cost seragam), DFS ✗. <b>Kelengkapan:</b> BFS ✓, DFS ✗ (bisa loop). Untuk labirin terbatas: <b>BFS</b> - karena menjamin solusi terpendek.</p></div>
-    <div class="ans"><span class="qn">3</span><p>Node yang dijelajahi BFS: 1+4+16+64+256+1024+4096 = <b>5.461 node</b> (total Σ 4^i dari i=0 ke 6). Memori: 5.461 × 100 byte ≈ <b>546 KB</b>. Masih sangat ringan untuk kasus ini.</p></div>
-    <div class="ans"><span class="qn">4</span><p>IDDFS punya optimalitas dan kelengkapan BFS (O(b^d)) dengan memori DFS (O(b·d)). Pengulangan level-k mengunjungi O(b^k) node, tapi mayoritas kerja ada di level d → total = O(b^d · d/(d-1)) ≈ O(b^d). Faktor konstan b/(b-1) diabaikan asimtotik.</p></div>
-    <div class="ans"><span class="qn">5</span><p>BFS untuk konfigurasi sederhana itu ekspansi ~20–100 node. DFS tanpa pembatas kedalaman bisa jauh lebih banyak karena tidak optimal. Perhatikan set <code>seen</code> - tanpa itu BFS tidak pernah selesai di state space yang berputar.</p></div>
-  </div>
-</section>
-
-<!-- 11. PENUTUP -->
 <section class="slide" id="s11" style="justify-content:center;align-items:center;text-align:center">
   <div class="kicker">PERTEMUAN 3 · SELESAI</div>
   <h2 class="st" style="font-size:30px;margin:10px 0">Brute force itu jujur.<br>Pencarian cerdas itu perlu.</h2>

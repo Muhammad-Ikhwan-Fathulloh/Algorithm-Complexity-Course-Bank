@@ -113,6 +113,14 @@ table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
 .rxtrace td:first-child{color:#64748b;font-weight:700}
 b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
 .rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
+.rxg3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.rxwtrack{display:flex;gap:6px;flex:none}
+.rxwtrack span{font:800 12px/1 -apple-system,'Segoe UI',Arial,sans-serif;letter-spacing:.08em;padding:6px 10px;border-radius:20px;background:#f1f5f9;color:#94a3b8;border:2px solid #e2e8f0}
+.rxwtrack span.on{background:#2563eb;color:#fff;border-color:#2563eb}
+.rxtoc{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+.rxtocitem{display:flex;gap:10px;align-items:baseline;font-size:15px;line-height:1.4;color:#334155;border-bottom:1px dashed #e2e8f0;padding:3px 0}
+.rxg3.big .rxcard{padding:18px 20px}.rxg3.big .rxcard h3{font-size:20px;margin-bottom:10px}.rxg3.big .rxcard p{font-size:17px;line-height:1.65}
+.rxtocitem span{flex:none;min-width:26px;font:800 13px Consolas,monospace;color:#2563eb}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -127,22 +135,6 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · <a href="index.html" style="color:#2563eb;font-size:12px">← Daftar Materi</a></div>
 </section>
 
-<!-- 5W1H -->
-<section class="slide" id="s5w1h">
-  <div class="kicker">KERANGKA TEORI · 5W1H - Greedy Algorithms I</div>
-  <h2 class="st">Kenapa materi ini ada, untuk siapa, dan bagaimana memakainya?</h2>
-  <div class="w5h1" style="margin-top:6px">
-    <div class="wcard what"><div class="wlabel">What - Apa?</div><p>Greedy = buat pilihan terbaik secara lokal di setiap langkah tanpa melihat ke depan, berharap hasilnya optimal global. Bukan selalu benar - harus dibuktikan dengan exchange argument. Activity Selection, Fractional Knapsack, Job Scheduling adalah contoh klasik yang provably optimal dengan pendekatan greedy.</p></div>
-    <div class="wcard why"><div class="wlabel">Why - Mengapa?</div><p>Greedy memberi solusi O(n log n) untuk masalah yang kalau diselesaikan dengan DP butuh O(n²) atau brute force O(2ⁿ). Di dunia nyata, greedy sering cukup meski tidak optimal (greedy decoding LLM). Memahami kapan greedy benar vs salah adalah keterampilan kritis yang membedakan programmer junior dan senior.</p></div>
-    <div class="wcard who"><div class="wlabel">Who - Siapa?</div><p>Algorithm designer yang butuh solusi cepat dan provably optimal (Activity Selection di OS scheduling), ML engineer yang mengerti greedy decoding vs beam search di LLM inference, network engineer yang pakai Dijkstra (greedy shortest path), dan siapapun yang menghadapi optimization problem sekuensial.</p></div>
-    <div class="wcard when"><div class="wlabel">When - Kapan?</div><p>Greedy benar saat ada dua properti: (1) greedy choice property - pilihan lokal terbaik tidak menutup solusi global optimal, dan (2) optimal substructure - solusi optimal mengandung solusi optimal submasalah. Greedy salah untuk: 0/1 Knapsack, TSP, banyak masalah NP-Hard. Uji: cari counterexample kecil dahulu.</p></div>
-    <div class="wcard where"><div class="wlabel">Where - Di mana?</div><p>Activity Selection di: OS scheduling, meeting room allocation. Fractional Knapsack di: cargo loading, resource allocation. Dijkstra di: OSPF routing, Google Maps. Huffman Coding di: gzip, PNG, JPEG. Greedy decoding di: GPT/LLaMA inference - pilih token probabilitas tertinggi di setiap langkah secara greedy.</p></div>
-    <div class="wcard how"><div class="wlabel">How - Bagaimana?</div><p>Langkah greedy: (1) Sort input berdasarkan kriteria tepat - finish time untuk Activity Selection, ratio value/weight untuk Fractional Knapsack, deadline untuk Job Scheduling. (2) Iterasi: ambil item berikutnya jika kompatibel. (3) Buktikan dengan exchange argument: asumsikan solusi optimal berbeda, tunjukkan bisa diswap ke greedy tanpa memperburuk kualitas.</p></div>
-  </div>
-</section>
-
-<!-- 2. PRINSIP GREEDY -->
-<!-- PETA LANGKAH -->
 <section class="slide" id="speta">
   <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
   <h2 class="st">Peta langkah: greedy dan cara membuktikannya</h2>
@@ -159,6 +151,67 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
       <div class="note">Pada decoding bahasa, greedy (pilih token paling mungkin) tidak selalu menghasilkan kalimat terbaik. Beam search sering lebih baik.</div>
     </div>
   </div>
+</section>
+
+<section class="slide" id="rxdA" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A</div>
+<h1 class="title">Teori</h1>
+<p class="lead">Kita mulai dari dasar: 5W1H dipecah per slide (What, Why, Who, When, Where, How), lalu konsep inti dan cara membaca setiap rumus.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>WHAT - Apa itu algoritma greedy?</div><div class="rxtocitem"><span>2</span>WHY - Mengapa greedy menarik?</div><div class="rxtocitem"><span>3</span>WHO - Siapa yang memakai greedy?</div><div class="rxtocitem"><span>4</span>WHEN - Kapan greedy boleh dipakai?</div><div class="rxtocitem"><span>5</span>WHERE - Di mana greedy dipakai?</div><div class="rxtocitem"><span>6</span>HOW - Bagaimana merancang dan membuktikan greedy?</div><div class="rxtocitem"><span>7</span>Greedy: Pilihan lokal optimal → solusi global optimal?</div><div class="rxtocitem"><span>8</span>Exchange Argument - Cara membuktikan greedy benar</div><div class="rxtocitem"><span>9</span>Empat rumus untuk merancang dan membuktikan greedy</div><div class="rxtocitem"><span>10</span>Aturan pilih Activity Selection</div><div class="rxtocitem"><span>11</span>Fractional knapsack: rasio nilai per berat</div><div class="rxtocitem"><span>12</span>Minimasi keterlambatan maksimum (EDF)</div><div class="rxtocitem"><span>13</span>Exchange argument (pola pembuktian)</div></div>
+</section>
+
+<section class="slide" id="rxw1" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (1/6) - WHAT</div>
+<div class="rxwtrack"><span class="on">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHAT - Apa itu algoritma greedy?</h2>
+<p class="b">Strategi yang di setiap langkah mengambil pilihan yang <b>terlihat terbaik saat itu</b>, tanpa pernah mengubah keputusan sebelumnya.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Pilihan lokal</h3><p>Ambil yang selesai paling awal, rasio terbesar, deadline terdekat, dst.</p></div><div class="rxcard green"><h3>Tanpa mundur</h3><p>Keputusan yang sudah diambil tidak dibatalkan.</p></div><div class="rxcard yellow"><h3>Butuh bukti</h3><p>Greedy hanya benar untuk masalah dengan struktur tertentu.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Activity selection: selalu pilih kegiatan yang selesai paling awal.</div>
+</section>
+
+<section class="slide" id="rxw2" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (2/6) - WHY</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="on">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHY - Mengapa greedy menarik?</h2>
+<p class="b">Karena sangat cepat dan sederhana - biasanya hanya sort + satu pemindaian.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Cepat</h3><p>Umumnya Θ(n log n) karena pengurutan.</p></div><div class="rxcard green"><h3>Sederhana</h3><p>Mudah ditulis, dijelaskan, dan dipelihara.</p></div><div class="rxcard yellow"><h3>Tetapi berbahaya</h3><p>Untuk masalah lain (0/1 knapsack, coin change tertentu) greedy salah.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Kembalian koin {1, 3, 4} untuk 6: greedy 4+1+1 (3 koin), optimal 3+3 (2 koin).</div>
+</section>
+
+<section class="slide" id="rxw3" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (3/6) - WHO</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="on">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHO - Siapa yang memakai greedy?</h2>
+<p class="b">Banyak sistem penjadwalan dan alokasi.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Engineer sistem</h3><p>Scheduler OS dan antrian job.</p></div><div class="rxcard green"><h3>Operasional & logistik</h3><p>Penjadwalan ruangan, alokasi kapasitas.</p></div><div class="rxcard yellow"><h3>Engineer ML/LLM</h3><p>Greedy decoding dan penjadwalan request inference.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Layanan LLM menjadwalkan request berdasarkan deadline SLO terdekat.</div>
+</section>
+
+<section class="slide" id="rxw4" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (4/6) - WHEN</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="on">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHEN - Kapan greedy boleh dipakai?</h2>
+<p class="b">Hanya jika dua sifat ini terpenuhi:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Greedy choice property</h3><p>Ada solusi optimal yang memuat pilihan greedy pertama.</p></div><div class="rxcard green"><h3>Optimal substructure</h3><p>Sisa masalah setelah pilihan itu juga harus diselesaikan optimal.</p></div><div class="rxcard yellow"><h3>Jika ragu</h3><p>Uji dengan brute force pada data kecil atau cari contoh penyangkal.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Fractional knapsack memenuhi keduanya; 0/1 knapsack tidak.</div>
+</section>
+
+<section class="slide" id="rxw5" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (5/6) - WHERE</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="on">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHERE - Di mana greedy dipakai?</h2>
+<p class="b">Di banyak sistem nyata:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Penjadwalan</h3><p>Booking ruangan, SCHED_DEADLINE (EDF) di Linux.</p></div><div class="rxcard green"><h3>Kompresi & graf</h3><p>Huffman, Kruskal, Prim, Dijkstra (Pertemuan 9).</p></div><div class="rxcard yellow"><h3>Alokasi sumber daya</h3><p>Pembagian bandwidth, anggaran iklan yang bisa dibagi.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Sistem booking ruang kampus memaksimalkan jumlah rapat dengan aturan selesai-paling-awal.</div>
+</section>
+
+<section class="slide" id="rxw6" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (6/6) - HOW</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="on">HOW</span></div>
+<h2 class="st">HOW - Bagaimana merancang dan membuktikan greedy?</h2>
+<p class="b">Tiga langkah:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>1. Pilih kriteria</h3><p>Urutkan menurut kunci yang tepat (waktu selesai, rasio, deadline).</p></div><div class="rxcard green"><h3>2. Pindai sekali</h3><p>Ambil elemen jika masih valid terhadap pilihan sebelumnya.</p></div><div class="rxcard yellow"><h3>3. Buktikan</h3><p>Exchange argument: tukar pilihan OPT dengan pilihan greedy tanpa merugikan.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Bukti EDF: menukar dua job yang urutannya terbalik tidak pernah menaikkan L_max.</div>
 </section>
 
 <section class="slide" id="s2">
@@ -186,7 +239,89 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   </div>
 </section>
 
-<!-- 3. ACTIVITY SELECTION -->
+<section class="slide" id="s6">
+  <div class="kicker">TEKNIK BUKTI</div>
+  <h2 class="st">Exchange Argument - Cara membuktikan greedy benar</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b"><b>Template Exchange Argument:</b></p>
+      <div class="card" style="border-left:4px solid #2563eb">
+        <p class="b" style="font-size:12.5px;line-height:1.8">1. <b>Andaikan</b> ada solusi optimal OPT ≠ greedy G.<br>2. <b>Identifikasi</b> satu perbedaan pertama antara G dan OPT.<br>3. <b>Modifikasi</b> OPT dengan "menukar" ke pilihan greedy.<br>4. <b>Buktikan</b> modifikasi tidak memperburuk nilai objektif.<br>5. <b>Kesimpulan:</b> G sama baiknya dengan OPT → G optimal.</p>
+      </div>
+      <div class="analogy"><b>Analogi:</b> Seperti membuktikan aturan sekolah optimal: "Andaikan ada aturan berbeda yang lebih baik. Mari kita coba ubah satu aturan itu ke aturan kita. Ternyata tidak jadi lebih buruk. Jadi aturan kita sudah optimal."</div>
+    </div>
+    <div class="stack">
+      <div class="note"><b>Contoh: Activity Selection.</b><br>OPT mulai dengan aktivitas a₁ (finish time f₁). Greedy pilih a* (finish time f* ≤ f₁). Ganti a₁ dengan a*: semua aktivitas lain masih kompatibel (f* ≤ f₁ ≤ start aktivitas berikutnya). Jumlah aktivitas sama. Ulangi → G optimal.</div>
+      <table class="tbl">
+        <tr><th>Problem</th><th>Kriteria Sort</th><th>Objektif</th></tr>
+        <tr><td>Activity Selection</td><td>Finish time ↑</td><td>Max aktivitas</td></tr>
+        <tr><td>Fractional Knapsack</td><td>v/w ratio ↓</td><td>Max value</td></tr>
+        <tr><td>Job Scheduling</td><td>Deadline ↑</td><td>Min lateness</td></tr>
+        <tr><td>Huffman Coding</td><td>Frekuensi ↑</td><td>Min total bit</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="rx0" data-rx="1">
+<div class="kicker">Bagian A · Teori · Bedah Rumus · Greedy Algorithms I</div>
+<h2 class="st">Empat rumus untuk merancang dan membuktikan greedy</h2>
+<p class="b">Greedy terlihat seperti “ambil yang paling menggiurkan sekarang”. Tetapi kriteria pilihannya harus tepat dan bisa dibuktikan. Rumus berikut adalah kriteria dan alat bukti utama.</p>
+<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Aturan pilih Activity Selection</b><span>urut fᵢ naik; ambil jika sᵢ ≥ f_terakhir</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Fractional knapsack: rasio nilai per berat</b><span>urut vᵢ/wᵢ; maks Σ xᵢvᵢ, 0 ≤ xᵢ ≤ 1</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Minimasi keterlambatan maksimum (EDF)</b><span>L_max = maks(0, fⱼ − dⱼ); urut deadline</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Exchange argument (pola pembuktian)</b><span>OPT' = OPT − {o₁} ∪ {g₁}, |OPT'| = |OPT|</span></div></div></div>
+<div class="note"><b>Alur tiap rumus:</b> di <b>Teori</b> kita belajar <b>cara membaca</b> rumus dan arti tiap simbol. Di <b>Teknikal</b> rumus yang sama dikerjakan lewat <b>hitung manual</b>, <b>jejak step-by-step</b>, lalu <b>kode Python</b>. Di <b>Studi kasus nyata</b> (akhir slide) kita lihat pemakaiannya di proyek nyata.</div>
+</section>
+
+<section class="slide" id="rx1a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 1/4 - cara membaca</div>
+<h2 class="st">Aturan pilih Activity Selection</h2>
+<div class="fxbox">urutkan f<sub>1</sub> ≤ f<sub>2</sub> ≤ … ≤ f<sub>n</sub>; &nbsp; ambil aktivitas i jika <span class='hl'>s<sub>i</sub> ≥ f<sub>terakhir</sub></span>; &nbsp; biaya Θ(n log n)</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Urutkan aktivitas menurut waktu selesai dari yang paling awal. Ambil aktivitas i jika waktu mulainya tidak lebih awal dari waktu selesai aktivitas terakhir yang dipilih. Biayanya Theta n log n karena pengurutan.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>fᵢ = finish</h4><p class="">waktu selesai aktivitas ke-i; kunci pengurutan.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>sᵢ = start</h4><p class="">waktu mulai aktivitas ke-i.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>sᵢ ≥ f_terakhir</h4><p class="">tidak bentrok dengan aktivitas yang sudah dipilih.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>sᵢ, fᵢ</td><td>waktu mulai dan selesai aktivitas i</td></tr><tr><td>f_terakhir</td><td>waktu selesai aktivitas yang terakhir diambil</td></tr><tr><td>n log n</td><td>biaya sort; pemindaian setelahnya hanya Θ(n)</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Memilih yang <b>selesai paling awal</b> menyisakan waktu sebanyak mungkin untuk aktivitas lain. Memilih yang mulai paling awal atau paling singkat bisa gagal.</div>
+</section>
+
+<section class="slide" id="rx2a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 2/4 - cara membaca</div>
+<h2 class="st">Fractional knapsack: rasio nilai per berat</h2>
+<div class="fxbox">maks Σ x<sub>i</sub>·v<sub>i</sub> &nbsp; s.t. &nbsp; Σ x<sub>i</sub>·w<sub>i</sub> ≤ W, &nbsp; <span class='hb'>0 ≤ x<sub>i</sub> ≤ 1</span>; &nbsp; greedy: urutkan <span class='hl'>v<sub>i</sub> / w<sub>i</sub></span> menurun</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Maksimalkan jumlah x i kali v i, dengan syarat jumlah x i kali w i tidak melebihi W, dan setiap x i antara nol dan satu. Strategi greedy: urutkan menurut v i dibagi w i dari terbesar.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>s.t. = subject to</h4><p class="">“dengan syarat”.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>xᵢ boleh pecahan</h4><p class="">0,5 berarti ambil setengah item; inilah yang membuat greedy optimal.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>vᵢ/wᵢ</h4><p class="">“harga per kilo” - ambil yang paling berharga per satuan berat dulu.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>vᵢ</td><td>nilai item i</td></tr><tr><td>wᵢ</td><td>berat item i</td></tr><tr><td>xᵢ</td><td>porsi item i yang diambil (0..1)</td></tr><tr><td>W</td><td>kapasitas</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Karena item bisa dipotong, setiap kilo kapasitas sebaiknya diisi dengan bahan paling berharga per kilo. <b>Tidak ada alasan menyisakan ruang</b> untuk yang rasionya lebih kecil.</div>
+</section>
+
+<section class="slide" id="rx3a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 3/4 - cara membaca</div>
+<h2 class="st">Minimasi keterlambatan maksimum (EDF)</h2>
+<div class="fxbox">L<sub>j</sub> = maks(0, f<sub>j</sub> − <span class='hl'>d<sub>j</sub></span>), &nbsp; <span class='hb'>L<sub>max</sub> = maks<sub>j</sub> L<sub>j</sub></span>; &nbsp; greedy: urutkan menurut deadline d<sub>j</sub> (Earliest Deadline First)</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Keterlambatan pekerjaan j adalah maksimum antara nol dan waktu selesai f j dikurangi deadline d j. L max adalah keterlambatan terbesar. Strategi greedy: kerjakan menurut deadline paling awal.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>fⱼ − dⱼ</h4><p class="">positif = terlambat; negatif = selesai sebelum deadline.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>maks(0, ·)</h4><p class="">selesai lebih awal dihitung 0, bukan bonus.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>L_max</h4><p class="">yang diminimalkan adalah keterlambatan TERBURUK, bukan totalnya.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>tⱼ</td><td>durasi pekerjaan j</td></tr><tr><td>dⱼ</td><td>deadline pekerjaan j</td></tr><tr><td>fⱼ</td><td>waktu selesai = jumlah durasi sampai j</td></tr><tr><td>L_max</td><td>keterlambatan maksimum jadwal</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Mengerjakan yang paling singkat dulu terasa produktif, tetapi bisa membuat pekerjaan dengan deadline dekat terlambat parah. <b>EDF terbukti optimal</b> untuk L_max (dengan exchange argument).</div>
+</section>
+
+<section class="slide" id="rx4a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 4/4 - cara membaca</div>
+<h2 class="st">Exchange argument (pola pembuktian)</h2>
+<div class="fxbox">f(<span class='hl'>g₁</span>) ≤ f(<span class='hb'>o₁</span>) &nbsp;⇒&nbsp; OPT′ = (OPT − {<span class='hb'>o₁</span>}) ∪ {<span class='hl'>g₁</span>} tetap valid dan |OPT′| = |OPT|</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Jika waktu selesai pilihan greedy pertama g satu tidak lebih lambat dari waktu selesai pilihan pertama solusi optimal o satu, maka solusi baru OPT aksen, yaitu OPT dengan o satu diganti g satu, tetap valid dan ukurannya sama.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Ambil solusi optimal sembarang</h4><p class="">OPT, dengan pilihan pertama o₁.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Tukar</h4><p class="">ganti o₁ dengan pilihan greedy g₁.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Buktikan tidak lebih buruk</h4><p class="">karena g₁ selesai tidak lebih lambat, sisa OPT tetap tidak bentrok.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Ulangi (induksi)</h4><p class="">terus tukar sampai OPT berubah menjadi solusi greedy tanpa menurunkan kualitas.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>OPT</td><td>suatu solusi optimal (tidak harus unik)</td></tr><tr><td>g₁</td><td>pilihan pertama algoritma greedy</td></tr><tr><td>o₁</td><td>pilihan pertama di OPT</td></tr><tr><td>OPT′</td><td>solusi hasil penukaran</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Kita tidak perlu tahu OPT itu apa. Cukup tunjukkan bahwa <b>pilihan greedy selalu bisa “disusupkan” ke solusi optimal</b> tanpa merugikan. Akibatnya greedy juga optimal.</div>
+</section>
+
+<section class="slide" id="rxdB" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian B</div>
+<h1 class="title">Teknikal</h1>
+<p class="lead">Setelah teorinya jelas, kita masuk ke algoritma, kode, simulasi, hitung manual, dan jejak eksekusi langkah demi langkah.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Activity Selection - Pilih aktivitas sebanyak mungkin</div><div class="rxtocitem"><span>2</span>Fractional Knapsack - Bisa ambil sebagian item</div><div class="rxtocitem"><span>3</span>Hitung manual: Aturan pilih Activity Selection</div><div class="rxtocitem"><span>4</span>Jejak langkah demi langkah: Aturan pilih Activity Selection</div><div class="rxtocitem"><span>5</span>Dari hitungan ke kode: Aturan pilih Activity Selection</div><div class="rxtocitem"><span>6</span>Hitung manual: Fractional knapsack: rasio nilai per berat</div><div class="rxtocitem"><span>7</span>Jejak langkah demi langkah: Fractional knapsack: rasio nilai per berat</div><div class="rxtocitem"><span>8</span>Dari hitungan ke kode: Fractional knapsack: rasio nilai per berat</div><div class="rxtocitem"><span>9</span>Hitung manual: Minimasi keterlambatan maksimum (EDF)</div><div class="rxtocitem"><span>10</span>Jejak langkah demi langkah: Minimasi keterlambatan maksimum (EDF)</div><div class="rxtocitem"><span>11</span>Dari hitungan ke kode: Minimasi keterlambatan maksimum (EDF)</div><div class="rxtocitem"><span>12</span>Hitung manual: Exchange argument (pola pembuktian)</div><div class="rxtocitem"><span>13</span>Jejak langkah demi langkah: Exchange argument (pola pembuktian)</div><div class="rxtocitem"><span>14</span>Dari hitungan ke kode: Exchange argument (pola pembuktian)</div></div>
+</section>
+
 <section class="slide" id="s3">
   <div class="kicker">BAGIAN 1 · ACTIVITY SELECTION</div>
   <h2 class="st">Activity Selection - Pilih aktivitas sebanyak mungkin</h2>
@@ -215,7 +350,6 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   </div>
 </section>
 
-<!-- 4. FRACTIONAL KNAPSACK -->
 <section class="slide" id="s4">
   <div class="kicker">BAGIAN 2 · FRACTIONAL KNAPSACK</div>
   <h2 class="st">Fractional Knapsack - Bisa ambil sebagian item</h2>
@@ -252,7 +386,203 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• Rasio v/w: nilai per satuan berat. Item dengan rasio tertinggi diambil lebih dulu.<br>• Contoh: emas 60/10 = 6, perak 100/20 = 5, perunggu 120/30 = 4.<br>• Kapasitas 50 kg: ambil emas (10 kg) dan perak (20 kg), lalu 20 kg dari perunggu (sebagian).</div>
 </section>
 
-<!-- 5. JOB SCHEDULING & LLM -->
+<section class="slide" id="rx1m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/4 - hitung manual</div>
+<h2 class="st">Hitung manual: Aturan pilih Activity Selection</h2>
+<div class="rxsoal"><b>Soal:</b> Pilih rapat sebanyak mungkin: (1,4) (3,5) (0,6) (5,7) (8,9) (5,9).</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Urutkan menurut waktu selesai</h4><p class="rxcalc">(1,4) (3,5) (0,6) (5,7) (8,9) (5,9)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>(1,4)</h4><p class="rxcalc">belum ada yang dipilih → ambil, f_terakhir = 4</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>(3,5), (0,6)</h4><p class="rxcalc">mulai 3 dan 0 &lt; 4 → bentrok, lewati</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>(5,7)</h4><p class="rxcalc">5 ≥ 4 → ambil, f_terakhir = 7</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>(8,9), (5,9)</h4><p class="rxcalc">8 ≥ 7 → ambil, f_terakhir = 9; 5 &lt; 9 → lewati</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>rapat</th><th>s ≥ f_terakhir?</th><th>keputusan</th><th>f_terakhir</th></tr><tr><td>(1,4)</td><td>-</td><td>ambil</td><td>4</td></tr><tr><td>(3,5)</td><td>3 &lt; 4</td><td>lewati</td><td>4</td></tr><tr><td>(0,6)</td><td>0 &lt; 4</td><td>lewati</td><td>4</td></tr><tr><td>(5,7)</td><td>5 ≥ 4</td><td>ambil</td><td>7</td></tr><tr><td>(8,9)</td><td>8 ≥ 7</td><td>ambil</td><td>9</td></tr><tr><td>(5,9)</td><td>5 &lt; 9</td><td>lewati</td><td>9</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> 3 rapat: (1,4), (5,7), (8,9).</div>
+</section>
+
+<section class="slide" id="rx1t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/4 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Aturan pilih Activity Selection</h2>
+<div class="rxsoal"><b>Kasus:</b> Activity selection untuk 11 kegiatan (sudah diurutkan menurut waktu selesai).</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Baca dari atas ke bawah. Ambil kegiatan jika waktu mulainya ≥ waktu selesai kegiatan terakhir yang diambil. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>kegiatan (s, f)</th><th>syarat s ≥ f_terakhir</th><th>keputusan</th><th>f_terakhir</th><th>jumlah</th></tr><tr><td>(1, 4)</td><td>1 ≥ -</td><td><b class='chg'>ambil</b></td><td>4</td><td>1</td></tr><tr><td>(3, 5)</td><td>3 &lt; 4</td><td>lewati</td><td>4</td><td>1</td></tr><tr><td>(0, 6)</td><td>0 &lt; 4</td><td>lewati</td><td>4</td><td>1</td></tr><tr><td>(5, 7)</td><td>5 ≥ 4</td><td><b class='chg'>ambil</b></td><td>7</td><td>2</td></tr><tr><td>(3, 9)</td><td>3 &lt; 7</td><td>lewati</td><td>7</td><td>2</td></tr><tr><td>(5, 9)</td><td>5 &lt; 7</td><td>lewati</td><td>7</td><td>2</td></tr><tr><td>(6, 10)</td><td>6 &lt; 7</td><td>lewati</td><td>7</td><td>2</td></tr><tr><td>(8, 11)</td><td>8 ≥ 7</td><td><b class='chg'>ambil</b></td><td>11</td><td>3</td></tr><tr><td>(8, 12)</td><td>8 &lt; 11</td><td>lewati</td><td>11</td><td>3</td></tr><tr><td>(2, 14)</td><td>2 &lt; 11</td><td>lewati</td><td>11</td><td>3</td></tr><tr><td>(12, 16)</td><td>12 ≥ 11</td><td><b class='chg'>ambil</b></td><td>16</td><td>4</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Terpilih (1, 4), (5, 7), (8, 11), (12, 16) → 4 kegiatan.</div>
+</section>
+
+<section class="slide" id="rx1b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Aturan pilih Activity Selection</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> pilih_rapat(rapat):
+    hasil, selesai = [], float(<span class="ts">"-inf"</span>)
+    <span class="tk">for</span> s, f <span class="tk">in</span> <span class="tk">sorted</span>(rapat, key=<span class="tk">lambda</span> x: x[<span class="tn">1</span>]):   <span class="tc"># urut waktu selesai</span>
+        <span class="tk">if</span> s &gt;= selesai:
+            hasil.append((s, f)); selesai = f
+    <span class="tk">return</span> hasil
+
+<span class="tk">print</span>(pilih_rapat([(<span class="tn">1</span>,<span class="tn">4</span>),(<span class="tn">3</span>,<span class="tn">5</span>),(<span class="tn">0</span>,<span class="tn">6</span>),(<span class="tn">5</span>,<span class="tn">7</span>),(<span class="tn">8</span>,<span class="tn">9</span>),(<span class="tn">5</span>,<span class="tn">9</span>)]))</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">3 rapat: (1,4), (5,7), (8,9).</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Terpilih (1, 4), (5, 7), (8, 11), (12, 16) → 4 kegiatan.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rx2m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/4 - hitung manual</div>
+<h2 class="st">Hitung manual: Fractional knapsack: rasio nilai per berat</h2>
+<div class="rxsoal"><b>Soal:</b> Fractional knapsack: A(60, 10), B(100, 20), C(120, 30), kapasitas W = 50.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Hitung rasio</h4><p class="rxcalc">A = 60/10 = 6; B = 100/20 = 5; C = 120/30 = 4</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Ambil A penuh</h4><p class="rxcalc">sisa kapasitas 50 − 10 = 40; nilai 60</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ambil B penuh</h4><p class="rxcalc">sisa 40 − 20 = 20; nilai 60 + 100 = 160</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>C tidak muat penuh</h4><p class="rxcalc">ambil 20/30 bagian → 120 × 2/3 = 80</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Total</h4><p class="rxcalc">160 + 80 = 240</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>item</th><th>v/w</th><th>porsi</th><th>nilai</th><th>sisa W</th></tr><tr><td>A</td><td>6</td><td>1</td><td>60</td><td>40</td></tr><tr><td>B</td><td>5</td><td>1</td><td>100</td><td>20</td></tr><tr><td>C</td><td>4</td><td>2/3</td><td>80</td><td>0</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Nilai maksimum 240.</div>
+</section>
+
+<section class="slide" id="rx2t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/4 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Fractional knapsack: rasio nilai per berat</h2>
+<div class="rxsoal"><b>Kasus:</b> Fractional knapsack W = 12: A(v 10, w 2), B(5, 3), C(15, 5), D(7, 7).</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Urutkan menurut v/w terbesar. Setiap baris: ambil sebanyak mungkin, kurangi kapasitas, tambahkan nilai. Berhenti saat kapasitas 0. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>item</th><th>v</th><th>w</th><th>v/w</th><th>diambil</th><th>nilai</th><th>sisa W</th><th>total</th></tr><tr><td>A</td><td>10</td><td>2</td><td>5,00</td><td>penuh</td><td>10</td><td>10</td><td><b class='chg'>10</b></td></tr><tr><td>C</td><td>15</td><td>5</td><td>3,00</td><td>penuh</td><td>15</td><td>5</td><td><b class='chg'>25</b></td></tr><tr><td>B</td><td>5</td><td>3</td><td>1,67</td><td>penuh</td><td>5</td><td>2</td><td><b class='chg'>30</b></td></tr><tr><td>D</td><td>7</td><td>7</td><td>1,00</td><td>2/7</td><td>2</td><td>0</td><td><b class='chg'>32</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Nilai maksimum 32.</div>
+</section>
+
+<section class="slide" id="rx2b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Fractional knapsack: rasio nilai per berat</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> fractional_knapsack(items, W):
+    total = <span class="tn">0</span>
+    <span class="tk">for</span> v, w <span class="tk">in</span> <span class="tk">sorted</span>(items, key=<span class="tk">lambda</span> x: x[<span class="tn">0</span>] / x[<span class="tn">1</span>], reverse=<span class="tk">True</span>):
+        ambil = <span class="tk">min</span>(w, W)
+        total += v * ambil / w
+        W -= ambil
+        <span class="tk">if</span> W == <span class="tn">0</span>: <span class="tk">break</span>
+    <span class="tk">return</span> total
+
+<span class="tk">print</span>(fractional_knapsack([(<span class="tn">60</span>,<span class="tn">10</span>), (<span class="tn">100</span>,<span class="tn">20</span>), (<span class="tn">120</span>,<span class="tn">30</span>)], <span class="tn">50</span>))  <span class="tc"># 240.0</span></pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Nilai maksimum 240.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Nilai maksimum 32.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rx3m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/4 - hitung manual</div>
+<h2 class="st">Hitung manual: Minimasi keterlambatan maksimum (EDF)</h2>
+<div class="rxsoal"><b>Soal:</b> Jadwalkan A(3, dl 6), B(2, dl 8), C(1, dl 9), D(4, dl 9) agar keterlambatan maksimum minimal.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Urutkan deadline (EDF)</h4><p class="rxcalc">A (6), B (8), C (9), D (9)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Jalankan berurutan</h4><p class="rxcalc">A 0–3, B 3–5, C 5–6, D 6–10</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Hitung telat</h4><p class="rxcalc">A: 3−6 → 0; B: 5−8 → 0; C: 6−9 → 0; D: 10−9 = 1</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>L_max EDF</h4><p class="rxcalc">maks(0, 0, 0, 1) = 1</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Bandingkan urutan C, B, D, A</h4><p class="rxcalc">A selesai 10, deadline 6 → telat 4 → L_max = 4</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>job</th><th>durasi</th><th>deadline</th><th>selesai</th><th>telat</th></tr><tr><td>A</td><td>3</td><td>6</td><td>3</td><td>0</td></tr><tr><td>B</td><td>2</td><td>8</td><td>5</td><td>0</td></tr><tr><td>C</td><td>1</td><td>9</td><td>6</td><td>0</td></tr><tr><td>D</td><td>4</td><td>9</td><td>10</td><td>1</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> EDF memberi L_max = 1 (urutan lain bisa sampai 4).</div>
+</section>
+
+<section class="slide" id="rx3t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/4 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Minimasi keterlambatan maksimum (EDF)</h2>
+<div class="rxsoal"><b>Kasus:</b> EDF untuk 5 job (durasi, deadline): A(2,4), B(3,5), C(1,7), D(4,10), E(2,11).</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Urutkan menurut deadline, jalankan berurutan tanpa jeda. Kolom garis waktu: █ = sedang dikerjakan. Telat = maks(0, selesai − deadline). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>job</th><th>durasi</th><th>deadline</th><th>waktu</th><th>garis waktu</th><th>telat</th><th>L_max</th></tr><tr><td>A</td><td>2</td><td>4</td><td>0–2</td><td><span class='mono'>██</span></td><td>0</td><td>0</td></tr><tr><td>B</td><td>3</td><td>5</td><td>2–5</td><td><span class='mono'>··███</span></td><td>0</td><td>0</td></tr><tr><td>C</td><td>1</td><td>7</td><td>5–6</td><td><span class='mono'>·····█</span></td><td>0</td><td>0</td></tr><tr><td>D</td><td>4</td><td>10</td><td>6–10</td><td><span class='mono'>······████</span></td><td>0</td><td>0</td></tr><tr><td>E</td><td>2</td><td>11</td><td>10–12</td><td><span class='mono'>··········██</span></td><td><b class='chg'>1</b></td><td>1</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> L_max = 1.</div>
+</section>
+
+<section class="slide" id="rx3b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Minimasi keterlambatan maksimum (EDF)</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> edf(jobs):                  <span class="tc"># jobs: (nama, durasi, deadline)</span>
+    t, lmax = <span class="tn">0</span>, <span class="tn">0</span>
+    <span class="tk">for</span> nama, dur, dl <span class="tk">in</span> <span class="tk">sorted</span>(jobs, key=<span class="tk">lambda</span> j: j[<span class="tn">2</span>]):
+        t += dur
+        lmax = <span class="tk">max</span>(lmax, t - dl)
+        <span class="tk">print</span>(nama, <span class="ts">"selesai"</span>, t, <span class="ts">"telat"</span>, <span class="tk">max</span>(<span class="tn">0</span>, t - dl))
+    <span class="tk">return</span> lmax
+
+edf([(<span class="ts">"A"</span>,<span class="tn">3</span>,<span class="tn">6</span>), (<span class="ts">"B"</span>,<span class="tn">2</span>,<span class="tn">8</span>), (<span class="ts">"C"</span>,<span class="tn">1</span>,<span class="tn">9</span>), (<span class="ts">"D"</span>,<span class="tn">4</span>,<span class="tn">9</span>)])</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">EDF memberi L_max = 1 (urutan lain bisa sampai 4).</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>L_max = 1.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rx4m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/4 - hitung manual</div>
+<h2 class="st">Hitung manual: Exchange argument (pola pembuktian)</h2>
+<div class="rxsoal"><b>Soal:</b> Ubah solusi optimal OPT = {(3,5), (5,7), (8,9)} menjadi solusi greedy dengan penukaran.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Pilihan greedy pertama</h4><p class="rxcalc">g₁ = (1,4), selesai paling awal di seluruh data</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Pilihan pertama OPT</h4><p class="rxcalc">o₁ = (3,5); f(g₁) = 4 ≤ 5 = f(o₁)</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Tukar</h4><p class="rxcalc">OPT′ = {(1,4), (5,7), (8,9)}</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Cek valid</h4><p class="rxcalc">(5,7) mulai 5 ≥ 4 → tidak bentrok; ukuran tetap 3</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Lanjutkan</h4><p class="rxcalc">o₂ = (5,7) = g₂ dan o₃ = (8,9) = g₃ → OPT′ = solusi greedy</p></div></div></div></div>
+<div class="rxcard soft"><h3>Latihan cepat dengan angka lain</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Klaim</h4><p class="">selesai-paling-awal optimal untuk activity selection.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Misal OPT = {o₁, o₂, …}</h4><p class="">urut waktu selesai; g₁ = aktivitas dengan f terkecil di seluruh data.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>f(g₁) ≤ f(o₁)</h4><p class="">maka g₁ tidak bentrok dengan o₂ (karena s(o₂) ≥ f(o₁) ≥ f(g₁)).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Simpulkan</h4><p class="">OPT′ valid, |OPT′| = |OPT|; induksi pada sisa masalah.</p></div></div></div></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Greedy menghasilkan 3 rapat, sama dengan OPT → greedy optimal pada contoh ini (dan secara umum lewat induksi).</div>
+</section>
+
+<section class="slide" id="rx4t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/4 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Exchange argument (pola pembuktian)</h2>
+<div class="rxsoal"><b>Kasus:</b> Exchange argument pada data activity selection: ubah OPT menjadi solusi greedy satu pilihan demi satu pilihan.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = membandingkan pilihan ke-k di OPT dengan pilihan ke-k greedy. Jika beda, tukar - asalkan tetap valid dan ukurannya tidak berkurang. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>k</th><th>pilihan OPT</th><th>pilihan greedy</th><th>alasan</th><th>OPT sesudahnya</th></tr><tr><td>0</td><td>{(3,5), (5,7), (8,9)}</td><td>-</td><td>-</td><td>OPT awal, valid, ukuran 3</td></tr><tr><td>1</td><td>o₁ = (3,5)</td><td>g₁ = (1,4)</td><td>f(g₁) = 4 ≤ 5 = f(o₁) → tukar</td><td><b class='chg'>{(1,4), (5,7), (8,9)}</b></td></tr><tr><td>2</td><td>o₂ = (5,7)</td><td>g₂ = (5,7)</td><td>sama → tidak perlu tukar</td><td>{(1,4), (5,7), (8,9)}</td></tr><tr><td>3</td><td>o₃ = (8,9)</td><td>g₃ = (8,9)</td><td>sama → tidak perlu tukar</td><td>{(1,4), (5,7), (8,9)}</td></tr><tr><td>cek</td><td>validitas</td><td>-</td><td>5 ≥ 4 dan 8 ≥ 7 → tidak bentrok</td><td>ukuran tetap 3 = |OPT|</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> OPT berubah menjadi solusi greedy tanpa kehilangan satu kegiatan pun → greedy optimal.</div>
+</section>
+
+<section class="slide" id="rx4b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Exchange argument (pola pembuktian)</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tc"># Uji cepat: greedy (pilih_rapat, slide sebelumnya) vs brute force</span>
+<span class="tk">import</span> itertools, random
+<span class="tk">def</span> valid(sel): <span class="tk">return</span> all(a[<span class="tn">1</span>] &lt;= b[<span class="tn">0</span>] <span class="tk">for</span> a, b <span class="tk">in</span> zip(sel, sel[<span class="tn">1</span>:]))
+<span class="tk">def</span> brute(acts):
+    <span class="tk">return</span> <span class="tk">max</span>(<span class="tk">len</span>(c) <span class="tk">for</span> r <span class="tk">in</span> <span class="tk">range</span>(<span class="tk">len</span>(acts)+<span class="tn">1</span>)
+               <span class="tk">for</span> c <span class="tk">in</span> itertools.combinations(<span class="tk">sorted</span>(acts), r) <span class="tk">if</span> valid(list(c)))
+acts = [tuple(<span class="tk">sorted</span>(random.sample(<span class="tk">range</span>(<span class="tn">20</span>), <span class="tn">2</span>))) <span class="tk">for</span> _ <span class="tk">in</span> <span class="tk">range</span>(<span class="tn">8</span>)]
+<span class="tk">print</span>(brute(acts), <span class="tk">len</span>(pilih_rapat(acts)))   <span class="tc"># harus selalu sama</span></pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Greedy menghasilkan 3 rapat, sama dengan OPT → greedy optimal pada contoh ini (dan secara umum lewat induksi).</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>OPT berubah menjadi solusi greedy tanpa kehilangan satu kegiatan pun → greedy optimal.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rxdL" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian C</div>
+<h1 class="title">Latihan</h1>
+<p class="lead">Uji pemahaman teori dan teknikal sebelum melihat penerapannya di dunia nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Soal Greedy Algorithms I</div><div class="rxtocitem"><span>2</span>Kunci Greedy Algorithms I</div></div>
+</section>
+
+<section class="slide" id="s7">
+  <div class="kicker">LATIHAN</div>
+  <h2 class="st">Soal Greedy Algorithms I</h2>
+  <div class="qlist">
+    <div class="q"><span class="qn">1</span><p>Diberikan aktivitas: A(1,4), B(3,5), C(0,6), D(5,7), E(3,8), F(5,9), G(6,10), H(8,11). Jalankan Activity Selection secara manual (urutkan finish time). Aktivitas mana yang dipilih?</p></div>
+    <div class="q"><span class="qn">2</span><p>Knapsack W=50. Item: (60,10), (100,20), (120,30). Jalankan Fractional Knapsack. Berapa total nilai? Bandingkan dengan 0/1 Knapsack - apakah greedy optimal untuk 0/1 juga?</p></div>
+    <div class="q"><span class="qn">3</span><p>Dua job: J1 (durasi 3, deadline 4) dan J2 (durasi 2, deadline 5). Bandingkan jadwal J1→J2 dan J2→J1. Hitung max lateness masing-masing. Mana lebih baik? Apakah cocok dengan greedy EDF?</p></div>
+    <div class="q"><span class="qn">4</span><p>Berikan contoh sistem koin di mana greedy (pilih koin terbesar dulu) GAGAL memberikan kembalian minimum. Tunjukkan dengan contoh konkret (koin dan jumlah target).</p></div>
+    <div class="q"><span class="qn">5</span><p>Jelaskan mengapa "greedy decoding" di LLM (pilih token probabilitas tertinggi) tidak selalu menghasilkan kalimat terbaik. Berikan analogi dengan Activity Selection atau Knapsack.</p></div>
+  </div>
+</section>
+
+<section class="slide" id="s8">
+  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
+  <h2 class="st">Kunci Greedy Algorithms I</h2>
+  <div class="qlist">
+    <div class="ans"><span class="qn">1</span><p>Sort by finish: A(1,4), B(3,5), C(0,6), D(5,7), E(3,8), F(5,9), G(6,10), H(8,11). Pilih A(1,4). B(3,5): 3&lt;4 skip. C: skip. D(5,7): 5≥4 pilih. E,F: skip. G(6,10): 6&lt;7 skip. H(8,11): 8≥7 pilih. <b>Terpilih: A, D, H (3 aktivitas)</b>.</p></div>
+    <div class="ans"><span class="qn">2</span><p>Sort rasio: Emas 6.0, Perak 5.0, Perunggu 4.0. Ambil 10kg emas (60), 20kg perak (100), 20/30 perunggu (80). <b>Total=240</b>. Untuk 0/1 Knapsack: ambil Perak+Perunggu=220, atau Emas+Perak=160, atau semua=tidak cukup. Optimal 0/1=Perak+Perunggu=220 ≠ 240. Greedy tidak optimal untuk 0/1.</p></div>
+    <div class="ans"><span class="qn">3</span><p>J1→J2: J1 selesai t=3, J2 t=5. Lateness J1=max(0,3-4)=0, J2=max(0,5-5)=0. Max=0. J2→J1: J2 selesai t=2, J1 t=5. Lateness J2=0, J1=max(0,5-4)=1. Max=1. Jadwal J1→J2 lebih baik. <b>EDF (deadline J1=4 &lt; J2=5): pilih J1 dulu - benar!</b></p></div>
+    <div class="ans"><span class="qn">4</span><p>Koin {1, 3, 4}, target=6. Greedy: 4+1+1=3 koin. Optimal: 3+3=2 koin. Greedy gagal! Sistem koin di mana nilai tidak selalu kelipatan bulat dari yang lebih kecil membuat greedy tidak optimal.</p></div>
+    <div class="ans"><span class="qn">5</span><p>Greedy LLM: pilih token terbaik sekarang tanpa melihat ke depan. Seperti Activity Selection memilih aktivitas yang selesai paling awal tapi ternyata memblokir banyak aktivitas berguna berikutnya. Atau Knapsack 0/1: item yang paling "berharga sekarang" bisa menghalangi kombinasi lebih baik. Beam search ≈ DP/eksplorasi lebih luas.</p></div>
+  </div>
+</section>
+
+<section class="slide" id="rxdD" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian D</div>
+<h1 class="title">Studi kasus nyata</h1>
+<p class="lead">Penutup materi: di mana semua teori dan teknik tadi dipakai di industri, AI, dan proyek nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Job Scheduling dan Greedy di Era LLM</div><div class="rxtocitem"><span>2</span>Memaksimalkan jumlah rapat di satu ruangan</div><div class="rxtocitem"><span>3</span>Mengalokasikan anggaran iklan yang bisa dibagi</div><div class="rxtocitem"><span>4</span>Antrian job batch / request dengan tenggat</div><div class="rxtocitem"><span>5</span>Membuktikan aturan bisnis sebelum ditulis jadi kode</div></div>
+</section>
+
 <section class="slide" id="s5">
   <div class="kicker">BAGIAN 3–4 · JOB SCHEDULING &amp; LLM</div>
   <h2 class="st">Job Scheduling dan Greedy di Era LLM</h2>
@@ -278,246 +608,46 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• tᵢ = durasi job i, dᵢ = deadline job i.<br>• Lateness job i = max(0, finish(i) − dᵢ): seberapa jauh job terlambat, nol jika tepat waktu.<br>• Earliest Deadline First (urutkan dᵢ naik) meminimalkan lateness maksimum. Waktunya O(n log n) karena sorting.</div>
 </section>
 
-<!-- 6. EXCHANGE ARGUMENT -->
-<section class="slide" id="s6">
-  <div class="kicker">TEKNIK BUKTI</div>
-  <h2 class="st">Exchange Argument - Cara membuktikan greedy benar</h2>
-  <div class="cols c2">
-    <div class="stack">
-      <p class="b"><b>Template Exchange Argument:</b></p>
-      <div class="card" style="border-left:4px solid #2563eb">
-        <p class="b" style="font-size:12.5px;line-height:1.8">1. <b>Andaikan</b> ada solusi optimal OPT ≠ greedy G.<br>2. <b>Identifikasi</b> satu perbedaan pertama antara G dan OPT.<br>3. <b>Modifikasi</b> OPT dengan "menukar" ke pilihan greedy.<br>4. <b>Buktikan</b> modifikasi tidak memperburuk nilai objektif.<br>5. <b>Kesimpulan:</b> G sama baiknya dengan OPT → G optimal.</p>
-      </div>
-      <div class="analogy"><b>Analogi:</b> Seperti membuktikan aturan sekolah optimal: "Andaikan ada aturan berbeda yang lebih baik. Mari kita coba ubah satu aturan itu ke aturan kita. Ternyata tidak jadi lebih buruk. Jadi aturan kita sudah optimal."</div>
-    </div>
-    <div class="stack">
-      <div class="note"><b>Contoh: Activity Selection.</b><br>OPT mulai dengan aktivitas a₁ (finish time f₁). Greedy pilih a* (finish time f* ≤ f₁). Ganti a₁ dengan a*: semua aktivitas lain masih kompatibel (f* ≤ f₁ ≤ start aktivitas berikutnya). Jumlah aktivitas sama. Ulangi → G optimal.</div>
-      <table class="tbl">
-        <tr><th>Problem</th><th>Kriteria Sort</th><th>Objektif</th></tr>
-        <tr><td>Activity Selection</td><td>Finish time ↑</td><td>Max aktivitas</td></tr>
-        <tr><td>Fractional Knapsack</td><td>v/w ratio ↓</td><td>Max value</td></tr>
-        <tr><td>Job Scheduling</td><td>Deadline ↑</td><td>Min lateness</td></tr>
-        <tr><td>Huffman Coding</td><td>Frekuensi ↑</td><td>Min total bit</td></tr>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- 7. LATIHAN -->
-<!--RX-SLIDES-START-->
-<section class="slide" id="rx0">
-<div class="kicker">Bedah Rumus · Greedy Algorithms I</div>
-<h2 class="st">Empat rumus untuk merancang dan membuktikan greedy</h2>
-<p class="b">Greedy terlihat seperti “ambil yang paling menggiurkan sekarang”. Tetapi kriteria pilihannya harus tepat dan bisa dibuktikan. Rumus berikut adalah kriteria dan alat bukti utama.</p>
-<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Aturan pilih Activity Selection</b><span>urut fᵢ naik; ambil jika sᵢ ≥ f_terakhir</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Fractional knapsack: rasio nilai per berat</b><span>urut vᵢ/wᵢ; maks Σ xᵢvᵢ, 0 ≤ xᵢ ≤ 1</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Minimasi keterlambatan maksimum (EDF)</b><span>L_max = maks(0, fⱼ − dⱼ); urut deadline</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Exchange argument (pola pembuktian)</b><span>OPT' = OPT − {o₁} ∪ {g₁}, |OPT'| = |OPT|</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
-</section>
-<section class="slide" id="rx1a">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Aturan pilih Activity Selection</h2>
-<div class="fxbox">urutkan f<sub>1</sub> ≤ f<sub>2</sub> ≤ … ≤ f<sub>n</sub>; &nbsp; ambil aktivitas i jika <span class='hl'>s<sub>i</sub> ≥ f<sub>terakhir</sub></span>; &nbsp; biaya Θ(n log n)</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Urutkan aktivitas menurut waktu selesai dari yang paling awal. Ambil aktivitas i jika waktu mulainya tidak lebih awal dari waktu selesai aktivitas terakhir yang dipilih. Biayanya Theta n log n karena pengurutan.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>fᵢ = finish</h4><p class="">waktu selesai aktivitas ke-i; kunci pengurutan.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>sᵢ = start</h4><p class="">waktu mulai aktivitas ke-i.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>sᵢ ≥ f_terakhir</h4><p class="">tidak bentrok dengan aktivitas yang sudah dipilih.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>sᵢ, fᵢ</td><td>waktu mulai dan selesai aktivitas i</td></tr><tr><td>f_terakhir</td><td>waktu selesai aktivitas yang terakhir diambil</td></tr><tr><td>n log n</td><td>biaya sort; pemindaian setelahnya hanya Θ(n)</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Memilih yang <b>selesai paling awal</b> menyisakan waktu sebanyak mungkin untuk aktivitas lain. Memilih yang mulai paling awal atau paling singkat bisa gagal.</div>
-</section>
-<section class="slide" id="rx1m">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Aturan pilih Activity Selection</h2>
-<div class="rxsoal"><b>Soal:</b> Pilih rapat sebanyak mungkin: (1,4) (3,5) (0,6) (5,7) (8,9) (5,9).</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Urutkan menurut waktu selesai</h4><p class="rxcalc">(1,4) (3,5) (0,6) (5,7) (8,9) (5,9)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>(1,4)</h4><p class="rxcalc">belum ada yang dipilih → ambil, f_terakhir = 4</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>(3,5), (0,6)</h4><p class="rxcalc">mulai 3 dan 0 &lt; 4 → bentrok, lewati</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>(5,7)</h4><p class="rxcalc">5 ≥ 4 → ambil, f_terakhir = 7</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>(8,9), (5,9)</h4><p class="rxcalc">8 ≥ 7 → ambil, f_terakhir = 9; 5 &lt; 9 → lewati</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>rapat</th><th>s ≥ f_terakhir?</th><th>keputusan</th><th>f_terakhir</th></tr><tr><td>(1,4)</td><td>-</td><td>ambil</td><td>4</td></tr><tr><td>(3,5)</td><td>3 &lt; 4</td><td>lewati</td><td>4</td></tr><tr><td>(0,6)</td><td>0 &lt; 4</td><td>lewati</td><td>4</td></tr><tr><td>(5,7)</td><td>5 ≥ 4</td><td>ambil</td><td>7</td></tr><tr><td>(8,9)</td><td>8 ≥ 7</td><td>ambil</td><td>9</td></tr><tr><td>(5,9)</td><td>5 &lt; 9</td><td>lewati</td><td>9</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> 3 rapat: (1,4), (5,7), (8,9).</div>
-</section>
-<section class="slide" id="rx1t">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Aturan pilih Activity Selection</h2>
-<div class="rxsoal"><b>Kasus:</b> Activity selection untuk 11 kegiatan (sudah diurutkan menurut waktu selesai).</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Baca dari atas ke bawah. Ambil kegiatan jika waktu mulainya ≥ waktu selesai kegiatan terakhir yang diambil. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>kegiatan (s, f)</th><th>syarat s ≥ f_terakhir</th><th>keputusan</th><th>f_terakhir</th><th>jumlah</th></tr><tr><td>(1, 4)</td><td>1 ≥ -</td><td><b class='chg'>ambil</b></td><td>4</td><td>1</td></tr><tr><td>(3, 5)</td><td>3 &lt; 4</td><td>lewati</td><td>4</td><td>1</td></tr><tr><td>(0, 6)</td><td>0 &lt; 4</td><td>lewati</td><td>4</td><td>1</td></tr><tr><td>(5, 7)</td><td>5 ≥ 4</td><td><b class='chg'>ambil</b></td><td>7</td><td>2</td></tr><tr><td>(3, 9)</td><td>3 &lt; 7</td><td>lewati</td><td>7</td><td>2</td></tr><tr><td>(5, 9)</td><td>5 &lt; 7</td><td>lewati</td><td>7</td><td>2</td></tr><tr><td>(6, 10)</td><td>6 &lt; 7</td><td>lewati</td><td>7</td><td>2</td></tr><tr><td>(8, 11)</td><td>8 ≥ 7</td><td><b class='chg'>ambil</b></td><td>11</td><td>3</td></tr><tr><td>(8, 12)</td><td>8 &lt; 11</td><td>lewati</td><td>11</td><td>3</td></tr><tr><td>(2, 14)</td><td>2 &lt; 11</td><td>lewati</td><td>11</td><td>3</td></tr><tr><td>(12, 16)</td><td>12 ≥ 11</td><td><b class='chg'>ambil</b></td><td>16</td><td>4</td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> Terpilih (1, 4), (5, 7), (8, 11), (12, 16) → 4 kegiatan.</div>
-</section>
-<section class="slide" id="rx1b">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<section class="slide" id="rx1c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 1/4</div>
 <h2 class="st">Memaksimalkan jumlah rapat di satu ruangan</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Aplikasi booking ruangan (Google Calendar Rooms, sistem peminjaman ruang kampus) dan penjadwalan satu mesin produksi. Variasi berbobot (rapat punya nilai berbeda) <b>tidak bisa greedy</b> dan harus memakai DP.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Data (mulai, selesai)</h4><p class="">(1,4) (3,5) (0,6) (5,7) (8,9) (5,9).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Urut menurut selesai</h4><p class="">(1,4) (3,5) (0,6) (5,7) (8,9) (5,9).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Pilih</h4><p class="">(1,4) → (5,7) karena 5 ≥ 4 → (8,9) karena 8 ≥ 7.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Hasil</h4><p class="">3 rapat - dan ini terbukti optimal.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> pilih_rapat(rapat):
-    hasil, selesai = [], float(<span class="ts">"-inf"</span>)
-    <span class="tk">for</span> s, f <span class="tk">in</span> <span class="tk">sorted</span>(rapat, key=<span class="tk">lambda</span> x: x[<span class="tn">1</span>]):   <span class="tc"># urut waktu selesai</span>
-        <span class="tk">if</span> s &gt;= selesai:
-            hasil.append((s, f)); selesai = f
-    <span class="tk">return</span> hasil
-
-<span class="tk">print</span>(pilih_rapat([(<span class="tn">1</span>,<span class="tn">4</span>),(<span class="tn">3</span>,<span class="tn">5</span>),(<span class="tn">0</span>,<span class="tn">6</span>),(<span class="tn">5</span>,<span class="tn">7</span>),(<span class="tn">8</span>,<span class="tn">9</span>),(<span class="tn">5</span>,<span class="tn">9</span>)]))</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Aplikasi booking ruangan (Google Calendar Rooms, sistem peminjaman ruang kampus) dan penjadwalan satu mesin produksi. Variasi berbobot (rapat punya nilai berbeda) <b>tidak bisa greedy</b> dan harus memakai DP.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Data (mulai, selesai)</h4><p class="">(1,4) (3,5) (0,6) (5,7) (8,9) (5,9).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Urut menurut selesai</h4><p class="">(1,4) (3,5) (0,6) (5,7) (8,9) (5,9).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Pilih</h4><p class="">(1,4) → (5,7) karena 5 ≥ 4 → (8,9) karena 8 ≥ 7.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Hasil</h4><p class="">3 rapat - dan ini terbukti optimal.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Kriteria greedy yang benar untuk memaksimalkan jumlah aktivitas: selesai paling awal.</div>
 </section>
-<section class="slide" id="rx2a">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Fractional knapsack: rasio nilai per berat</h2>
-<div class="fxbox">maks Σ x<sub>i</sub>·v<sub>i</sub> &nbsp; s.t. &nbsp; Σ x<sub>i</sub>·w<sub>i</sub> ≤ W, &nbsp; <span class='hb'>0 ≤ x<sub>i</sub> ≤ 1</span>; &nbsp; greedy: urutkan <span class='hl'>v<sub>i</sub> / w<sub>i</sub></span> menurun</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Maksimalkan jumlah x i kali v i, dengan syarat jumlah x i kali w i tidak melebihi W, dan setiap x i antara nol dan satu. Strategi greedy: urutkan menurut v i dibagi w i dari terbesar.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>s.t. = subject to</h4><p class="">“dengan syarat”.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>xᵢ boleh pecahan</h4><p class="">0,5 berarti ambil setengah item; inilah yang membuat greedy optimal.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>vᵢ/wᵢ</h4><p class="">“harga per kilo” - ambil yang paling berharga per satuan berat dulu.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>vᵢ</td><td>nilai item i</td></tr><tr><td>wᵢ</td><td>berat item i</td></tr><tr><td>xᵢ</td><td>porsi item i yang diambil (0..1)</td></tr><tr><td>W</td><td>kapasitas</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Karena item bisa dipotong, setiap kilo kapasitas sebaiknya diisi dengan bahan paling berharga per kilo. <b>Tidak ada alasan menyisakan ruang</b> untuk yang rasionya lebih kecil.</div>
-</section>
-<section class="slide" id="rx2m">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Fractional knapsack: rasio nilai per berat</h2>
-<div class="rxsoal"><b>Soal:</b> Fractional knapsack: A(60, 10), B(100, 20), C(120, 30), kapasitas W = 50.</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Hitung rasio</h4><p class="rxcalc">A = 60/10 = 6; B = 100/20 = 5; C = 120/30 = 4</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Ambil A penuh</h4><p class="rxcalc">sisa kapasitas 50 − 10 = 40; nilai 60</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ambil B penuh</h4><p class="rxcalc">sisa 40 − 20 = 20; nilai 60 + 100 = 160</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>C tidak muat penuh</h4><p class="rxcalc">ambil 20/30 bagian → 120 × 2/3 = 80</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Total</h4><p class="rxcalc">160 + 80 = 240</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>item</th><th>v/w</th><th>porsi</th><th>nilai</th><th>sisa W</th></tr><tr><td>A</td><td>6</td><td>1</td><td>60</td><td>40</td></tr><tr><td>B</td><td>5</td><td>1</td><td>100</td><td>20</td></tr><tr><td>C</td><td>4</td><td>2/3</td><td>80</td><td>0</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> Nilai maksimum 240.</div>
-</section>
-<section class="slide" id="rx2t">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Fractional knapsack: rasio nilai per berat</h2>
-<div class="rxsoal"><b>Kasus:</b> Fractional knapsack W = 12: A(v 10, w 2), B(5, 3), C(15, 5), D(7, 7).</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Urutkan menurut v/w terbesar. Setiap baris: ambil sebanyak mungkin, kurangi kapasitas, tambahkan nilai. Berhenti saat kapasitas 0. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>item</th><th>v</th><th>w</th><th>v/w</th><th>diambil</th><th>nilai</th><th>sisa W</th><th>total</th></tr><tr><td>A</td><td>10</td><td>2</td><td>5,00</td><td>penuh</td><td>10</td><td>10</td><td><b class='chg'>10</b></td></tr><tr><td>C</td><td>15</td><td>5</td><td>3,00</td><td>penuh</td><td>15</td><td>5</td><td><b class='chg'>25</b></td></tr><tr><td>B</td><td>5</td><td>3</td><td>1,67</td><td>penuh</td><td>5</td><td>2</td><td><b class='chg'>30</b></td></tr><tr><td>D</td><td>7</td><td>7</td><td>1,00</td><td>2/7</td><td>2</td><td>0</td><td><b class='chg'>32</b></td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> Nilai maksimum 32.</div>
-</section>
-<section class="slide" id="rx2b">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+
+<section class="slide" id="rx2c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 2/4</div>
 <h2 class="st">Mengalokasikan anggaran iklan yang bisa dibagi</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Alokasi anggaran ke kanal iklan yang bisa dibagi (Rp per klik), mengisi truk dengan komoditas curah (beras, BBM), atau membagi bandwidth. Jika item tidak bisa dipotong (0/1), greedy ini bisa gagal: contoh di atas 0/1 optimalnya 220 (B + C), bukan 160 (A + B).</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Item (v, w)</h4><p class="">A(60, 10), B(100, 20), C(120, 30); W = 50.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Rasio</h4><p class="">A = 6, B = 5, C = 4.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ambil</h4><p class="">A penuh (10) + B penuh (20) → sisa 20 → C sebesar 20/30.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Nilai</h4><p class="">60 + 100 + 120·(2/3) = 240.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> fractional_knapsack(items, W):
-    total = <span class="tn">0</span>
-    <span class="tk">for</span> v, w <span class="tk">in</span> <span class="tk">sorted</span>(items, key=<span class="tk">lambda</span> x: x[<span class="tn">0</span>] / x[<span class="tn">1</span>], reverse=<span class="tk">True</span>):
-        ambil = <span class="tk">min</span>(w, W)
-        total += v * ambil / w
-        W -= ambil
-        <span class="tk">if</span> W == <span class="tn">0</span>: <span class="tk">break</span>
-    <span class="tk">return</span> total
-
-<span class="tk">print</span>(fractional_knapsack([(<span class="tn">60</span>,<span class="tn">10</span>), (<span class="tn">100</span>,<span class="tn">20</span>), (<span class="tn">120</span>,<span class="tn">30</span>)], <span class="tn">50</span>))  <span class="tc"># 240.0</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Alokasi anggaran ke kanal iklan yang bisa dibagi (Rp per klik), mengisi truk dengan komoditas curah (beras, BBM), atau membagi bandwidth. Jika item tidak bisa dipotong (0/1), greedy ini bisa gagal: contoh di atas 0/1 optimalnya 220 (B + C), bukan 160 (A + B).</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Item (v, w)</h4><p class="">A(60, 10), B(100, 20), C(120, 30); W = 50.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Rasio</h4><p class="">A = 6, B = 5, C = 4.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ambil</h4><p class="">A penuh (10) + B penuh (20) → sisa 20 → C sebesar 20/30.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Nilai</h4><p class="">60 + 100 + 120·(2/3) = 240.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Boleh dipotong → greedy rasio optimal. Tidak boleh dipotong → butuh DP (Pertemuan 10).</div>
 </section>
-<section class="slide" id="rx3a">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Minimasi keterlambatan maksimum (EDF)</h2>
-<div class="fxbox">L<sub>j</sub> = maks(0, f<sub>j</sub> − <span class='hl'>d<sub>j</sub></span>), &nbsp; <span class='hb'>L<sub>max</sub> = maks<sub>j</sub> L<sub>j</sub></span>; &nbsp; greedy: urutkan menurut deadline d<sub>j</sub> (Earliest Deadline First)</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Keterlambatan pekerjaan j adalah maksimum antara nol dan waktu selesai f j dikurangi deadline d j. L max adalah keterlambatan terbesar. Strategi greedy: kerjakan menurut deadline paling awal.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>fⱼ − dⱼ</h4><p class="">positif = terlambat; negatif = selesai sebelum deadline.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>maks(0, ·)</h4><p class="">selesai lebih awal dihitung 0, bukan bonus.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>L_max</h4><p class="">yang diminimalkan adalah keterlambatan TERBURUK, bukan totalnya.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>tⱼ</td><td>durasi pekerjaan j</td></tr><tr><td>dⱼ</td><td>deadline pekerjaan j</td></tr><tr><td>fⱼ</td><td>waktu selesai = jumlah durasi sampai j</td></tr><tr><td>L_max</td><td>keterlambatan maksimum jadwal</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Mengerjakan yang paling singkat dulu terasa produktif, tetapi bisa membuat pekerjaan dengan deadline dekat terlambat parah. <b>EDF terbukti optimal</b> untuk L_max (dengan exchange argument).</div>
-</section>
-<section class="slide" id="rx3m">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Minimasi keterlambatan maksimum (EDF)</h2>
-<div class="rxsoal"><b>Soal:</b> Jadwalkan A(3, dl 6), B(2, dl 8), C(1, dl 9), D(4, dl 9) agar keterlambatan maksimum minimal.</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Urutkan deadline (EDF)</h4><p class="rxcalc">A (6), B (8), C (9), D (9)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Jalankan berurutan</h4><p class="rxcalc">A 0–3, B 3–5, C 5–6, D 6–10</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Hitung telat</h4><p class="rxcalc">A: 3−6 → 0; B: 5−8 → 0; C: 6−9 → 0; D: 10−9 = 1</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>L_max EDF</h4><p class="rxcalc">maks(0, 0, 0, 1) = 1</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Bandingkan urutan C, B, D, A</h4><p class="rxcalc">A selesai 10, deadline 6 → telat 4 → L_max = 4</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>job</th><th>durasi</th><th>deadline</th><th>selesai</th><th>telat</th></tr><tr><td>A</td><td>3</td><td>6</td><td>3</td><td>0</td></tr><tr><td>B</td><td>2</td><td>8</td><td>5</td><td>0</td></tr><tr><td>C</td><td>1</td><td>9</td><td>6</td><td>0</td></tr><tr><td>D</td><td>4</td><td>9</td><td>10</td><td>1</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> EDF memberi L_max = 1 (urutan lain bisa sampai 4).</div>
-</section>
-<section class="slide" id="rx3t">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Minimasi keterlambatan maksimum (EDF)</h2>
-<div class="rxsoal"><b>Kasus:</b> EDF untuk 5 job (durasi, deadline): A(2,4), B(3,5), C(1,7), D(4,10), E(2,11).</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Urutkan menurut deadline, jalankan berurutan tanpa jeda. Kolom garis waktu: █ = sedang dikerjakan. Telat = maks(0, selesai − deadline). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>job</th><th>durasi</th><th>deadline</th><th>waktu</th><th>garis waktu</th><th>telat</th><th>L_max</th></tr><tr><td>A</td><td>2</td><td>4</td><td>0–2</td><td><span class='mono'>██</span></td><td>0</td><td>0</td></tr><tr><td>B</td><td>3</td><td>5</td><td>2–5</td><td><span class='mono'>··███</span></td><td>0</td><td>0</td></tr><tr><td>C</td><td>1</td><td>7</td><td>5–6</td><td><span class='mono'>·····█</span></td><td>0</td><td>0</td></tr><tr><td>D</td><td>4</td><td>10</td><td>6–10</td><td><span class='mono'>······████</span></td><td>0</td><td>0</td></tr><tr><td>E</td><td>2</td><td>11</td><td>10–12</td><td><span class='mono'>··········██</span></td><td><b class='chg'>1</b></td><td>1</td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> L_max = 1.</div>
-</section>
-<section class="slide" id="rx3b">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+
+<section class="slide" id="rx3c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 3/4</div>
 <h2 class="st">Antrian job batch / request dengan tenggat</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Linux punya scheduler <b>SCHED_DEADLINE</b> berbasis EDF untuk tugas real-time (audio, robotik). Layanan inference LLM juga menjadwalkan request dengan SLO latensi; mendahulukan yang deadline-nya paling dekat menekan pelanggaran SLO terburuk.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Job (durasi, deadline)</h4><p class="">A(3, 6), B(2, 8), C(1, 9), D(4, 9).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>EDF: A, B, C, D</h4><p class="">selesai 3, 5, 6, 10.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Keterlambatan</h4><p class="">0, 0, 0, maks(0, 10−9) = 1 → L_max = 1.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Shortest-first: C, B, A, D</h4><p class="">selesai 1, 3, 6, 10 → L_max juga 1, tetapi pada data lain bisa jauh lebih buruk.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> edf(jobs):                  <span class="tc"># jobs: (nama, durasi, deadline)</span>
-    t, lmax = <span class="tn">0</span>, <span class="tn">0</span>
-    <span class="tk">for</span> nama, dur, dl <span class="tk">in</span> <span class="tk">sorted</span>(jobs, key=<span class="tk">lambda</span> j: j[<span class="tn">2</span>]):
-        t += dur
-        lmax = <span class="tk">max</span>(lmax, t - dl)
-        <span class="tk">print</span>(nama, <span class="ts">"selesai"</span>, t, <span class="ts">"telat"</span>, <span class="tk">max</span>(<span class="tn">0</span>, t - dl))
-    <span class="tk">return</span> lmax
-
-edf([(<span class="ts">"A"</span>,<span class="tn">3</span>,<span class="tn">6</span>), (<span class="ts">"B"</span>,<span class="tn">2</span>,<span class="tn">8</span>), (<span class="ts">"C"</span>,<span class="tn">1</span>,<span class="tn">9</span>), (<span class="ts">"D"</span>,<span class="tn">4</span>,<span class="tn">9</span>)])</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Linux punya scheduler <b>SCHED_DEADLINE</b> berbasis EDF untuk tugas real-time (audio, robotik). Layanan inference LLM juga menjadwalkan request dengan SLO latensi; mendahulukan yang deadline-nya paling dekat menekan pelanggaran SLO terburuk.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Job (durasi, deadline)</h4><p class="">A(3, 6), B(2, 8), C(1, 9), D(4, 9).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>EDF: A, B, C, D</h4><p class="">selesai 3, 5, 6, 10.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Keterlambatan</h4><p class="">0, 0, 0, maks(0, 10−9) = 1 → L_max = 1.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Shortest-first: C, B, A, D</h4><p class="">selesai 1, 3, 6, 10 → L_max juga 1, tetapi pada data lain bisa jauh lebih buruk.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Untuk meminimalkan keterlambatan terburuk: kerjakan deadline terdekat lebih dulu.</div>
 </section>
-<section class="slide" id="rx4a">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Exchange argument (pola pembuktian)</h2>
-<div class="fxbox">f(<span class='hl'>g₁</span>) ≤ f(<span class='hb'>o₁</span>) &nbsp;⇒&nbsp; OPT′ = (OPT − {<span class='hb'>o₁</span>}) ∪ {<span class='hl'>g₁</span>} tetap valid dan |OPT′| = |OPT|</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Jika waktu selesai pilihan greedy pertama g satu tidak lebih lambat dari waktu selesai pilihan pertama solusi optimal o satu, maka solusi baru OPT aksen, yaitu OPT dengan o satu diganti g satu, tetap valid dan ukurannya sama.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Ambil solusi optimal sembarang</h4><p class="">OPT, dengan pilihan pertama o₁.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Tukar</h4><p class="">ganti o₁ dengan pilihan greedy g₁.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Buktikan tidak lebih buruk</h4><p class="">karena g₁ selesai tidak lebih lambat, sisa OPT tetap tidak bentrok.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Ulangi (induksi)</h4><p class="">terus tukar sampai OPT berubah menjadi solusi greedy tanpa menurunkan kualitas.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>OPT</td><td>suatu solusi optimal (tidak harus unik)</td></tr><tr><td>g₁</td><td>pilihan pertama algoritma greedy</td></tr><tr><td>o₁</td><td>pilihan pertama di OPT</td></tr><tr><td>OPT′</td><td>solusi hasil penukaran</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Kita tidak perlu tahu OPT itu apa. Cukup tunjukkan bahwa <b>pilihan greedy selalu bisa “disusupkan” ke solusi optimal</b> tanpa merugikan. Akibatnya greedy juga optimal.</div>
-</section>
-<section class="slide" id="rx4m">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Exchange argument (pola pembuktian)</h2>
-<div class="rxsoal"><b>Soal:</b> Ubah solusi optimal OPT = {(3,5), (5,7), (8,9)} menjadi solusi greedy dengan penukaran.</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Pilihan greedy pertama</h4><p class="rxcalc">g₁ = (1,4), selesai paling awal di seluruh data</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Pilihan pertama OPT</h4><p class="rxcalc">o₁ = (3,5); f(g₁) = 4 ≤ 5 = f(o₁)</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Tukar</h4><p class="rxcalc">OPT′ = {(1,4), (5,7), (8,9)}</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Cek valid</h4><p class="rxcalc">(5,7) mulai 5 ≥ 4 → tidak bentrok; ukuran tetap 3</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Lanjutkan</h4><p class="rxcalc">o₂ = (5,7) = g₂ dan o₃ = (8,9) = g₃ → OPT′ = solusi greedy</p></div></div></div></div>
-<div class="rxcard soft"><h3>Latihan cepat dengan angka lain</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Klaim</h4><p class="">selesai-paling-awal optimal untuk activity selection.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Misal OPT = {o₁, o₂, …}</h4><p class="">urut waktu selesai; g₁ = aktivitas dengan f terkecil di seluruh data.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>f(g₁) ≤ f(o₁)</h4><p class="">maka g₁ tidak bentrok dengan o₂ (karena s(o₂) ≥ f(o₁) ≥ f(g₁)).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Simpulkan</h4><p class="">OPT′ valid, |OPT′| = |OPT|; induksi pada sisa masalah.</p></div></div></div></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> Greedy menghasilkan 3 rapat, sama dengan OPT → greedy optimal pada contoh ini (dan secara umum lewat induksi).</div>
-</section>
-<section class="slide" id="rx4t">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Exchange argument (pola pembuktian)</h2>
-<div class="rxsoal"><b>Kasus:</b> Exchange argument pada data activity selection: ubah OPT menjadi solusi greedy satu pilihan demi satu pilihan.</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = membandingkan pilihan ke-k di OPT dengan pilihan ke-k greedy. Jika beda, tukar - asalkan tetap valid dan ukurannya tidak berkurang. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>k</th><th>pilihan OPT</th><th>pilihan greedy</th><th>alasan</th><th>OPT sesudahnya</th></tr><tr><td>0</td><td>{(3,5), (5,7), (8,9)}</td><td>-</td><td>-</td><td>OPT awal, valid, ukuran 3</td></tr><tr><td>1</td><td>o₁ = (3,5)</td><td>g₁ = (1,4)</td><td>f(g₁) = 4 ≤ 5 = f(o₁) → tukar</td><td><b class='chg'>{(1,4), (5,7), (8,9)}</b></td></tr><tr><td>2</td><td>o₂ = (5,7)</td><td>g₂ = (5,7)</td><td>sama → tidak perlu tukar</td><td>{(1,4), (5,7), (8,9)}</td></tr><tr><td>3</td><td>o₃ = (8,9)</td><td>g₃ = (8,9)</td><td>sama → tidak perlu tukar</td><td>{(1,4), (5,7), (8,9)}</td></tr><tr><td>cek</td><td>validitas</td><td>-</td><td>5 ≥ 4 dan 8 ≥ 7 → tidak bentrok</td><td>ukuran tetap 3 = |OPT|</td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> OPT berubah menjadi solusi greedy tanpa kehilangan satu kegiatan pun → greedy optimal.</div>
-</section>
-<section class="slide" id="rx4b">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+
+<section class="slide" id="rx4c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 4/4</div>
 <h2 class="st">Membuktikan aturan bisnis sebelum ditulis jadi kode</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Dalam code review atau wawancara teknis, “greedy ini benar?” harus dijawab dengan bukti, bukan tes beberapa contoh. Pola tukar ini juga dipakai membuktikan Kruskal, Huffman, dan EDF. Jika penukaran <b>tidak bisa</b> dibuktikan, biasanya ada contoh penyangkal - tandanya butuh DP.</p></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tc"># Uji cepat: greedy (pilih_rapat, slide sebelumnya) vs brute force</span>
-<span class="tk">import</span> itertools, random
-<span class="tk">def</span> valid(sel): <span class="tk">return</span> all(a[<span class="tn">1</span>] &lt;= b[<span class="tn">0</span>] <span class="tk">for</span> a, b <span class="tk">in</span> zip(sel, sel[<span class="tn">1</span>:]))
-<span class="tk">def</span> brute(acts):
-    <span class="tk">return</span> <span class="tk">max</span>(<span class="tk">len</span>(c) <span class="tk">for</span> r <span class="tk">in</span> <span class="tk">range</span>(<span class="tk">len</span>(acts)+<span class="tn">1</span>)
-               <span class="tk">for</span> c <span class="tk">in</span> itertools.combinations(<span class="tk">sorted</span>(acts), r) <span class="tk">if</span> valid(list(c)))
-acts = [tuple(<span class="tk">sorted</span>(random.sample(<span class="tk">range</span>(<span class="tn">20</span>), <span class="tn">2</span>))) <span class="tk">for</span> _ <span class="tk">in</span> <span class="tk">range</span>(<span class="tn">8</span>)]
-<span class="tk">print</span>(brute(acts), <span class="tk">len</span>(pilih_rapat(acts)))   <span class="tc"># harus selalu sama</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Dalam code review atau wawancara teknis, “greedy ini benar?” harus dijawab dengan bukti, bukan tes beberapa contoh. Pola tukar ini juga dipakai membuktikan Kruskal, Huffman, dan EDF. Jika penukaran <b>tidak bisa</b> dibuktikan, biasanya ada contoh penyangkal - tandanya butuh DP.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Klaim</h4><p class="">selesai-paling-awal optimal untuk activity selection.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Misal OPT = {o₁, o₂, …}</h4><p class="">urut waktu selesai; g₁ = aktivitas dengan f terkecil di seluruh data.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>f(g₁) ≤ f(o₁)</h4><p class="">maka g₁ tidak bentrok dengan o₂ (karena s(o₂) ≥ f(o₁) ≥ f(g₁)).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Simpulkan</h4><p class="">OPT′ valid, |OPT′| = |OPT|; induksi pada sisa masalah.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Bukti greedy = tukar pilihan OPT dengan pilihan greedy tanpa merugikan, lalu induksi.</div>
 </section>
-<!--RX-SLIDES-END-->
-<section class="slide" id="s7">
-  <div class="kicker">LATIHAN</div>
-  <h2 class="st">Soal Greedy Algorithms I</h2>
-  <div class="qlist">
-    <div class="q"><span class="qn">1</span><p>Diberikan aktivitas: A(1,4), B(3,5), C(0,6), D(5,7), E(3,8), F(5,9), G(6,10), H(8,11). Jalankan Activity Selection secara manual (urutkan finish time). Aktivitas mana yang dipilih?</p></div>
-    <div class="q"><span class="qn">2</span><p>Knapsack W=50. Item: (60,10), (100,20), (120,30). Jalankan Fractional Knapsack. Berapa total nilai? Bandingkan dengan 0/1 Knapsack - apakah greedy optimal untuk 0/1 juga?</p></div>
-    <div class="q"><span class="qn">3</span><p>Dua job: J1 (durasi 3, deadline 4) dan J2 (durasi 2, deadline 5). Bandingkan jadwal J1→J2 dan J2→J1. Hitung max lateness masing-masing. Mana lebih baik? Apakah cocok dengan greedy EDF?</p></div>
-    <div class="q"><span class="qn">4</span><p>Berikan contoh sistem koin di mana greedy (pilih koin terbesar dulu) GAGAL memberikan kembalian minimum. Tunjukkan dengan contoh konkret (koin dan jumlah target).</p></div>
-    <div class="q"><span class="qn">5</span><p>Jelaskan mengapa "greedy decoding" di LLM (pilih token probabilitas tertinggi) tidak selalu menghasilkan kalimat terbaik. Berikan analogi dengan Activity Selection atau Knapsack.</p></div>
-  </div>
-</section>
 
-<!-- 8. KUNCI -->
-<section class="slide" id="s8">
-  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
-  <h2 class="st">Kunci Greedy Algorithms I</h2>
-  <div class="qlist">
-    <div class="ans"><span class="qn">1</span><p>Sort by finish: A(1,4), B(3,5), C(0,6), D(5,7), E(3,8), F(5,9), G(6,10), H(8,11). Pilih A(1,4). B(3,5): 3&lt;4 skip. C: skip. D(5,7): 5≥4 pilih. E,F: skip. G(6,10): 6&lt;7 skip. H(8,11): 8≥7 pilih. <b>Terpilih: A, D, H (3 aktivitas)</b>.</p></div>
-    <div class="ans"><span class="qn">2</span><p>Sort rasio: Emas 6.0, Perak 5.0, Perunggu 4.0. Ambil 10kg emas (60), 20kg perak (100), 20/30 perunggu (80). <b>Total=240</b>. Untuk 0/1 Knapsack: ambil Perak+Perunggu=220, atau Emas+Perak=160, atau semua=tidak cukup. Optimal 0/1=Perak+Perunggu=220 ≠ 240. Greedy tidak optimal untuk 0/1.</p></div>
-    <div class="ans"><span class="qn">3</span><p>J1→J2: J1 selesai t=3, J2 t=5. Lateness J1=max(0,3-4)=0, J2=max(0,5-5)=0. Max=0. J2→J1: J2 selesai t=2, J1 t=5. Lateness J2=0, J1=max(0,5-4)=1. Max=1. Jadwal J1→J2 lebih baik. <b>EDF (deadline J1=4 &lt; J2=5): pilih J1 dulu - benar!</b></p></div>
-    <div class="ans"><span class="qn">4</span><p>Koin {1, 3, 4}, target=6. Greedy: 4+1+1=3 koin. Optimal: 3+3=2 koin. Greedy gagal! Sistem koin di mana nilai tidak selalu kelipatan bulat dari yang lebih kecil membuat greedy tidak optimal.</p></div>
-    <div class="ans"><span class="qn">5</span><p>Greedy LLM: pilih token terbaik sekarang tanpa melihat ke depan. Seperti Activity Selection memilih aktivitas yang selesai paling awal tapi ternyata memblokir banyak aktivitas berguna berikutnya. Atau Knapsack 0/1: item yang paling "berharga sekarang" bisa menghalangi kombinasi lebih baik. Beam search ≈ DP/eksplorasi lebih luas.</p></div>
-  </div>
-</section>
-
-<!-- 9. PENUTUP -->
 <section class="slide" id="s9" style="justify-content:center;align-items:center;text-align:center">
   <div class="kicker">PERTEMUAN 7 · SELESAI</div>
   <h2 class="st" style="font-size:30px;margin:10px 0">Greedy benar bukan karena<br>tampak masuk akal - tapi karena bisa dibuktikan.</h2>

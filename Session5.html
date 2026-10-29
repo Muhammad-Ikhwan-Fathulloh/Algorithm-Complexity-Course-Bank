@@ -124,6 +124,14 @@ table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
 .rxtrace td:first-child{color:#64748b;font-weight:700}
 b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
 .rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
+.rxg3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.rxwtrack{display:flex;gap:6px;flex:none}
+.rxwtrack span{font:800 12px/1 -apple-system,'Segoe UI',Arial,sans-serif;letter-spacing:.08em;padding:6px 10px;border-radius:20px;background:#f1f5f9;color:#94a3b8;border:2px solid #e2e8f0}
+.rxwtrack span.on{background:#2563eb;color:#fff;border-color:#2563eb}
+.rxtoc{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+.rxtocitem{display:flex;gap:10px;align-items:baseline;font-size:15px;line-height:1.4;color:#334155;border-bottom:1px dashed #e2e8f0;padding:3px 0}
+.rxg3.big .rxcard{padding:18px 20px}.rxg3.big .rxcard h3{font-size:20px;margin-bottom:10px}.rxg3.big .rxcard p{font-size:17px;line-height:1.65}
+.rxtocitem span{flex:none;min-width:26px;font:800 13px Consolas,monospace;color:#2563eb}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -138,21 +146,126 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · <a href="index.html" style="color:#2563eb;font-size:12px">← Daftar Materi</a></div>
 </section>
 
-<!-- 2. 5W1H -->
-<section class="slide" id="s2">
-  <div class="kicker">KERANGKA TEORI · 5W1H</div>
-  <h2 class="st">Mengapa dan untuk apa D&C lanjutan ini?</h2>
-  <div class="w5h1" style="margin-top:4px">
-    <div class="wcard what"><div class="wlabel">What - Apa?</div><p>Empat algoritma D&C canggih: Closest Pair (geometri), Karatsuba (aritmatika besar), Strassen (aljabar linier), FFT (pemrosesan sinyal). Masing-masing memotong jumlah submasalah rekursif dari yang "wajar" ke lebih sedikit.</p></div>
-    <div class="wcard why"><div class="wlabel">Why - Mengapa?</div><p>Karena brute force untuk masalah ini O(n²) atau O(n³). Satu pengurangan submasalah rekursif mengubah eksponen waktu secara dramatis - dari n² ke n^1.585 (Karatsuba) atau n³ ke n^2.807 (Strassen).</p></div>
-    <div class="wcard who"><div class="wlabel">Who - Siapa?</div><p>Developer kriptografi (Karatsuba untuk RSA besar), engineer ML (Strassen/FFT untuk convolution jaringan saraf), pemrogram kompetitif (Closest Pair di computational geometry), dan peneliti AI (AlphaTensor mencari versi yang lebih baik).</p></div>
-    <div class="wcard when"><div class="wlabel">When - Kapan?</div><p>Karatsuba: bilangan >1000 digit. Strassen: matriks >~512×512. FFT: polinomial berderajat >1000 atau konvolusi sinyal panjang. Closest Pair: n titik >10.000 di mana brute force O(n²) terlalu lambat.</p></div>
-    <div class="wcard where"><div class="wlabel">Where - Di mana?</div><p>Karatsuba di library kriptografi (Python <code>int</code> otomatis). FFT di NumPy, SciPy, pemrosesan audio/gambar. Strassen di library BLAS eksperimental. Closest Pair di computational geometry, GIS, computer graphics.</p></div>
-    <div class="wcard how"><div class="wlabel">How - Bagaimana?</div><p>Kunci setiap algoritma: temukan <b>identitas aljabar</b> yang memungkinkan menghitung n perkalian dengan n-1 perkalian rekursif - lalu buktikan lewat Master Theorem bahwa pengurangan satu submasalah itu cukup untuk turunkan eksponen.</p></div>
-  </div>
+<section class="slide" id="rxdA" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A</div>
+<h1 class="title">Teori</h1>
+<p class="lead">Kita mulai dari dasar: 5W1H dipecah per slide (What, Why, Who, When, Where, How), lalu konsep inti dan cara membaca setiap rumus.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>WHAT - Apa itu Divide and Conquer lanjutan?</div><div class="rxtocitem"><span>2</span>WHY - Mengapa trik-trik ini penting?</div><div class="rxtocitem"><span>3</span>WHO - Siapa yang memakai algoritma ini?</div><div class="rxtocitem"><span>4</span>WHEN - Kapan algoritma lanjutan ini lebih baik?</div><div class="rxtocitem"><span>5</span>WHERE - Di mana dipakai?</div><div class="rxtocitem"><span>6</span>HOW - Bagaimana trik ini ditemukan dan dianalisis?</div><div class="rxtocitem"><span>7</span>Empat rumus Divide and Conquer lanjutan</div><div class="rxtocitem"><span>8</span>Closest pair: rekurens dan jalur tengah</div><div class="rxtocitem"><span>9</span>Karatsuba: 3 perkalian, bukan 4</div><div class="rxtocitem"><span>10</span>Strassen: 7 perkalian matriks, bukan 8</div><div class="rxtocitem"><span>11</span>FFT dan teorema konvolusi</div></div>
 </section>
 
-<!-- 3. CLOSEST PAIR -->
+<section class="slide" id="rxw1" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (1/6) - WHAT</div>
+<div class="rxwtrack"><span class="on">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHAT - Apa itu Divide and Conquer lanjutan?</h2>
+<p class="b">Empat algoritma D&C yang memakai trik geometri atau aljabar untuk <b>mengurangi jumlah subsoal rekursif</b>.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Closest pair</h3><p>Mencari dua titik terdekat dalam Θ(n log n).</p></div><div class="rxcard green"><h3>Karatsuba & Strassen</h3><p>Perkalian bilangan besar (3 bukan 4) dan matriks (7 bukan 8).</p></div><div class="rxcard yellow"><h3>FFT</h3><p>Perkalian polinomial / konvolusi dalam Θ(n log n).</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Karatsuba: 1234 × 5678 cukup dengan 3 perkalian dua digit, bukan 4.</div>
+</section>
+
+<section class="slide" id="rxw2" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (2/6) - WHY</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="on">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHY - Mengapa trik-trik ini penting?</h2>
+<p class="b">Karena brute force untuk masalah ini Θ(n²) atau Θ(n³), dan satu subsoal lebih sedikit mengubah eksponen.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Eksponen turun</h3><p>n² → n^1,585 (Karatsuba), n³ → n^2,807 (Strassen).</p></div><div class="rxcard green"><h3>Dari jam ke detik</h3><p>Konvolusi 1 juta sampel: 10¹² operasi naif vs ±6×10⁷ dengan FFT.</p></div><div class="rxcard yellow"><h3>Riset aktif</h3><p>AlphaTensor (2022) masih menemukan skema perkalian baru.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Filter audio real-time tidak mungkin tanpa FFT - konvolusi langsung terlalu lambat.</div>
+</section>
+
+<section class="slide" id="rxw3" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (3/6) - WHO</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="on">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHO - Siapa yang memakai algoritma ini?</h2>
+<p class="b">Engineer di bidang yang mengolah angka dalam jumlah besar.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Kriptografi</h3><p>Perkalian bilangan ribuan bit untuk RSA.</p></div><div class="rxcard green"><h3>Signal & image processing</h3><p>FFT untuk audio, citra medis, telekomunikasi.</p></div><div class="rxcard yellow"><h3>Game & GIS</h3><p>Closest pair / struktur spasial untuk tabrakan dan peta.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Engineer audio memakai FFT untuk equalizer dan peredam bising di aplikasi musik.</div>
+</section>
+
+<section class="slide" id="rxw4" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (4/6) - WHEN</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="on">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHEN - Kapan algoritma lanjutan ini lebih baik?</h2>
+<p class="b">Hanya saat ukuran cukup besar - untuk n kecil, cara biasa lebih cepat karena overhead.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Karatsuba</h3><p>Bilangan di atas ±70 digit (ambang CPython).</p></div><div class="rxcard green"><h3>Strassen</h3><p>Matriks sangat besar (ratusan sampai ribuan baris).</p></div><div class="rxcard yellow"><h3>FFT & closest pair</h3><p>Sinyal panjang (ribuan sampel) dan ribuan titik ke atas.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Library hibrida: pakai cara biasa di bawah ambang, beralih ke versi D&C di atasnya.</div>
+</section>
+
+<section class="slide" id="rxw5" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (5/6) - WHERE</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="on">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHERE - Di mana dipakai?</h2>
+<p class="b">Di library yang kita panggil tanpa sadar.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Python int</h3><p>CPython otomatis memakai Karatsuba untuk perkalian bilangan besar.</p></div><div class="rxcard green"><h3>NumPy/SciPy</h3><p>numpy.fft, scipy.signal.fftconvolve.</p></div><div class="rxcard yellow"><h3>Format & protokol</h3><p>JPEG/MP3 (transformasi frekuensi), OFDM di Wi-Fi dan 4G/5G.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Setiap kali ponsel memakai Wi-Fi, chip-nya menjalankan FFT ribuan kali per detik.</div>
+</section>
+
+<section class="slide" id="rxw6" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (6/6) - HOW</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="on">HOW</span></div>
+<h2 class="st">HOW - Bagaimana trik ini ditemukan dan dianalisis?</h2>
+<p class="b">Polanya selalu sama:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>1. Mulai dari D&C biasa</h3><p>Tulis rekurensnya: misalnya 4T(n/2) + n = Θ(n²).</p></div><div class="rxcard green"><h3>2. Cari identitas cerdas</h3><p>Ganti satu perkalian rekursif dengan beberapa penjumlahan.</p></div><div class="rxcard yellow"><h3>3. Hitung ulang dengan Master Theorem</h3><p>3T(n/2) + n → Θ(n^log₂3) = Θ(n^1,585).</p></div></div>
+<div class="rxhow"><b>Contoh:</b> ad + bc = (a+b)(c+d) − ac − bd: satu identitas aljabar mengubah orde perkalian.</div>
+</section>
+
+<section class="slide" id="rx0" data-rx="1">
+<div class="kicker">Bagian A · Teori · Bedah Rumus · Divide and Conquer II</div>
+<h2 class="st">Empat rumus Divide and Conquer lanjutan</h2>
+<p class="b">Closest pair, Karatsuba, Strassen, dan FFT adalah contoh bagaimana satu trik aljabar atau geometri kecil mengubah orde algoritma. Kita bedah rumus di balik masing-masing trik.</p>
+<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Closest pair: rekurens dan jalur tengah</b><span>T(n) = 2T(n/2) + O(n), cek ≤ 7 tetangga</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Karatsuba: 3 perkalian, bukan 4</b><span>T(n) = 3T(n/2) + n → Θ(n^1,585)</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Strassen: 7 perkalian matriks, bukan 8</b><span>T(n) = 7T(n/2) + n² → Θ(n^2,807)</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>FFT dan teorema konvolusi</b><span>a * b = IFFT(FFT(a) · FFT(b))</span></div></div></div>
+<div class="note"><b>Alur tiap rumus:</b> di <b>Teori</b> kita belajar <b>cara membaca</b> rumus dan arti tiap simbol. Di <b>Teknikal</b> rumus yang sama dikerjakan lewat <b>hitung manual</b>, <b>jejak step-by-step</b>, lalu <b>kode Python</b>. Di <b>Studi kasus nyata</b> (akhir slide) kita lihat pemakaiannya di proyek nyata.</div>
+</section>
+
+<section class="slide" id="rx1a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 1/4 - cara membaca</div>
+<h2 class="st">Closest pair: rekurens dan jalur tengah</h2>
+<div class="fxbox">T(n) = 2·T(n/2) + <span class='hb'>O(n)</span> = Θ(n log n), &nbsp;&nbsp; strip: |x − x<sub>mid</sub>| &lt; <span class='hl'>δ</span>, cek ≤ <span class='hl'>7</span> titik berikutnya</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“T dari n sama dengan dua kali T dari n per dua ditambah O n, sehingga Theta n log n. Di jalur tengah, hanya titik dengan jarak horizontal ke garis tengah kurang dari delta yang dicek, dan tiap titik cukup dibandingkan dengan paling banyak tujuh titik berikutnya.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Bagi dua menurut x</h4><p class="">selesaikan kiri dan kanan secara rekursif, dapat δ = jarak terkecil di kedua sisi.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Strip selebar 2δ</h4><p class="">pasangan yang lebih dekat dari δ pasti melintasi garis tengah dan berada di strip ini.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>≤ 7 tetangga</h4><p class="">di kotak δ × 2δ hanya muat sedikit titik yang saling berjarak ≥ δ, jadi cek strip linear.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>δ (delta)</td><td>jarak terkecil yang ditemukan di sisi kiri/kanan</td></tr><tr><td>x_mid</td><td>koordinat x garis pembagi</td></tr><tr><td>7</td><td>batas atas tetangga yang perlu dicek per titik (urut y)</td></tr><tr><td>O(n)</td><td>biaya memeriksa seluruh strip</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Bagian tersulit (pasangan lintas garis) ternyata <b>hanya butuh kerja linear</b> berkat argumen geometri. Jadi rekurensnya sama dengan merge sort.</div>
+</section>
+
+<section class="slide" id="rx2a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 2/4 - cara membaca</div>
+<h2 class="st">Karatsuba: 3 perkalian, bukan 4</h2>
+<div class="fxbox">x·y = <span class='hl'>ac</span>·10<sup>2m</sup> + [<span class='hb'>(a+b)(c+d)</span> − <span class='hl'>ac</span> − <span class='hg'>bd</span>]·10<sup>m</sup> + <span class='hg'>bd</span> &nbsp;⇒&nbsp; T(n) = 3T(n/2) + Θ(n) = Θ(n<sup>log₂3</sup>)</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“x kali y sama dengan ac kali sepuluh pangkat dua m, ditambah a tambah b kali c tambah d dikurangi ac dikurangi bd, kali sepuluh pangkat m, ditambah bd. Rekurensnya T dari n sama dengan tiga T dari n per dua ditambah Theta n, hasilnya Theta n pangkat log dua tiga.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Pecah angka</h4><p class="">x = a·10ᵐ + b, y = c·10ᵐ + d (a, c bagian depan; b, d bagian belakang).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Cara sekolah</h4><p class="">butuh 4 perkalian: ac, ad, bc, bd.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Trik Karatsuba</h4><p class="">ad + bc = (a+b)(c+d) − ac − bd → hanya 3 perkalian: ac, bd, (a+b)(c+d).</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>a, b</td><td>separuh depan & belakang x</td></tr><tr><td>c, d</td><td>separuh depan & belakang y</td></tr><tr><td>m</td><td>banyaknya digit separuh (n/2)</td></tr><tr><td>log₂ 3 ≈ 1,585</td><td>pangkat hasil Master Theorem (a=3, b=2, d=1)</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Menukar satu perkalian dengan beberapa penjumlahan terlihat sepele, tetapi karena trik ini <b>diulang di setiap level rekursi</b>, hasilnya 3^(log₂n) = n^1,585 alih-alih 4^(log₂n) = n².</div>
+</section>
+
+<section class="slide" id="rx3a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 3/4 - cara membaca</div>
+<h2 class="st">Strassen: 7 perkalian matriks, bukan 8</h2>
+<div class="fxbox">T(n) = <span class='hl'>7</span>·T(n/2) + Θ(n<sup>2</sup>) &nbsp;⇒&nbsp; Θ(n<sup>log₂7</sup>) = Θ(n<sup><span class='hl'>2,807</span></sup>) &nbsp;&nbsp;vs&nbsp;&nbsp; naif <span class='hb'>8</span>·T(n/2) + n² = Θ(n³)</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“T dari n sama dengan tujuh kali T dari n per dua ditambah Theta n kuadrat, sehingga Theta n pangkat log dua tujuh, yaitu n pangkat dua koma delapan nol tujuh. Bandingkan dengan cara naif delapan kali T dari n per dua ditambah n kuadrat, yaitu Theta n kubik.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Bagi matriks jadi 4 blok</h4><p class="">C = A·B dengan blok n/2 × n/2: naifnya butuh 8 perkalian blok.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Strassen: 7 produk M₁..M₇</h4><p class="">kombinasi penjumlahan cerdas mengganti satu perkalian blok.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>+ Θ(n²)</h4><p class="">penjumlahan/pengurangan blok - jauh lebih murah dari perkalian.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>7</td><td>perkalian blok per level (Strassen)</td></tr><tr><td>8</td><td>perkalian blok per level (naif)</td></tr><tr><td>n²</td><td>biaya penjumlahan matriks per level</td></tr><tr><td>log₂7 ≈ 2,807</td><td>pangkat kritis Master Theorem</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Sama seperti Karatsuba: <b>kurangi satu perkalian rekursif</b>, bayar dengan lebih banyak penjumlahan. Karena penjumlahan hanya n², pertukaran ini untung untuk n besar.</div>
+</section>
+
+<section class="slide" id="rx4a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 4/4 - cara membaca</div>
+<h2 class="st">FFT dan teorema konvolusi</h2>
+<div class="fxbox"><span class='hb'>a ∗ b</span> = IFFT( FFT(a) <span class='hl'>·</span> FFT(b) ), &nbsp;&nbsp; T(n) = 2T(n/2) + Θ(n) = Θ(n log n)</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Konvolusi a dan b sama dengan invers FFT dari perkalian titik demi titik antara FFT a dan FFT b. Rekurens FFT adalah dua T dari n per dua ditambah Theta n, sehingga Theta n log n.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>∗ = konvolusi</h4><p class="">operasi “geser-kali-jumlah”; sama dengan mengalikan dua polinomial.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>FFT</h4><p class="">ubah koefisien menjadi nilai di n titik khusus (akar satuan kompleks).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>· = perkalian per titik</h4><p class="">di domain nilai, perkalian polinomial hanya n perkalian biasa.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>IFFT</h4><p class="">ubah kembali nilai menjadi koefisien.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>a, b</td><td>koefisien polinomial / sinyal</td></tr><tr><td>∗</td><td>konvolusi - naifnya Θ(n²)</td></tr><tr><td>FFT / IFFT</td><td>transformasi Fourier cepat dan inversnya, Θ(n log n)</td></tr><tr><td>·</td><td>perkalian elemen per elemen, Θ(n)</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Konvolusi langsung butuh n² perkalian. Dengan pindah ke “domain frekuensi”, konvolusi berubah menjadi perkalian biasa. Total biaya: dua FFT + n perkalian + satu IFFT = <b>Θ(n log n)</b>.</div>
+</section>
+
+<section class="slide" id="rxdB" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian B</div>
+<h1 class="title">Teknikal</h1>
+<p class="lead">Setelah teorinya jelas, kita masuk ke algoritma, kode, simulasi, hitung manual, dan jejak eksekusi langkah demi langkah.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Closest Pair - Θ(n log n) vs Θ(n²) brute force</div><div class="rxtocitem"><span>2</span>Karatsuba - Θ(n^1.585): kurangi 4 perkalian jadi 3</div><div class="rxtocitem"><span>3</span>Strassen Θ(n^2.807) - dan AlphaTensor melampaui Strassen</div><div class="rxtocitem"><span>4</span>FFT - Θ(n log n): perkalian polinomial dan konvolusi</div><div class="rxtocitem"><span>5</span>Hitung manual: Closest pair: rekurens dan jalur tengah</div><div class="rxtocitem"><span>6</span>Jejak langkah demi langkah: Closest pair: rekurens dan jalur tengah</div><div class="rxtocitem"><span>7</span>Dari hitungan ke kode: Closest pair: rekurens dan jalur tengah</div><div class="rxtocitem"><span>8</span>Hitung manual: Karatsuba: 3 perkalian, bukan 4</div><div class="rxtocitem"><span>9</span>Jejak langkah demi langkah: Karatsuba: 3 perkalian, bukan 4</div><div class="rxtocitem"><span>10</span>Dari hitungan ke kode: Karatsuba: 3 perkalian, bukan 4</div><div class="rxtocitem"><span>11</span>Hitung manual: Strassen: 7 perkalian matriks, bukan 8</div><div class="rxtocitem"><span>12</span>Jejak langkah demi langkah: Strassen: 7 perkalian matriks, bukan 8</div><div class="rxtocitem"><span>13</span>Dari hitungan ke kode: Strassen: 7 perkalian matriks, bukan 8</div><div class="rxtocitem"><span>14</span>Hitung manual: FFT dan teorema konvolusi</div><div class="rxtocitem"><span>15</span>Jejak langkah demi langkah: FFT dan teorema konvolusi</div><div class="rxtocitem"><span>16</span>Dari hitungan ke kode: FFT dan teorema konvolusi</div></div>
+</section>
+
 <section class="slide" id="s3">
   <div class="kicker">BAGIAN 1 · CLOSEST PAIR OF POINTS</div>
   <h2 class="st">Closest Pair - Θ(n log n) vs Θ(n²) brute force</h2>
@@ -187,7 +300,6 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• T(n) = 2T(n/2) + O(n): dua subsoal setengah ukuran, plus biaya gabung O(n).<br>• Master Theorem kasus 2 (log₂2 = 1 = d) → Θ(n log n).<br>• Titik kunci: strip hanya perlu dicek dengan ≤ 7 tetangga, sehingga combine tetap O(n).</div>
 </section>
 
-<!-- 4. KARATSUBA -->
 <section class="slide" id="s4">
   <div class="kicker">BAGIAN 2 · KARATSUBA</div>
   <h2 class="st">Karatsuba - Θ(n^1.585): kurangi 4 perkalian jadi 3</h2>
@@ -237,7 +349,6 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• T(n) = 3T(n/2) + n: 3 perkalian rekursif berukuran n/2, ditambah penjumlahan O(n).<br>• Eksponen = log₂3 ≈ 1,585, sehingga Θ(n^1,585), lebih kecil dari n² milik cara naif.<br>• x = a·10^(n/2) + b: membagi bilangan menjadi bagian tinggi (a) dan rendah (b).</div>
 </section>
 
-<!-- 5. STRASSEN -->
 <section class="slide" id="s5">
   <div class="kicker">BAGIAN 3 · STRASSEN + ALPHATENSOR</div>
   <h2 class="st">Strassen Θ(n^2.807) - dan AlphaTensor melampaui Strassen</h2>
@@ -271,7 +382,6 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• Strassen: T(n) = 7T(n/2) + n² → log₂7 ≈ 2,807 → Θ(n^2,807).<br>• AlphaTensor: T(n) = 47T(n/4) + n² → log₄47 ≈ 2,777 → Θ(n^2,777).<br>• Pangkat yang lebih kecil berarti pertumbuhan lebih lambat saat n besar.</div>
 </section>
 
-<!-- 6. FFT -->
 <section class="slide" id="s6">
   <div class="kicker">BAGIAN 4 · FFT</div>
   <h2 class="st">FFT - Θ(n log n): perkalian polinomial dan konvolusi</h2>
@@ -311,27 +421,8 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• T(n) = 2T(n/2) + O(n) untuk FFT, sama bentuknya dengan merge sort → Θ(n log n).<br>• O(n log n log log n): kompleksitas perkalian bilangan n-digit dengan FFT.</div>
 </section>
 
-<!-- 7. LATIHAN -->
-<!--RX-SLIDES-START-->
-<section class="slide" id="rx0">
-<div class="kicker">Bedah Rumus · Divide and Conquer II</div>
-<h2 class="st">Empat rumus Divide and Conquer lanjutan</h2>
-<p class="b">Closest pair, Karatsuba, Strassen, dan FFT adalah contoh bagaimana satu trik aljabar atau geometri kecil mengubah orde algoritma. Kita bedah rumus di balik masing-masing trik.</p>
-<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Closest pair: rekurens dan jalur tengah</b><span>T(n) = 2T(n/2) + O(n), cek ≤ 7 tetangga</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Karatsuba: 3 perkalian, bukan 4</b><span>T(n) = 3T(n/2) + n → Θ(n^1,585)</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Strassen: 7 perkalian matriks, bukan 8</b><span>T(n) = 7T(n/2) + n² → Θ(n^2,807)</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>FFT dan teorema konvolusi</b><span>a * b = IFFT(FFT(a) · FFT(b))</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
-</section>
-<section class="slide" id="rx1a">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Closest pair: rekurens dan jalur tengah</h2>
-<div class="fxbox">T(n) = 2·T(n/2) + <span class='hb'>O(n)</span> = Θ(n log n), &nbsp;&nbsp; strip: |x − x<sub>mid</sub>| &lt; <span class='hl'>δ</span>, cek ≤ <span class='hl'>7</span> titik berikutnya</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“T dari n sama dengan dua kali T dari n per dua ditambah O n, sehingga Theta n log n. Di jalur tengah, hanya titik dengan jarak horizontal ke garis tengah kurang dari delta yang dicek, dan tiap titik cukup dibandingkan dengan paling banyak tujuh titik berikutnya.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Bagi dua menurut x</h4><p class="">selesaikan kiri dan kanan secara rekursif, dapat δ = jarak terkecil di kedua sisi.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Strip selebar 2δ</h4><p class="">pasangan yang lebih dekat dari δ pasti melintasi garis tengah dan berada di strip ini.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>≤ 7 tetangga</h4><p class="">di kotak δ × 2δ hanya muat sedikit titik yang saling berjarak ≥ δ, jadi cek strip linear.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>δ (delta)</td><td>jarak terkecil yang ditemukan di sisi kiri/kanan</td></tr><tr><td>x_mid</td><td>koordinat x garis pembagi</td></tr><tr><td>7</td><td>batas atas tetangga yang perlu dicek per titik (urut y)</td></tr><tr><td>O(n)</td><td>biaya memeriksa seluruh strip</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Bagian tersulit (pasangan lintas garis) ternyata <b>hanya butuh kerja linear</b> berkat argumen geometri. Jadi rekurensnya sama dengan merge sort.</div>
-</section>
-<section class="slide" id="rx1m">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 2: hitung manual</div>
+<section class="slide" id="rx1m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/4 - hitung manual</div>
 <h2 class="st">Hitung manual: Closest pair: rekurens dan jalur tengah</h2>
 <div class="rxsoal"><b>Soal:</b> Cari pasangan terdekat dari 6 titik: kiri (1,2), (2,7), (4,4) | kanan (6,3), (8,7), (9,1). Garis tengah x = 5.</div>
 <div class="cols c2">
@@ -340,19 +431,20 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> Pasangan terdekat (4,4)-(6,3) dengan jarak √5 ≈ 2,24 - ditemukan di strip, bukan di salah satu sisi.</div>
 </section>
-<section class="slide" id="rx1t">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 2b: jejak step-by-step</div>
+
+<section class="slide" id="rx1t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/4 - jejak step-by-step</div>
 <h2 class="st">Jejak langkah demi langkah: Closest pair: rekurens dan jalur tengah</h2>
 <div class="rxsoal"><b>Kasus:</b> Closest pair untuk 6 titik, seluruh langkah divide-conquer-combine.</div>
 <div class="rxhow"><b>Cara membaca jejak:</b> Baris 1–2 = divide, 3–4 = conquer (rekursi), 5–10 = combine (cek strip). Kolom δ menunjukkan jarak terbaik sejauh ini. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
 <table class="rxtrace"><tr><th>#</th><th>langkah</th><th>data / perhitungan</th><th>δ</th></tr><tr><td>1</td><td>urutkan menurut x</td><td>(1,2) (2,7) (4,4) (6,3) (8,7) (9,1)</td><td>-</td></tr><tr><td>2</td><td>bagi di tengah</td><td>kiri {(1,2),(2,7),(4,4)} | kanan {(6,3),(8,7),(9,1)}, garis x = 5</td><td>-</td></tr><tr><td>3</td><td>rekursi kiri (3 titik → brute)</td><td>3,61 · 3,61 · 5,10 → min 3,61</td><td>δ_L = 3,61</td></tr><tr><td>4</td><td>rekursi kanan (3 titik → brute)</td><td>4,47 · 3,61 · 6,08 → min 3,61</td><td>δ_R = 3,61</td></tr><tr><td>5</td><td>δ = min(δ_L, δ_R)</td><td>min(3,61; 3,61)</td><td><b class='chg'>δ = 3,61</b></td></tr><tr><td>6</td><td>bangun strip |x − 5| &lt; δ</td><td>(2,7) (4,4) (6,3) (8,7)</td><td>-</td></tr><tr><td>7</td><td>urutkan strip menurut y</td><td>(6,3) (4,4) (2,7) (8,7)</td><td>-</td></tr><tr><td>8</td><td>(6,3) vs ≤ 7 berikutnya</td><td>(4,4): 2,24 · (2,7): 5,66 · (8,7): 4,47</td><td><b class='chg'>δ = 2,24</b></td></tr><tr><td>9</td><td>(4,4) vs berikutnya</td><td>(2,7): 3,61 · (8,7): 5,00</td><td>δ = 2,24</td></tr><tr><td>10</td><td>(2,7) vs berikutnya</td><td>(8,7): 6,00</td><td>δ = 2,24</td></tr></table>
 <div class="rxhasil"><b>Hasil akhir jejak:</b> Pasangan terdekat (4,4)-(6,3) = 2,24 baru ditemukan di tahap combine.</div>
 </section>
-<section class="slide" id="rx1b">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
-<h2 class="st">Deteksi pesawat atau kendaraan yang terlalu dekat</h2>
-<div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Sistem <b>kontrol lalu lintas udara</b> dan simulasi game (deteksi tabrakan) perlu mencari pasangan objek terdekat berulang kali per detik. Engine modern memakai variasi spasial (grid, k-d tree) yang berbasis ide yang sama: hanya bandingkan objek yang berada di “strip/sel” berdekatan.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 10.000 objek</h4><p class="">brute force: n(n−1)/2 ≈ 5×10⁷ pasangan.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>D&C</h4><p class="">≈ n log₂ n ≈ 10⁴ × 14 ≈ 1,4×10⁵ langkah utama.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Strip</h4><p class="">tiap titik di strip dibandingkan ≤ 7 titik, bukan semua.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Hasil</h4><p class="">ratusan kali lebih cepat; bisa dijalankan tiap detik.</p></div></div></div></div></div>
+
+<section class="slide" id="rx1b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Closest pair: rekurens dan jalur tengah</h2>
+<div class="cols c2l">
 <div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> math
 <span class="tk">def</span> strip_closest(strip, d):
     strip.sort(key=<span class="tk">lambda</span> p: p[<span class="tn">1</span>])       <span class="tc"># urut menurut y</span>
@@ -360,22 +452,16 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
     <span class="tk">for</span> i <span class="tk">in</span> <span class="tk">range</span>(<span class="tk">len</span>(strip)):
         <span class="tk">for</span> j <span class="tk">in</span> <span class="tk">range</span>(i + <span class="tn">1</span>, <span class="tk">min</span>(i + <span class="tn">8</span>, <span class="tk">len</span>(strip))):   <span class="tc"># &lt;= 7 tetangga</span>
             best = <span class="tk">min</span>(best, math.dist(strip[i], strip[j]))
-    <span class="tk">return</span> best</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+    <span class="tk">return</span> best</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Pasangan terdekat (4,4)-(6,3) dengan jarak √5 ≈ 2,24 - ditemukan di strip, bukan di salah satu sisi.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Pasangan terdekat (4,4)-(6,3) = 2,24 baru ditemukan di tahap combine.</p></div>
 </div>
-<div class="analogy"><b>Bawa pulang:</b> Argumen geometri “paling banyak 7 tetangga” mengubah kombinasi lintas-garis dari Θ(n²) menjadi Θ(n).</div>
-</section>
-<section class="slide" id="rx2a">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Karatsuba: 3 perkalian, bukan 4</h2>
-<div class="fxbox">x·y = <span class='hl'>ac</span>·10<sup>2m</sup> + [<span class='hb'>(a+b)(c+d)</span> − <span class='hl'>ac</span> − <span class='hg'>bd</span>]·10<sup>m</sup> + <span class='hg'>bd</span> &nbsp;⇒&nbsp; T(n) = 3T(n/2) + Θ(n) = Θ(n<sup>log₂3</sup>)</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“x kali y sama dengan ac kali sepuluh pangkat dua m, ditambah a tambah b kali c tambah d dikurangi ac dikurangi bd, kali sepuluh pangkat m, ditambah bd. Rekurensnya T dari n sama dengan tiga T dari n per dua ditambah Theta n, hasilnya Theta n pangkat log dua tiga.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Pecah angka</h4><p class="">x = a·10ᵐ + b, y = c·10ᵐ + d (a, c bagian depan; b, d bagian belakang).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Cara sekolah</h4><p class="">butuh 4 perkalian: ac, ad, bc, bd.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Trik Karatsuba</h4><p class="">ad + bc = (a+b)(c+d) − ac − bd → hanya 3 perkalian: ac, bd, (a+b)(c+d).</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>a, b</td><td>separuh depan & belakang x</td></tr><tr><td>c, d</td><td>separuh depan & belakang y</td></tr><tr><td>m</td><td>banyaknya digit separuh (n/2)</td></tr><tr><td>log₂ 3 ≈ 1,585</td><td>pangkat hasil Master Theorem (a=3, b=2, d=1)</td></tr></table></div>
 </div>
-<div class="note"><b>Intuisinya:</b> Menukar satu perkalian dengan beberapa penjumlahan terlihat sepele, tetapi karena trik ini <b>diulang di setiap level rekursi</b>, hasilnya 3^(log₂n) = n^1,585 alih-alih 4^(log₂n) = n².</div>
 </section>
-<section class="slide" id="rx2m">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 2: hitung manual</div>
+
+<section class="slide" id="rx2m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/4 - hitung manual</div>
 <h2 class="st">Hitung manual: Karatsuba: 3 perkalian, bukan 4</h2>
 <div class="rxsoal"><b>Soal:</b> Hitung 1234 × 5678 dengan Karatsuba (m = 2).</div>
 <div class="cols c2">
@@ -384,19 +470,20 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> 1234 × 5678 = 7.006.652 hanya dengan 3 perkalian setengah ukuran.</div>
 </section>
-<section class="slide" id="rx2t">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 2b: jejak step-by-step</div>
+
+<section class="slide" id="rx2t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/4 - jejak step-by-step</div>
 <h2 class="st">Jejak langkah demi langkah: Karatsuba: 3 perkalian, bukan 4</h2>
 <div class="rxsoal"><b>Kasus:</b> Pohon rekursi Karatsuba untuk 1234 × 5678, sampai perkalian satu digit.</div>
 <div class="rxhow"><b>Cara membaca jejak:</b> Indentasi = kedalaman. Setiap baris non-basis memanggil 3 perkalian lebih kecil (ac, bd, (a+b)(c+d)), lalu menggabungkan hasilnya. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
 <table class="rxtrace"><tr><th>panggilan</th><th>pecah</th><th>bagian</th><th>gabung</th><th>hasil</th></tr><tr><td>1234 × 5678</td><td>m = 2</td><td>a=12, b=34, c=56, d=78</td><td>ac=672, bd=2652, tengah=2840</td><td><b class='chg'>7006652</b></td></tr><tr><td>&nbsp;&nbsp;12 × 56</td><td>m = 1</td><td>a=1, b=2, c=5, d=6</td><td>ac=5, bd=12, tengah=16</td><td><b class='chg'>672</b></td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;1 × 5</td><td>basis</td><td>-</td><td>-</td><td><b class='chg'>5</b></td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;2 × 6</td><td>basis</td><td>-</td><td>-</td><td><b class='chg'>12</b></td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;3 × 11</td><td>basis</td><td>-</td><td>-</td><td><b class='chg'>33</b></td></tr><tr><td>&nbsp;&nbsp;34 × 78</td><td>m = 1</td><td>a=3, b=4, c=7, d=8</td><td>ac=21, bd=32, tengah=52</td><td><b class='chg'>2652</b></td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;3 × 7</td><td>basis</td><td>-</td><td>-</td><td><b class='chg'>21</b></td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;4 × 8</td><td>basis</td><td>-</td><td>-</td><td><b class='chg'>32</b></td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;7 × 15</td><td>basis</td><td>-</td><td>-</td><td><b class='chg'>105</b></td></tr><tr><td>&nbsp;&nbsp;46 × 134</td><td>m = 1</td><td>a=4, b=6, c=13, d=4</td><td>ac=52, bd=24, tengah=94</td><td><b class='chg'>6164</b></td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;4 × 13</td><td>basis</td><td>-</td><td>-</td><td><b class='chg'>52</b></td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;6 × 4</td><td>basis</td><td>-</td><td>-</td><td><b class='chg'>24</b></td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;10 × 17</td><td>m = 1</td><td>a=1, b=0, c=1, d=7</td><td>ac=1, bd=0, tengah=7</td><td><b class='chg'>170</b></td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 × 1</td><td>basis</td><td>-</td><td>-</td><td><b class='chg'>1</b></td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 × 7</td><td>basis</td><td>-</td><td>-</td><td><b class='chg'>0</b></td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 × 8</td><td>basis</td><td>-</td><td>-</td><td><b class='chg'>8</b></td></tr></table>
 <div class="rxhasil"><b>Hasil akhir jejak:</b> 7.006.652 - di level pertama hanya 3 sub-perkalian, bukan 4.</div>
 </section>
-<section class="slide" id="rx2b">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
-<h2 class="st">Perkalian bilangan besar di kriptografi</h2>
-<div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>CPython</b> otomatis memakai Karatsuba untuk perkalian int di atas ±70 digit (konstanta KARATSUBA_CUTOFF). Kriptografi RSA mengalikan bilangan 2048–4096 bit berkali-kali; untuk ukuran ini, n^1,585 vs n² berarti beberapa kali lebih sedikit perkalian dasar.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>x = 1234, y = 5678, m = 2</h4><p class="">a=12, b=34, c=56, d=78.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>ac, bd</h4><p class="">12·56 = 672; 34·78 = 2652.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>(a+b)(c+d)</h4><p class="">46·134 = 6164 → tengah = 6164 − 672 − 2652 = 2840.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Gabung</h4><p class="">672·10⁴ + 2840·10² + 2652 = 7.006.652 ✓</p></div></div></div></div></div>
+
+<section class="slide" id="rx2b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Karatsuba: 3 perkalian, bukan 4</h2>
+<div class="cols c2l">
 <div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> karatsuba(x, y):
     <span class="tk">if</span> x &lt; <span class="tn">10</span> <span class="tk">or</span> y &lt; <span class="tn">10</span>: <span class="tk">return</span> x * y
     m = <span class="tk">max</span>(<span class="tk">len</span>(str(x)), <span class="tk">len</span>(str(y))) // <span class="tn">2</span>
@@ -404,22 +491,16 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
     c, d = divmod(y, <span class="tn">10</span>**m)
     ac, bd = karatsuba(a, c), karatsuba(b, d)
     mid = karatsuba(a + b, c + d) - ac - bd
-    <span class="tk">return</span> ac * <span class="tn">10</span>**(<span class="tn">2</span>*m) + mid * <span class="tn">10</span>**m + bd</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+    <span class="tk">return</span> ac * <span class="tn">10</span>**(<span class="tn">2</span>*m) + mid * <span class="tn">10</span>**m + bd</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">1234 × 5678 = 7.006.652 hanya dengan 3 perkalian setengah ukuran.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>7.006.652 - di level pertama hanya 3 sub-perkalian, bukan 4.</p></div>
 </div>
-<div class="analogy"><b>Bawa pulang:</b> Kurangi banyaknya subsoal (a) di rekurens, maka pangkatnya turun. 4 → 3 perkalian: n² → n^1,585.</div>
-</section>
-<section class="slide" id="rx3a">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Strassen: 7 perkalian matriks, bukan 8</h2>
-<div class="fxbox">T(n) = <span class='hl'>7</span>·T(n/2) + Θ(n<sup>2</sup>) &nbsp;⇒&nbsp; Θ(n<sup>log₂7</sup>) = Θ(n<sup><span class='hl'>2,807</span></sup>) &nbsp;&nbsp;vs&nbsp;&nbsp; naif <span class='hb'>8</span>·T(n/2) + n² = Θ(n³)</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“T dari n sama dengan tujuh kali T dari n per dua ditambah Theta n kuadrat, sehingga Theta n pangkat log dua tujuh, yaitu n pangkat dua koma delapan nol tujuh. Bandingkan dengan cara naif delapan kali T dari n per dua ditambah n kuadrat, yaitu Theta n kubik.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Bagi matriks jadi 4 blok</h4><p class="">C = A·B dengan blok n/2 × n/2: naifnya butuh 8 perkalian blok.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Strassen: 7 produk M₁..M₇</h4><p class="">kombinasi penjumlahan cerdas mengganti satu perkalian blok.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>+ Θ(n²)</h4><p class="">penjumlahan/pengurangan blok - jauh lebih murah dari perkalian.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>7</td><td>perkalian blok per level (Strassen)</td></tr><tr><td>8</td><td>perkalian blok per level (naif)</td></tr><tr><td>n²</td><td>biaya penjumlahan matriks per level</td></tr><tr><td>log₂7 ≈ 2,807</td><td>pangkat kritis Master Theorem</td></tr></table></div>
 </div>
-<div class="note"><b>Intuisinya:</b> Sama seperti Karatsuba: <b>kurangi satu perkalian rekursif</b>, bayar dengan lebih banyak penjumlahan. Karena penjumlahan hanya n², pertukaran ini untung untuk n besar.</div>
 </section>
-<section class="slide" id="rx3m">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 2: hitung manual</div>
+
+<section class="slide" id="rx3m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/4 - hitung manual</div>
 <h2 class="st">Hitung manual: Strassen: 7 perkalian matriks, bukan 8</h2>
 <div class="rxsoal"><b>Soal:</b> Kalikan A = [[1,2],[3,4]] dan B = [[5,6],[7,8]] dengan 7 perkalian Strassen.</div>
 <div class="cols c2">
@@ -428,41 +509,36 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> C = [[19, 22], [43, 50]] dengan 7 perkalian; untungnya terasa saat trik ini diulang rekursif.</div>
 </section>
-<section class="slide" id="rx3t">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 2b: jejak step-by-step</div>
+
+<section class="slide" id="rx3t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/4 - jejak step-by-step</div>
 <h2 class="st">Jejak langkah demi langkah: Strassen: 7 perkalian matriks, bukan 8</h2>
 <div class="rxsoal"><b>Kasus:</b> Strassen untuk A = [[1,2],[3,4]], B = [[5,6],[7,8]]: hitung 7 produk lalu susun C.</div>
 <div class="rxhow"><b>Cara membaca jejak:</b> Baris M₁–M₇ = satu-satunya perkalian (7 buah). Baris C = hanya penjumlahan/pengurangan dari M. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
 <table class="rxtrace"><tr><th>nama</th><th>rumus</th><th>substitusi</th><th>nilai</th></tr><tr><td>M₁</td><td>(a₁₁+a₂₂)(b₁₁+b₂₂)</td><td>(1+4)(5+8)</td><td><b class='chg'>65</b></td></tr><tr><td>M₂</td><td>(a₂₁+a₂₂)·b₁₁</td><td>(3+4)·5</td><td><b class='chg'>35</b></td></tr><tr><td>M₃</td><td>a₁₁·(b₁₂−b₂₂)</td><td>1·(6−8)</td><td><b class='chg'>-2</b></td></tr><tr><td>M₄</td><td>a₂₂·(b₂₁−b₁₁)</td><td>4·(7−5)</td><td><b class='chg'>8</b></td></tr><tr><td>M₅</td><td>(a₁₁+a₁₂)·b₂₂</td><td>(1+2)·8</td><td><b class='chg'>24</b></td></tr><tr><td>M₆</td><td>(a₂₁−a₁₁)(b₁₁+b₁₂)</td><td>(3−1)(5+6)</td><td><b class='chg'>22</b></td></tr><tr><td>M₇</td><td>(a₁₂−a₂₂)(b₂₁+b₂₂)</td><td>(2−4)(7+8)</td><td><b class='chg'>-30</b></td></tr><tr><td>C₁₁</td><td>M₁+M₄−M₅+M₇</td><td>65+8−24+(-30)</td><td><b class='chg'>19</b></td></tr><tr><td>C₁₂</td><td>M₃+M₅</td><td>(-2)+24</td><td><b class='chg'>22</b></td></tr><tr><td>C₂₁</td><td>M₂+M₄</td><td>35+8</td><td><b class='chg'>43</b></td></tr><tr><td>C₂₂</td><td>M₁−M₂+M₃+M₆</td><td>65−35+(-2)+22</td><td><b class='chg'>50</b></td></tr></table>
 <div class="rxhasil"><b>Hasil akhir jejak:</b> C = [[19, 22], [43, 50]] - sama dengan cara biasa, dengan 7 perkalian.</div>
 </section>
-<section class="slide" id="rx3b">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
-<h2 class="st">Perkalian matriks besar dan AlphaTensor</h2>
-<div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Library numerik sebagian memakai Strassen untuk matriks sangat besar. Pada 2022, <b>DeepMind AlphaTensor</b> memakai reinforcement learning untuk menemukan skema perkalian baru, misalnya 47 perkalian untuk matriks 4×4 di aritmetika mod 2 (Strassen rekursif butuh 49) - pencarian rumus perkalian kini dibantu AI.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 1.024 (2¹⁰)</h4><p class="">naif: 8¹⁰ ≈ 1,07×10⁹ perkalian skalar (= n³).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Strassen</h4><p class="">7¹⁰ ≈ 2,8×10⁸ perkalian - sekitar 3,8× lebih sedikit.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>n = 4.096</h4><p class="">rasio n³ / n^2,807 = n^0,193 ≈ 5×.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Catatan</h4><p class="">di bawah ±128 biasanya cara naif lebih cepat (overhead & cache).</p></div></div></div></div></div>
+
+<section class="slide" id="rx3b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Strassen: 7 perkalian matriks, bukan 8</h2>
+<div class="cols c2l">
 <div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> math
 <span class="tk">def</span> perkalian_skalar(n, a):        <span class="tc"># a = 8 (naif) atau 7 (Strassen)</span>
     <span class="tk">return</span> a ** int(math.log2(n))
 
 <span class="tk">for</span> n <span class="tk">in</span> (<span class="tn">1024</span>, <span class="tn">4096</span>):
     naif, strassen = perkalian_skalar(n, <span class="tn">8</span>), perkalian_skalar(n, <span class="tn">7</span>)
-    <span class="tk">print</span>(n, f<span class="ts">"{naif:.2e}"</span>, f<span class="ts">"{strassen:.2e}"</span>, round(naif / strassen, <span class="tn">1</span>))</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+    <span class="tk">print</span>(n, f<span class="ts">"{naif:.2e}"</span>, f<span class="ts">"{strassen:.2e}"</span>, round(naif / strassen, <span class="tn">1</span>))</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">C = [[19, 22], [43, 50]] dengan 7 perkalian; untungnya terasa saat trik ini diulang rekursif.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>C = [[19, 22], [43, 50]] - sama dengan cara biasa, dengan 7 perkalian.</p></div>
 </div>
-<div class="analogy"><b>Bawa pulang:</b> Master Theorem menjelaskan kenapa 8 → 7 perkalian mengubah n³ menjadi n^2,807.</div>
-</section>
-<section class="slide" id="rx4a">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 1: cara membaca</div>
-<h2 class="st">FFT dan teorema konvolusi</h2>
-<div class="fxbox"><span class='hb'>a ∗ b</span> = IFFT( FFT(a) <span class='hl'>·</span> FFT(b) ), &nbsp;&nbsp; T(n) = 2T(n/2) + Θ(n) = Θ(n log n)</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“Konvolusi a dan b sama dengan invers FFT dari perkalian titik demi titik antara FFT a dan FFT b. Rekurens FFT adalah dua T dari n per dua ditambah Theta n, sehingga Theta n log n.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>∗ = konvolusi</h4><p class="">operasi “geser-kali-jumlah”; sama dengan mengalikan dua polinomial.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>FFT</h4><p class="">ubah koefisien menjadi nilai di n titik khusus (akar satuan kompleks).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>· = perkalian per titik</h4><p class="">di domain nilai, perkalian polinomial hanya n perkalian biasa.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>IFFT</h4><p class="">ubah kembali nilai menjadi koefisien.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>a, b</td><td>koefisien polinomial / sinyal</td></tr><tr><td>∗</td><td>konvolusi - naifnya Θ(n²)</td></tr><tr><td>FFT / IFFT</td><td>transformasi Fourier cepat dan inversnya, Θ(n log n)</td></tr><tr><td>·</td><td>perkalian elemen per elemen, Θ(n)</td></tr></table></div>
 </div>
-<div class="note"><b>Intuisinya:</b> Konvolusi langsung butuh n² perkalian. Dengan pindah ke “domain frekuensi”, konvolusi berubah menjadi perkalian biasa. Total biaya: dua FFT + n perkalian + satu IFFT = <b>Θ(n log n)</b>.</div>
 </section>
-<section class="slide" id="rx4m">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 2: hitung manual</div>
+
+<section class="slide" id="rx4m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/4 - hitung manual</div>
 <h2 class="st">Hitung manual: FFT dan teorema konvolusi</h2>
 <div class="rxsoal"><b>Soal:</b> Kalikan (1 + 2x)(3 + 4x) dengan ide FFT: evaluasi di beberapa titik → kalikan → interpolasi.</div>
 <div class="cols c2">
@@ -471,29 +547,40 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> 3 + 10x + 8x². FFT memilih titik akar satuan agar evaluasi & interpolasi hanya Θ(n log n).</div>
 </section>
-<section class="slide" id="rx4t">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 2b: jejak step-by-step</div>
+
+<section class="slide" id="rx4t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/4 - jejak step-by-step</div>
 <h2 class="st">Jejak langkah demi langkah: FFT dan teorema konvolusi</h2>
 <div class="rxsoal"><b>Kasus:</b> FFT radix-2 untuk a = [1, 2, 3, 4] (n = 4) - dari koefisien ke nilai di 4 akar satuan.</div>
 <div class="rxhow"><b>Cara membaca jejak:</b> Baris 1 = divide (genap/ganjil). Baris 2–3 = conquer (FFT n/2). Baris 5–6 = combine “butterfly”: satu perkalian ω menghasilkan dua output. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
 <table class="rxtrace"><tr><th>#</th><th>langkah</th><th>perhitungan</th><th>hasil</th></tr><tr><td>1</td><td>pisah genap / ganjil</td><td>a = [1, 2, 3, 4] → genap [1, 3], ganjil [2, 4]</td><td>-</td></tr><tr><td>2</td><td>FFT([1, 3]) (n = 2)</td><td>[1 + 3, 1 − 3]</td><td><b class='chg'>[4, −2]</b></td></tr><tr><td>3</td><td>FFT([2, 4]) (n = 2)</td><td>[2 + 4, 2 − 4]</td><td><b class='chg'>[6, −2]</b></td></tr><tr><td>4</td><td>faktor putar ω = e^(−2πi/4)</td><td>ω⁰ = 1, ω¹ = −i</td><td>-</td></tr><tr><td>5</td><td>butterfly k = 0</td><td>X0 = E0 + ω^0·O0; X2 = E0 − ω^0·O0</td><td><b class='chg'>X0 = 10, X2 = -2</b></td></tr><tr><td>6</td><td>butterfly k = 1</td><td>X1 = E1 + ω^1·O1; X3 = E1 − ω^1·O1</td><td><b class='chg'>X1 = -2 + 2i, X3 = -2 − 2i</b></td></tr><tr><td>7</td><td>hasil FFT</td><td>4 titik nilai dalam 2 level × 4 operasi</td><td>[10, -2 + 2i, -2, -2 − 2i]</td></tr></table>
 <div class="rxhasil"><b>Hasil akhir jejak:</b> Hanya log₂4 = 2 level, masing-masing Θ(n) → Θ(n log n). Perkalian polinomial cukup mengalikan nilai-nilai ini titik demi titik.</div>
 </section>
-<section class="slide" id="rx4b">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
-<h2 class="st">Filter audio dan blur gambar</h2>
-<div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Equalizer audio, peredam bising, blur/sharpen gambar, dan perkalian bilangan raksasa semuanya memakai FFT. Di Python, <i>scipy.signal.fftconvolve</i> jauh lebih cepat daripada <i>numpy.convolve</i> untuk sinyal panjang. CNN di deep learning juga bisa memakai konvolusi berbasis FFT untuk kernel besar.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Polinomial</h4><p class="">(1 + 2x)(3 + 4x) → a = [1,2], b = [3,4].</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Konvolusi</h4><p class="">[1·3, 1·4 + 2·3, 2·4] = [3, 10, 8] = 3 + 10x + 8x².</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>n = 1 juta sampel audio</h4><p class="">naif ≈ 10¹² operasi; FFT ≈ 3 × 10⁶ × 20 ≈ 6×10⁷.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Hasil</h4><p class="">dari berjam-jam menjadi kurang dari satu detik.</p></div></div></div></div></div>
+
+<section class="slide" id="rx4b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: FFT dan teorema konvolusi</h2>
+<div class="cols c2l">
 <div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">import</span> numpy <span class="tk">as</span> np
 a, b = np.array([<span class="tn">1</span>, <span class="tn">2</span>]), np.array([<span class="tn">3</span>, <span class="tn">4</span>])
 n = <span class="tk">len</span>(a) + <span class="tk">len</span>(b) - <span class="tn">1</span>
 hasil = np.fft.ifft(np.fft.fft(a, n) * np.fft.fft(b, n)).real.round()
 <span class="tk">print</span>(hasil)              <span class="tc"># [ 3. 10.  8.]</span>
-<span class="tk">print</span>(np.convolve(a, b))  <span class="tc"># sama: [ 3 10  8]</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<span class="tk">print</span>(np.convolve(a, b))  <span class="tc"># sama: [ 3 10  8]</span></pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">3 + 10x + 8x². FFT memilih titik akar satuan agar evaluasi & interpolasi hanya Θ(n log n).</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Hanya log₂4 = 2 level, masing-masing Θ(n) → Θ(n log n). Perkalian polinomial cukup mengalikan nilai-nilai ini titik demi titik.</p></div>
 </div>
-<div class="analogy"><b>Bawa pulang:</b> Konvolusi mahal di domain waktu, murah di domain frekuensi. FFT adalah jembatannya dengan biaya Θ(n log n).</div>
+</div>
 </section>
-<!--RX-SLIDES-END-->
+
+<section class="slide" id="rxdL" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian C</div>
+<h1 class="title">Latihan</h1>
+<p class="lead">Uji pemahaman teori dan teknikal sebelum melihat penerapannya di dunia nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Soal D&C II</div><div class="rxtocitem"><span>2</span>Kunci D&C II</div></div>
+</section>
+
 <section class="slide" id="s7">
   <div class="kicker">LATIHAN</div>
   <h2 class="st">Soal D&C II</h2>
@@ -506,7 +593,6 @@ hasil = np.fft.ifft(np.fft.fft(a, n) * np.fft.fft(b, n)).real.round()
   </div>
 </section>
 
-<!-- 8. KUNCI -->
 <section class="slide" id="s8">
   <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
   <h2 class="st">Kunci D&C II</h2>
@@ -519,7 +605,53 @@ hasil = np.fft.ifft(np.fft.fft(a, n) * np.fft.fft(b, n)).real.round()
   </div>
 </section>
 
-<!-- 9. PENUTUP -->
+<section class="slide" id="rxdD" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian D</div>
+<h1 class="title">Studi kasus nyata</h1>
+<p class="lead">Penutup materi: di mana semua teori dan teknik tadi dipakai di industri, AI, dan proyek nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Deteksi pesawat atau kendaraan yang terlalu dekat</div><div class="rxtocitem"><span>2</span>Perkalian bilangan besar di kriptografi</div><div class="rxtocitem"><span>3</span>Perkalian matriks besar dan AlphaTensor</div><div class="rxtocitem"><span>4</span>Filter audio dan blur gambar</div></div>
+</section>
+
+<section class="slide" id="rx1c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 1/4</div>
+<h2 class="st">Deteksi pesawat atau kendaraan yang terlalu dekat</h2>
+<div class="cols c2">
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Sistem <b>kontrol lalu lintas udara</b> dan simulasi game (deteksi tabrakan) perlu mencari pasangan objek terdekat berulang kali per detik. Engine modern memakai variasi spasial (grid, k-d tree) yang berbasis ide yang sama: hanya bandingkan objek yang berada di “strip/sel” berdekatan.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 10.000 objek</h4><p class="">brute force: n(n−1)/2 ≈ 5×10⁷ pasangan.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>D&C</h4><p class="">≈ n log₂ n ≈ 10⁴ × 14 ≈ 1,4×10⁵ langkah utama.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Strip</h4><p class="">tiap titik di strip dibandingkan ≤ 7 titik, bukan semua.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Hasil</h4><p class="">ratusan kali lebih cepat; bisa dijalankan tiap detik.</p></div></div></div></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Argumen geometri “paling banyak 7 tetangga” mengubah kombinasi lintas-garis dari Θ(n²) menjadi Θ(n).</div>
+</section>
+
+<section class="slide" id="rx2c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 2/4</div>
+<h2 class="st">Perkalian bilangan besar di kriptografi</h2>
+<div class="cols c2">
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>CPython</b> otomatis memakai Karatsuba untuk perkalian int di atas ±70 digit (konstanta KARATSUBA_CUTOFF). Kriptografi RSA mengalikan bilangan 2048–4096 bit berkali-kali; untuk ukuran ini, n^1,585 vs n² berarti beberapa kali lebih sedikit perkalian dasar.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>x = 1234, y = 5678, m = 2</h4><p class="">a=12, b=34, c=56, d=78.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>ac, bd</h4><p class="">12·56 = 672; 34·78 = 2652.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>(a+b)(c+d)</h4><p class="">46·134 = 6164 → tengah = 6164 − 672 − 2652 = 2840.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Gabung</h4><p class="">672·10⁴ + 2840·10² + 2652 = 7.006.652 ✓</p></div></div></div></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Kurangi banyaknya subsoal (a) di rekurens, maka pangkatnya turun. 4 → 3 perkalian: n² → n^1,585.</div>
+</section>
+
+<section class="slide" id="rx3c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 3/4</div>
+<h2 class="st">Perkalian matriks besar dan AlphaTensor</h2>
+<div class="cols c2">
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Library numerik sebagian memakai Strassen untuk matriks sangat besar. Pada 2022, <b>DeepMind AlphaTensor</b> memakai reinforcement learning untuk menemukan skema perkalian baru, misalnya 47 perkalian untuk matriks 4×4 di aritmetika mod 2 (Strassen rekursif butuh 49) - pencarian rumus perkalian kini dibantu AI.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>n = 1.024 (2¹⁰)</h4><p class="">naif: 8¹⁰ ≈ 1,07×10⁹ perkalian skalar (= n³).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Strassen</h4><p class="">7¹⁰ ≈ 2,8×10⁸ perkalian - sekitar 3,8× lebih sedikit.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>n = 4.096</h4><p class="">rasio n³ / n^2,807 = n^0,193 ≈ 5×.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Catatan</h4><p class="">di bawah ±128 biasanya cara naif lebih cepat (overhead & cache).</p></div></div></div></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Master Theorem menjelaskan kenapa 8 → 7 perkalian mengubah n³ menjadi n^2,807.</div>
+</section>
+
+<section class="slide" id="rx4c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 4/4</div>
+<h2 class="st">Filter audio dan blur gambar</h2>
+<div class="cols c2">
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Equalizer audio, peredam bising, blur/sharpen gambar, dan perkalian bilangan raksasa semuanya memakai FFT. Di Python, <i>scipy.signal.fftconvolve</i> jauh lebih cepat daripada <i>numpy.convolve</i> untuk sinyal panjang. CNN di deep learning juga bisa memakai konvolusi berbasis FFT untuk kernel besar.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Polinomial</h4><p class="">(1 + 2x)(3 + 4x) → a = [1,2], b = [3,4].</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Konvolusi</h4><p class="">[1·3, 1·4 + 2·3, 2·4] = [3, 10, 8] = 3 + 10x + 8x².</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>n = 1 juta sampel audio</h4><p class="">naif ≈ 10¹² operasi; FFT ≈ 3 × 10⁶ × 20 ≈ 6×10⁷.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Hasil</h4><p class="">dari berjam-jam menjadi kurang dari satu detik.</p></div></div></div></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Konvolusi mahal di domain waktu, murah di domain frekuensi. FFT adalah jembatannya dengan biaya Θ(n log n).</div>
+</section>
+
 <section class="slide" id="s9" style="justify-content:center;align-items:center;text-align:center">
   <div class="kicker">PERTEMUAN 5 · SELESAI</div>
   <h2 class="st" style="font-size:30px;margin:10px 0">Kurangi satu submasalah,<br>ubah eksponen selamanya.</h2>

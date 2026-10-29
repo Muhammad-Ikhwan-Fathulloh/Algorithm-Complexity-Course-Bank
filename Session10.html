@@ -130,6 +130,14 @@ table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
 .rxtrace td:first-child{color:#64748b;font-weight:700}
 b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
 .rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
+.rxg3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.rxwtrack{display:flex;gap:6px;flex:none}
+.rxwtrack span{font:800 12px/1 -apple-system,'Segoe UI',Arial,sans-serif;letter-spacing:.08em;padding:6px 10px;border-radius:20px;background:#f1f5f9;color:#94a3b8;border:2px solid #e2e8f0}
+.rxwtrack span.on{background:#2563eb;color:#fff;border-color:#2563eb}
+.rxtoc{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+.rxtocitem{display:flex;gap:10px;align-items:baseline;font-size:15px;line-height:1.4;color:#334155;border-bottom:1px dashed #e2e8f0;padding:3px 0}
+.rxg3.big .rxcard{padding:18px 20px}.rxg3.big .rxcard h3{font-size:20px;margin-bottom:10px}.rxg3.big .rxcard p{font-size:17px;line-height:1.65}
+.rxtocitem span{flex:none;min-width:26px;font:800 13px Consolas,monospace;color:#2563eb}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -144,8 +152,6 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · <a href="index.html" style="color:#2563eb;font-size:12px">← Daftar Materi</a></div>
 </section>
 
-<!-- 2. DUA PRINSIP DP -->
-<!-- PETA LANGKAH -->
 <section class="slide" id="speta">
   <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
   <h2 class="st">Peta langkah: cara merancang DP</h2>
@@ -162,6 +168,67 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
       <div class="note">Θ(n·W) bergantung pada nilai kapasitas W, bukan jumlah bit. Jika W sangat besar, algoritma ini tetap lambat walaupun terlihat polinomial.</div>
     </div>
   </div>
+</section>
+
+<section class="slide" id="rxdA" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A</div>
+<h1 class="title">Teori</h1>
+<p class="lead">Kita mulai dari dasar: 5W1H dipecah per slide (What, Why, Who, When, Where, How), lalu konsep inti dan cara membaca setiap rumus.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>WHAT - Apa itu Dynamic Programming?</div><div class="rxtocitem"><span>2</span>WHY - Mengapa DP dibutuhkan?</div><div class="rxtocitem"><span>3</span>WHO - Siapa yang memakai DP?</div><div class="rxtocitem"><span>4</span>WHEN - Kapan DP berlaku?</div><div class="rxtocitem"><span>5</span>WHERE - Di mana DP dipakai?</div><div class="rxtocitem"><span>6</span>HOW - Bagaimana merancang DP?</div><div class="rxtocitem"><span>7</span>Dua syarat DP berlaku</div><div class="rxtocitem"><span>8</span>Top-down vs Bottom-up: dua cara implementasi DP</div><div class="rxtocitem"><span>9</span>Tiga rumus DP yang menjadi pola semua DP</div><div class="rxtocitem"><span>10</span>Rumus biaya DP</div><div class="rxtocitem"><span>11</span>Rekurens Knapsack 0/1</div><div class="rxtocitem"><span>12</span>Rekurens Coin Change</div></div>
+</section>
+
+<section class="slide" id="rxw1" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (1/6) - WHAT</div>
+<div class="rxwtrack"><span class="on">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHAT - Apa itu Dynamic Programming?</h2>
+<p class="b">Teknik menyelesaikan masalah dengan memecahnya menjadi subsoal yang <b>tumpang-tindih</b>, menyelesaikan setiap subsoal sekali, dan menyimpan hasilnya.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>State</h3><p>Parameter yang mengidentifikasi subsoal, misalnya K[i][w].</p></div><div class="rxcard green"><h3>Transisi</h3><p>Rumus rekurens yang menghitung state dari state lain.</p></div><div class="rxcard yellow"><h3>Tabel/memo</h3><p>Penyimpan hasil agar tidak dihitung ulang.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Fibonacci: F(n) = F(n−1) + F(n−2), simpan setiap F(k) di tabel.</div>
+</section>
+
+<section class="slide" id="rxw2" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (2/6) - WHY</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="on">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHY - Mengapa DP dibutuhkan?</h2>
+<p class="b">Karena rekursi naif pada subsoal yang tumpang-tindih bisa eksponensial.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Eksponensial → polinomial</h3><p>fib naif Θ(φⁿ) menjadi Θ(n).</p></div><div class="rxcard green"><h3>Greedy tidak cukup</h3><p>0/1 knapsack dan coin change umum tidak bisa diselesaikan greedy.</p></div><div class="rxcard yellow"><h3>Optimal terjamin</h3><p>DP mencoba semua pilihan secara sistematis tanpa mengulang.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> fib(50) naif ±28 miliar panggilan; dengan DP 50 langkah.</div>
+</section>
+
+<section class="slide" id="rxw3" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (3/6) - WHO</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="on">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHO - Siapa yang memakai DP?</h2>
+<p class="b">Engineer di bidang optimasi, bioinformatika, dan NLP.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Engineer optimasi</h3><p>Alokasi anggaran, pemilihan proyek, pemuatan kargo.</p></div><div class="rxcard green"><h3>Bioinformatika & NLP</h3><p>Penyelarasan DNA, edit distance, Viterbi.</p></div><div class="rxcard yellow"><h3>Kandidat wawancara</h3><p>DP adalah topik wawancara teknis paling sering.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Tim produk memilih fitur sprint (nilai vs story point) - knapsack 0/1.</div>
+</section>
+
+<section class="slide" id="rxw4" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (4/6) - WHEN</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="on">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHEN - Kapan DP berlaku?</h2>
+<p class="b">Saat dua syarat terpenuhi:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Optimal substructure</h3><p>Solusi optimal tersusun dari solusi optimal subsoal.</p></div><div class="rxcard green"><h3>Overlapping subproblems</h3><p>Subsoal yang sama muncul berkali-kali.</p></div><div class="rxcard yellow"><h3>Ukuran tabel masuk akal</h3><p>#state × biaya transisi harus muat waktu dan memori.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Knapsack dengan W = 10⁹ rupiah terlalu besar - skala W ke jutaan agar tabel muat.</div>
+</section>
+
+<section class="slide" id="rxw5" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (5/6) - WHERE</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="on">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHERE - Di mana DP dipakai?</h2>
+<p class="b">Di banyak sistem nyata:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Keuangan & operasional</h3><p>Kembalian ATM, pemilihan portofolio, penjadwalan.</p></div><div class="rxcard green"><h3>Teks & bahasa</h3><p>Spell checker, diff, pengenalan suara.</p></div><div class="rxcard yellow"><h3>Software engineering</h3><p>Memoisasi: lru_cache, React useMemo, cache build system.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> @functools.lru_cache di Python adalah DP top-down dalam satu baris.</div>
+</section>
+
+<section class="slide" id="rxw6" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (6/6) - HOW</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="on">HOW</span></div>
+<h2 class="st">HOW - Bagaimana merancang DP?</h2>
+<p class="b">Empat langkah baku:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>1. Definisikan state</h3><p>Apa arti dp[i][w]? Tulis dalam kalimat.</p></div><div class="rxcard green"><h3>2. Tulis transisi & basis</h3><p>dp[i][w] = maks(…); dp[0][*] = 0.</p></div><div class="rxcard yellow"><h3>3. Tentukan urutan & hitung biaya</h3><p>Isi tabel dari basis; biaya = #state × transisi.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Coin change: state C[a]; transisi 1 + min C[a − c]; basis C[0] = 0; biaya Θ(A·k).</div>
 </section>
 
 <section class="slide" id="s2">
@@ -203,76 +270,6 @@ def fib_tab(n):                # bottom-up
   </div>
 </section>
 
-<!-- 3. 0/1 KNAPSACK -->
-<section class="slide" id="s3">
-  <div class="kicker">BAGIAN 1 · 0/1 KNAPSACK</div>
-  <h2 class="st">Knapsack 0/1 - Θ(n·W) pseudo-polinomial</h2>
-  <div class="cols c2l">
-    <div class="stack">
-      <p class="b">n item, tiap punya berat wᵢ dan nilai vᵢ. Kapasitas tas W. Maksimalkan nilai, tiap item diambil atau tidak (0 atau 1).</p>
-      <div class="card soft" style="font-size:12.5px;line-height:1.7">
-        <b>Rekurens DP:</b><br>
-        dp[i][w] = max nilai pakai item 1..i dengan berat ≤ w<br>
-        dp[i][w] = dp[i-1][w] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(tidak ambil item i)<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max dengan dp[i-1][w-wᵢ]+vᵢ &nbsp;(ambil, kalau wᵢ≤w)
-      </div>
-<pre class="pycode">def knapsack(weights, values, W):
-    n = len(weights)
-    dp = [[0]*(W+1) for _ in range(n+1)]
-    for i in range(1, n+1):
-        for w in range(W+1):
-            dp[i][w] = dp[i-1][w]   # tidak ambil
-            if weights[i-1] <= w:
-                dp[i][w] = max(dp[i][w],
-                    dp[i-1][w-weights[i-1]] + values[i-1])
-    return dp[n][W]  # O(n*W)</pre>
-    </div>
-    <div class="sim">
-      <div class="cap">Coba sendiri · Knapsack simulator</div>
-      <div style="font-size:12px;color:#334155;margin-bottom:4px">Item: berat=[2,3,4,5], nilai=[3,4,5,6], W=8</div>
-      <button class="btn go" id="btnKnap">▶ Isi tabel DP</button>
-      <div id="knapGrid" style="overflow:auto;min-height:80px"></div>
-      <div class="verdict mid" id="knapVerdict">Klik untuk melihat tabel DP diisi baris per baris.</div>
-    </div>
-  </div>
-  <!-- RUMUS -->
-  <div class="note"><b>Cara membaca rumus:</b><br>• dp[i][w] = nilai maksimum memakai item 1 sampai i dengan kapasitas w.<br>• Dua pilihan: tidak mengambil item i → dp[i−1][w]; atau mengambil item i (jika wᵢ ≤ w) → dp[i−1][w−wᵢ] + vᵢ.<br>• Ambil yang lebih besar dari kedua pilihan. Tabel n × W menghasilkan Θ(n·W).</div>
-</section>
-
-<!-- 4. COIN CHANGE -->
-<section class="slide" id="s4">
-  <div class="kicker">BAGIAN 2 · COIN CHANGE</div>
-  <h2 class="st">Coin Change - minimum koin untuk jumlah target</h2>
-  <div class="cols c2">
-    <div class="stack">
-      <p class="b">Diberikan koin-koin dengan denominasi coins[] dan target amount, cari jumlah minimum koin yang diperlukan.</p>
-<pre class="pycode">def coin_change(coins, amount):
-    dp = [float('inf')] * (amount + 1)
-    dp[0] = 0               # base case
-    for a in range(1, amount + 1):
-        for c in coins:
-            if c <= a:
-                dp[a] = min(dp[a], dp[a-c] + 1)
-    return dp[amount] if dp[amount] != float('inf') else -1
-# T(amount, |coins|): O(amount × |coins|)</pre>
-      <div class="note">Greedy tidak selalu benar di sini! Koin [1,3,4], target=6: greedy ambil 4 → perlu 3 koin (4+1+1). DP temukan: 3+3 = <b>2 koin</b>. Greedy gagal karena tidak ada optimal substructure untuk greedy.</div>
-    </div>
-    <div class="sim">
-      <div class="cap">Coba sendiri · Coin Change</div>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <span class="tiny">Koin: [1,3,4] &nbsp; Target:</span>
-        <input type="number" id="coinTarget" value="6" min="1" max="20" style="border:1.5px solid #cbd5e1;border-radius:7px;padding:5px 8px;font:13px Consolas;width:70px">
-        <button class="btn go" id="btnCoin">Hitung</button>
-      </div>
-      <div id="coinDp" style="font:12px Consolas;background:#f8fafc;border-radius:8px;padding:8px;min-height:60px;overflow-x:auto"></div>
-      <div class="verdict" id="coinVerdict">Masukkan target dan klik Hitung.</div>
-    </div>
-  </div>
-  <!-- RUMUS -->
-  <div class="note"><b>Cara membaca rumus:</b><br>• dp[x] = jumlah koin minimum untuk mencapai jumlah x.<br>• dp[x] = min(dp[x − c] + 1) untuk setiap koin c yang tidak melebihi x.<br>• Contoh: koin [1,3,4], target 6 → dp[6] = dp[3] + 1 = 2 (koin 3 + 3).</div>
-</section>
-
-<!-- 5. TOP-DOWN vs BOTTOM-UP -->
 <section class="slide" id="s5">
   <div class="kicker">BAGIAN 3 · STRATEGI DP</div>
   <h2 class="st">Top-down vs Bottom-up: dua cara implementasi DP</h2>
@@ -314,17 +311,16 @@ def dp(i, w):
   </div>
 </section>
 
-<!-- 6. LATIHAN -->
-<!--RX-SLIDES-START-->
-<section class="slide" id="rx0">
-<div class="kicker">Bedah Rumus · Dynamic Programming I</div>
+<section class="slide" id="rx0" data-rx="1">
+<div class="kicker">Bagian A · Teori · Bedah Rumus · Dynamic Programming I</div>
 <h2 class="st">Tiga rumus DP yang menjadi pola semua DP</h2>
 <p class="b">Dynamic programming adalah seni menulis rumus rekurens yang tepat lalu mengisinya ke tabel. Tiga rumus berikut adalah pola dasar yang akan terus muncul.</p>
 <div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Rumus biaya DP</b><span>waktu = #subsoal × biaya per subsoal</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Rekurens Knapsack 0/1</b><span>K[i][w] = maks(K[i−1][w], vᵢ + K[i−1][w−wᵢ])</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Rekurens Coin Change</b><span>C[a] = 1 + min C[a − c]</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
+<div class="note"><b>Alur tiap rumus:</b> di <b>Teori</b> kita belajar <b>cara membaca</b> rumus dan arti tiap simbol. Di <b>Teknikal</b> rumus yang sama dikerjakan lewat <b>hitung manual</b>, <b>jejak step-by-step</b>, lalu <b>kode Python</b>. Di <b>Studi kasus nyata</b> (akhir slide) kita lihat pemakaiannya di proyek nyata.</div>
 </section>
-<section class="slide" id="rx1a">
-<div class="kicker">Bedah Rumus 1/3 · Langkah 1: cara membaca</div>
+
+<section class="slide" id="rx1a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 1/3 - cara membaca</div>
 <h2 class="st">Rumus biaya DP</h2>
 <div class="fxbox">Waktu DP = <span class='hl'>#subsoal unik</span> × <span class='hb'>biaya transisi per subsoal</span> &nbsp;&nbsp; (fib: n × O(1) = Θ(n))</div>
 <div class="cols c2">
@@ -333,42 +329,9 @@ def dp(i, w):
 </div>
 <div class="note"><b>Intuisinya:</b> Rekursi naif menghitung subsoal yang sama berkali-kali (eksponensial). DP <b>menghitung tiap subsoal sekali</b>, jadi biayanya tinggal ukuran tabel dikali kerja per sel.</div>
 </section>
-<section class="slide" id="rx1m">
-<div class="kicker">Bedah Rumus 1/3 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Rumus biaya DP</h2>
-<div class="rxsoal"><b>Soal:</b> Hitung berapa kali tiap subsoal F(k) dipanggil saat menghitung F(5) tanpa memo dan dengan memo.</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Gambar pohon panggilan</h4><p class="rxcalc">F5 → F4, F3; F4 → F3, F2; F3 → F2, F1; F2 → F1, F0</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Hitung kemunculan</h4><p class="rxcalc">F5: 1, F4: 1, F3: 2, F2: 3, F1: 5, F0: 3</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Total naif</h4><p class="rxcalc">1 + 1 + 2 + 3 + 5 + 3 = 15 panggilan</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Dengan memo</h4><p class="rxcalc">subsoal unik F0..F5 = 6, masing-masing O(1) → 6 × 1 = 6</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Pakai rumus biaya DP</h4><p class="rxcalc">knapsack n = 3, W = 5 → (3+1)·(5+1) = 24 sel × 2 pilihan</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>subsoal</th><th>F5</th><th>F4</th><th>F3</th><th>F2</th><th>F1</th><th>F0</th><th>total</th></tr><tr><td>naif</td><td>1</td><td>1</td><td>2</td><td>3</td><td>5</td><td>3</td><td>15</td></tr><tr><td>memo</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>6</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> Naif 15 panggilan vs memo 6 = banyaknya subsoal unik × O(1).</div>
-</section>
-<section class="slide" id="rx1t">
-<div class="kicker">Bedah Rumus 1/3 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Rumus biaya DP</h2>
-<div class="rxsoal"><b>Kasus:</b> Urutan panggilan fib(5) DENGAN memo (lru_cache).</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu pemanggilan. “ambil dari memo” = subsoal sudah pernah dihitung, langsung dikembalikan O(1) tanpa rekursi lagi. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>urutan</th><th>panggilan</th><th>aksi</th><th>hasil</th></tr><tr><td>1</td><td>fib(5)</td><td>hitung, simpan</td><td>5</td></tr><tr><td>2</td><td>&nbsp;&nbsp;fib(4)</td><td>hitung, simpan</td><td>3</td></tr><tr><td>3</td><td>&nbsp;&nbsp;&nbsp;&nbsp;fib(3)</td><td>hitung, simpan</td><td>2</td></tr><tr><td>4</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fib(2)</td><td>hitung, simpan</td><td>1</td></tr><tr><td>5</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fib(1)</td><td>basis, simpan</td><td>1</td></tr><tr><td>6</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fib(0)</td><td>basis, simpan</td><td>0</td></tr><tr><td>7</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fib(1)</td><td><b class='chg'>ambil dari memo</b></td><td>1</td></tr><tr><td>8</td><td>&nbsp;&nbsp;&nbsp;&nbsp;fib(2)</td><td><b class='chg'>ambil dari memo</b></td><td>1</td></tr><tr><td>9</td><td>&nbsp;&nbsp;fib(3)</td><td><b class='chg'>ambil dari memo</b></td><td>2</td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> 9 panggilan (3 di antaranya cache hit) vs 15 panggilan tanpa memo; subsoal unik hanya 6.</div>
-</section>
-<section class="slide" id="rx1b">
-<div class="kicker">Bedah Rumus 1/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
-<h2 class="st">Menaksir biaya DP sebelum menulis kode</h2>
-<div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Sebelum menerapkan DP di produksi, engineer menghitung ukuran tabelnya. Contoh: menyelaraskan dua teks 100.000 karakter dengan LCS butuh 10¹⁰ sel - terlalu besar memori. Rumus ini yang membuat <b>git diff</b> memakai algoritma Myers (O(ND)) alih-alih tabel penuh.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Fibonacci</h4><p class="">n subsoal × O(1) = Θ(n).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Knapsack</h4><p class="">(n × W) subsoal × 2 pilihan = Θ(nW).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Coin change</h4><p class="">A subsoal × k jenis koin = Θ(Ak).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>LCS</h4><p class="">(m × n) subsoal × O(1) = Θ(mn).</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">from</span> functools <span class="tk">import</span> lru_cache
-calls = <span class="tn">0</span>
-@lru_cache(maxsize=<span class="tk">None</span>)
-<span class="tk">def</span> fib(n):
-    global calls; calls += <span class="tn">1</span>
-    <span class="tk">return</span> n <span class="tk">if</span> n &lt; <span class="tn">2</span> <span class="tk">else</span> fib(n-<span class="tn">1</span>) + fib(n-<span class="tn">2</span>)
 
-fib(<span class="tn">80</span>); <span class="tk">print</span>(calls)   <span class="tc"># 81 = banyaknya subsoal unik</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
-</div>
-<div class="analogy"><b>Bawa pulang:</b> Sebelum menulis DP, tulis dulu: state apa, berapa banyak, dan berapa kerja per state.</div>
-</section>
-<section class="slide" id="rx2a">
-<div class="kicker">Bedah Rumus 2/3 · Langkah 1: cara membaca</div>
+<section class="slide" id="rx2a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 2/3 - cara membaca</div>
 <h2 class="st">Rekurens Knapsack 0/1</h2>
 <div class="fxbox">K[i][w] = maks( <span class='hb'>K[i−1][w]</span>, &nbsp;<span class='hl'>v<sub>i</sub> + K[i−1][w − w<sub>i</sub>]</span> ) &nbsp; (jika w<sub>i</sub> ≤ w); &nbsp; Θ(n·W)</div>
 <div class="cols c2">
@@ -377,42 +340,9 @@ fib(<span class="tn">80</span>); <span class="tk">print</span>(calls)   <span cl
 </div>
 <div class="note"><b>Intuisinya:</b> Setiap item hanya punya dua nasib: <b>diambil atau tidak</b>. Rumus mencoba keduanya dan menyimpan yang terbaik, sehingga 2ⁿ kombinasi diringkas menjadi tabel n × W.</div>
 </section>
-<section class="slide" id="rx2m">
-<div class="kicker">Bedah Rumus 2/3 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Rekurens Knapsack 0/1</h2>
-<div class="rxsoal"><b>Soal:</b> Isi tabel knapsack 0/1: A(60, 1), B(100, 2), C(120, 3), W = 5.</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Baris A</h4><p class="rxcalc">untuk w ≥ 1: maks(0, 60 + 0) = 60</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Baris B, w = 2</h4><p class="rxcalc">maks(K[A][2] = 60, 100 + K[A][0] = 100) = 100</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Baris B, w = 3</h4><p class="rxcalc">maks(60, 100 + K[A][1] = 160) = 160</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Baris C, w = 4</h4><p class="rxcalc">maks(K[B][4] = 160, 120 + K[B][1] = 180) = 180</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Baris C, w = 5</h4><p class="rxcalc">maks(K[B][5] = 160, 120 + K[B][2] = 220) = 220</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>item \ w</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr><tr><td>-</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>A</td><td>0</td><td>60</td><td>60</td><td>60</td><td>60</td><td>60</td></tr><tr><td>B</td><td>0</td><td>60</td><td>100</td><td>160</td><td>160</td><td>160</td></tr><tr><td>C</td><td>0</td><td>60</td><td>100</td><td>160</td><td>180</td><td>220</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> K[3][5] = 220 → ambil B + C (berat 2 + 3 = 5).</div>
-</section>
-<section class="slide" id="rx2t">
-<div class="kicker">Bedah Rumus 2/3 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Rekurens Knapsack 0/1</h2>
-<div class="rxsoal"><b>Kasus:</b> Knapsack 0/1 versi satu baris: A(60, 1), B(100, 2), C(120, 3), W = 5. Kapasitas diisi dari kanan ke kiri.</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu sel diperbarui: K[cap] = maks(tidak ambil, ambil). Loop mundur memastikan tiap item dipakai paling banyak sekali. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>item</th><th>cap</th><th>maks(tidak ambil, ambil)</th><th>keputusan</th><th>K[0..5] sesudahnya</th></tr><tr><td>A</td><td>5</td><td>maks(0, 60 + K[4] = 60)</td><td><b class='chg'>ambil → 60</b></td><td>[0, 0, 0, 0, 0, <b class='chg'>60</b>]</td></tr><tr><td>A</td><td>4</td><td>maks(0, 60 + K[3] = 60)</td><td><b class='chg'>ambil → 60</b></td><td>[0, 0, 0, 0, <b class='chg'>60</b>, 60]</td></tr><tr><td>A</td><td>3</td><td>maks(0, 60 + K[2] = 60)</td><td><b class='chg'>ambil → 60</b></td><td>[0, 0, 0, <b class='chg'>60</b>, 60, 60]</td></tr><tr><td>A</td><td>2</td><td>maks(0, 60 + K[1] = 60)</td><td><b class='chg'>ambil → 60</b></td><td>[0, 0, <b class='chg'>60</b>, 60, 60, 60]</td></tr><tr><td>A</td><td>1</td><td>maks(0, 60 + K[0] = 60)</td><td><b class='chg'>ambil → 60</b></td><td>[0, <b class='chg'>60</b>, 60, 60, 60, 60]</td></tr><tr><td>B</td><td>5</td><td>maks(60, 100 + K[3] = 160)</td><td><b class='chg'>ambil → 160</b></td><td>[0, 60, 60, 60, 60, <b class='chg'>160</b>]</td></tr><tr><td>B</td><td>4</td><td>maks(60, 100 + K[2] = 160)</td><td><b class='chg'>ambil → 160</b></td><td>[0, 60, 60, 60, <b class='chg'>160</b>, 160]</td></tr><tr><td>B</td><td>3</td><td>maks(60, 100 + K[1] = 160)</td><td><b class='chg'>ambil → 160</b></td><td>[0, 60, 60, <b class='chg'>160</b>, 160, 160]</td></tr><tr><td>B</td><td>2</td><td>maks(60, 100 + K[0] = 100)</td><td><b class='chg'>ambil → 100</b></td><td>[0, 60, <b class='chg'>100</b>, 160, 160, 160]</td></tr><tr><td>C</td><td>5</td><td>maks(160, 120 + K[2] = 220)</td><td><b class='chg'>ambil → 220</b></td><td>[0, 60, 100, 160, 160, <b class='chg'>220</b>]</td></tr><tr><td>C</td><td>4</td><td>maks(160, 120 + K[1] = 180)</td><td><b class='chg'>ambil → 180</b></td><td>[0, 60, 100, 160, <b class='chg'>180</b>, 220]</td></tr><tr><td>C</td><td>3</td><td>maks(160, 120 + K[0] = 120)</td><td>tetap 160</td><td>[0, 60, 100, <b class='chg'>160</b>, 180, 220]</td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> K[5] = 220 (ambil B + C) setelah 12 pembaruan sel.</div>
-</section>
-<section class="slide" id="rx2b">
-<div class="kicker">Bedah Rumus 2/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
-<h2 class="st">Memilih proyek dengan anggaran terbatas</h2>
-<div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Memilih fitur/proyek yang dikerjakan sprint ini (nilai bisnis vs story point), memilih iklan dalam slot durasi, atau memuat kontainer. Untuk W sangat besar (misalnya anggaran dalam rupiah), skala W diperkecil (dalam juta) agar tabel muat.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Item (v, w)</h4><p class="">A(60,1), B(100,2), C(120,3); W = 5.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Baris A</h4><p class="">K[1][w≥1] = 60.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Baris B</h4><p class="">K[2][3] = maks(60, 100 + K[1][1]) = 160.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Baris C</h4><p class="">K[3][5] = maks(K[2][5]=160, 120 + K[2][2]=100) = 220 → pilih B + C.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> knapsack(items, W):
-    K = [<span class="tn">0</span>] * (W + <span class="tn">1</span>)
-    <span class="tk">for</span> v, w <span class="tk">in</span> items:
-        <span class="tk">for</span> cap <span class="tk">in</span> <span class="tk">range</span>(W, w - <span class="tn">1</span>, -<span class="tn">1</span>):      <span class="tc"># mundur: tiap item sekali</span>
-            K[cap] = <span class="tk">max</span>(K[cap], v + K[cap - w])
-    <span class="tk">return</span> K[W]
 
-<span class="tk">print</span>(knapsack([(<span class="tn">60</span>,<span class="tn">1</span>), (<span class="tn">100</span>,<span class="tn">2</span>), (<span class="tn">120</span>,<span class="tn">3</span>)], <span class="tn">5</span>))   <span class="tc"># 220</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
-</div>
-<div class="analogy"><b>Bawa pulang:</b> Knapsack 0/1 = dua pilihan per item, tabel n × W. Hemat memori: satu baris diisi dari kanan ke kiri.</div>
-</section>
-<section class="slide" id="rx3a">
-<div class="kicker">Bedah Rumus 3/3 · Langkah 1: cara membaca</div>
+<section class="slide" id="rx3a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 3/3 - cara membaca</div>
 <h2 class="st">Rekurens Coin Change</h2>
 <div class="fxbox">C[0] = 0, &nbsp; C[a] = 1 + <span class='hl'>min</span><sub>c ∈ koin, c ≤ a</sub> <span class='hb'>C[a − c]</span>; &nbsp; Θ(A·k)</div>
 <div class="cols c2">
@@ -421,8 +351,161 @@ fib(<span class="tn">80</span>); <span class="tk">print</span>(calls)   <span cl
 </div>
 <div class="note"><b>Intuisinya:</b> Greedy “ambil koin terbesar” hanya benar untuk sistem koin tertentu. DP <b>mencoba semua koin terakhir</b> sehingga selalu benar.</div>
 </section>
-<section class="slide" id="rx3m">
-<div class="kicker">Bedah Rumus 3/3 · Langkah 2: hitung manual</div>
+
+<section class="slide" id="rxdB" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian B</div>
+<h1 class="title">Teknikal</h1>
+<p class="lead">Setelah teorinya jelas, kita masuk ke algoritma, kode, simulasi, hitung manual, dan jejak eksekusi langkah demi langkah.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Knapsack 0/1 - Θ(n·W) pseudo-polinomial</div><div class="rxtocitem"><span>2</span>Coin Change - minimum koin untuk jumlah target</div><div class="rxtocitem"><span>3</span>Hitung manual: Rumus biaya DP</div><div class="rxtocitem"><span>4</span>Jejak langkah demi langkah: Rumus biaya DP</div><div class="rxtocitem"><span>5</span>Dari hitungan ke kode: Rumus biaya DP</div><div class="rxtocitem"><span>6</span>Hitung manual: Rekurens Knapsack 0/1</div><div class="rxtocitem"><span>7</span>Jejak langkah demi langkah: Rekurens Knapsack 0/1</div><div class="rxtocitem"><span>8</span>Dari hitungan ke kode: Rekurens Knapsack 0/1</div><div class="rxtocitem"><span>9</span>Hitung manual: Rekurens Coin Change</div><div class="rxtocitem"><span>10</span>Jejak langkah demi langkah: Rekurens Coin Change</div><div class="rxtocitem"><span>11</span>Dari hitungan ke kode: Rekurens Coin Change</div></div>
+</section>
+
+<section class="slide" id="s3">
+  <div class="kicker">BAGIAN 1 · 0/1 KNAPSACK</div>
+  <h2 class="st">Knapsack 0/1 - Θ(n·W) pseudo-polinomial</h2>
+  <div class="cols c2l">
+    <div class="stack">
+      <p class="b">n item, tiap punya berat wᵢ dan nilai vᵢ. Kapasitas tas W. Maksimalkan nilai, tiap item diambil atau tidak (0 atau 1).</p>
+      <div class="card soft" style="font-size:12.5px;line-height:1.7">
+        <b>Rekurens DP:</b><br>
+        dp[i][w] = max nilai pakai item 1..i dengan berat ≤ w<br>
+        dp[i][w] = dp[i-1][w] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(tidak ambil item i)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max dengan dp[i-1][w-wᵢ]+vᵢ &nbsp;(ambil, kalau wᵢ≤w)
+      </div>
+<pre class="pycode">def knapsack(weights, values, W):
+    n = len(weights)
+    dp = [[0]*(W+1) for _ in range(n+1)]
+    for i in range(1, n+1):
+        for w in range(W+1):
+            dp[i][w] = dp[i-1][w]   # tidak ambil
+            if weights[i-1] <= w:
+                dp[i][w] = max(dp[i][w],
+                    dp[i-1][w-weights[i-1]] + values[i-1])
+    return dp[n][W]  # O(n*W)</pre>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · Knapsack simulator</div>
+      <div style="font-size:12px;color:#334155;margin-bottom:4px">Item: berat=[2,3,4,5], nilai=[3,4,5,6], W=8</div>
+      <button class="btn go" id="btnKnap">▶ Isi tabel DP</button>
+      <div id="knapGrid" style="overflow:auto;min-height:80px"></div>
+      <div class="verdict mid" id="knapVerdict">Klik untuk melihat tabel DP diisi baris per baris.</div>
+    </div>
+  </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• dp[i][w] = nilai maksimum memakai item 1 sampai i dengan kapasitas w.<br>• Dua pilihan: tidak mengambil item i → dp[i−1][w]; atau mengambil item i (jika wᵢ ≤ w) → dp[i−1][w−wᵢ] + vᵢ.<br>• Ambil yang lebih besar dari kedua pilihan. Tabel n × W menghasilkan Θ(n·W).</div>
+</section>
+
+<section class="slide" id="s4">
+  <div class="kicker">BAGIAN 2 · COIN CHANGE</div>
+  <h2 class="st">Coin Change - minimum koin untuk jumlah target</h2>
+  <div class="cols c2">
+    <div class="stack">
+      <p class="b">Diberikan koin-koin dengan denominasi coins[] dan target amount, cari jumlah minimum koin yang diperlukan.</p>
+<pre class="pycode">def coin_change(coins, amount):
+    dp = [float('inf')] * (amount + 1)
+    dp[0] = 0               # base case
+    for a in range(1, amount + 1):
+        for c in coins:
+            if c <= a:
+                dp[a] = min(dp[a], dp[a-c] + 1)
+    return dp[amount] if dp[amount] != float('inf') else -1
+# T(amount, |coins|): O(amount × |coins|)</pre>
+      <div class="note">Greedy tidak selalu benar di sini! Koin [1,3,4], target=6: greedy ambil 4 → perlu 3 koin (4+1+1). DP temukan: 3+3 = <b>2 koin</b>. Greedy gagal karena tidak ada optimal substructure untuk greedy.</div>
+    </div>
+    <div class="sim">
+      <div class="cap">Coba sendiri · Coin Change</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span class="tiny">Koin: [1,3,4] &nbsp; Target:</span>
+        <input type="number" id="coinTarget" value="6" min="1" max="20" style="border:1.5px solid #cbd5e1;border-radius:7px;padding:5px 8px;font:13px Consolas;width:70px">
+        <button class="btn go" id="btnCoin">Hitung</button>
+      </div>
+      <div id="coinDp" style="font:12px Consolas;background:#f8fafc;border-radius:8px;padding:8px;min-height:60px;overflow-x:auto"></div>
+      <div class="verdict" id="coinVerdict">Masukkan target dan klik Hitung.</div>
+    </div>
+  </div>
+  <!-- RUMUS -->
+  <div class="note"><b>Cara membaca rumus:</b><br>• dp[x] = jumlah koin minimum untuk mencapai jumlah x.<br>• dp[x] = min(dp[x − c] + 1) untuk setiap koin c yang tidak melebihi x.<br>• Contoh: koin [1,3,4], target 6 → dp[6] = dp[3] + 1 = 2 (koin 3 + 3).</div>
+</section>
+
+<section class="slide" id="rx1m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/3 - hitung manual</div>
+<h2 class="st">Hitung manual: Rumus biaya DP</h2>
+<div class="rxsoal"><b>Soal:</b> Hitung berapa kali tiap subsoal F(k) dipanggil saat menghitung F(5) tanpa memo dan dengan memo.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Gambar pohon panggilan</h4><p class="rxcalc">F5 → F4, F3; F4 → F3, F2; F3 → F2, F1; F2 → F1, F0</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Hitung kemunculan</h4><p class="rxcalc">F5: 1, F4: 1, F3: 2, F2: 3, F1: 5, F0: 3</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Total naif</h4><p class="rxcalc">1 + 1 + 2 + 3 + 5 + 3 = 15 panggilan</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Dengan memo</h4><p class="rxcalc">subsoal unik F0..F5 = 6, masing-masing O(1) → 6 × 1 = 6</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Pakai rumus biaya DP</h4><p class="rxcalc">knapsack n = 3, W = 5 → (3+1)·(5+1) = 24 sel × 2 pilihan</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>subsoal</th><th>F5</th><th>F4</th><th>F3</th><th>F2</th><th>F1</th><th>F0</th><th>total</th></tr><tr><td>naif</td><td>1</td><td>1</td><td>2</td><td>3</td><td>5</td><td>3</td><td>15</td></tr><tr><td>memo</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>6</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Naif 15 panggilan vs memo 6 = banyaknya subsoal unik × O(1).</div>
+</section>
+
+<section class="slide" id="rx1t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/3 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Rumus biaya DP</h2>
+<div class="rxsoal"><b>Kasus:</b> Urutan panggilan fib(5) DENGAN memo (lru_cache).</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu pemanggilan. “ambil dari memo” = subsoal sudah pernah dihitung, langsung dikembalikan O(1) tanpa rekursi lagi. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>urutan</th><th>panggilan</th><th>aksi</th><th>hasil</th></tr><tr><td>1</td><td>fib(5)</td><td>hitung, simpan</td><td>5</td></tr><tr><td>2</td><td>&nbsp;&nbsp;fib(4)</td><td>hitung, simpan</td><td>3</td></tr><tr><td>3</td><td>&nbsp;&nbsp;&nbsp;&nbsp;fib(3)</td><td>hitung, simpan</td><td>2</td></tr><tr><td>4</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fib(2)</td><td>hitung, simpan</td><td>1</td></tr><tr><td>5</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fib(1)</td><td>basis, simpan</td><td>1</td></tr><tr><td>6</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fib(0)</td><td>basis, simpan</td><td>0</td></tr><tr><td>7</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fib(1)</td><td><b class='chg'>ambil dari memo</b></td><td>1</td></tr><tr><td>8</td><td>&nbsp;&nbsp;&nbsp;&nbsp;fib(2)</td><td><b class='chg'>ambil dari memo</b></td><td>1</td></tr><tr><td>9</td><td>&nbsp;&nbsp;fib(3)</td><td><b class='chg'>ambil dari memo</b></td><td>2</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> 9 panggilan (3 di antaranya cache hit) vs 15 panggilan tanpa memo; subsoal unik hanya 6.</div>
+</section>
+
+<section class="slide" id="rx1b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/3 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Rumus biaya DP</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">from</span> functools <span class="tk">import</span> lru_cache
+calls = <span class="tn">0</span>
+@lru_cache(maxsize=<span class="tk">None</span>)
+<span class="tk">def</span> fib(n):
+    global calls; calls += <span class="tn">1</span>
+    <span class="tk">return</span> n <span class="tk">if</span> n &lt; <span class="tn">2</span> <span class="tk">else</span> fib(n-<span class="tn">1</span>) + fib(n-<span class="tn">2</span>)
+
+fib(<span class="tn">80</span>); <span class="tk">print</span>(calls)   <span class="tc"># 81 = banyaknya subsoal unik</span></pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Naif 15 panggilan vs memo 6 = banyaknya subsoal unik × O(1).</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>9 panggilan (3 di antaranya cache hit) vs 15 panggilan tanpa memo; subsoal unik hanya 6.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rx2m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/3 - hitung manual</div>
+<h2 class="st">Hitung manual: Rekurens Knapsack 0/1</h2>
+<div class="rxsoal"><b>Soal:</b> Isi tabel knapsack 0/1: A(60, 1), B(100, 2), C(120, 3), W = 5.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Baris A</h4><p class="rxcalc">untuk w ≥ 1: maks(0, 60 + 0) = 60</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Baris B, w = 2</h4><p class="rxcalc">maks(K[A][2] = 60, 100 + K[A][0] = 100) = 100</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Baris B, w = 3</h4><p class="rxcalc">maks(60, 100 + K[A][1] = 160) = 160</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Baris C, w = 4</h4><p class="rxcalc">maks(K[B][4] = 160, 120 + K[B][1] = 180) = 180</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Baris C, w = 5</h4><p class="rxcalc">maks(K[B][5] = 160, 120 + K[B][2] = 220) = 220</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>item \ w</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr><tr><td>-</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>A</td><td>0</td><td>60</td><td>60</td><td>60</td><td>60</td><td>60</td></tr><tr><td>B</td><td>0</td><td>60</td><td>100</td><td>160</td><td>160</td><td>160</td></tr><tr><td>C</td><td>0</td><td>60</td><td>100</td><td>160</td><td>180</td><td>220</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> K[3][5] = 220 → ambil B + C (berat 2 + 3 = 5).</div>
+</section>
+
+<section class="slide" id="rx2t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/3 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Rekurens Knapsack 0/1</h2>
+<div class="rxsoal"><b>Kasus:</b> Knapsack 0/1 versi satu baris: A(60, 1), B(100, 2), C(120, 3), W = 5. Kapasitas diisi dari kanan ke kiri.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu sel diperbarui: K[cap] = maks(tidak ambil, ambil). Loop mundur memastikan tiap item dipakai paling banyak sekali. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>item</th><th>cap</th><th>maks(tidak ambil, ambil)</th><th>keputusan</th><th>K[0..5] sesudahnya</th></tr><tr><td>A</td><td>5</td><td>maks(0, 60 + K[4] = 60)</td><td><b class='chg'>ambil → 60</b></td><td>[0, 0, 0, 0, 0, <b class='chg'>60</b>]</td></tr><tr><td>A</td><td>4</td><td>maks(0, 60 + K[3] = 60)</td><td><b class='chg'>ambil → 60</b></td><td>[0, 0, 0, 0, <b class='chg'>60</b>, 60]</td></tr><tr><td>A</td><td>3</td><td>maks(0, 60 + K[2] = 60)</td><td><b class='chg'>ambil → 60</b></td><td>[0, 0, 0, <b class='chg'>60</b>, 60, 60]</td></tr><tr><td>A</td><td>2</td><td>maks(0, 60 + K[1] = 60)</td><td><b class='chg'>ambil → 60</b></td><td>[0, 0, <b class='chg'>60</b>, 60, 60, 60]</td></tr><tr><td>A</td><td>1</td><td>maks(0, 60 + K[0] = 60)</td><td><b class='chg'>ambil → 60</b></td><td>[0, <b class='chg'>60</b>, 60, 60, 60, 60]</td></tr><tr><td>B</td><td>5</td><td>maks(60, 100 + K[3] = 160)</td><td><b class='chg'>ambil → 160</b></td><td>[0, 60, 60, 60, 60, <b class='chg'>160</b>]</td></tr><tr><td>B</td><td>4</td><td>maks(60, 100 + K[2] = 160)</td><td><b class='chg'>ambil → 160</b></td><td>[0, 60, 60, 60, <b class='chg'>160</b>, 160]</td></tr><tr><td>B</td><td>3</td><td>maks(60, 100 + K[1] = 160)</td><td><b class='chg'>ambil → 160</b></td><td>[0, 60, 60, <b class='chg'>160</b>, 160, 160]</td></tr><tr><td>B</td><td>2</td><td>maks(60, 100 + K[0] = 100)</td><td><b class='chg'>ambil → 100</b></td><td>[0, 60, <b class='chg'>100</b>, 160, 160, 160]</td></tr><tr><td>C</td><td>5</td><td>maks(160, 120 + K[2] = 220)</td><td><b class='chg'>ambil → 220</b></td><td>[0, 60, 100, 160, 160, <b class='chg'>220</b>]</td></tr><tr><td>C</td><td>4</td><td>maks(160, 120 + K[1] = 180)</td><td><b class='chg'>ambil → 180</b></td><td>[0, 60, 100, 160, <b class='chg'>180</b>, 220]</td></tr><tr><td>C</td><td>3</td><td>maks(160, 120 + K[0] = 120)</td><td>tetap 160</td><td>[0, 60, 100, <b class='chg'>160</b>, 180, 220]</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> K[5] = 220 (ambil B + C) setelah 12 pembaruan sel.</div>
+</section>
+
+<section class="slide" id="rx2b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/3 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Rekurens Knapsack 0/1</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> knapsack(items, W):
+    K = [<span class="tn">0</span>] * (W + <span class="tn">1</span>)
+    <span class="tk">for</span> v, w <span class="tk">in</span> items:
+        <span class="tk">for</span> cap <span class="tk">in</span> <span class="tk">range</span>(W, w - <span class="tn">1</span>, -<span class="tn">1</span>):      <span class="tc"># mundur: tiap item sekali</span>
+            K[cap] = <span class="tk">max</span>(K[cap], v + K[cap - w])
+    <span class="tk">return</span> K[W]
+
+<span class="tk">print</span>(knapsack([(<span class="tn">60</span>,<span class="tn">1</span>), (<span class="tn">100</span>,<span class="tn">2</span>), (<span class="tn">120</span>,<span class="tn">3</span>)], <span class="tn">5</span>))   <span class="tc"># 220</span></pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">K[3][5] = 220 → ambil B + C (berat 2 + 3 = 5).</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>K[5] = 220 (ambil B + C) setelah 12 pembaruan sel.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rx3m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/3 - hitung manual</div>
 <h2 class="st">Hitung manual: Rekurens Coin Change</h2>
 <div class="rxsoal"><b>Soal:</b> Isi tabel coin change untuk koin {1, 3, 4} sampai A = 6.</div>
 <div class="cols c2">
@@ -431,19 +514,20 @@ fib(<span class="tn">80</span>); <span class="tk">print</span>(calls)   <span cl
 </div>
 <div class="rxhasil"><b>Hasil hitung manual:</b> C[6] = 2 (3 + 3), sedangkan greedy 4 + 1 + 1 = 3 koin.</div>
 </section>
-<section class="slide" id="rx3t">
-<div class="kicker">Bedah Rumus 3/3 · Langkah 2b: jejak step-by-step</div>
+
+<section class="slide" id="rx3t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/3 - jejak step-by-step</div>
 <h2 class="st">Jejak langkah demi langkah: Rekurens Coin Change</h2>
 <div class="rxsoal"><b>Kasus:</b> Coin change koin {1, 3, 4} untuk a = 1 sampai 7.</div>
 <div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu nilai a. Coba setiap koin sebagai koin terakhir (kolom c = 1, 3, 4), ambil yang paling kecil. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
 <table class="rxtrace"><tr><th>a</th><th>koin 1</th><th>koin 3</th><th>koin 4</th><th>C[a]</th></tr><tr><td>1</td><td>C[0]+1 = 1</td><td>-</td><td>-</td><td><b class='chg'>1</b></td></tr><tr><td>2</td><td>C[1]+1 = 2</td><td>-</td><td>-</td><td><b class='chg'>2</b></td></tr><tr><td>3</td><td>C[2]+1 = 3</td><td>C[0]+1 = 1</td><td>-</td><td><b class='chg'>1</b></td></tr><tr><td>4</td><td>C[3]+1 = 2</td><td>C[1]+1 = 2</td><td>C[0]+1 = 1</td><td><b class='chg'>1</b></td></tr><tr><td>5</td><td>C[4]+1 = 2</td><td>C[2]+1 = 3</td><td>C[1]+1 = 2</td><td><b class='chg'>2</b></td></tr><tr><td>6</td><td>C[5]+1 = 3</td><td>C[3]+1 = 2</td><td>C[2]+1 = 3</td><td><b class='chg'>2</b></td></tr><tr><td>7</td><td>C[6]+1 = 3</td><td>C[4]+1 = 2</td><td>C[3]+1 = 2</td><td><b class='chg'>2</b></td></tr></table>
 <div class="rxhasil"><b>Hasil akhir jejak:</b> C[6] = 2 (3 + 3) dan C[7] = 2 (3 + 4).</div>
 </section>
-<section class="slide" id="rx3b">
-<div class="kicker">Bedah Rumus 3/3 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
-<h2 class="st">Kembalian mesin kasir atau ATM</h2>
-<div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Mesin ATM yang harus mengeluarkan uang dengan stok pecahan terbatas, mesin vending, dan sistem poin/voucher (“kombinasi voucher paling sedikit untuk membayar Rp X”). Rumus yang sama juga menghitung <b>banyaknya cara</b> membentuk jumlah bila min diganti penjumlahan.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Koin {1, 3, 4}, A = 6</h4><p class="">greedy: 4 + 1 + 1 = 3 koin.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>C[3] = 1, C[4] = 1</h4><p class="">C[5] = 1 + min(C[4], C[2], C[1]) = 2.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>C[6]</h4><p class="">1 + min(C[5]=2, C[3]=1, C[2]=2) = 2 → 3 + 3.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Kesimpulan</h4><p class="">DP: 2 koin, greedy: 3 koin - greedy salah.</p></div></div></div></div></div>
+
+<section class="slide" id="rx3b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/3 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Rekurens Coin Change</h2>
+<div class="cols c2l">
 <div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> coin_change(coins, A):
     INF = float(<span class="ts">"inf"</span>)
     C = [<span class="tn">0</span>] + [INF] * A
@@ -451,11 +535,21 @@ fib(<span class="tn">80</span>); <span class="tk">print</span>(calls)   <span cl
         C[a] = <span class="tn">1</span> + <span class="tk">min</span>((C[a - c] <span class="tk">for</span> c <span class="tk">in</span> coins <span class="tk">if</span> c &lt;= a), default=INF)
     <span class="tk">return</span> C[A]
 
-<span class="tk">print</span>(coin_change([<span class="tn">1</span>, <span class="tn">3</span>, <span class="tn">4</span>], <span class="tn">6</span>))   <span class="tc"># 2</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<span class="tk">print</span>(coin_change([<span class="tn">1</span>, <span class="tn">3</span>, <span class="tn">4</span>], <span class="tn">6</span>))   <span class="tc"># 2</span></pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">C[6] = 2 (3 + 3), sedangkan greedy 4 + 1 + 1 = 3 koin.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>C[6] = 2 (3 + 3) dan C[7] = 2 (3 + 4).</p></div>
 </div>
-<div class="analogy"><b>Bawa pulang:</b> “Koin terakhir apa?” - coba semua, ambil minimum. Greedy hanya aman untuk sistem koin kanonik.</div>
+</div>
 </section>
-<!--RX-SLIDES-END-->
+
+<section class="slide" id="rxdL" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian C</div>
+<h1 class="title">Latihan</h1>
+<p class="lead">Uji pemahaman teori dan teknikal sebelum melihat penerapannya di dunia nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Soal Dynamic Programming I</div><div class="rxtocitem"><span>2</span>Kunci Dynamic Programming I</div></div>
+</section>
+
 <section class="slide" id="s6">
   <div class="kicker">LATIHAN</div>
   <h2 class="st">Soal Dynamic Programming I</h2>
@@ -468,7 +562,6 @@ fib(<span class="tn">80</span>); <span class="tk">print</span>(calls)   <span cl
   </div>
 </section>
 
-<!-- 7. KUNCI -->
 <section class="slide" id="s7">
   <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
   <h2 class="st">Kunci Dynamic Programming I</h2>
@@ -481,7 +574,43 @@ fib(<span class="tn">80</span>); <span class="tk">print</span>(calls)   <span cl
   </div>
 </section>
 
-<!-- 8. PENUTUP -->
+<section class="slide" id="rxdD" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian D</div>
+<h1 class="title">Studi kasus nyata</h1>
+<p class="lead">Penutup materi: di mana semua teori dan teknik tadi dipakai di industri, AI, dan proyek nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Menaksir biaya DP sebelum menulis kode</div><div class="rxtocitem"><span>2</span>Memilih proyek dengan anggaran terbatas</div><div class="rxtocitem"><span>3</span>Kembalian mesin kasir atau ATM</div></div>
+</section>
+
+<section class="slide" id="rx1c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 1/3</div>
+<h2 class="st">Menaksir biaya DP sebelum menulis kode</h2>
+<div class="cols c2">
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Sebelum menerapkan DP di produksi, engineer menghitung ukuran tabelnya. Contoh: menyelaraskan dua teks 100.000 karakter dengan LCS butuh 10¹⁰ sel - terlalu besar memori. Rumus ini yang membuat <b>git diff</b> memakai algoritma Myers (O(ND)) alih-alih tabel penuh.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Fibonacci</h4><p class="">n subsoal × O(1) = Θ(n).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Knapsack</h4><p class="">(n × W) subsoal × 2 pilihan = Θ(nW).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Coin change</h4><p class="">A subsoal × k jenis koin = Θ(Ak).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>LCS</h4><p class="">(m × n) subsoal × O(1) = Θ(mn).</p></div></div></div></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Sebelum menulis DP, tulis dulu: state apa, berapa banyak, dan berapa kerja per state.</div>
+</section>
+
+<section class="slide" id="rx2c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 2/3</div>
+<h2 class="st">Memilih proyek dengan anggaran terbatas</h2>
+<div class="cols c2">
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Memilih fitur/proyek yang dikerjakan sprint ini (nilai bisnis vs story point), memilih iklan dalam slot durasi, atau memuat kontainer. Untuk W sangat besar (misalnya anggaran dalam rupiah), skala W diperkecil (dalam juta) agar tabel muat.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Item (v, w)</h4><p class="">A(60,1), B(100,2), C(120,3); W = 5.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Baris A</h4><p class="">K[1][w≥1] = 60.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Baris B</h4><p class="">K[2][3] = maks(60, 100 + K[1][1]) = 160.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Baris C</h4><p class="">K[3][5] = maks(K[2][5]=160, 120 + K[2][2]=100) = 220 → pilih B + C.</p></div></div></div></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> Knapsack 0/1 = dua pilihan per item, tabel n × W. Hemat memori: satu baris diisi dari kanan ke kiri.</div>
+</section>
+
+<section class="slide" id="rx3c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 3/3</div>
+<h2 class="st">Kembalian mesin kasir atau ATM</h2>
+<div class="cols c2">
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Mesin ATM yang harus mengeluarkan uang dengan stok pecahan terbatas, mesin vending, dan sistem poin/voucher (“kombinasi voucher paling sedikit untuk membayar Rp X”). Rumus yang sama juga menghitung <b>banyaknya cara</b> membentuk jumlah bila min diganti penjumlahan.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Koin {1, 3, 4}, A = 6</h4><p class="">greedy: 4 + 1 + 1 = 3 koin.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>C[3] = 1, C[4] = 1</h4><p class="">C[5] = 1 + min(C[4], C[2], C[1]) = 2.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>C[6]</h4><p class="">1 + min(C[5]=2, C[3]=1, C[2]=2) = 2 → 3 + 3.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Kesimpulan</h4><p class="">DP: 2 koin, greedy: 3 koin - greedy salah.</p></div></div></div></div>
+</div>
+<div class="analogy"><b>Bawa pulang:</b> “Koin terakhir apa?” - coba semua, ambil minimum. Greedy hanya aman untuk sistem koin kanonik.</div>
+</section>
+
 <section class="slide" id="s8" style="justify-content:center;align-items:center;text-align:center">
   <div class="kicker">PERTEMUAN 10 · SELESAI</div>
   <h2 class="st" style="font-size:30px;margin:10px 0">Simpan, jangan hitung ulang.<br>Itulah inti DP.</h2>

@@ -119,6 +119,14 @@ table.rxtrace{width:100%;border-collapse:collapse;font-size:14px}
 .rxtrace td:first-child{color:#64748b;font-weight:700}
 b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weight:700}
 .rxhow{font-size:15px;line-height:1.55;color:#1e3a8a;background:#eff6ff;border:2px solid #bfdbfe;border-radius:10px;padding:8px 14px;flex:none}
+.rxg3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.rxwtrack{display:flex;gap:6px;flex:none}
+.rxwtrack span{font:800 12px/1 -apple-system,'Segoe UI',Arial,sans-serif;letter-spacing:.08em;padding:6px 10px;border-radius:20px;background:#f1f5f9;color:#94a3b8;border:2px solid #e2e8f0}
+.rxwtrack span.on{background:#2563eb;color:#fff;border-color:#2563eb}
+.rxtoc{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+.rxtocitem{display:flex;gap:10px;align-items:baseline;font-size:15px;line-height:1.4;color:#334155;border-bottom:1px dashed #e2e8f0;padding:3px 0}
+.rxg3.big .rxcard{padding:18px 20px}.rxg3.big .rxcard h3{font-size:20px;margin-bottom:10px}.rxg3.big .rxcard p{font-size:17px;line-height:1.65}
+.rxtocitem span{flex:none;min-width:26px;font:800 13px Consolas,monospace;color:#2563eb}
 /*RX-CSS-END*/
 </style>
 </head>
@@ -133,8 +141,6 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="navhint">Pindah: <kbd>←</kbd> <kbd>→</kbd> · <a href="index.html" style="color:#2563eb;font-size:12px">← Daftar Materi</a></div>
 </section>
 
-<!-- 2. LCS -->
-<!-- PETA LANGKAH -->
 <section class="slide" id="speta">
   <div class="kicker">PETA LANGKAH · KENAPA PENTING</div>
   <h2 class="st">Peta langkah: DP pada sekuens dan graf</h2>
@@ -151,6 +157,126 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
       <div class="note">Tabel DP sering bisa dikecilkan memorinya: untuk LCS, cukup menyimpan dua baris saja jika jawaban panjangnya tidak perlu direkonstruksi.</div>
     </div>
   </div>
+</section>
+
+<section class="slide" id="rxdA" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A</div>
+<h1 class="title">Teori</h1>
+<p class="lead">Kita mulai dari dasar: 5W1H dipecah per slide (What, Why, Who, When, Where, How), lalu konsep inti dan cara membaca setiap rumus.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>WHAT - Apa itu DP pada sekuens dan graf?</div><div class="rxtocitem"><span>2</span>WHY - Mengapa materi ini penting?</div><div class="rxtocitem"><span>3</span>WHO - Siapa yang memakainya?</div><div class="rxtocitem"><span>4</span>WHEN - Kapan memakai yang mana?</div><div class="rxtocitem"><span>5</span>WHERE - Di mana dipakai?</div><div class="rxtocitem"><span>6</span>HOW - Bagaimana cara kerjanya?</div><div class="rxtocitem"><span>7</span>Empat rumus DP pada sekuens dan graf</div><div class="rxtocitem"><span>8</span>Longest Common Subsequence</div><div class="rxtocitem"><span>9</span>Levenshtein (edit distance)</div><div class="rxtocitem"><span>10</span>Relaksasi Floyd-Warshall (dan Bellman-Ford)</div><div class="rxtocitem"><span>11</span>Rekurens Viterbi</div></div>
+</section>
+
+<section class="slide" id="rxw1" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (1/6) - WHAT</div>
+<div class="rxwtrack"><span class="on">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHAT - Apa itu DP pada sekuens dan graf?</h2>
+<p class="b">Penerapan DP pada dua string (tabel m × n) dan pada graf (jarak terpendek), termasuk Viterbi untuk barisan observasi.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>LCS & edit distance</h3><p>Membandingkan dua string sel demi sel.</p></div><div class="rxcard green"><h3>Bellman-Ford & Floyd-Warshall</h3><p>Jalur terpendek dengan bobot negatif / semua pasangan.</p></div><div class="rxcard yellow"><h3>Viterbi</h3><p>Urutan state tersembunyi paling mungkin (HMM).</p></div></div>
+<div class="rxhow"><b>Contoh:</b> “kitten” → “sitting” butuh 3 edit - dihitung dengan tabel 7 × 8.</div>
+</section>
+
+<section class="slide" id="rxw2" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (2/6) - WHY</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="on">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHY - Mengapa materi ini penting?</h2>
+<p class="b">Karena brute force pada sekuens atau jalur eksponensial, sedangkan DP polinomial.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Sekuens</h3><p>Semua subsequence = 2ⁿ; LCS dengan DP Θ(mn).</p></div><div class="rxcard green"><h3>Graf</h3><p>Floyd-Warshall menjawab semua pasangan dalam Θ(V³) dengan kode 3 baris.</p></div><div class="rxcard yellow"><h3>NLP</h3><p>Viterbi menurunkan Sᵀ menjadi T·S².</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Tag 30 kata dengan 2 kelas: 2³⁰ ≈ 10⁹ urutan vs 120 langkah Viterbi.</div>
+</section>
+
+<section class="slide" id="rxw3" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (3/6) - WHO</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="on">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHO - Siapa yang memakainya?</h2>
+<p class="b">Engineer dan peneliti di bidang teks, bio, jaringan, dan keuangan.</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Developer tools</h3><p>diff, git, code review tools.</p></div><div class="rxcard green"><h3>Search & NLP engineer</h3><p>Spell correction, fuzzy matching, POS tagging.</p></div><div class="rxcard yellow"><h3>Quant & network engineer</h3><p>Deteksi arbitrase (Bellman-Ford), routing RIP.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Kolom pencarian e-commerce mengoreksi “iphnoe” menjadi “iphone” dengan edit distance.</div>
+</section>
+
+<section class="slide" id="rxw4" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (4/6) - WHEN</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="on">WHEN</span><span class="">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHEN - Kapan memakai yang mana?</h2>
+<p class="b">Sesuaikan dengan bentuk datanya:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Dua string</h3><p>LCS (bagian yang sama) atau edit distance (berapa edit).</p></div><div class="rxcard green"><h3>Graf berbobot negatif</h3><p>Bellman-Ford; semua pasangan & V kecil → Floyd-Warshall.</p></div><div class="rxcard yellow"><h3>Barisan observasi berisik</h3><p>Viterbi pada model HMM.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Map matching GPS: titik GPS berisik → Viterbi menebak ruas jalan sebenarnya.</div>
+</section>
+
+<section class="slide" id="rxw5" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (5/6) - WHERE</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="on">WHERE</span><span class="">HOW</span></div>
+<h2 class="st">WHERE - Di mana dipakai?</h2>
+<p class="b">Contoh penggunaan nyata:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>Version control</h3><p>git diff menampilkan baris yang berubah.</p></div><div class="rxcard green"><h3>Bioinformatika</h3><p>Penyelarasan DNA/protein.</p></div><div class="rxcard yellow"><h3>Telekomunikasi & suara</h3><p>Dekoder Viterbi di modem dan pengenalan suara klasik.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Ponsel memakai dekoder Viterbi untuk memperbaiki bit yang rusak di sinyal radio.</div>
+</section>
+
+<section class="slide" id="rxw6" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian A · Teori · 5W1H (6/6) - HOW</div>
+<div class="rxwtrack"><span class="">WHAT</span><span class="">WHY</span><span class="">WHO</span><span class="">WHEN</span><span class="">WHERE</span><span class="on">HOW</span></div>
+<h2 class="st">HOW - Bagaimana cara kerjanya?</h2>
+<p class="b">Satu sel dihitung dari beberapa tetangga:</p>
+<div class="rxg3 big"><div class="rxcard blue"><h3>LCS / edit distance</h3><p>sel (i, j) dari atas, kiri, dan diagonal.</p></div><div class="rxcard green"><h3>Floyd-Warshall</h3><p>d[i][j] ← min(d[i][j], d[i][k] + d[k][j]) untuk setiap k.</p></div><div class="rxcard yellow"><h3>Viterbi</h3><p>V_t(s) = maks V_{t−1}(s′)·a·b, simpan pointer untuk telusur balik.</p></div></div>
+<div class="rxhow"><b>Contoh:</b> Telusur balik tabel LCS dari kanan bawah menghasilkan string “BCB”.</div>
+</section>
+
+<section class="slide" id="rx0" data-rx="1">
+<div class="kicker">Bagian A · Teori · Bedah Rumus · Dynamic Programming II</div>
+<h2 class="st">Empat rumus DP pada sekuens dan graf</h2>
+<p class="b">Membandingkan teks, memperbaiki salah ketik, mencari jalur terpendek, dan menebak kelas kata semuanya memakai DP. Rumus-rumusnya mirip: satu sel tabel dihitung dari beberapa sel tetangga.</p>
+<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Longest Common Subsequence</b><span>L[i][j] = L[i−1][j−1]+1 atau maks(…)</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Levenshtein (edit distance)</b><span>D[i][j] = min(hapus, sisip, ganti)</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Relaksasi Floyd-Warshall (dan Bellman-Ford)</b><span>d[i][j] ← min(d[i][j], d[i][k] + d[k][j])</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Rekurens Viterbi</b><span>Vₜ(s) = maks V₍ₜ₋₁₎(s′)·a(s′,s)·b(s, oₜ)</span></div></div></div>
+<div class="note"><b>Alur tiap rumus:</b> di <b>Teori</b> kita belajar <b>cara membaca</b> rumus dan arti tiap simbol. Di <b>Teknikal</b> rumus yang sama dikerjakan lewat <b>hitung manual</b>, <b>jejak step-by-step</b>, lalu <b>kode Python</b>. Di <b>Studi kasus nyata</b> (akhir slide) kita lihat pemakaiannya di proyek nyata.</div>
+</section>
+
+<section class="slide" id="rx1a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 1/4 - cara membaca</div>
+<h2 class="st">Longest Common Subsequence</h2>
+<div class="fxbox">L[i][j] = { <span class='hl'>L[i−1][j−1] + 1</span> &nbsp;jika x<sub>i</sub> = y<sub>j</sub>; &nbsp; <span class='hb'>maks(L[i−1][j], L[i][j−1])</span> &nbsp;jika tidak }</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“L i j sama dengan L i kurang satu, j kurang satu, ditambah satu jika karakter x i sama dengan y j. Jika tidak sama, L i j adalah maksimum antara L i kurang satu j dan L i, j kurang satu.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>L[i][j]</h4><p class="">panjang LCS dari i karakter pertama x dan j karakter pertama y.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Cocok (diagonal)</h4><p class="">karakter sama → perpanjang LCS dari kedua prefiks yang lebih pendek.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Tidak cocok</h4><p class="">buang satu karakter dari x ATAU dari y, ambil yang hasilnya lebih panjang.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>x, y</td><td>dua barisan (string) yang dibandingkan</td></tr><tr><td>i, j</td><td>panjang prefiks x dan y</td></tr><tr><td>L[0][*] = L[*][0] = 0</td><td>basis: prefiks kosong</td></tr><tr><td>Θ(mn)</td><td>ukuran tabel m × n</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Subsequence boleh melompat (tidak harus berurutan langsung). Tabel menyimpan jawaban untuk <b>semua pasangan prefiks</b>, sehingga tiap sel cukup melihat tiga tetangga.</div>
+</section>
+
+<section class="slide" id="rx2a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 2/4 - cara membaca</div>
+<h2 class="st">Levenshtein (edit distance)</h2>
+<div class="fxbox">D[i][j] = min( <span class='hb'>D[i−1][j] + 1</span>, &nbsp;<span class='hg'>D[i][j−1] + 1</span>, &nbsp;<span class='hl'>D[i−1][j−1] + [x<sub>i</sub> ≠ y<sub>j</sub>]</span> )</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“D i j sama dengan minimum dari tiga hal: D i kurang satu j tambah satu untuk menghapus, D i j kurang satu tambah satu untuk menyisipkan, dan D i kurang satu j kurang satu ditambah satu jika x i berbeda dengan y j, untuk mengganti.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Atas + 1 = hapus</h4><p class="">buang xᵢ.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Kiri + 1 = sisip</h4><p class="">tambahkan yⱼ.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Diagonal + [xᵢ ≠ yⱼ]</h4><p class="">ganti (biaya 1) atau biarkan jika sama (biaya 0).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>[kondisi]</h4><p class="">notasi Iverson: bernilai 1 bila benar, 0 bila salah.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>D[i][j]</td><td>jumlah edit minimum mengubah x[1..i] menjadi y[1..j]</td></tr><tr><td>D[i][0] = i</td><td>hapus semua</td></tr><tr><td>D[0][j] = j</td><td>sisip semua</td></tr><tr><td>[x ≠ y]</td><td>biaya ganti: 0 atau 1</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Setiap edit terakhir pasti salah satu dari tiga jenis. Coba ketiganya, ambil yang termurah - <b>struktur yang sama dengan LCS</b>, hanya min menggantikan maks.</div>
+</section>
+
+<section class="slide" id="rx3a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 3/4 - cara membaca</div>
+<h2 class="st">Relaksasi Floyd-Warshall (dan Bellman-Ford)</h2>
+<div class="fxbox">d[i][j] ← min( d[i][j], &nbsp;<span class='hl'>d[i][k] + d[k][j]</span> ) &nbsp;untuk k = 1..V &nbsp;⇒&nbsp; Θ(V³); &nbsp; Bellman-Ford: V−1 putaran × E = <span class='hb'>O(VE)</span></div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“d i j diperbarui menjadi minimum antara d i j sekarang dan d i k ditambah d k j, untuk setiap simpul perantara k dari satu sampai V. Totalnya Theta V pangkat tiga. Bellman-Ford melakukan V kurang satu putaran atas semua E sisi, O V E.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>k = simpul perantara</h4><p class="">setelah putaran k, d[i][j] = jarak terpendek yang hanya boleh transit di simpul 1..k.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>d[i][k] + d[k][j]</h4><p class="">jalur i → k → j.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Tiga loop bersarang</h4><p class="">k (luar), i, j → V³.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Bellman-Ford</h4><p class="">relaksasi semua sisi V−1 kali; putaran ke-V yang masih berubah = ada siklus negatif.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>d[i][j]</td><td>jarak terpendek i → j sejauh ini</td></tr><tr><td>k</td><td>simpul perantara yang diizinkan</td></tr><tr><td>V, E</td><td>banyaknya simpul dan sisi</td></tr><tr><td>siklus negatif</td><td>siklus dengan total bobot &lt; 0</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Floyd-Warshall menjawab <b>semua pasangan sekaligus</b> dengan kode tiga baris. Bellman-Ford lebih lambat dari Dijkstra tetapi <b>tahan bobot negatif</b> dan bisa mendeteksi siklus negatif.</div>
+</section>
+
+<section class="slide" id="rx4a" data-rx="1">
+<div class="kicker">Bagian A · Teori · Rumus 4/4 - cara membaca</div>
+<h2 class="st">Rekurens Viterbi</h2>
+<div class="fxbox">V<sub>t</sub>(s) = <span class='hl'>maks</span><sub>s′</sub> [ V<sub>t−1</sub>(s′) · <span class='hb'>a<sub>s′s</sub></span> ] · <span class='hg'>b<sub>s</sub>(o<sub>t</sub>)</span>; &nbsp; O(T·S²)</div>
+<div class="cols c2">
+<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“V t dari s sama dengan maksimum atas semua state sebelumnya s aksen, dari V t kurang satu dari s aksen dikali peluang transisi a dari s aksen ke s, lalu dikali peluang emisi b s dari observasi o t. Biayanya O T kali S kuadrat.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Vₜ(s)</h4><p class="">peluang jalur state TERBAIK yang berakhir di state s pada waktu t.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>a_{s′s}</h4><p class="">peluang pindah dari state s′ ke s (transisi).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>b_s(oₜ)</h4><p class="">peluang state s menghasilkan observasi oₜ (emisi).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>maks + simpan argmax</h4><p class="">di akhir, telusuri balik pointer untuk mendapatkan urutan state.</p></div></div></div></div>
+<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>t</td><td>posisi waktu/kata ke-t (1..T)</td></tr><tr><td>s, s′</td><td>state sekarang dan sebelumnya (S buah)</td></tr><tr><td>oₜ</td><td>observasi ke-t (kata, sinyal)</td></tr><tr><td>T·S²</td><td>T kolom × S state × S kandidat sebelumnya</td></tr></table></div>
+</div>
+<div class="note"><b>Intuisinya:</b> Mencoba semua urutan state butuh Sᵀ. Viterbi memakai fakta bahwa jalur terbaik ke (t, s) <b>pasti melewati jalur terbaik</b> ke salah satu (t−1, s′) - optimal substructure.</div>
+</section>
+
+<section class="slide" id="rxdB" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian B</div>
+<h1 class="title">Teknikal</h1>
+<p class="lead">Setelah teorinya jelas, kita masuk ke algoritma, kode, simulasi, hitung manual, dan jejak eksekusi langkah demi langkah.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Longest Common Subsequence - O(mn)</div><div class="rxtocitem"><span>2</span>Levenshtein Distance - O(mn)</div><div class="rxtocitem"><span>3</span>Bellman-Ford O(VE) dan Floyd-Warshall O(V³)</div><div class="rxtocitem"><span>4</span>Hitung manual: Longest Common Subsequence</div><div class="rxtocitem"><span>5</span>Jejak langkah demi langkah: Longest Common Subsequence</div><div class="rxtocitem"><span>6</span>Dari hitungan ke kode: Longest Common Subsequence</div><div class="rxtocitem"><span>7</span>Hitung manual: Levenshtein (edit distance)</div><div class="rxtocitem"><span>8</span>Jejak langkah demi langkah: Levenshtein (edit distance)</div><div class="rxtocitem"><span>9</span>Dari hitungan ke kode: Levenshtein (edit distance)</div><div class="rxtocitem"><span>10</span>Hitung manual: Relaksasi Floyd-Warshall (dan Bellman-Ford)</div><div class="rxtocitem"><span>11</span>Jejak langkah demi langkah: Relaksasi Floyd-Warshall (dan Bellman-Ford)</div><div class="rxtocitem"><span>12</span>Dari hitungan ke kode: Relaksasi Floyd-Warshall (dan Bellman-Ford)</div><div class="rxtocitem"><span>13</span>Hitung manual: Rekurens Viterbi</div><div class="rxtocitem"><span>14</span>Jejak langkah demi langkah: Rekurens Viterbi</div><div class="rxtocitem"><span>15</span>Dari hitungan ke kode: Rekurens Viterbi</div></div>
 </section>
 
 <section class="slide" id="s2">
@@ -191,7 +317,6 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• Jika X[i] = Y[j]: lcs[i][j] = lcs[i−1][j−1] + 1, yaitu huruf yang sama menambah panjang LCS.<br>• Jika tidak sama: lcs[i][j] = max(lcs[i−1][j], lcs[i][j−1]), ambil yang terpanjang dari dua kemungkinan.<br>• Tabel (m+1) × (n+1) diisi dalam O(mn).</div>
 </section>
 
-<!-- 3. EDIT DISTANCE -->
 <section class="slide" id="s3">
   <div class="kicker">BAGIAN 2 · EDIT DISTANCE</div>
   <h2 class="st">Levenshtein Distance - O(mn)</h2>
@@ -226,7 +351,6 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• Jika A[i] = B[j]: dp[i][j] = dp[i−1][j−1] (tidak ada biaya).<br>• Jika tidak: dp[i][j] = 1 + min(dp[i−1][j], dp[i][j−1], dp[i−1][j−1]).<br>• Tiga pilihan: hapus dari A, sisip ke A, atau ganti karakter. Masing-masing biaya 1.</div>
 </section>
 
-<!-- 4. BELLMAN-FORD & FLOYD-WARSHALL -->
 <section class="slide" id="s4">
   <div class="kicker">BAGIAN 3 · DP PADA GRAF</div>
   <h2 class="st">Bellman-Ford O(VE) dan Floyd-Warshall O(V³)</h2>
@@ -273,7 +397,211 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• Bellman-Ford: O(VE), V = jumlah simpul, E = jumlah sisi.<br>• Floyd-Warshall: O(V³), menghitung jarak semua pasangan simpul sekaligus.<br>• Dijkstra: O(E log V), tetapi tidak bisa bobot negatif.</div>
 </section>
 
-<!-- 5. MODERN: VITERBI -->
+<section class="slide" id="rx1m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/4 - hitung manual</div>
+<h2 class="st">Hitung manual: Longest Common Subsequence</h2>
+<div class="rxsoal"><b>Soal:</b> Isi tabel LCS untuk x = ABCB (baris) dan y = BDCAB (kolom).</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Baris A</h4><p class="rxcalc">hanya cocok dengan A (kolom 4) → 0 0 0 1 1</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Baris B</h4><p class="rxcalc">cocok kolom 1 (diag 0+1 = 1) dan kolom 5 (diag 1+1 = 2) → 1 1 1 1 2</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Baris C</h4><p class="rxcalc">cocok kolom 3: diag L[2][2] + 1 = 2 → 1 1 2 2 2</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Baris B</h4><p class="rxcalc">kolom 1: 0+1 = 1; kolom 5: diag L[3][4] + 1 = 3 → 1 1 2 2 3</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Telusur balik</h4><p class="rxcalc">ikuti diagonal yang cocok: B, C, B</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th></th><th>B</th><th>D</th><th>C</th><th>A</th><th>B</th></tr><tr><td>A</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td></tr><tr><td>B</td><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td></tr><tr><td>C</td><td>1</td><td>1</td><td>2</td><td>2</td><td>2</td></tr><tr><td>B</td><td>1</td><td>1</td><td>2</td><td>2</td><td>3</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Panjang LCS = 3, salah satunya “BCB”.</div>
+</section>
+
+<section class="slide" id="rx1t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/4 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Longest Common Subsequence</h2>
+<div class="rxsoal"><b>Kasus:</b> Telusur balik tabel LCS (ABCB vs BDCAB) dari sel kanan bawah untuk mendapatkan string LCS-nya.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Mulai dari L[4][5]. Jika huruf cocok: ambil huruf itu dan bergerak diagonal. Jika tidak: pindah ke tetangga (atas/kiri) yang nilainya lebih besar. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>sel (i, j)</th><th>L[i][j]</th><th>bandingkan</th><th>langkah</th><th>LCS terkumpul</th></tr><tr><td>(4, 5)</td><td>3</td><td>B = B</td><td><b class='chg'>cocok → ambil B, ke diagonal</b></td><td>B</td></tr><tr><td>(3, 4)</td><td>2</td><td>C ≠ A</td><td>kiri (2) &gt; atas (1) → ke kiri</td><td>B</td></tr><tr><td>(3, 3)</td><td>2</td><td>C = C</td><td><b class='chg'>cocok → ambil C, ke diagonal</b></td><td>CB</td></tr><tr><td>(2, 2)</td><td>1</td><td>B ≠ D</td><td>kiri (1) &gt; atas (0) → ke kiri</td><td>CB</td></tr><tr><td>(2, 1)</td><td>1</td><td>B = B</td><td><b class='chg'>cocok → ambil B, ke diagonal</b></td><td>BCB</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> LCS = “BCB” (panjang 3), dibaca dari belakang ke depan.</div>
+</section>
+
+<section class="slide" id="rx1b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 1/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Longest Common Subsequence</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> lcs(x, y):
+    m, n = <span class="tk">len</span>(x), <span class="tk">len</span>(y)
+    L = [[<span class="tn">0</span>] * (n + <span class="tn">1</span>) <span class="tk">for</span> _ <span class="tk">in</span> <span class="tk">range</span>(m + <span class="tn">1</span>)]
+    <span class="tk">for</span> i <span class="tk">in</span> <span class="tk">range</span>(<span class="tn">1</span>, m + <span class="tn">1</span>):
+        <span class="tk">for</span> j <span class="tk">in</span> <span class="tk">range</span>(<span class="tn">1</span>, n + <span class="tn">1</span>):
+            L[i][j] = (L[i-<span class="tn">1</span>][j-<span class="tn">1</span>] + <span class="tn">1</span> <span class="tk">if</span> x[i-<span class="tn">1</span>] == y[j-<span class="tn">1</span>]
+                       <span class="tk">else</span> <span class="tk">max</span>(L[i-<span class="tn">1</span>][j], L[i][j-<span class="tn">1</span>]))
+    <span class="tk">return</span> L[m][n]
+
+<span class="tk">print</span>(lcs(<span class="ts">"ABCB"</span>, <span class="ts">"BDCAB"</span>))   <span class="tc"># 3</span></pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Panjang LCS = 3, salah satunya “BCB”.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>LCS = “BCB” (panjang 3), dibaca dari belakang ke depan.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rx2m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/4 - hitung manual</div>
+<h2 class="st">Hitung manual: Levenshtein (edit distance)</h2>
+<div class="rxsoal"><b>Soal:</b> Isi tabel edit distance dari kitten (baris) ke sitting (kolom).</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Baris & kolom 0</h4><p class="rxcalc">D[i][0] = i (hapus semua), D[0][j] = j (sisip semua)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Sel (k, s)</h4><p class="rxcalc">min(1+1, 1+1, 0 + [k≠s] = 1) = 1 → ganti k → s</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Sel (i, i)</h4><p class="rxcalc">huruf sama → diagonal tanpa biaya: D = 1</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Sel (e, i)</h4><p class="rxcalc">e ≠ i → diagonal 1 + 1 = 2 → ganti e → i</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Kolom terakhir (g)</h4><p class="rxcalc">tidak ada huruf g di kitten → sisip: 2 + 1 = 3</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th></th><th>ε</th><th>s</th><th>i</th><th>t</th><th>t</th><th>i</th><th>n</th><th>g</th></tr><tr><td>ε</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr><tr><td>k</td><td>1</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr><tr><td>i</td><td>2</td><td>2</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td></tr><tr><td>t</td><td>3</td><td>3</td><td>2</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr><tr><td>t</td><td>4</td><td>4</td><td>3</td><td>2</td><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr><td>e</td><td>5</td><td>5</td><td>4</td><td>3</td><td>2</td><td>2</td><td>3</td><td>4</td></tr><tr><td>n</td><td>6</td><td>6</td><td>5</td><td>4</td><td>3</td><td>3</td><td>2</td><td>3</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Edit distance = 3: ganti k→s, ganti e→i, sisip g.</div>
+</section>
+
+<section class="slide" id="rx2t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/4 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Levenshtein (edit distance)</h2>
+<div class="rxsoal"><b>Kasus:</b> Ubah “kitten” menjadi “sitting” mengikuti operasi hasil telusur balik tabel edit distance.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu huruf diproses dari kiri. “sama” gratis (biaya 0); ganti/sisip/hapus berbiaya 1. Kolom string menunjukkan hasil setelah operasi. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>operasi</th><th>huruf</th><th>biaya</th><th>string sekarang</th><th>total biaya</th></tr><tr><td><b class='chg'>ganti</b></td><td>k → s</td><td>1</td><td>sitten</td><td><b class='chg'>1</b></td></tr><tr><td>sama</td><td>i = i</td><td>0</td><td>sitten</td><td>1</td></tr><tr><td>sama</td><td>t = t</td><td>0</td><td>sitten</td><td>1</td></tr><tr><td>sama</td><td>t = t</td><td>0</td><td>sitten</td><td>1</td></tr><tr><td><b class='chg'>ganti</b></td><td>e → i</td><td>1</td><td>sittin</td><td><b class='chg'>2</b></td></tr><tr><td>sama</td><td>n = n</td><td>0</td><td>sittin</td><td>2</td></tr><tr><td><b class='chg'>sisip</b></td><td>+ g</td><td>1</td><td>sitting</td><td><b class='chg'>3</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> 3 operasi: kitten → sitten → sittin → sitting.</div>
+</section>
+
+<section class="slide" id="rx2b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 2/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Levenshtein (edit distance)</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> edit_distance(x, y):
+    prev = list(<span class="tk">range</span>(<span class="tk">len</span>(y) + <span class="tn">1</span>))
+    <span class="tk">for</span> i, a <span class="tk">in</span> enumerate(x, <span class="tn">1</span>):
+        cur = [i]
+        <span class="tk">for</span> j, b <span class="tk">in</span> enumerate(y, <span class="tn">1</span>):
+            cur.append(<span class="tk">min</span>(prev[j] + <span class="tn">1</span>, cur[j-<span class="tn">1</span>] + <span class="tn">1</span>, prev[j-<span class="tn">1</span>] + (a != b)))
+        prev = cur
+    <span class="tk">return</span> prev[-<span class="tn">1</span>]
+
+<span class="tk">print</span>(edit_distance(<span class="ts">"kitten"</span>, <span class="ts">"sitting"</span>))   <span class="tc"># 3</span></pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Edit distance = 3: ganti k→s, ganti e→i, sisip g.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>3 operasi: kitten → sitten → sittin → sitting.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rx3m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/4 - hitung manual</div>
+<h2 class="st">Hitung manual: Relaksasi Floyd-Warshall (dan Bellman-Ford)</h2>
+<div class="rxsoal"><b>Soal:</b> Floyd-Warshall untuk 3 kota: A–B 4, B–C 1, A–C 9 (dua arah).</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Matriks awal</h4><p class="rxcalc">[[0, 4, 9], [4, 0, 1], [9, 1, 0]]</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>k = A</h4><p class="rxcalc">d[B][C] lewat A = 4 + 9 = 13 &gt; 1 → tidak berubah</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>k = B</h4><p class="rxcalc">d[A][C] = min(9, 4 + 1) = 5; d[C][A] = 5</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>k = C</h4><p class="rxcalc">d[A][B] = min(4, 5 + 1) = 4 → tidak berubah</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Bellman-Ford (pembanding)</h4><p class="rxcalc">V − 1 = 2 putaran × E sisi; putaran ke-3 berubah = siklus negatif</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th></th><th>A</th><th>B</th><th>C</th></tr><tr><td>A</td><td>0</td><td>4</td><td>5</td></tr><tr><td>B</td><td>4</td><td>0</td><td>1</td></tr><tr><td>C</td><td>5</td><td>1</td><td>0</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Jarak A → C turun dari 9 menjadi 5 (lewat B).</div>
+</section>
+
+<section class="slide" id="rx3t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/4 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Relaksasi Floyd-Warshall (dan Bellman-Ford)</h2>
+<div class="rxsoal"><b>Kasus:</b> Floyd-Warshall pada graf berarah 4 simpul: A→B 3, A→D 7, B→A 8, B→C 2, C→A 5, C→D 1, D→A 2.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu simpul perantara k. Untuk semua pasangan (i, j), cek apakah i → k → j lebih pendek. Kolom kanan = matriks setelah putaran k (baris A | B | C | D). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>perantara k</th><th>pembaruan d[i][j]</th><th>matriks sesudahnya (A | B | C | D)</th></tr><tr><td>A</td><td><b class='chg'>B→D: ∞ → 15; C→B: ∞ → 8; D→B: ∞ → 5</b></td><td>0 3 ∞ 7 | 8 0 2 15 | 5 8 0 1 | 2 5 ∞ 0</td></tr><tr><td>B</td><td><b class='chg'>A→C: ∞ → 5; D→C: ∞ → 7</b></td><td>0 3 5 7 | 8 0 2 15 | 5 8 0 1 | 2 5 7 0</td></tr><tr><td>C</td><td><b class='chg'>A→D: 7 → 6; B→A: 8 → 7; B→D: 15 → 3</b></td><td>0 3 5 6 | 7 0 2 3 | 5 8 0 1 | 2 5 7 0</td></tr><tr><td>D</td><td><b class='chg'>B→A: 7 → 5; C→A: 5 → 3; C→B: 8 → 6</b></td><td>0 3 5 6 | 5 0 2 3 | 3 6 0 1 | 2 5 7 0</td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Setelah 4 putaran (V³ = 64 pengecekan) semua jarak terpendek antar pasangan diketahui, misalnya A → D = 6 lewat B dan C.</div>
+</section>
+
+<section class="slide" id="rx3b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 3/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Relaksasi Floyd-Warshall (dan Bellman-Ford)</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> floyd_warshall(d):            <span class="tc"># d: matriks V x V, inf jika tak ada sisi</span>
+    V = <span class="tk">len</span>(d)
+    <span class="tk">for</span> k <span class="tk">in</span> <span class="tk">range</span>(V):
+        <span class="tk">for</span> i <span class="tk">in</span> <span class="tk">range</span>(V):
+            <span class="tk">for</span> j <span class="tk">in</span> <span class="tk">range</span>(V):
+                <span class="tk">if</span> d[i][k] + d[k][j] &lt; d[i][j]:
+                    d[i][j] = d[i][k] + d[k][j]
+    <span class="tk">return</span> d
+
+INF = float(<span class="ts">"inf"</span>)
+<span class="tk">print</span>(floyd_warshall([[<span class="tn">0</span>,<span class="tn">4</span>,<span class="tn">9</span>],[<span class="tn">4</span>,<span class="tn">0</span>,<span class="tn">1</span>],[<span class="tn">9</span>,<span class="tn">1</span>,<span class="tn">0</span>]])[<span class="tn">0</span>][<span class="tn">2</span>])   <span class="tc"># 5</span></pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Jarak A → C turun dari 9 menjadi 5 (lewat B).</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Setelah 4 putaran (V³ = 64 pengecekan) semua jarak terpendek antar pasangan diketahui, misalnya A → D = 6 lewat B dan C.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rx4m" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/4 - hitung manual</div>
+<h2 class="st">Hitung manual: Rekurens Viterbi</h2>
+<div class="rxsoal"><b>Soal:</b> Viterbi untuk “saya makan nasi”, state {N, V}. π: N 0,6, V 0,4. Transisi: N→N 0,3, N→V 0,7, V→N 0,8, V→V 0,2. Emisi N: saya 0,5, makan 0,1, nasi 0,4; V: saya 0,1, makan 0,8, nasi 0,1.</div>
+<div class="cols c2">
+<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>t = 1 “saya”</h4><p class="rxcalc">V₁(N) = 0,6·0,5 = 0,30; V₁(V) = 0,4·0,1 = 0,04</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>t = 2 “makan”, N</h4><p class="rxcalc">maks(0,30·0,3; 0,04·0,8) · 0,1 = 0,09 · 0,1 = 0,009 (dari N)</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>t = 2 “makan”, V</h4><p class="rxcalc">maks(0,30·0,7; 0,04·0,2) · 0,8 = 0,21 · 0,8 = 0,168 (dari N)</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>t = 3 “nasi”</h4><p class="rxcalc">N: maks(0,009·0,3; 0,168·0,8) · 0,4 = 0,0538 (dari V); V: maks(0,0063; 0,0336) · 0,1 = 0,0034</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Telusur balik</h4><p class="rxcalc">akhir terbaik N (0,0538) ← V ← N</p></div></div></div></div>
+<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>state</th><th>saya</th><th>makan</th><th>nasi</th></tr><tr><td>N</td><td>0,30</td><td>0,009</td><td>0,0538 ✓</td></tr><tr><td>V</td><td>0,04</td><td>0,168 ✓</td><td>0,0034</td></tr></table></div>
+</div>
+<div class="rxhasil"><b>Hasil hitung manual:</b> Tag terbaik: saya/N, makan/V, nasi/N.</div>
+</section>
+
+<section class="slide" id="rx4t" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/4 - jejak step-by-step</div>
+<h2 class="st">Jejak langkah demi langkah: Rekurens Viterbi</h2>
+<div class="rxsoal"><b>Kasus:</b> Viterbi “saya makan nasi” dengan state N (kata benda) dan V (kata kerja); parameter sama dengan slide hitung manual.</div>
+<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu sel V_t(s): bandingkan semua state sebelumnya (dikali transisi), ambil maksimum, lalu kali emisi. Kolom “dari” = pointer untuk telusur balik. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
+<table class="rxtrace"><tr><th>t</th><th>kata</th><th>state</th><th>kandidat (V_{t−1}·a) lalu × emisi</th><th>dari</th><th>V_t(s)</th></tr><tr><td>1</td><td>saya</td><td>N</td><td>π(N)·b = 0,6·0,5</td><td>-</td><td><b class='chg'>0,3</b></td></tr><tr><td>1</td><td>saya</td><td>V</td><td>π(V)·b = 0,4·0,1</td><td>-</td><td><b class='chg'>0,04</b></td></tr><tr><td>2</td><td>makan</td><td>N</td><td>0,3·0,3 = 0,09 vs 0,04·0,8 = 0,032, × b = 0,1</td><td>N</td><td><b class='chg'>0,009</b></td></tr><tr><td>2</td><td>makan</td><td>V</td><td>0,3·0,7 = 0,21 vs 0,04·0,2 = 0,008, × b = 0,8</td><td>N</td><td><b class='chg'>0,168</b></td></tr><tr><td>3</td><td>nasi</td><td>N</td><td>0,009·0,3 = 0,0027 vs 0,168·0,8 = 0,1344, × b = 0,4</td><td>V</td><td><b class='chg'>0,05376</b></td></tr><tr><td>3</td><td>nasi</td><td>V</td><td>0,009·0,7 = 0,0063 vs 0,168·0,2 = 0,0336, × b = 0,1</td><td>V</td><td><b class='chg'>0,00336</b></td></tr></table>
+<div class="rxhasil"><b>Hasil akhir jejak:</b> Telusur balik dari nilai terbesar di t = 3: saya/N → makan/V → nasi/N.</div>
+</section>
+
+<section class="slide" id="rx4b" data-rx="1">
+<div class="kicker">Bagian B · Teknikal · Rumus 4/4 - kode Python</div>
+<h2 class="st">Dari hitungan ke kode: Rekurens Viterbi</h2>
+<div class="cols c2l">
+<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> viterbi(obs, states, start, trans, emit):
+    V = [{s: start[s] * emit[s][obs[<span class="tn">0</span>]] <span class="tk">for</span> s <span class="tk">in</span> states}]
+    back = []
+    <span class="tk">for</span> o <span class="tk">in</span> obs[<span class="tn">1</span>:]:
+        prev = V[-<span class="tn">1</span>]; row, ptr = {}, {}
+        <span class="tk">for</span> s <span class="tk">in</span> states:
+            best = <span class="tk">max</span>(states, key=<span class="tk">lambda</span> p: prev[p] * trans[p][s])
+            row[s] = prev[best] * trans[best][s] * emit[s][o]; ptr[s] = best
+        V.append(row); back.append(ptr)
+    s = <span class="tk">max</span>(V[-<span class="tn">1</span>], key=V[-<span class="tn">1</span>].get); path = [s]
+    <span class="tk">for</span> ptr <span class="tk">in</span> reversed(back): s = ptr[s]; path.append(s)
+    <span class="tk">return</span> path[::-<span class="tn">1</span>]</pre></div>
+<div class="rxstack">
+<div class="rxcard yellow"><h3>Cocokkan dengan hitung manual</h3><p>Jalankan kode, lalu bandingkan dengan hasil yang sudah dihitung dengan tangan:</p><p class="rxcalc" style="margin-top:6px">Tag terbaik: saya/N, makan/V, nasi/N.</p></div>
+<div class="rxcard green"><h3>Dan dengan jejak eksekusi</h3><p>Telusur balik dari nilai terbesar di t = 3: saya/N → makan/V → nasi/N.</p></div>
+</div>
+</div>
+</section>
+
+<section class="slide" id="rxdL" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian C</div>
+<h1 class="title">Latihan</h1>
+<p class="lead">Uji pemahaman teori dan teknikal sebelum melihat penerapannya di dunia nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Soal Dynamic Programming II</div><div class="rxtocitem"><span>2</span>Kunci Dynamic Programming II</div></div>
+</section>
+
+<section class="slide" id="s6">
+  <div class="kicker">LATIHAN</div>
+  <h2 class="st">Soal Dynamic Programming II</h2>
+  <div class="qlist">
+    <div class="q"><span class="qn">1</span><p>Hitung LCS("AGGTAB", "GXTXAYB") secara manual atau dengan kode. Berapa panjangnya dan apa salah satu subsequence-nya?</p></div>
+    <div class="q"><span class="qn">2</span><p>Hitunglah Edit Distance antara "sunday" dan "saturday". Gambarkan bagian tabel DP untuk meyakinkan jawabanmu.</p></div>
+    <div class="q"><span class="qn">3</span><p>Mengapa Floyd-Warshall bisa mendeteksi negative cycle? Apa yang terjadi pada dp[i][i] jika ada negative cycle yang melewati node i?</p></div>
+    <div class="q"><span class="qn">4</span><p>Algoritma Viterbi untuk HMM dengan K state dan T observasi: buktikan kompleksitasnya O(K²·T). Apa yang disimpan di setiap sel tabel?</p></div>
+    <div class="q"><span class="qn">5</span><p>Di Colab: implementasikan Edit Distance dan gunakan untuk membandingkan dua urutan DNA pendek (misal "GCATGCU" vs "GATTACA"). Berapa edit distance-nya? Apa interpretasi biologisnya?</p></div>
+  </div>
+</section>
+
+<section class="slide" id="s7">
+  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
+  <h2 class="st">Kunci Dynamic Programming II</h2>
+  <div class="qlist">
+    <div class="ans"><span class="qn">1</span><p>LCS("AGGTAB","GXTXAYB") = <b>4</b>. Salah satu LCS-nya: "GTAB". Tabel DP 7×8, nilai di pojok kanan bawah = 4.</p></div>
+    <div class="ans"><span class="qn">2</span><p>Edit Distance("sunday","saturday") = <b>3</b>. Operasi: insert 'a' setelah 's', insert 't' setelah 'a', replace 'n'→'r'. Atau: delete 'n', insert 'tur' → tergantung path. Nilai dp[6][8] = 3.</p></div>
+    <div class="ans"><span class="qn">3</span><p>Floyd-Warshall: jika ada negative cycle melalui node i, maka dp[i][i] akan menjadi <b>negatif</b> (karena perjalanan kembali ke i bisa berbiaya negatif). Cek: setelah algoritma selesai, lihat apakah ada dp[i][i] &lt; 0.</p></div>
+    <div class="ans"><span class="qn">4</span><p>Di setiap waktu t dan state k, simpan probabilitas terbaik DP[t][k]. Untuk hitung DP[t][k] perlu melihat semua K state sebelumnya → K operasi per sel. Total sel = K×T → <b>O(K²·T)</b>.</p></div>
+    <div class="ans"><span class="qn">5</span><p>Edit Distance("GCATGCU","GATTACA") = <b>4</b> (3 substitusi + 1 insert/delete tergantung alignment). Interpretasi: makin kecil edit distance, makin mirip dua urutan DNA secara evolusioner - bisa dipakai untuk inferensi filogenetik.</p></div>
+  </div>
+</section>
+
+<section class="slide" id="rxdD" data-rx="1" style="justify-content:center">
+<div class="kicker">Bagian D</div>
+<h1 class="title">Studi kasus nyata</h1>
+<p class="lead">Penutup materi: di mana semua teori dan teknik tadi dipakai di industri, AI, dan proyek nyata.</p>
+<div class="rxtoc"><div class="rxtocitem"><span>1</span>Viterbi - DP paling berpengaruh di NLP</div><div class="rxtocitem"><span>2</span>Melihat baris yang berubah di git diff</div><div class="rxtocitem"><span>3</span>“Did you mean…?” dan pencocokan nama</div><div class="rxtocitem"><span>4</span>Tabel jarak antar kota dan deteksi arbitrase kurs</div><div class="rxtocitem"><span>5</span>Menandai kelas kata (POS tagging)</div></div>
+</section>
+
 <section class="slide" id="s5">
   <div class="kicker">BAGIAN 4 · [MODERN] DP PADA URUTAN</div>
   <h2 class="st">Viterbi - DP paling berpengaruh di NLP</h2>
@@ -308,229 +636,46 @@ b.chg{background:#fef3c7;color:#92400e;padding:0 4px;border-radius:4px;font-weig
   <div class="note"><b>Cara membaca rumus:</b><br>• Viterbi menyimpan δₜ(j): probabilitas terbaik sampai langkah t dan berada di state j.<br>• Rekurens: δₜ(j) = maks_i [δₜ₋₁(i) · a_ij] · b_j(oₜ), dengan a = transisi dan b = emisi.<br>• Telusuri balik dari δ_T terbesar untuk mendapatkan urutan state terbaik.</div>
 </section>
 
-<!-- 6. LATIHAN -->
-<!--RX-SLIDES-START-->
-<section class="slide" id="rx0">
-<div class="kicker">Bedah Rumus · Dynamic Programming II</div>
-<h2 class="st">Empat rumus DP pada sekuens dan graf</h2>
-<p class="b">Membandingkan teks, memperbaiki salah ketik, mencari jalur terpendek, dan menebak kelas kata semuanya memakai DP. Rumus-rumusnya mirip: satu sel tabel dihitung dari beberapa sel tetangga.</p>
-<div class="rxgrid"><div class="rxitem"><div class="qn">1</div><div><b>Longest Common Subsequence</b><span>L[i][j] = L[i−1][j−1]+1 atau maks(…)</span></div></div><div class="rxitem"><div class="qn">2</div><div><b>Levenshtein (edit distance)</b><span>D[i][j] = min(hapus, sisip, ganti)</span></div></div><div class="rxitem"><div class="qn">3</div><div><b>Relaksasi Floyd-Warshall (dan Bellman-Ford)</b><span>d[i][j] ← min(d[i][j], d[i][k] + d[k][j])</span></div></div><div class="rxitem"><div class="qn">4</div><div><b>Rekurens Viterbi</b><span>Vₜ(s) = maks V₍ₜ₋₁₎(s′)·a(s′,s)·b(s, oₜ)</span></div></div></div>
-<div class="note"><b>Cara memakai slide berikut:</b> tiap rumus dibahas empat slide. <b>(1) Cara membaca:</b> bentuk rumus, cara mengucapkannya, dan arti tiap simbol. <b>(2) Hitung manual:</b> satu soal dikerjakan dengan kertas dan kalkulator, langkah demi langkah. <b>(2b) Jejak step-by-step:</b> seluruh langkah eksekusi ditulis baris demi baris seperti menelusuri sorting. <b>(3) Kode &amp; kasus nyata:</b> hitungan yang sama diterjemahkan ke Python dan dipakai di proyek nyata.</div>
-</section>
-<section class="slide" id="rx1a">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Longest Common Subsequence</h2>
-<div class="fxbox">L[i][j] = { <span class='hl'>L[i−1][j−1] + 1</span> &nbsp;jika x<sub>i</sub> = y<sub>j</sub>; &nbsp; <span class='hb'>maks(L[i−1][j], L[i][j−1])</span> &nbsp;jika tidak }</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“L i j sama dengan L i kurang satu, j kurang satu, ditambah satu jika karakter x i sama dengan y j. Jika tidak sama, L i j adalah maksimum antara L i kurang satu j dan L i, j kurang satu.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>L[i][j]</h4><p class="">panjang LCS dari i karakter pertama x dan j karakter pertama y.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Cocok (diagonal)</h4><p class="">karakter sama → perpanjang LCS dari kedua prefiks yang lebih pendek.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Tidak cocok</h4><p class="">buang satu karakter dari x ATAU dari y, ambil yang hasilnya lebih panjang.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>x, y</td><td>dua barisan (string) yang dibandingkan</td></tr><tr><td>i, j</td><td>panjang prefiks x dan y</td></tr><tr><td>L[0][*] = L[*][0] = 0</td><td>basis: prefiks kosong</td></tr><tr><td>Θ(mn)</td><td>ukuran tabel m × n</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Subsequence boleh melompat (tidak harus berurutan langsung). Tabel menyimpan jawaban untuk <b>semua pasangan prefiks</b>, sehingga tiap sel cukup melihat tiga tetangga.</div>
-</section>
-<section class="slide" id="rx1m">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Longest Common Subsequence</h2>
-<div class="rxsoal"><b>Soal:</b> Isi tabel LCS untuk x = ABCB (baris) dan y = BDCAB (kolom).</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Baris A</h4><p class="rxcalc">hanya cocok dengan A (kolom 4) → 0 0 0 1 1</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Baris B</h4><p class="rxcalc">cocok kolom 1 (diag 0+1 = 1) dan kolom 5 (diag 1+1 = 2) → 1 1 1 1 2</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Baris C</h4><p class="rxcalc">cocok kolom 3: diag L[2][2] + 1 = 2 → 1 1 2 2 2</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Baris B</h4><p class="rxcalc">kolom 1: 0+1 = 1; kolom 5: diag L[3][4] + 1 = 3 → 1 1 2 2 3</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Telusur balik</h4><p class="rxcalc">ikuti diagonal yang cocok: B, C, B</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th></th><th>B</th><th>D</th><th>C</th><th>A</th><th>B</th></tr><tr><td>A</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td></tr><tr><td>B</td><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td></tr><tr><td>C</td><td>1</td><td>1</td><td>2</td><td>2</td><td>2</td></tr><tr><td>B</td><td>1</td><td>1</td><td>2</td><td>2</td><td>3</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> Panjang LCS = 3, salah satunya “BCB”.</div>
-</section>
-<section class="slide" id="rx1t">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Longest Common Subsequence</h2>
-<div class="rxsoal"><b>Kasus:</b> Telusur balik tabel LCS (ABCB vs BDCAB) dari sel kanan bawah untuk mendapatkan string LCS-nya.</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Mulai dari L[4][5]. Jika huruf cocok: ambil huruf itu dan bergerak diagonal. Jika tidak: pindah ke tetangga (atas/kiri) yang nilainya lebih besar. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>sel (i, j)</th><th>L[i][j]</th><th>bandingkan</th><th>langkah</th><th>LCS terkumpul</th></tr><tr><td>(4, 5)</td><td>3</td><td>B = B</td><td><b class='chg'>cocok → ambil B, ke diagonal</b></td><td>B</td></tr><tr><td>(3, 4)</td><td>2</td><td>C ≠ A</td><td>kiri (2) &gt; atas (1) → ke kiri</td><td>B</td></tr><tr><td>(3, 3)</td><td>2</td><td>C = C</td><td><b class='chg'>cocok → ambil C, ke diagonal</b></td><td>CB</td></tr><tr><td>(2, 2)</td><td>1</td><td>B ≠ D</td><td>kiri (1) &gt; atas (0) → ke kiri</td><td>CB</td></tr><tr><td>(2, 1)</td><td>1</td><td>B = B</td><td><b class='chg'>cocok → ambil B, ke diagonal</b></td><td>BCB</td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> LCS = “BCB” (panjang 3), dibaca dari belakang ke depan.</div>
-</section>
-<section class="slide" id="rx1b">
-<div class="kicker">Bedah Rumus 1/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+<section class="slide" id="rx1c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 1/4</div>
 <h2 class="st">Melihat baris yang berubah di git diff</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>diff</b> dan <b>git diff</b> menampilkan baris yang dipertahankan (LCS dari baris-baris file); sisanya ditandai + atau −. Bioinformatika memakai varian LCS untuk menyelaraskan DNA, dan detektor plagiarisme memakainya untuk membandingkan dokumen.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>x = ABCB, y = BDCAB</h4><p class="">mencari urutan huruf bersama terpanjang.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Sel (A, A)</h4><p class="">x₁ = y₄ = A → L[1][4] = L[0][3] + 1 = 1.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Isi seluruh tabel</h4><p class="">L[4][5] = 3.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Telusur balik</h4><p class="">LCS = BCB (salah satu jawaban).</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> lcs(x, y):
-    m, n = <span class="tk">len</span>(x), <span class="tk">len</span>(y)
-    L = [[<span class="tn">0</span>] * (n + <span class="tn">1</span>) <span class="tk">for</span> _ <span class="tk">in</span> <span class="tk">range</span>(m + <span class="tn">1</span>)]
-    <span class="tk">for</span> i <span class="tk">in</span> <span class="tk">range</span>(<span class="tn">1</span>, m + <span class="tn">1</span>):
-        <span class="tk">for</span> j <span class="tk">in</span> <span class="tk">range</span>(<span class="tn">1</span>, n + <span class="tn">1</span>):
-            L[i][j] = (L[i-<span class="tn">1</span>][j-<span class="tn">1</span>] + <span class="tn">1</span> <span class="tk">if</span> x[i-<span class="tn">1</span>] == y[j-<span class="tn">1</span>]
-                       <span class="tk">else</span> <span class="tk">max</span>(L[i-<span class="tn">1</span>][j], L[i][j-<span class="tn">1</span>]))
-    <span class="tk">return</span> L[m][n]
-
-<span class="tk">print</span>(lcs(<span class="ts">"ABCB"</span>, <span class="ts">"BDCAB"</span>))   <span class="tc"># 3</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p><b>diff</b> dan <b>git diff</b> menampilkan baris yang dipertahankan (LCS dari baris-baris file); sisanya ditandai + atau −. Bioinformatika memakai varian LCS untuk menyelaraskan DNA, dan detektor plagiarisme memakainya untuk membandingkan dokumen.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>x = ABCB, y = BDCAB</h4><p class="">mencari urutan huruf bersama terpanjang.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Sel (A, A)</h4><p class="">x₁ = y₄ = A → L[1][4] = L[0][3] + 1 = 1.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Isi seluruh tabel</h4><p class="">L[4][5] = 3.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Telusur balik</h4><p class="">LCS = BCB (salah satu jawaban).</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Cocok → diagonal + 1. Tidak cocok → maksimum atas atau kiri.</div>
 </section>
-<section class="slide" id="rx2a">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Levenshtein (edit distance)</h2>
-<div class="fxbox">D[i][j] = min( <span class='hb'>D[i−1][j] + 1</span>, &nbsp;<span class='hg'>D[i][j−1] + 1</span>, &nbsp;<span class='hl'>D[i−1][j−1] + [x<sub>i</sub> ≠ y<sub>j</sub>]</span> )</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“D i j sama dengan minimum dari tiga hal: D i kurang satu j tambah satu untuk menghapus, D i j kurang satu tambah satu untuk menyisipkan, dan D i kurang satu j kurang satu ditambah satu jika x i berbeda dengan y j, untuk mengganti.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Atas + 1 = hapus</h4><p class="">buang xᵢ.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Kiri + 1 = sisip</h4><p class="">tambahkan yⱼ.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Diagonal + [xᵢ ≠ yⱼ]</h4><p class="">ganti (biaya 1) atau biarkan jika sama (biaya 0).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>[kondisi]</h4><p class="">notasi Iverson: bernilai 1 bila benar, 0 bila salah.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>D[i][j]</td><td>jumlah edit minimum mengubah x[1..i] menjadi y[1..j]</td></tr><tr><td>D[i][0] = i</td><td>hapus semua</td></tr><tr><td>D[0][j] = j</td><td>sisip semua</td></tr><tr><td>[x ≠ y]</td><td>biaya ganti: 0 atau 1</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Setiap edit terakhir pasti salah satu dari tiga jenis. Coba ketiganya, ambil yang termurah - <b>struktur yang sama dengan LCS</b>, hanya min menggantikan maks.</div>
-</section>
-<section class="slide" id="rx2m">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Levenshtein (edit distance)</h2>
-<div class="rxsoal"><b>Soal:</b> Isi tabel edit distance dari kitten (baris) ke sitting (kolom).</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Baris & kolom 0</h4><p class="rxcalc">D[i][0] = i (hapus semua), D[0][j] = j (sisip semua)</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Sel (k, s)</h4><p class="rxcalc">min(1+1, 1+1, 0 + [k≠s] = 1) = 1 → ganti k → s</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Sel (i, i)</h4><p class="rxcalc">huruf sama → diagonal tanpa biaya: D = 1</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Sel (e, i)</h4><p class="rxcalc">e ≠ i → diagonal 1 + 1 = 2 → ganti e → i</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Kolom terakhir (g)</h4><p class="rxcalc">tidak ada huruf g di kitten → sisip: 2 + 1 = 3</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th></th><th>ε</th><th>s</th><th>i</th><th>t</th><th>t</th><th>i</th><th>n</th><th>g</th></tr><tr><td>ε</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr><tr><td>k</td><td>1</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr><tr><td>i</td><td>2</td><td>2</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td></tr><tr><td>t</td><td>3</td><td>3</td><td>2</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr><tr><td>t</td><td>4</td><td>4</td><td>3</td><td>2</td><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr><td>e</td><td>5</td><td>5</td><td>4</td><td>3</td><td>2</td><td>2</td><td>3</td><td>4</td></tr><tr><td>n</td><td>6</td><td>6</td><td>5</td><td>4</td><td>3</td><td>3</td><td>2</td><td>3</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> Edit distance = 3: ganti k→s, ganti e→i, sisip g.</div>
-</section>
-<section class="slide" id="rx2t">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Levenshtein (edit distance)</h2>
-<div class="rxsoal"><b>Kasus:</b> Ubah “kitten” menjadi “sitting” mengikuti operasi hasil telusur balik tabel edit distance.</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu huruf diproses dari kiri. “sama” gratis (biaya 0); ganti/sisip/hapus berbiaya 1. Kolom string menunjukkan hasil setelah operasi. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>operasi</th><th>huruf</th><th>biaya</th><th>string sekarang</th><th>total biaya</th></tr><tr><td><b class='chg'>ganti</b></td><td>k → s</td><td>1</td><td>sitten</td><td><b class='chg'>1</b></td></tr><tr><td>sama</td><td>i = i</td><td>0</td><td>sitten</td><td>1</td></tr><tr><td>sama</td><td>t = t</td><td>0</td><td>sitten</td><td>1</td></tr><tr><td>sama</td><td>t = t</td><td>0</td><td>sitten</td><td>1</td></tr><tr><td><b class='chg'>ganti</b></td><td>e → i</td><td>1</td><td>sittin</td><td><b class='chg'>2</b></td></tr><tr><td>sama</td><td>n = n</td><td>0</td><td>sittin</td><td>2</td></tr><tr><td><b class='chg'>sisip</b></td><td>+ g</td><td>1</td><td>sitting</td><td><b class='chg'>3</b></td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> 3 operasi: kitten → sitten → sittin → sitting.</div>
-</section>
-<section class="slide" id="rx2b">
-<div class="kicker">Bedah Rumus 2/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+
+<section class="slide" id="rx2c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 2/4</div>
 <h2 class="st">“Did you mean…?” dan pencocokan nama</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Kolom pencarian e-commerce (“iphnoe” → iphone), spell checker, dan <b>pencocokan data nama</b> (misalnya menyatukan “Muhamad” dan “Muhammad” saat deduplikasi data pelanggan). Library: <i>rapidfuzz</i>, <i>python-Levenshtein</i>.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>kitten → sitting</h4><p class="">k→s (ganti), e→i (ganti), + g (sisip).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Tabel</h4><p class="">D[6][7] = 3.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ambang</h4><p class="">kata dengan D ≤ 2 dari kata kamus dianggap salah ketik.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Biaya</h4><p class="">Θ(mn) per pasangan kata.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> edit_distance(x, y):
-    prev = list(<span class="tk">range</span>(<span class="tk">len</span>(y) + <span class="tn">1</span>))
-    <span class="tk">for</span> i, a <span class="tk">in</span> enumerate(x, <span class="tn">1</span>):
-        cur = [i]
-        <span class="tk">for</span> j, b <span class="tk">in</span> enumerate(y, <span class="tn">1</span>):
-            cur.append(<span class="tk">min</span>(prev[j] + <span class="tn">1</span>, cur[j-<span class="tn">1</span>] + <span class="tn">1</span>, prev[j-<span class="tn">1</span>] + (a != b)))
-        prev = cur
-    <span class="tk">return</span> prev[-<span class="tn">1</span>]
-
-<span class="tk">print</span>(edit_distance(<span class="ts">"kitten"</span>, <span class="ts">"sitting"</span>))   <span class="tc"># 3</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Kolom pencarian e-commerce (“iphnoe” → iphone), spell checker, dan <b>pencocokan data nama</b> (misalnya menyatukan “Muhamad” dan “Muhammad” saat deduplikasi data pelanggan). Library: <i>rapidfuzz</i>, <i>python-Levenshtein</i>.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>kitten → sitting</h4><p class="">k→s (ganti), e→i (ganti), + g (sisip).</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>Tabel</h4><p class="">D[6][7] = 3.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Ambang</h4><p class="">kata dengan D ≤ 2 dari kata kamus dianggap salah ketik.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Biaya</h4><p class="">Θ(mn) per pasangan kata.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Edit distance = min(hapus, sisip, ganti). Cukup dua baris tabel untuk menghemat memori.</div>
 </section>
-<section class="slide" id="rx3a">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Relaksasi Floyd-Warshall (dan Bellman-Ford)</h2>
-<div class="fxbox">d[i][j] ← min( d[i][j], &nbsp;<span class='hl'>d[i][k] + d[k][j]</span> ) &nbsp;untuk k = 1..V &nbsp;⇒&nbsp; Θ(V³); &nbsp; Bellman-Ford: V−1 putaran × E = <span class='hb'>O(VE)</span></div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“d i j diperbarui menjadi minimum antara d i j sekarang dan d i k ditambah d k j, untuk setiap simpul perantara k dari satu sampai V. Totalnya Theta V pangkat tiga. Bellman-Ford melakukan V kurang satu putaran atas semua E sisi, O V E.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>k = simpul perantara</h4><p class="">setelah putaran k, d[i][j] = jarak terpendek yang hanya boleh transit di simpul 1..k.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>d[i][k] + d[k][j]</h4><p class="">jalur i → k → j.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Tiga loop bersarang</h4><p class="">k (luar), i, j → V³.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Bellman-Ford</h4><p class="">relaksasi semua sisi V−1 kali; putaran ke-V yang masih berubah = ada siklus negatif.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>d[i][j]</td><td>jarak terpendek i → j sejauh ini</td></tr><tr><td>k</td><td>simpul perantara yang diizinkan</td></tr><tr><td>V, E</td><td>banyaknya simpul dan sisi</td></tr><tr><td>siklus negatif</td><td>siklus dengan total bobot &lt; 0</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Floyd-Warshall menjawab <b>semua pasangan sekaligus</b> dengan kode tiga baris. Bellman-Ford lebih lambat dari Dijkstra tetapi <b>tahan bobot negatif</b> dan bisa mendeteksi siklus negatif.</div>
-</section>
-<section class="slide" id="rx3m">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Relaksasi Floyd-Warshall (dan Bellman-Ford)</h2>
-<div class="rxsoal"><b>Soal:</b> Floyd-Warshall untuk 3 kota: A–B 4, B–C 1, A–C 9 (dua arah).</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Matriks awal</h4><p class="rxcalc">[[0, 4, 9], [4, 0, 1], [9, 1, 0]]</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>k = A</h4><p class="rxcalc">d[B][C] lewat A = 4 + 9 = 13 &gt; 1 → tidak berubah</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>k = B</h4><p class="rxcalc">d[A][C] = min(9, 4 + 1) = 5; d[C][A] = 5</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>k = C</h4><p class="rxcalc">d[A][B] = min(4, 5 + 1) = 4 → tidak berubah</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Bellman-Ford (pembanding)</h4><p class="rxcalc">V − 1 = 2 putaran × E sisi; putaran ke-3 berubah = siklus negatif</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th></th><th>A</th><th>B</th><th>C</th></tr><tr><td>A</td><td>0</td><td>4</td><td>5</td></tr><tr><td>B</td><td>4</td><td>0</td><td>1</td></tr><tr><td>C</td><td>5</td><td>1</td><td>0</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> Jarak A → C turun dari 9 menjadi 5 (lewat B).</div>
-</section>
-<section class="slide" id="rx3t">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Relaksasi Floyd-Warshall (dan Bellman-Ford)</h2>
-<div class="rxsoal"><b>Kasus:</b> Floyd-Warshall pada graf berarah 4 simpul: A→B 3, A→D 7, B→A 8, B→C 2, C→A 5, C→D 1, D→A 2.</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu simpul perantara k. Untuk semua pasangan (i, j), cek apakah i → k → j lebih pendek. Kolom kanan = matriks setelah putaran k (baris A | B | C | D). Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>perantara k</th><th>pembaruan d[i][j]</th><th>matriks sesudahnya (A | B | C | D)</th></tr><tr><td>A</td><td><b class='chg'>B→D: ∞ → 15; C→B: ∞ → 8; D→B: ∞ → 5</b></td><td>0 3 ∞ 7 | 8 0 2 15 | 5 8 0 1 | 2 5 ∞ 0</td></tr><tr><td>B</td><td><b class='chg'>A→C: ∞ → 5; D→C: ∞ → 7</b></td><td>0 3 5 7 | 8 0 2 15 | 5 8 0 1 | 2 5 7 0</td></tr><tr><td>C</td><td><b class='chg'>A→D: 7 → 6; B→A: 8 → 7; B→D: 15 → 3</b></td><td>0 3 5 6 | 7 0 2 3 | 5 8 0 1 | 2 5 7 0</td></tr><tr><td>D</td><td><b class='chg'>B→A: 7 → 5; C→A: 5 → 3; C→B: 8 → 6</b></td><td>0 3 5 6 | 5 0 2 3 | 3 6 0 1 | 2 5 7 0</td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> Setelah 4 putaran (V³ = 64 pengecekan) semua jarak terpendek antar pasangan diketahui, misalnya A → D = 6 lewat B dan C.</div>
-</section>
-<section class="slide" id="rx3b">
-<div class="kicker">Bedah Rumus 3/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+
+<section class="slide" id="rx3c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 3/4</div>
 <h2 class="st">Tabel jarak antar kota dan deteksi arbitrase kurs</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Aplikasi logistik menghitung <b>matriks jarak</b> antar semua gudang dengan Floyd-Warshall. Bot trading mendeteksi <b>arbitrase mata uang/kripto</b> dengan Bellman-Ford pada graf berbobot −log(kurs). Protokol routing RIP juga berbasis Bellman-Ford.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Floyd: 3 kota</h4><p class="">A–B 4, B–C 1, A–C 9 → lewat B: d[A][C] = min(9, 4+1) = 5.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>V = 500 gudang</h4><p class="">500³ = 1,25×10⁸ operasi - masih detik.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Kurs</h4><p class="">USD→EUR 0,9, EUR→JPY 160, JPY→USD 0,0071 → perkalian 1,022 &gt; 1.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Bobot −log(kurs)</h4><p class="">produk &gt; 1 ⇔ jumlah −log &lt; 0 → siklus negatif = peluang arbitrase.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> floyd_warshall(d):            <span class="tc"># d: matriks V x V, inf jika tak ada sisi</span>
-    V = <span class="tk">len</span>(d)
-    <span class="tk">for</span> k <span class="tk">in</span> <span class="tk">range</span>(V):
-        <span class="tk">for</span> i <span class="tk">in</span> <span class="tk">range</span>(V):
-            <span class="tk">for</span> j <span class="tk">in</span> <span class="tk">range</span>(V):
-                <span class="tk">if</span> d[i][k] + d[k][j] &lt; d[i][j]:
-                    d[i][j] = d[i][k] + d[k][j]
-    <span class="tk">return</span> d
-
-INF = float(<span class="ts">"inf"</span>)
-<span class="tk">print</span>(floyd_warshall([[<span class="tn">0</span>,<span class="tn">4</span>,<span class="tn">9</span>],[<span class="tn">4</span>,<span class="tn">0</span>,<span class="tn">1</span>],[<span class="tn">9</span>,<span class="tn">1</span>,<span class="tn">0</span>]])[<span class="tn">0</span>][<span class="tn">2</span>])   <span class="tc"># 5</span></pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Aplikasi logistik menghitung <b>matriks jarak</b> antar semua gudang dengan Floyd-Warshall. Bot trading mendeteksi <b>arbitrase mata uang/kripto</b> dengan Bellman-Ford pada graf berbobot −log(kurs). Protokol routing RIP juga berbasis Bellman-Ford.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Floyd: 3 kota</h4><p class="">A–B 4, B–C 1, A–C 9 → lewat B: d[A][C] = min(9, 4+1) = 5.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>V = 500 gudang</h4><p class="">500³ = 1,25×10⁸ operasi - masih detik.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>Kurs</h4><p class="">USD→EUR 0,9, EUR→JPY 160, JPY→USD 0,0071 → perkalian 1,022 &gt; 1.</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Bobot −log(kurs)</h4><p class="">produk &gt; 1 ⇔ jumlah −log &lt; 0 → siklus negatif = peluang arbitrase.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Semua pasangan → Floyd-Warshall Θ(V³). Bobot negatif / deteksi siklus negatif → Bellman-Ford O(VE).</div>
 </section>
-<section class="slide" id="rx4a">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 1: cara membaca</div>
-<h2 class="st">Rekurens Viterbi</h2>
-<div class="fxbox">V<sub>t</sub>(s) = <span class='hl'>maks</span><sub>s′</sub> [ V<sub>t−1</sub>(s′) · <span class='hb'>a<sub>s′s</sub></span> ] · <span class='hg'>b<sub>s</sub>(o<sub>t</sub>)</span>; &nbsp; O(T·S²)</div>
-<div class="cols c2">
-<div class="rxcard blue"><h3>Cara membaca rumus ini</h3><div class="say">“V t dari s sama dengan maksimum atas semua state sebelumnya s aksen, dari V t kurang satu dari s aksen dikali peluang transisi a dari s aksen ke s, lalu dikali peluang emisi b s dari observasi o t. Biayanya O T kali S kuadrat.”</div><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Vₜ(s)</h4><p class="">peluang jalur state TERBAIK yang berakhir di state s pada waktu t.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>a_{s′s}</h4><p class="">peluang pindah dari state s′ ke s (transisi).</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>b_s(oₜ)</h4><p class="">peluang state s menghasilkan observasi oₜ (emisi).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>maks + simpan argmax</h4><p class="">di akhir, telusuri balik pointer untuk mendapatkan urutan state.</p></div></div></div></div>
-<div class="rxcard soft"><h3>Arti tiap simbol</h3><table class="sym"><tr><td>t</td><td>posisi waktu/kata ke-t (1..T)</td></tr><tr><td>s, s′</td><td>state sekarang dan sebelumnya (S buah)</td></tr><tr><td>oₜ</td><td>observasi ke-t (kata, sinyal)</td></tr><tr><td>T·S²</td><td>T kolom × S state × S kandidat sebelumnya</td></tr></table></div>
-</div>
-<div class="note"><b>Intuisinya:</b> Mencoba semua urutan state butuh Sᵀ. Viterbi memakai fakta bahwa jalur terbaik ke (t, s) <b>pasti melewati jalur terbaik</b> ke salah satu (t−1, s′) - optimal substructure.</div>
-</section>
-<section class="slide" id="rx4m">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 2: hitung manual</div>
-<h2 class="st">Hitung manual: Rekurens Viterbi</h2>
-<div class="rxsoal"><b>Soal:</b> Viterbi untuk “saya makan nasi”, state {N, V}. π: N 0,6, V 0,4. Transisi: N→N 0,3, N→V 0,7, V→N 0,8, V→V 0,2. Emisi N: saya 0,5, makan 0,1, nasi 0,4; V: saya 0,1, makan 0,8, nasi 0,1.</div>
-<div class="cols c2">
-<div class="rxcard yellow"><h3>Langkah hitung (kertas &amp; kalkulator)</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>t = 1 “saya”</h4><p class="rxcalc">V₁(N) = 0,6·0,5 = 0,30; V₁(V) = 0,4·0,1 = 0,04</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>t = 2 “makan”, N</h4><p class="rxcalc">maks(0,30·0,3; 0,04·0,8) · 0,1 = 0,09 · 0,1 = 0,009 (dari N)</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>t = 2 “makan”, V</h4><p class="rxcalc">maks(0,30·0,7; 0,04·0,2) · 0,8 = 0,21 · 0,8 = 0,168 (dari N)</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>t = 3 “nasi”</h4><p class="rxcalc">N: maks(0,009·0,3; 0,168·0,8) · 0,4 = 0,0538 (dari V); V: maks(0,0063; 0,0336) · 0,1 = 0,0034</p></div></div><div class="rxstep"><div class="rxnum">5</div><div class="rxbody"><h4>Telusur balik</h4><p class="rxcalc">akhir terbaik N (0,0538) ← V ← N</p></div></div></div></div>
-<div class="rxcard soft"><h3>Tabel hitungan</h3><table class='rxtbl'><tr><th>state</th><th>saya</th><th>makan</th><th>nasi</th></tr><tr><td>N</td><td>0,30</td><td>0,009</td><td>0,0538 ✓</td></tr><tr><td>V</td><td>0,04</td><td>0,168 ✓</td><td>0,0034</td></tr></table></div>
-</div>
-<div class="rxhasil"><b>Hasil hitung manual:</b> Tag terbaik: saya/N, makan/V, nasi/N.</div>
-</section>
-<section class="slide" id="rx4t">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 2b: jejak step-by-step</div>
-<h2 class="st">Jejak langkah demi langkah: Rekurens Viterbi</h2>
-<div class="rxsoal"><b>Kasus:</b> Viterbi “saya makan nasi” dengan state N (kata benda) dan V (kata kerja); parameter sama dengan slide hitung manual.</div>
-<div class="rxhow"><b>Cara membaca jejak:</b> Setiap baris = satu sel V_t(s): bandingkan semua state sebelumnya (dikali transisi), ambil maksimum, lalu kali emisi. Kolom “dari” = pointer untuk telusur balik. Bagian yang <b class="chg">disorot</b> = yang berubah/dipilih pada langkah itu.</div>
-<table class="rxtrace"><tr><th>t</th><th>kata</th><th>state</th><th>kandidat (V_{t−1}·a) lalu × emisi</th><th>dari</th><th>V_t(s)</th></tr><tr><td>1</td><td>saya</td><td>N</td><td>π(N)·b = 0,6·0,5</td><td>-</td><td><b class='chg'>0,3</b></td></tr><tr><td>1</td><td>saya</td><td>V</td><td>π(V)·b = 0,4·0,1</td><td>-</td><td><b class='chg'>0,04</b></td></tr><tr><td>2</td><td>makan</td><td>N</td><td>0,3·0,3 = 0,09 vs 0,04·0,8 = 0,032, × b = 0,1</td><td>N</td><td><b class='chg'>0,009</b></td></tr><tr><td>2</td><td>makan</td><td>V</td><td>0,3·0,7 = 0,21 vs 0,04·0,2 = 0,008, × b = 0,8</td><td>N</td><td><b class='chg'>0,168</b></td></tr><tr><td>3</td><td>nasi</td><td>N</td><td>0,009·0,3 = 0,0027 vs 0,168·0,8 = 0,1344, × b = 0,4</td><td>V</td><td><b class='chg'>0,05376</b></td></tr><tr><td>3</td><td>nasi</td><td>V</td><td>0,009·0,7 = 0,0063 vs 0,168·0,2 = 0,0336, × b = 0,1</td><td>V</td><td><b class='chg'>0,00336</b></td></tr></table>
-<div class="rxhasil"><b>Hasil akhir jejak:</b> Telusur balik dari nilai terbesar di t = 3: saya/N → makan/V → nasi/N.</div>
-</section>
-<section class="slide" id="rx4b">
-<div class="kicker">Bedah Rumus 4/4 · Langkah 3: dari hitungan ke kode &amp; kasus nyata</div>
+
+<section class="slide" id="rx4c" data-rx="1">
+<div class="kicker">Bagian D · Studi kasus nyata · Rumus 4/4</div>
 <h2 class="st">Menandai kelas kata (POS tagging)</h2>
 <div class="cols c2">
-<div class="rxstack"><div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Viterbi dipakai di <b>pengenalan suara</b> klasik, POS tagging dan NER (HMM/CRF), dekoder sinyal di <b>modem dan ponsel</b> (convolutional codes), serta <b>map matching GPS</b>: menebak ruas jalan yang sebenarnya dilalui dari titik GPS yang berisik.</p></div><div class="rxcard yellow"><h3>Contoh lain di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Kalimat</h4><p class="">“saya makan nasi”, state = {N, V}.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>t = 1</h4><p class="">V₁(N) = π(N)·b_N(saya) tinggi; V₁(V) kecil.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>t = 2</h4><p class="">V₂(V) = maks(V₁(N)·a_NV, V₁(V)·a_VV)·b_V(makan).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Hasil</h4><p class="">jalur terbaik N → V → N. Brute force 2³ = 8 jalur; untuk 30 kata 2³⁰ - Viterbi hanya 30·4 langkah.</p></div></div></div></div></div>
-<div class="rxcard soft"><h3>Kode Python</h3><pre class="pycode"><span class="tk">def</span> viterbi(obs, states, start, trans, emit):
-    V = [{s: start[s] * emit[s][obs[<span class="tn">0</span>]] <span class="tk">for</span> s <span class="tk">in</span> states}]
-    back = []
-    <span class="tk">for</span> o <span class="tk">in</span> obs[<span class="tn">1</span>:]:
-        prev = V[-<span class="tn">1</span>]; row, ptr = {}, {}
-        <span class="tk">for</span> s <span class="tk">in</span> states:
-            best = <span class="tk">max</span>(states, key=<span class="tk">lambda</span> p: prev[p] * trans[p][s])
-            row[s] = prev[best] * trans[best][s] * emit[s][o]; ptr[s] = best
-        V.append(row); back.append(ptr)
-    s = <span class="tk">max</span>(V[-<span class="tn">1</span>], key=V[-<span class="tn">1</span>].get); path = [s]
-    <span class="tk">for</span> ptr <span class="tk">in</span> reversed(back): s = ptr[s]; path.append(s)
-    <span class="tk">return</span> path[::-<span class="tn">1</span>]</pre><p class="rxsm" style="margin-top:8px">Setelah menghitung manual, jalankan kode ini dan cocokkan hasilnya dengan hitungan di slide sebelumnya.</p></div>
+<div class="rxcard green"><h3>Implementasi di proyek nyata</h3><p>Viterbi dipakai di <b>pengenalan suara</b> klasik, POS tagging dan NER (HMM/CRF), dekoder sinyal di <b>modem dan ponsel</b> (convolutional codes), serta <b>map matching GPS</b>: menebak ruas jalan yang sebenarnya dilalui dari titik GPS yang berisik.</p></div>
+<div class="rxcard yellow"><h3>Angka-angka di kasus ini</h3><div class="rxsteps"><div class="rxstep"><div class="rxnum">1</div><div class="rxbody"><h4>Kalimat</h4><p class="">“saya makan nasi”, state = {N, V}.</p></div></div><div class="rxstep"><div class="rxnum">2</div><div class="rxbody"><h4>t = 1</h4><p class="">V₁(N) = π(N)·b_N(saya) tinggi; V₁(V) kecil.</p></div></div><div class="rxstep"><div class="rxnum">3</div><div class="rxbody"><h4>t = 2</h4><p class="">V₂(V) = maks(V₁(N)·a_NV, V₁(V)·a_VV)·b_V(makan).</p></div></div><div class="rxstep"><div class="rxnum">4</div><div class="rxbody"><h4>Hasil</h4><p class="">jalur terbaik N → V → N. Brute force 2³ = 8 jalur; untuk 30 kata 2³⁰ - Viterbi hanya 30·4 langkah.</p></div></div></div></div>
 </div>
 <div class="analogy"><b>Bawa pulang:</b> Viterbi = DP “jalur terbaik sampai sini” di setiap kolom waktu. Dari Sᵀ menjadi T·S².</div>
 </section>
-<!--RX-SLIDES-END-->
-<section class="slide" id="s6">
-  <div class="kicker">LATIHAN</div>
-  <h2 class="st">Soal Dynamic Programming II</h2>
-  <div class="qlist">
-    <div class="q"><span class="qn">1</span><p>Hitung LCS("AGGTAB", "GXTXAYB") secara manual atau dengan kode. Berapa panjangnya dan apa salah satu subsequence-nya?</p></div>
-    <div class="q"><span class="qn">2</span><p>Hitunglah Edit Distance antara "sunday" dan "saturday". Gambarkan bagian tabel DP untuk meyakinkan jawabanmu.</p></div>
-    <div class="q"><span class="qn">3</span><p>Mengapa Floyd-Warshall bisa mendeteksi negative cycle? Apa yang terjadi pada dp[i][i] jika ada negative cycle yang melewati node i?</p></div>
-    <div class="q"><span class="qn">4</span><p>Algoritma Viterbi untuk HMM dengan K state dan T observasi: buktikan kompleksitasnya O(K²·T). Apa yang disimpan di setiap sel tabel?</p></div>
-    <div class="q"><span class="qn">5</span><p>Di Colab: implementasikan Edit Distance dan gunakan untuk membandingkan dua urutan DNA pendek (misal "GCATGCU" vs "GATTACA"). Berapa edit distance-nya? Apa interpretasi biologisnya?</p></div>
-  </div>
-</section>
 
-<!-- 7. KUNCI -->
-<section class="slide" id="s7">
-  <div class="kicker" style="color:#16a34a">KUNCI JAWABAN</div>
-  <h2 class="st">Kunci Dynamic Programming II</h2>
-  <div class="qlist">
-    <div class="ans"><span class="qn">1</span><p>LCS("AGGTAB","GXTXAYB") = <b>4</b>. Salah satu LCS-nya: "GTAB". Tabel DP 7×8, nilai di pojok kanan bawah = 4.</p></div>
-    <div class="ans"><span class="qn">2</span><p>Edit Distance("sunday","saturday") = <b>3</b>. Operasi: insert 'a' setelah 's', insert 't' setelah 'a', replace 'n'→'r'. Atau: delete 'n', insert 'tur' → tergantung path. Nilai dp[6][8] = 3.</p></div>
-    <div class="ans"><span class="qn">3</span><p>Floyd-Warshall: jika ada negative cycle melalui node i, maka dp[i][i] akan menjadi <b>negatif</b> (karena perjalanan kembali ke i bisa berbiaya negatif). Cek: setelah algoritma selesai, lihat apakah ada dp[i][i] &lt; 0.</p></div>
-    <div class="ans"><span class="qn">4</span><p>Di setiap waktu t dan state k, simpan probabilitas terbaik DP[t][k]. Untuk hitung DP[t][k] perlu melihat semua K state sebelumnya → K operasi per sel. Total sel = K×T → <b>O(K²·T)</b>.</p></div>
-    <div class="ans"><span class="qn">5</span><p>Edit Distance("GCATGCU","GATTACA") = <b>4</b> (3 substitusi + 1 insert/delete tergantung alignment). Interpretasi: makin kecil edit distance, makin mirip dua urutan DNA secara evolusioner - bisa dipakai untuk inferensi filogenetik.</p></div>
-  </div>
-</section>
-
-<!-- 8. PENUTUP -->
 <section class="slide" id="s8" style="justify-content:center;align-items:center;text-align:center">
   <div class="kicker">PERTEMUAN 11 · SELESAI</div>
   <h2 class="st" style="font-size:30px;margin:10px 0">DP pada urutan menjadi<br>fondasi NLP dan bioinformatika.</h2>
